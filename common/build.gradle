@@ -5,7 +5,7 @@ plugins {
     id 'org.spongepowered.gradle.vanilla'
 }
 base {
-    archivesName = "${mod_name}-common-${minecraft_version}"
+    archivesName = "${mod_name}-common"
 }
 minecraft {
     version(minecraft_version)
@@ -14,9 +14,21 @@ minecraft {
     }
 }
 
+repositories {
+    maven {
+        url 'https://maven.willbl.dev/releases/'
+    }
+    mavenLocal()
+}
+
 dependencies {
-     compileOnly group:'org.spongepowered', name:'mixin', version:'0.8.5'
-     implementation group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.1'
+    compileOnly group:'org.spongepowered', name:'mixin', version:'0.8.5'
+    implementation group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.1'
+
+    compileOnly "com.williambl.dfunc:data-functions-common:${dfunc_version}"
+
+    compileOnly group:'com.google.auto.service', name:'auto-service', version:'1.0.1'
+    annotationProcessor group:'com.google.auto.service', name:'auto-service', version:'1.0.1'
 }
 
 publishing {

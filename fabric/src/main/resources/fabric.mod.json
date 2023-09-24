@@ -1,9 +1,9 @@
 {
     "schemaVersion": 1,
-    "id": "mod_id",
+    "id": "bovinesandbuttercups",
     "version": "${version}",
-    "name": "${mod_name}",
-    "description": "This is an example description! Tell everyone what your mod is about!",
+    "name": "Bovines and Buttercups",
+    "description": "A mod that aims to provide a fresh take on the Moobloom mob from 2020's Mob Vote.",
     "authors": [
         "${mod_author}"
     ],
@@ -11,22 +11,24 @@
         "homepage": "https://fabricmc.net/",
         "sources": "https://github.com/FabricMC/fabric-example-mod"
     },
-    "license": "CC0-1.0",
+    "license": "MIT",
     "icon": "assets/modid/icon.png",
     "environment": "*",
     "entrypoints": {
         "main": [
-            "com.example.examplemod.ExampleMod"
+          "net.merchantpug.bovinesandbuttercups.BovinesAndButtercupsFabric"
         ]
     },
     "mixins": [
-        "examplemod.mixins.json",
-        "examplemod.fabric.mixins.json"
+        "bovinesandbuttercups.mixins.json",
+        "bovinesandbuttercups.fabric.mixins.json"
     ],
     "depends": {
         "fabricloader": ">=0.14",
         "fabric": "*",
-        "minecraft": "1.20",
+        "minecraft": [
+            "1.20", "1.20.1"
+        ],
         "java": ">=17"
     },
     "suggests": {
