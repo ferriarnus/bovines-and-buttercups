@@ -26,7 +26,7 @@ dependencies {
 
     implementation project(":common")
 
-    api(include("com.williambl.dfunc:data-functions-fabric:${dfunc_version}"))
+    modApi(include("com.williambl.dfunc:data-functions-fabric:${dfunc_version}"))
 
     compileOnly group:'com.google.auto.service', name:'auto-service', version:'1.0.1'
     annotationProcessor group:'com.google.auto.service', name:'auto-service', version:'1.0.1'
