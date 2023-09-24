@@ -87,9 +87,7 @@ dependencies {
 
     annotationProcessor("org.spongepowered:mixin:0.8.5-SNAPSHOT:processor")
 
-    implementation(fg.deobf("com.williambl.dfunc:data-functions-forge:${dfunc_version}")) {
-        exclude(group: "net.minecraftforge")
-    }
+    implementation(fg.deobf("com.williambl.dfunc:data-functions-forge:${dfunc_version}"))
 
     compileOnly group:'com.google.auto.service', name:'auto-service', version:'1.0.1'
     annotationProcessor group:'com.google.auto.service', name:'auto-service', version:'1.0.1'
