@@ -6,7 +6,11 @@ import net.minecraft.core.MappedRegistry;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 
+import java.util.HashSet;
+import java.util.Set;
+
 public class ReloadableMappedRegistry<T> extends MappedRegistry<T> {
+    public static final Set<ResourceKey<? extends Registry<?>>> RELOADABLE_KEYS = new HashSet<>();
     private Lifecycle defaultLifecycle;
 
     public ReloadableMappedRegistry(ResourceKey<? extends Registry<T>> resourceKey, Lifecycle lifecycle) {

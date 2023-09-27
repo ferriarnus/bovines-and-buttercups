@@ -9,6 +9,6 @@ import net.minecraftforge.fml.common.Mod;
 public class BovinesEventHandler {
     @SubscribeEvent
     private static void addReloadListeners(AddReloadListenerEvent event) {
-        event.addListener(ReloadableRegistryReloadListener.createCowTypeReloadListener(event.getRegistryAccess()));
+
     }
 }

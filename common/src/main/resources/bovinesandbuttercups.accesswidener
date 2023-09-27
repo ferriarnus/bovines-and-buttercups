@@ -1,0 +1,3 @@
+accessWidener v1 named
+accessible field net/minecraft/data/registries/VanillaRegistries BUILDER Lnet/minecraft/core/RegistrySetBuilder;
+accessible field net/minecraft/resources/RegistryDataLoader WORLDGEN_REGISTRIES Ljava/util/List;
