@@ -13,7 +13,7 @@ import java.util.Optional;
 import java.util.function.Supplier;
 
 public class CowType<CTC extends CowTypeConfiguration> {
-    public static final Codec<CowType<?>> CODEC = Services.PLATFORM.getCowTypeCodec();
+    public static final Codec<CowType<?>> CODEC = Services.PLATFORM.getCowTypeRegistry().byNameCodec();
     private static final Map<String, Codec<?>> NAME_TO_CODEC = new HashMap<>();
     private final Codec<ConfiguredCowType<CTC, CowType<CTC>>> configuredCodec;
 

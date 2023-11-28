@@ -1,11 +1,7 @@
 package net.merchantpug.bovinesandbuttercups.platform.services;
 
-import com.mojang.serialization.Codec;
 import net.merchantpug.bovinesandbuttercups.api.CowType;
-import net.minecraft.resources.ResourceKey;
-
-import java.util.Map;
-import java.util.Set;
+import net.minecraft.core.Registry;
 
 public interface IPlatformHelper {
 
@@ -42,17 +38,10 @@ public interface IPlatformHelper {
     }
 
     /**
-     * Gets the cow type codec.
+     * Gets the Cow Type registry.
      *
-     * @return The cow type codec.
+     * @return The Cow Type registry.
      */
-    Codec<CowType<?>> getCowTypeCodec();
-
-    /**
-     * Gets the entrySet of the cow type registry.
-     *
-     * @return The entrySet of the cow type registry.
-     */
-    Set<Map.Entry<ResourceKey<CowType<?>>, CowType<?>>> ctEntrySet();
+    Registry<CowType<?>> getCowTypeRegistry();
 
 }

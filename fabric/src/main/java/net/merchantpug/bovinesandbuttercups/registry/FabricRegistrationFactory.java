@@ -53,39 +53,10 @@ public class FabricRegistrationFactory implements RegistrationProvider.Factory {
 
         @Override
         @SuppressWarnings("unchecked")
-        public <I extends T> RegistryObject<I> register(String name, Supplier<? extends I> supplier) {
+        public <I extends T> Holder<I> register(String name, Supplier<? extends I> supplier) {
             final var rl = new ResourceLocation(modId, name);
-            final var obj = Registry.register(registry, rl, supplier.get());
-            final var ro = new RegistryObject<I>() {
-                final ResourceKey<I> key = ResourceKey.create((ResourceKey<? extends Registry<I>>) registry.key(), rl);
-
-                @Override
-                public ResourceKey<I> getResourceKey() {
-                    return key;
-                }
-
-                @Override
-                public ResourceLocation getId() {
-                    return rl;
-                }
-
-                @Override
-                public I get() {
-                    return obj;
-                }
-
-                @Override
-                public Holder<I> asHolder() {
-                    return (Holder<I>) registry.getHolderOrThrow((ResourceKey<T>) this.key);
-                }
-            };
-            entries.add((RegistryObject<T>) ro);
-            return ro;
-        }
-
-        @Override
-        public Collection<RegistryObject<T>> getEntries() {
-            return entriesView;
+            final var obj = Registry.registerForHolder(registry, rl, supplier.get());
+            return (Holder<I>) obj;
         }
 
         @Override

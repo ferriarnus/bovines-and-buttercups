@@ -12,7 +12,7 @@ import java.util.function.Supplier;
 
 public record MoobloomConfiguration(Settings settings) implements CowTypeConfiguration {
 
-    public static final Supplier<ConfiguredCowType<MoobloomConfiguration, CowType<MoobloomConfiguration>>> DEFAULT = () -> new ConfiguredCowType<>(BovinesCowTypes.MOOBLOOM_TYPE.get(), new MoobloomConfiguration(new CowTypeConfiguration.Settings(Optional.empty(), Optional.empty(), 0, Optional.empty())));
+    public static final Supplier<ConfiguredCowType<MoobloomConfiguration, CowType<MoobloomConfiguration>>> DEFAULT = () -> new ConfiguredCowType<>(BovinesCowTypes.MOOBLOOM_TYPE.value(), new MoobloomConfiguration(new CowTypeConfiguration.Settings(Optional.empty(), Optional.empty(), 0, Optional.empty())));
 
     public static final MapCodec<MoobloomConfiguration> CODEC = RecordCodecBuilder.mapCodec(builder -> builder.group(
             Settings.CODEC.forGetter(MoobloomConfiguration::settings)
