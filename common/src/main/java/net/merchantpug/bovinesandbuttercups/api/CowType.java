@@ -3,18 +3,13 @@ package net.merchantpug.bovinesandbuttercups.api;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.merchantpug.bovinesandbuttercups.platform.Services;
+import net.merchantpug.bovinesandbuttercups.registry.BovinesRegistries;
 import net.minecraft.resources.ResourceLocation;
 
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Optional;
 import java.util.function.Supplier;
 
 public class CowType<CTC extends CowTypeConfiguration> {
-    public static final Codec<CowType<?>> CODEC = Services.PLATFORM.getCowTypeRegistry().byNameCodec();
-    private static final Map<String, Codec<?>> NAME_TO_CODEC = new HashMap<>();
+    public static final Codec<CowType<?>> CODEC = BovinesRegistries.COW_TYPE_REGISTRY.byNameCodec();
     private final Codec<ConfiguredCowType<CTC, CowType<CTC>>> configuredCodec;
 
     private final ResourceLocation defaultConfiguredId;
@@ -40,7 +35,6 @@ public class CowType<CTC extends CowTypeConfiguration> {
                 ).apply(instance, (ctc) -> new ConfiguredCowType<>(this, ctc)));
         this.defaultConfiguredId = defaultConfiguredId;
         this.defaultConfigured = defaultConfigured;
-        NAME_TO_CODEC.put(name.toLowerCase(Locale.ROOT), this.configuredCodec);
     }
 
     public Codec<ConfiguredCowType<CTC, CowType<CTC>>> codec() {
@@ -53,13 +47,6 @@ public class CowType<CTC extends CowTypeConfiguration> {
 
     public Supplier<ConfiguredCowType<CTC ,CowType<CTC>>> defaultConfigured() {
         return this.defaultConfigured;
-    }
-
-    public static Optional<Codec<ConfiguredCowType<?, ?>>> getFromName(String name) {
-        if (!NAME_TO_CODEC.containsKey(name)) {
-            return Optional.empty();
-        }
-        return Optional.of((Codec<ConfiguredCowType<?, ?>>)NAME_TO_CODEC.get(name));
     }
 
 }

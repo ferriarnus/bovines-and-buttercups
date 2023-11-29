@@ -2,7 +2,7 @@ package net.merchantpug.bovinesandbuttercups.api;
 
 import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
 import net.merchantpug.bovinesandbuttercups.api.cowtypes.MoobloomConfiguration;
-import net.merchantpug.bovinesandbuttercups.platform.Services;
+import net.merchantpug.bovinesandbuttercups.registry.BovinesRegistries;
 import net.merchantpug.bovinesandbuttercups.registry.internal.RegistrationProvider;
 import net.minecraft.core.Holder;
 import net.minecraft.core.RegistrySetBuilder;
@@ -25,7 +25,7 @@ public class BovinesCowTypes {
     }
 
     public static RegistrySetBuilder.RegistryBootstrap<ConfiguredCowType<?, ?>> bootstrap() {
-        return bootstapContext -> Services.PLATFORM.getCowTypeRegistry().entrySet().forEach(entry -> bootstapContext.register(ResourceKey.create(BovinesRegistryKeys.CONFIGURED_COW_TYPE_KEY, entry.getValue().defaultConfiguredId()), entry.getValue().defaultConfigured().get()));
+        return bootstapContext -> BovinesRegistries.COW_TYPE_REGISTRY.entrySet().forEach(entry -> bootstapContext.register(ResourceKey.create(BovinesRegistryKeys.CONFIGURED_COW_TYPE_KEY, entry.getValue().defaultConfiguredId()), entry.getValue().defaultConfigured().get()));
     }
 
 }

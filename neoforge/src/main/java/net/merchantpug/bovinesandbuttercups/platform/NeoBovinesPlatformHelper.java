@@ -1,20 +1,15 @@
 package net.merchantpug.bovinesandbuttercups.platform;
 
 import com.google.auto.service.AutoService;
-import com.mojang.serialization.Codec;
-import net.merchantpug.bovinesandbuttercups.api.CowType;
-import net.merchantpug.bovinesandbuttercups.platform.services.IPlatformHelper;
-import net.merchantpug.bovinesandbuttercups.registry.BovinesRegistries;
+import net.merchantpug.bovinesandbuttercups.platform.services.IBovinesPlatformHelper;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.neoforged.fml.ModList;
 import net.neoforged.fml.loading.FMLLoader;
+import net.neoforged.neoforge.registries.RegistryBuilder;
 
-import java.util.Map;
-import java.util.Set;
-
-@AutoService(IPlatformHelper.class)
-public class NeoForgePlatformHelper implements IPlatformHelper {
+@AutoService(IBovinesPlatformHelper.class)
+public class NeoBovinesPlatformHelper implements IBovinesPlatformHelper {
 
     @Override
     public String getPlatformName() {
@@ -35,8 +30,8 @@ public class NeoForgePlatformHelper implements IPlatformHelper {
     }
 
     @Override
-    public Registry<CowType<?>> getCowTypeRegistry() {
-        return BovinesRegistries.COW_TYPE_REGISTRY;
+    public <T> Registry<T> createRegistry(ResourceKey<Registry<T>> registryKey) {
+        return new RegistryBuilder<>(registryKey).create();
     }
 
 }

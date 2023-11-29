@@ -54,7 +54,12 @@ dependencies {
 
     annotationProcessor("org.spongepowered:mixin:0.8.5-SNAPSHOT:processor")
 
-    implementation("com.williambl.dfunc:data-functions-neoforge:${dfunc_version}")
+    implementation(jarJar("com.williambl.dfunc:data-functions-neoforge:${dfunc_version}")) {
+        jarJar.ranged(it, "[${dfunc_version},)")
+    }
+    implementation(jarJar("io.github.llamalad7:mixinextras-neoforge:${mixin_extras_version}")) {
+        jarJar.ranged(it, "[${mixin_extras_version},)")
+    }
 
     compileOnly group:'com.google.auto.service', name:'auto-service', version:'1.0.1'
     annotationProcessor group:'com.google.auto.service', name:'auto-service', version:'1.0.1'

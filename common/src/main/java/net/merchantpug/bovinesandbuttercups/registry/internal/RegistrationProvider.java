@@ -1,6 +1,6 @@
 package net.merchantpug.bovinesandbuttercups.registry.internal;
 
-import net.merchantpug.bovinesandbuttercups.platform.Services;
+import net.merchantpug.bovinesandbuttercups.platform.ServiceUtil;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
@@ -79,7 +79,7 @@ public interface RegistrationProvider<T> {
         /**
          * The singleton instance of the {@link Factory}. This is different on each loader.
          */
-        Factory INSTANCE = Services.load(Factory.class);
+        Factory INSTANCE = ServiceUtil.load(Factory.class);
 
         /**
          * Creates a {@link RegistrationProvider}.

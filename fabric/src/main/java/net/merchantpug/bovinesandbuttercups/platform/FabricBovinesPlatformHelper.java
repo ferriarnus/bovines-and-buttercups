@@ -1,14 +1,14 @@
 package net.merchantpug.bovinesandbuttercups.platform;
 
 import com.google.auto.service.AutoService;
-import net.merchantpug.bovinesandbuttercups.api.CowType;
-import net.merchantpug.bovinesandbuttercups.platform.services.IPlatformHelper;
+import net.fabricmc.fabric.api.event.registry.FabricRegistryBuilder;
+import net.merchantpug.bovinesandbuttercups.platform.services.IBovinesPlatformHelper;
 import net.fabricmc.loader.api.FabricLoader;
-import net.merchantpug.bovinesandbuttercups.registry.BovinesRegistries;
 import net.minecraft.core.Registry;
+import net.minecraft.resources.ResourceKey;
 
-@AutoService(IPlatformHelper.class)
-public class FabricPlatformHelper implements IPlatformHelper {
+@AutoService(IBovinesPlatformHelper.class)
+public class FabricBovinesPlatformHelper implements IBovinesPlatformHelper {
 
     @Override
     public String getPlatformName() {
@@ -28,8 +28,8 @@ public class FabricPlatformHelper implements IPlatformHelper {
     }
 
     @Override
-    public Registry<CowType<?>> getCowTypeRegistry() {
-        return BovinesRegistries.COW_TYPE_REGISTRY;
+    public <T> Registry<T> createRegistry(ResourceKey<Registry<T>> registryKey) {
+        return FabricRegistryBuilder.createSimple(registryKey).buildAndRegister();
     }
 
 }

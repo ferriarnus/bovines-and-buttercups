@@ -2,17 +2,12 @@ package net.merchantpug.bovinesandbuttercups.registry;
 
 import com.google.auto.service.AutoService;
 import net.merchantpug.bovinesandbuttercups.registry.internal.RegistrationProvider;
-import net.merchantpug.bovinesandbuttercups.registry.internal.RegistryObject;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.function.Supplier;
 
 @AutoService(RegistrationProvider.Factory.class)
@@ -31,9 +26,6 @@ public class FabricRegistrationFactory implements RegistrationProvider.Factory {
     private static class Provider<T> implements RegistrationProvider<T> {
         private final String modId;
         private final Registry<T> registry;
-
-        private final Set<RegistryObject<T>> entries = new HashSet<>();
-        private final Set<RegistryObject<T>> entriesView = Collections.unmodifiableSet(entries);
 
         @SuppressWarnings({"unchecked"})
         private Provider(String modId, ResourceKey<? extends Registry<T>> key) {

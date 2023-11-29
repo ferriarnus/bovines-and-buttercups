@@ -2,9 +2,7 @@ package net.merchantpug.bovinesandbuttercups.registry;
 
 import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
 import net.merchantpug.bovinesandbuttercups.content.entity.Moobloom;
-import net.merchantpug.bovinesandbuttercups.platform.Services;
 import net.merchantpug.bovinesandbuttercups.registry.internal.RegistrationProvider;
-import net.merchantpug.bovinesandbuttercups.registry.internal.RegistryObject;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.entity.Entity;

@@ -1,9 +1,12 @@
 package net.merchantpug.bovinesandbuttercups.platform.services;
 
-import net.merchantpug.bovinesandbuttercups.api.CowType;
+import net.merchantpug.bovinesandbuttercups.platform.ServiceUtil;
 import net.minecraft.core.Registry;
+import net.minecraft.resources.ResourceKey;
 
-public interface IPlatformHelper {
+public interface IBovinesPlatformHelper {
+
+    IBovinesPlatformHelper INSTANCE = ServiceUtil.load(IBovinesPlatformHelper.class);
 
     /**
      * Gets the name of the current platform
@@ -38,10 +41,10 @@ public interface IPlatformHelper {
     }
 
     /**
-     * Gets the Cow Type registry.
+     * Creates a new registry.
      *
-     * @return The Cow Type registry.
+     * @return The created registry.
      */
-    Registry<CowType<?>> getCowTypeRegistry();
+    <T> Registry<T> createRegistry(ResourceKey<Registry<T>> registryKey);
 
 }
