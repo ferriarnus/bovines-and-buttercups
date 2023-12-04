@@ -22,6 +22,9 @@
     "entrypoints": {
         "main": [
             "net.merchantpug.bovinesandbuttercups.BovinesAndButtercupsFabric"
+        ],
+        "rdpr": [
+            "net.merchantpug.bovinesandbuttercups.registry.BovinesReloadableRegistryPlugin"
         ]
     },
     "custom": {
@@ -31,7 +34,6 @@
             "bovinesandbuttercups:mooshroom_type"
         ]
     },
-    "accessWidener": "bovinesandbuttercups.accesswidener",
     "mixins": [
         "bovinesandbuttercups.mixins.json",
         "bovinesandbuttercups.fabric.mixins.json"

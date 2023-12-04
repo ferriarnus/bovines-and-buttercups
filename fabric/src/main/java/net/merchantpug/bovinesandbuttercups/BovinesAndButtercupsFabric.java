@@ -11,10 +11,6 @@ public class BovinesAndButtercupsFabric implements ModInitializer {
     public void onInitialize() {
         BovinesRegistries.init();
         BovinesAndButtercups.init();
-
-        ServerLifecycleEvents.SERVER_STARTING.register(BovinesAndButtercups::setServer);
-        ServerLifecycleEvents.SERVER_STARTED.register(server -> BovinesAndButtercups.setServerStarted(true));
-        ServerLifecycleEvents.SERVER_STOPPED.register(server -> BovinesAndButtercups.setServerStarted(false));
     }
 
 }
