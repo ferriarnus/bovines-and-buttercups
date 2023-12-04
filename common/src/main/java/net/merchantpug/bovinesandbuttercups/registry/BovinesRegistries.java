@@ -7,7 +7,7 @@ import net.minecraft.core.Registry;
 
 public class BovinesRegistries {
 
-    public static final Registry<CowType<?>> COW_TYPE_REGISTRY = IBovinesPlatformHelper.INSTANCE.createRegistry(BovinesRegistryKeys.COW_TYPE_KEY);
+    public static final Registry<CowType<?>> COW_TYPE_REGISTRY = IBovinesPlatformHelper.INSTANCE.createRegistry(BovinesRegistryKeys.COW_TYPE);
 
     public static void init() {
     }

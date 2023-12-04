@@ -19,16 +19,13 @@ public class CowType<CTC extends CowTypeConfiguration> {
     /**
      * The constructor for the CowType class.
      *
-     * @param name                 The name used for indexing the cow type in subfolders.
-     *                             I'd recommend prefixing this with your modid `(example/cow_type)`
-     *                             if you're making an addon or integration.
      * @param codec                The codec for the ConfiguredCowType relating to this cow type.
      * @param defaultConfiguredId  The ResourceLocation/Identifier used for the default value of this
      *                             cow type. Presumedly defaults to this for when a cow type isn't found.
      * @param defaultConfigured    A supplier for the default ConfiguredCowType.
      *                             Presumedly defaults to this for when a cow type isn't found.
      */
-    public CowType(String name, MapCodec<CTC> codec, ResourceLocation defaultConfiguredId, Supplier<ConfiguredCowType<CTC, CowType<CTC>>> defaultConfigured) {
+    public CowType(MapCodec<CTC> codec, ResourceLocation defaultConfiguredId, Supplier<ConfiguredCowType<CTC, CowType<CTC>>> defaultConfigured) {
         this.configuredCodec = RecordCodecBuilder.create(instance ->
                 instance.group(
                         codec.forGetter(ConfiguredCowType::configuration)

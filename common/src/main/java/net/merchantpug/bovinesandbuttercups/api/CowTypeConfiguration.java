@@ -4,6 +4,7 @@ import com.mojang.datafixers.util.Either;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.core.Holder;
 import net.minecraft.core.HolderSet;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.HolderSetCodec;
@@ -20,7 +21,7 @@ import java.util.Optional;
 public interface CowTypeConfiguration {
 
     /**
-     * Optional settings for your cow type, they are not in the base class, mainly for the sake of being optional.
+     * Optional settings for your cow type, they are not in the base class as you may not want them.
      *
      * @param cowTexture         A {@link ResourceLocation} for where in the assets the cow's texture is located,
      *                           if not set, it'll default to a hardcoded value depending on the cow.
@@ -29,7 +30,7 @@ public interface CowTypeConfiguration {
      * @param thunderConverts    A list of weighted cow types that this cow will/have a chance to convert into upon being struck by lightning.
      *                           Can be Optional.empty() to keep the default thunder behavior.
      */
-    public record Settings(Optional<ResourceLocation> cowTexture, Optional<HolderSet<Biome>> biomes, int naturalSpawnWeight, Optional<List<WeightedConfiguredCowType>> thunderConverts) {
+    record Settings(Optional<ResourceLocation> cowTexture, Optional<HolderSet<Biome>> biomes, int naturalSpawnWeight, Optional<List<WeightedConfiguredCowType>> thunderConverts) {
         public static final MapCodec<Settings> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
                 ResourceLocation.CODEC.optionalFieldOf("texture_location").forGetter(Settings::cowTexture),
                 HolderSetCodec.create(Registries.BIOME, Biome.CODEC, false).optionalFieldOf("spawn_biomes").forGetter(Settings::biomes),
@@ -38,13 +39,19 @@ public interface CowTypeConfiguration {
         ).apply(instance, Settings::new));
     }
 
-    public record WeightedConfiguredCowType(ResourceLocation configuredCowTypeResource, int weight) {
+    /**
+     * A reference to a {@link ConfiguredCowType}, as well as an integer weight. Used for weight based random chance selection.
+     *
+     * @param configuredCowType A {@link Holder} that should contain a configured cow type.
+     * @param weight            The weight of this WeightedConfiguredCowType.
+     */
+    record WeightedConfiguredCowType(Holder<ConfiguredCowType<?, ?>> configuredCowType, int weight) {
         public static final Codec<WeightedConfiguredCowType> DIRECT_CODEC = RecordCodecBuilder.create(builder -> builder.group(
-                ResourceLocation.CODEC.fieldOf("type").forGetter(WeightedConfiguredCowType::configuredCowTypeResource),
+                ConfiguredCowType.CODEC.fieldOf("type").forGetter(WeightedConfiguredCowType::configuredCowType),
                 Codec.INT.optionalFieldOf("weight", 1).forGetter(WeightedConfiguredCowType::weight)
         ).apply(builder, WeightedConfiguredCowType::new));
 
-        public static final Codec<WeightedConfiguredCowType> CODEC = Codec.either(DIRECT_CODEC, ResourceLocation.CODEC)
-                .xmap(objectResourceLocationEither -> objectResourceLocationEither.map(o -> o, location -> new WeightedConfiguredCowType(location, 1)), Either::left);
+        public static final Codec<WeightedConfiguredCowType> CODEC = Codec.either(DIRECT_CODEC, ConfiguredCowType.CODEC)
+                .xmap(either -> either.map(o -> o, type -> new WeightedConfiguredCowType(type, 1)), Either::left);
     }
 }

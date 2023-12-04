@@ -19,7 +19,7 @@ public class BovinesRegistryEvents {
 
     @SubscribeEvent
     public static void createNewDataPackRegistry(DataPackRegistryEvent.NewRegistry event) {
-        event.dataPackRegistry(BovinesRegistryKeys.CONFIGURED_COW_TYPE_KEY, ConfiguredCowType.CODEC, ConfiguredCowType.CODEC);
+        event.dataPackRegistry(BovinesRegistryKeys.CONFIGURED_COW_TYPE, ConfiguredCowType.DIRECT_CODEC, ConfiguredCowType.DIRECT_CODEC);
     }
 
     @SubscribeEvent
