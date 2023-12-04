@@ -1,29 +1,30 @@
-modLoader = "javafml"
-loaderVersion = "[46,)"
-license = "MIT"
-issueTrackerURL="https://modrinth.com/mod/bovines-and-buttercups"
-[[mods]]
-modId = "bovinesandbuttercups"
-version = "${file.jarVersion}"
-displayName = "Bovines and Buttercups"
-updateJSONURL="https://change.me.example.invalid/updates.json"
-displayURL="https://github.com/GreenhouseTeam/bovines-and-buttercups"
-logoFile = "bovinesandbuttercups.png"
-credits = "Thanks for this example mod goes to Java"
-authors = "${mod_author}"
-description = '''
-A mod that aims to provide a fresh take on the Moobloom mob from 2020's Mob Vote.
-'''
-[[dependencies.bovinesandbuttercups]]
-modId = "forge"
-mandatory = true
-versionRange = "[46,)"
-ordering = "NONE"
-side = "BOTH"
+modLoader="javafml"
+loaderVersion="${neoforge_loader_version_range}"
+issueTrackerURL = "https://github.com/MerchantPug/bovines-and-buttercups/issues"
+license="${license}"
 
-[[dependencies.bovinesandbuttercups]]
-modId = "minecraft"
-mandatory = true
-versionRange = "[1.20,1.20.2)"
-ordering = "NONE"
-side = "BOTH"
+[[mods]]
+modId="${mod_id}"
+version="${version}"
+displayName="Bovines and Buttercups"
+logoFile="bovinesandbuttercups.png"
+updateJSONURL = "https://api.modrinth.com/updates/BDg6nMn3/forge_updates.json"
+authors="Greenhouse Team, MerchantPug"
+credits="SpiderKolo"
+description='''
+A fresh, new take on the 2020 Mob Vote's Moobloom.
+'''
+
+[[dependencies.${mod_id}]]
+modId="neoforge"
+mandatory=true
+versionRange="${neoforge_loader_version_range}"
+ordering="NONE"
+side="BOTH"
+
+[[dependencies.${mod_id}]]
+modId="minecraft"
+mandatory=true
+versionRange="[${minecraft_version},)"
+ordering="NONE"
+side="BOTH"

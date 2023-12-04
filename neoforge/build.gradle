@@ -44,6 +44,9 @@ repositories {
     maven {
         url 'https://maven.willbl.dev/releases/'
     }
+    maven {
+        url 'https://maven.merchantpug.net/releases/'
+    }
     mavenLocal()
 }
 
@@ -52,13 +55,12 @@ dependencies {
 
     compileOnly project(":common")
 
-    annotationProcessor("org.spongepowered:mixin:0.8.5-SNAPSHOT:processor")
-
     implementation(jarJar("com.williambl.dfunc:data-functions-neoforge:${dfunc_version}")) {
         jarJar.ranged(it, "[${dfunc_version},)")
     }
-    implementation(jarJar("io.github.llamalad7:mixinextras-neoforge:${mixin_extras_version}")) {
-        jarJar.ranged(it, "[${mixin_extras_version},)")
+    compileOnly "dev.greenhouseteam.rdpr:rdpr-neoforge:${rdpr_version}:api"
+    runtimeOnly(jarJar("dev.greenhouseteam.rdpr:rdpr-neoforge:${rdpr_version}")) {
+        jarJar.ranged(it, "[${rdpr_version},)")
     }
 
     compileOnly group:'com.google.auto.service', name:'auto-service', version:'1.0.1'

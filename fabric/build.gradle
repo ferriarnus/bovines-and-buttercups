@@ -12,6 +12,9 @@ repositories {
     maven {
         url 'https://maven.willbl.dev/releases/'
     }
+    maven {
+        url 'https://maven.merchantpug.net/releases/'
+    }
     mavenLocal()
 }
 
@@ -25,9 +28,11 @@ dependencies {
     implementation group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.1'
 
     implementation project(":common")
-    include(implementation(annotationProcessor("io.github.llamalad7:mixinextras-fabric:${mixin_extras_version}")))
 
     modApi(include("com.williambl.dfunc:data-functions-fabric:${dfunc_version}"))
+
+    modCompileOnly("dev.greenhouseteam.rdpr:rdpr-fabric:${rdpr_version}:api")
+    modRuntimeOnly(include("dev.greenhouseteam.rdpr:rdpr-fabric:${rdpr_version}"))
 
     compileOnly group:'com.google.auto.service', name:'auto-service', version:'1.0.1'
     annotationProcessor group:'com.google.auto.service', name:'auto-service', version:'1.0.1'

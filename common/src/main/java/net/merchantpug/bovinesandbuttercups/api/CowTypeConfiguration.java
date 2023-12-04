@@ -4,14 +4,13 @@ import com.mojang.datafixers.util.Either;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.merchantpug.bovinesandbuttercups.util.ExtraCodecs;
 import net.minecraft.core.HolderSet;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.HolderSetCodec;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.biome.Biome;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -33,7 +32,7 @@ public interface CowTypeConfiguration {
     public record Settings(Optional<ResourceLocation> cowTexture, Optional<HolderSet<Biome>> biomes, int naturalSpawnWeight, Optional<List<WeightedConfiguredCowType>> thunderConverts) {
         public static final MapCodec<Settings> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
                 ResourceLocation.CODEC.optionalFieldOf("texture_location").forGetter(Settings::cowTexture),
-                ExtraCodecs.optionalTagOrObjectCodec(Registries.BIOME, "spawn_biomes").forGetter(Settings::biomes),
+                HolderSetCodec.create(Registries.BIOME, Biome.CODEC, false).optionalFieldOf("spawn_biomes").forGetter(Settings::biomes),
                 Codec.INT.optionalFieldOf("natural_spawn_weight", 0).forGetter(Settings::naturalSpawnWeight),
                 Codec.list(WeightedConfiguredCowType.CODEC).optionalFieldOf("thunder_conversion_types").forGetter(Settings::thunderConverts)
         ).apply(instance, Settings::new));

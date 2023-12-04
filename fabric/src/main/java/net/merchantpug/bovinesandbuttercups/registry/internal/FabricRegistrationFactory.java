@@ -1,4 +1,4 @@
-package net.merchantpug.bovinesandbuttercups.registry;
+package net.merchantpug.bovinesandbuttercups.registry.internal;
 
 import com.google.auto.service.AutoService;
 import net.merchantpug.bovinesandbuttercups.registry.internal.RegistrationProvider;

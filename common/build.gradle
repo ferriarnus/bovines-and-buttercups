@@ -18,6 +18,9 @@ repositories {
     maven {
         url 'https://maven.willbl.dev/releases/'
     }
+    maven {
+        url 'https://maven.merchantpug.net/releases/'
+    }
     mavenLocal()
 }
 
@@ -26,6 +29,7 @@ dependencies {
     implementation group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.1'
 
     compileOnly "com.williambl.dfunc:data-functions-common:${dfunc_version}"
+    compileOnly "dev.greenhouseteam.rdpr:rdpr-common-mojmap:${rdpr_version}:api"
 
     compileOnly group:'com.google.auto.service', name:'auto-service', version:'1.0.1'
     annotationProcessor group:'com.google.auto.service', name:'auto-service', version:'1.0.1'
