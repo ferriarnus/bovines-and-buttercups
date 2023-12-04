@@ -11,6 +11,14 @@ base {
     archivesName = "${mod_id}-neoforge"
 }
 
+sourceSets {
+    main {
+        resources {
+            srcDirs += project(":common").file("src/main/generated")
+        }
+    }
+}
+
 mixin {
     config("${mod_id}.mixins.json")
     config("${mod_id}.neoforge.mixins.json")
@@ -32,9 +40,6 @@ runs {
     server {
         systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
         programArgument '--nogui'
-    }
-    data {
-        programArguments.addAll '--mod', project.mod_id, '--all', '--output', file('src/generated/resources/').getAbsolutePath(), '--existing', file('src/main/resources/').getAbsolutePath()
     }
 }
 
@@ -58,7 +63,7 @@ dependencies {
     implementation(jarJar("com.williambl.dfunc:data-functions-neoforge:${dfunc_version}")) {
         jarJar.ranged(it, "[${dfunc_version},)")
     }
-    compileOnly "dev.greenhouseteam.rdpr:rdpr-neoforge:${rdpr_version}:api"
+    testCompileOnly(compileOnly("dev.greenhouseteam.rdpr:rdpr-neoforge:${rdpr_version}:api"))
     runtimeOnly(jarJar("dev.greenhouseteam.rdpr:rdpr-neoforge:${rdpr_version}")) {
         jarJar.ranged(it, "[${rdpr_version},)")
     }

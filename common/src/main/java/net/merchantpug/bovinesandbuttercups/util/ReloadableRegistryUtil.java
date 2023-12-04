@@ -9,8 +9,10 @@ import com.mojang.serialization.Lifecycle;
 import dev.greenhouseteam.rdpr.api.IReloadableRegistryCreationHelper;
 import dev.greenhouseteam.rdpr.api.loader.CustomDataLoader;
 import dev.greenhouseteam.rdpr.api.platform.IRDPRApiPlatformHelper;
-import net.merchantpug.bovinesandbuttercups.api.BovinesRegistryKeys;
+import net.merchantpug.bovinesandbuttercups.api.BovinesResourceKeys;
 import net.merchantpug.bovinesandbuttercups.api.PrioritizedRecord;
+import net.merchantpug.bovinesandbuttercups.api.block.CustomFlowerType;
+import net.merchantpug.bovinesandbuttercups.api.block.CustomMushroomType;
 import net.merchantpug.bovinesandbuttercups.registry.BovinesCowTypes;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderGetter;
@@ -31,15 +33,17 @@ import java.util.Optional;
 
 public class ReloadableRegistryUtil {
     public static void makeDataPackRegistriesReloadable(IReloadableRegistryCreationHelper helper) {
-        helper.fromExistingRegistry(BovinesRegistryKeys.CONFIGURED_COW_TYPE);
-        helper.setCustomDataLoader(BovinesRegistryKeys.CONFIGURED_COW_TYPE, prioritisedWithBootstrap(BovinesCowTypes.bootstrap()));
+        helper.fromExistingRegistry(BovinesResourceKeys.CONFIGURED_COW_TYPE);
+        helper.setCustomDataLoader(BovinesResourceKeys.CONFIGURED_COW_TYPE, prioritisedWithBootstrap(BovinesCowTypes.bootstrap()));
+        helper.fromExistingRegistry(BovinesResourceKeys.CUSTOM_FLOWER_TYPE);
+        helper.setCustomDataLoader(BovinesResourceKeys.CUSTOM_FLOWER_TYPE, prioritisedWithBootstrap(CustomFlowerType.bootstrap()));
+        helper.fromExistingRegistry(BovinesResourceKeys.CUSTOM_MUSHROOM_TYPE);
+        helper.setCustomDataLoader(BovinesResourceKeys.CUSTOM_MUSHROOM_TYPE, prioritisedWithBootstrap(CustomMushroomType.bootstrap()));
     }
 
     @SuppressWarnings("UnstableApiUsage")
     private static <T> CustomDataLoader<T> prioritisedWithBootstrap(RegistrySetBuilder.RegistryBootstrap<T> registryBootstrap) {
         return (lookup, resourceManager, registry, codec, exceptionMap) -> {
-
-
             Map<ResourceLocation, Integer> priorityList = new HashMap<>();
             FileToIdConverter fileToIdConverter = FileToIdConverter.json(registry.key().location().getNamespace() + "/" + registry.key().location().getPath());
             RegistryOps<JsonElement> ops = IRDPRApiPlatformHelper.INSTANCE.getRegistryOps(lookup);
@@ -47,8 +51,9 @@ public class ReloadableRegistryUtil {
 
             registryBootstrap.run(new BootstapContext<>() {
                 @Override
-                public Holder.Reference<T> register(@NotNull ResourceKey<T> resourceKey, @NotNull T configuredCowType, @NotNull Lifecycle lifecycle) {
-                    priorityList.put(resourceKey.location(), Integer.MIN_VALUE);
+                public @NotNull Holder.Reference<T> register(@NotNull ResourceKey<T> resourceKey, @NotNull T configuredCowType, @NotNull Lifecycle lifecycle) {
+                    // As the bootstrap should only ever be running the missing values, we don't want them replaced.
+                    priorityList.put(resourceKey.location(), Integer.MAX_VALUE);
                     return registry.register(resourceKey, configuredCowType, lifecycle);
                 }
 

@@ -8,6 +8,14 @@ base {
     archivesName = "${mod_name}-fabric"
 }
 
+sourceSets {
+    main {
+        resources {
+            srcDirs += project(":common").file("src/main/generated")
+        }
+    }
+}
+
 repositories {
     maven {
         url 'https://maven.willbl.dev/releases/'
@@ -57,6 +65,15 @@ loom {
             setConfigName("Fabric Server")
             ideConfigGenerated(true)
             runDir("run")
+        }
+        datagen {
+            inherit server
+            setConfigName("Fabric Datagen")
+            vmArg("-Dfabric-api.datagen")
+            vmArg("-Dfabric-api.datagen.output-dir=${project(":common").file("src/main/generated")}")
+            vmArg("-Dfabric-api.datagen.modid=${mod_id}")
+
+            runDir("build/datagen")
         }
     }
 }

@@ -2,7 +2,7 @@ package net.merchantpug.bovinesandbuttercups.registry;
 
 import dev.greenhouseteam.rdpr.api.ReloadableRegistryEvent;
 import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
-import net.merchantpug.bovinesandbuttercups.api.BovinesRegistryKeys;
+import net.merchantpug.bovinesandbuttercups.api.BovinesResourceKeys;
 import net.merchantpug.bovinesandbuttercups.api.ConfiguredCowType;
 import net.merchantpug.bovinesandbuttercups.util.ReloadableRegistryUtil;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -19,7 +19,7 @@ public class BovinesRegistryEvents {
 
     @SubscribeEvent
     public static void createNewDataPackRegistry(DataPackRegistryEvent.NewRegistry event) {
-        event.dataPackRegistry(BovinesRegistryKeys.CONFIGURED_COW_TYPE, ConfiguredCowType.DIRECT_CODEC, ConfiguredCowType.DIRECT_CODEC);
+        event.dataPackRegistry(BovinesResourceKeys.CONFIGURED_COW_TYPE, ConfiguredCowType.DIRECT_CODEC, ConfiguredCowType.DIRECT_CODEC);
     }
 
     @SubscribeEvent

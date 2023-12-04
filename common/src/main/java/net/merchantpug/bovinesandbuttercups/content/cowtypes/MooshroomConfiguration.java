@@ -20,7 +20,7 @@ import net.minecraft.util.ExtraCodecs;
 import java.util.Optional;
 import java.util.function.Supplier;
 
-public record MooshroomConfiguration(Settings settings,
+public record MooshroomConfiguration(Settings<MooshroomConfiguration, CowType<MooshroomConfiguration>> settings,
                                      BlockReference<Holder<CustomMushroomType>> mushroom,
                                      Optional<BackGrassConfiguration> backGrass,
                                      boolean canEatFlowers,
@@ -29,7 +29,7 @@ public record MooshroomConfiguration(Settings settings,
     public static final Supplier<ConfiguredCowType<MooshroomConfiguration, CowType<MooshroomConfiguration>>> DEFAULT = () -> new ConfiguredCowType<>(BovinesCowTypes.MOOSHROOM_TYPE.value(), new MooshroomConfiguration(new Settings(Optional.empty(), Optional.empty(), 0, Optional.empty()), new BlockReference<>(Optional.empty(), Optional.empty(), Optional.of(Holder.direct(CustomMushroomType.MISSING))), Optional.of(new BackGrassConfiguration(BovinesAndButtercups.asResource("textures/entity/bovinesandbuttercups/mooshroom/mooshroom_mycelium.png"), false)), false, false));
 
     public static final MapCodec<MooshroomConfiguration> CODEC = RecordCodecBuilder.mapCodec(builder -> builder.group(
-            Settings.CODEC.forGetter(MooshroomConfiguration::settings),
+            Settings.codec(BovinesCowTypes.MOOSHROOM_TYPE).forGetter(MooshroomConfiguration::settings),
             BlockReference.createCodec(CustomMushroomType.CODEC, "custom_mushroom").fieldOf("mushroom").forGetter(MooshroomConfiguration::mushroom),
             ExtraCodecs.strictOptionalField(BackGrassConfiguration.codec(BovinesAndButtercups.asResource("textures/entity/bovinesandbuttercups/mooshroom/mooshroom_mycelium.png"), false), "back_grass").forGetter(MooshroomConfiguration::backGrass),
             Codec.BOOL.fieldOf("can_eat_flowers").forGetter(MooshroomConfiguration::canEatFlowers),

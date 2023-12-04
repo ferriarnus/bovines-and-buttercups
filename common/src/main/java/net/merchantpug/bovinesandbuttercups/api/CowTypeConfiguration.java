@@ -30,13 +30,15 @@ public interface CowTypeConfiguration {
      * @param thunderConverts    A list of weighted cow types that this cow will/have a chance to convert into upon being struck by lightning.
      *                           Can be Optional.empty() to keep the default thunder behavior.
      */
-    record Settings(Optional<ResourceLocation> cowTexture, Optional<HolderSet<Biome>> biomes, int naturalSpawnWeight, Optional<List<WeightedConfiguredCowType>> thunderConverts) {
-        public static final MapCodec<Settings> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-                ResourceLocation.CODEC.optionalFieldOf("texture_location").forGetter(Settings::cowTexture),
-                HolderSetCodec.create(Registries.BIOME, Biome.CODEC, false).optionalFieldOf("spawn_biomes").forGetter(Settings::biomes),
-                Codec.INT.optionalFieldOf("natural_spawn_weight", 0).forGetter(Settings::naturalSpawnWeight),
-                Codec.list(WeightedConfiguredCowType.CODEC).optionalFieldOf("thunder_conversion_types").forGetter(Settings::thunderConverts)
-        ).apply(instance, Settings::new));
+    record Settings<CTC extends CowTypeConfiguration, CT extends CowType<CTC>>(Optional<ResourceLocation> cowTexture, Optional<HolderSet<Biome>> biomes, int naturalSpawnWeight, Optional<List<WeightedConfiguredCowType<CTC, CT>>> thunderConverts) {
+        public static <CTC extends CowTypeConfiguration, CT extends CowType<CTC>> MapCodec<Settings<CTC, CT>> codec(Holder<CT> cowType) {
+            return RecordCodecBuilder.mapCodec(instance -> instance.group(
+                    ResourceLocation.CODEC.optionalFieldOf("texture_location").forGetter(Settings::cowTexture),
+                    HolderSetCodec.create(Registries.BIOME, Biome.CODEC, false).optionalFieldOf("spawn_biomes").forGetter(Settings::biomes),
+                    Codec.INT.optionalFieldOf("natural_spawn_weight", 0).forGetter(Settings::naturalSpawnWeight),
+                    Codec.list(WeightedConfiguredCowType.codec(cowType)).optionalFieldOf("thunder_conversion_types").forGetter(Settings::thunderConverts)
+            ).apply(instance, Settings::new));
+        }
     }
 
     /**
@@ -45,13 +47,17 @@ public interface CowTypeConfiguration {
      * @param configuredCowType A {@link Holder} that should contain a configured cow type.
      * @param weight            The weight of this WeightedConfiguredCowType.
      */
-    record WeightedConfiguredCowType(Holder<ConfiguredCowType<?, ?>> configuredCowType, int weight) {
-        public static final Codec<WeightedConfiguredCowType> DIRECT_CODEC = RecordCodecBuilder.create(builder -> builder.group(
-                ConfiguredCowType.CODEC.fieldOf("type").forGetter(WeightedConfiguredCowType::configuredCowType),
-                Codec.INT.optionalFieldOf("weight", 1).forGetter(WeightedConfiguredCowType::weight)
-        ).apply(builder, WeightedConfiguredCowType::new));
+    record WeightedConfiguredCowType<CTC extends CowTypeConfiguration, CT extends CowType<CTC>>(Holder<ConfiguredCowType<CTC, CT>> configuredCowType, int weight) {
+        public static <CTC extends CowTypeConfiguration, CT extends CowType<CTC>> Codec<WeightedConfiguredCowType<CTC, CT>> directCodec(Holder<CT> cowType) {
+            return RecordCodecBuilder.create(builder -> builder.group(
+                    ConfiguredCowType.filteredCodec(cowType).fieldOf("type").forGetter(WeightedConfiguredCowType::configuredCowType),
+                    Codec.INT.optionalFieldOf("weight", 1).forGetter(WeightedConfiguredCowType::weight)
+            ).apply(builder, WeightedConfiguredCowType::new));
+        }
 
-        public static final Codec<WeightedConfiguredCowType> CODEC = Codec.either(DIRECT_CODEC, ConfiguredCowType.CODEC)
-                .xmap(either -> either.map(o -> o, type -> new WeightedConfiguredCowType(type, 1)), Either::left);
+        public static <CTC extends CowTypeConfiguration, CT extends CowType<CTC>> Codec<WeightedConfiguredCowType<CTC, CT>> codec(Holder<CT> cowType) {
+            return Codec.either(directCodec(cowType), ConfiguredCowType.filteredCodec(cowType))
+                    .xmap(either -> either.map(o -> o, type -> new WeightedConfiguredCowType<>(type, 1)), Either::left);
+        }
     }
 }

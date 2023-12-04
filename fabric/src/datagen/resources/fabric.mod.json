@@ -2,7 +2,7 @@
     "schemaVersion": 1,
     "id": "${mod_id}",
     "version": "${version}",
-    "name": "Bovines and Buttercups",
+    "name": "Bovines and Buttercups Datagen",
     "description": "A fresh, new take on the 2020 Mob Vote's Moobloom.",
     "authors": [
         "Greenhouse Team",
@@ -17,30 +17,15 @@
         "sources": "https://github.com/MerchantPug/bovines-and-buttercups"
     },
     "license": "${license}",
-    "icon": "assets/bovinesandbuttercups/icon.png",
     "environment": "*",
     "entrypoints": {
         "main": [
             "net.merchantpug.bovinesandbuttercups.BovinesAndButtercupsFabric"
         ],
-        "rdpr": [
-            "net.merchantpug.bovinesandbuttercups.registry.BovinesReloadableRegistryPlugin"
-        ],
         "fabric-datagen": [
-            "net.merchantpug.bovinesandbuttercups.datagen.BovinesDataGen"
+            "net.merchantpug.bovinesandbuttercups.datagen.BovinesAndButtercupsDataGen"
         ]
     },
-    "custom": {
-        "cardinal-components": [
-            "bovinesandbuttercups:lockdown",
-            "bovinesandbuttercups:moobloom_target",
-            "bovinesandbuttercups:mooshroom_type"
-        ]
-    },
-    "mixins": [
-        "bovinesandbuttercups.mixins.json",
-        "bovinesandbuttercups.fabric.mixins.json"
-    ],
     "depends": {
         "fabricloader": ">=0.15",
         "fabric-api": "*",

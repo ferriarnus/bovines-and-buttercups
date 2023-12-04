@@ -19,7 +19,7 @@ import net.minecraft.world.effect.MobEffectInstance;
 import java.util.Optional;
 import java.util.function.Supplier;
 
-public record MoobloomConfiguration(Settings settings,
+public record MoobloomConfiguration(Settings<MoobloomConfiguration, CowType<MoobloomConfiguration>> settings,
                                     BlockReference<Holder<CustomFlowerType>> flower,
                                     BlockReference<Holder<CustomFlowerType>> bud,
                                     Optional<BackGrassConfiguration> backGrass,
@@ -29,7 +29,7 @@ public record MoobloomConfiguration(Settings settings,
     public static final Supplier<ConfiguredCowType<MoobloomConfiguration, CowType<MoobloomConfiguration>>> DEFAULT = () -> new ConfiguredCowType<>(BovinesCowTypes.MOOBLOOM_TYPE.value(), new MoobloomConfiguration(new CowTypeConfiguration.Settings(Optional.empty(), Optional.empty(), 0, Optional.empty()), new BlockReference<>(Optional.empty(), Optional.empty(), Optional.of(Holder.direct(CustomFlowerType.MISSING))), new BlockReference<>(Optional.empty(), Optional.empty(), Optional.of(Holder.direct(CustomFlowerType.MISSING))), Optional.of(new BackGrassConfiguration(BovinesAndButtercups.asResource("textures/entity/bovinesandbuttercups/moobloom/moobloom_grass.png"), true)), Optional.empty(), Optional.empty()));
 
     public static final MapCodec<MoobloomConfiguration> CODEC = RecordCodecBuilder.mapCodec(builder -> builder.group(
-            Settings.CODEC.forGetter(MoobloomConfiguration::settings),
+            Settings.codec(BovinesCowTypes.MOOBLOOM_TYPE).forGetter(MoobloomConfiguration::settings),
             BlockReference.createCodec(CustomFlowerType.CODEC, "custom_flower").fieldOf("flower").forGetter(MoobloomConfiguration::flower),
             BlockReference.createCodec(CustomFlowerType.CODEC, "custom_flower").fieldOf("bud").forGetter(MoobloomConfiguration::bud),
             ExtraCodecs.strictOptionalField(BackGrassConfiguration.codec(BovinesAndButtercups.asResource("textures/entity/bovinesandbuttercups/moobloom/moobloom_grass.png"), true), "back_grass").forGetter(MoobloomConfiguration::backGrass),
