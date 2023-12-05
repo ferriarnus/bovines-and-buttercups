@@ -28,6 +28,8 @@ dependencies {
     compileOnly group:'org.spongepowered', name:'mixin', version:'0.8.5'
     implementation group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.1'
 
+    compileOnly "com.williambl.vampilang:lang:${vampilang_version}"
+    compileOnly "com.williambl.vampilang:stdlib:${vampilang_version}"
     compileOnly "com.williambl.dfunc:data-functions-common:${dfunc_version}"
     compileOnly "dev.greenhouseteam.rdpr:rdpr-common-mojmap:${rdpr_version}:api"
 

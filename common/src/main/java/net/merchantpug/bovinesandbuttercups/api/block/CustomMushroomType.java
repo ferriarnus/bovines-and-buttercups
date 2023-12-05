@@ -5,25 +5,26 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
 import net.merchantpug.bovinesandbuttercups.api.BovinesResourceKeys;
 import net.minecraft.core.Holder;
-import net.minecraft.core.HolderSet;
 import net.minecraft.core.RegistrySetBuilder;
-import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.HolderSetCodec;
 import net.minecraft.resources.RegistryFileCodec;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.world.level.levelgen.structure.Structure;
+import net.minecraft.util.ExtraCodecs;
+import net.minecraft.world.level.levelgen.structure.pools.StructureTemplatePool;
 import org.jetbrains.annotations.ApiStatus;
 
 import java.util.Objects;
+import java.util.Optional;
 
-public record CustomMushroomType(HolderSet<Structure> hugeMushroomStructureList) {
+public record CustomMushroomType(Optional<Holder<StructureTemplatePool>> hugeMushroomStructurePool,
+                                 boolean randomlyRotateHugeStructure) {
 
     public static final Codec<CustomMushroomType> DIRECT_CODEC = RecordCodecBuilder.create(builder -> builder.group(
-            HolderSetCodec.create(Registries.STRUCTURE, Structure.CODEC, true).optionalFieldOf("huge_structures", HolderSet.direct()).forGetter(CustomMushroomType::hugeMushroomStructureList)
+            ExtraCodecs.strictOptionalField(StructureTemplatePool.CODEC, "huge_structures").forGetter(CustomMushroomType::hugeMushroomStructurePool),
+            ExtraCodecs.strictOptionalField(Codec.BOOL, "randomly_rotate_huge_structure", false).forGetter(CustomMushroomType::randomlyRotateHugeStructure)
     ).apply(builder, CustomMushroomType::new));
 
     public static final Codec<Holder<CustomMushroomType>> CODEC = RegistryFileCodec.create(BovinesResourceKeys.CUSTOM_MUSHROOM_TYPE, DIRECT_CODEC);
-    public static final CustomMushroomType MISSING = new CustomMushroomType(HolderSet.direct());
+    public static final CustomMushroomType MISSING = new CustomMushroomType(Optional.empty(), false);
 
     @Override
     public boolean equals(final Object obj) {
@@ -33,12 +34,12 @@ public record CustomMushroomType(HolderSet<Structure> hugeMushroomStructureList)
         if (!(obj instanceof CustomMushroomType other))
             return false;
 
-        return other.hugeMushroomStructureList.equals(this.hugeMushroomStructureList);
+        return other.hugeMushroomStructurePool.equals(this.hugeMushroomStructurePool);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(this.hugeMushroomStructureList);
+        return Objects.hash(this.hugeMushroomStructurePool);
     }
 
     @ApiStatus.Internal

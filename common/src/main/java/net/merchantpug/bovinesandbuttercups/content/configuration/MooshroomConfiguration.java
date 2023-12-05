@@ -1,4 +1,4 @@
-package net.merchantpug.bovinesandbuttercups.content.cowtypes;
+package net.merchantpug.bovinesandbuttercups.content.configuration;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
@@ -8,13 +8,10 @@ import net.merchantpug.bovinesandbuttercups.api.ConfiguredCowType;
 import net.merchantpug.bovinesandbuttercups.api.CowType;
 import net.merchantpug.bovinesandbuttercups.api.CowTypeConfiguration;
 import net.merchantpug.bovinesandbuttercups.api.block.BlockReference;
-import net.merchantpug.bovinesandbuttercups.api.block.CustomFlowerType;
 import net.merchantpug.bovinesandbuttercups.api.block.CustomMushroomType;
-import net.merchantpug.bovinesandbuttercups.api.codec.BovinesCodecs;
 import net.merchantpug.bovinesandbuttercups.api.cowtypes.BackGrassConfiguration;
 import net.merchantpug.bovinesandbuttercups.registry.BovinesCowTypes;
 import net.minecraft.core.Holder;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.ExtraCodecs;
 
 import java.util.Optional;

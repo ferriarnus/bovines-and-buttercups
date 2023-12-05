@@ -3,9 +3,11 @@ package net.merchantpug.bovinesandbuttercups.platform.services;
 import net.merchantpug.bovinesandbuttercups.platform.ServiceUtil;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.level.block.Block;
+
+import java.util.Map;
 
 public interface IBovinesPlatformHelper {
-
     IBovinesPlatformHelper INSTANCE = ServiceUtil.load(IBovinesPlatformHelper.class);
 
     /**
@@ -46,5 +48,12 @@ public interface IBovinesPlatformHelper {
      * @return The created registry.
      */
     <T> Registry<T> createRegistry(ResourceKey<Registry<T>> registryKey);
+
+    /**
+     * Gets the potted block map.
+     *
+     * @return The potted block map.
+     */
+    Map<Block, Block> getPottedBlockMap();
 
 }

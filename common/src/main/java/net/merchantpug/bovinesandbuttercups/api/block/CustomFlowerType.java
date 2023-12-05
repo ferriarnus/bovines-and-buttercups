@@ -12,16 +12,17 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.SuspiciousEffectHolder;
 import org.jetbrains.annotations.ApiStatus;
 
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-public record CustomFlowerType(List<MobEffectInstance> stewEffectInstances, Optional<ItemStack> dyeCraftResult) {
+public record CustomFlowerType(List<SuspiciousEffectHolder.EffectEntry> stewEffectInstances, Optional<ItemStack> dyeCraftResult) {
 
     public static final Codec<CustomFlowerType> DIRECT_CODEC = RecordCodecBuilder.create(builder -> builder.group(
-            ExtraCodecs.catchDecoderException(BovinesCodecs.singleOrListCodec(BovinesCodecs.MOB_EFFECT_INSTANCE)).optionalFieldOf("stew_effect", List.of()).forGetter(CustomFlowerType::stewEffectInstances),
+            ExtraCodecs.catchDecoderException(SuspiciousEffectHolder.EffectEntry.LIST_CODEC).optionalFieldOf("stew_effect", List.of()).forGetter(CustomFlowerType::stewEffectInstances),
             ItemStack.CODEC.optionalFieldOf("dye_craft_result").forGetter(CustomFlowerType::dyeCraftResult)
     ).apply(builder, CustomFlowerType::new));
 

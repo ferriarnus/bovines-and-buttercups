@@ -3,8 +3,6 @@ package net.merchantpug.bovinesandbuttercups.api;
 import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
 import net.merchantpug.bovinesandbuttercups.api.block.CustomFlowerType;
 import net.merchantpug.bovinesandbuttercups.api.block.CustomMushroomType;
-import net.merchantpug.bovinesandbuttercups.content.cowtypes.MoobloomConfiguration;
-import net.merchantpug.bovinesandbuttercups.registry.BovinesRegistries;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 

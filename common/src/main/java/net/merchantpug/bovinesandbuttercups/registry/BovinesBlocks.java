@@ -1,6 +1,11 @@
 package net.merchantpug.bovinesandbuttercups.registry;
 
 import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
+import net.merchantpug.bovinesandbuttercups.content.block.CustomFlowerBlock;
+import net.merchantpug.bovinesandbuttercups.content.block.CustomFlowerPotBlock;
+import net.merchantpug.bovinesandbuttercups.content.block.CustomHugeMushroomBlock;
+import net.merchantpug.bovinesandbuttercups.content.block.CustomMushroomBlock;
+import net.merchantpug.bovinesandbuttercups.content.block.CustomMushroomPotBlock;
 import net.merchantpug.bovinesandbuttercups.registry.internal.RegistrationProvider;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
@@ -36,6 +41,13 @@ public class BovinesBlocks {
     public static final Holder<FlowerPotBlock> POTTED_TROPICAL_BLUE = register("potted_tropical_blue", () -> new FlowerPotBlock(TROPICAL_BLUE.value(), BlockBehaviour.Properties.of().instabreak().noOcclusion()));
     public static final Holder<FlowerPotBlock> POTTED_FREESIA = register("potted_freesia", () -> new FlowerPotBlock(FREESIA.value(), BlockBehaviour.Properties.of().instabreak().noOcclusion()));
 
+
+    public static final Holder<CustomFlowerBlock> CUSTOM_FLOWER = register("custom_flower", () -> new CustomFlowerBlock(BlockBehaviour.Properties.of().noCollission().instabreak().sound(SoundType.GRASS).offsetType(BlockBehaviour.OffsetType.XZ)));
+    public static final Holder<CustomFlowerPotBlock> POTTED_CUSTOM_FLOWER = register("potted_custom_flower", () -> new CustomFlowerPotBlock(BlockBehaviour.Properties.of().instabreak().noOcclusion()));
+
+    public static final Holder<CustomMushroomBlock> CUSTOM_MUSHROOM = register("custom_mushroom", () -> new CustomMushroomBlock(BlockBehaviour.Properties.of().noCollission().randomTicks().instabreak().sound(SoundType.GRASS).lightLevel((value) -> 1)));
+    public static final Holder<CustomHugeMushroomBlock> CUSTOM_MUSHROOM_BLOCK = register("custom_mushroom_block", () -> new CustomHugeMushroomBlock(BlockBehaviour.Properties.of().strength(0.2F).sound(SoundType.WOOD)));
+    public static final Holder<CustomMushroomPotBlock> POTTED_CUSTOM_MUSHROOM = register("potted_custom_mushroom", () -> new CustomMushroomPotBlock(BlockBehaviour.Properties.of().instabreak().noOcclusion()));
 
     public static void init() {
 
