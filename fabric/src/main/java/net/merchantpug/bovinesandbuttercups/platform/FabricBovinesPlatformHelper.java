@@ -6,6 +6,10 @@ import net.merchantpug.bovinesandbuttercups.platform.services.IBovinesPlatformHe
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.FlowerPotBlock;
+
+import java.util.Map;
 
 @AutoService(IBovinesPlatformHelper.class)
 public class FabricBovinesPlatformHelper implements IBovinesPlatformHelper {
@@ -30,6 +34,11 @@ public class FabricBovinesPlatformHelper implements IBovinesPlatformHelper {
     @Override
     public <T> Registry<T> createRegistry(ResourceKey<Registry<T>> registryKey) {
         return FabricRegistryBuilder.createSimple(registryKey).buildAndRegister();
+    }
+
+    @Override
+    public Map<Block, Block> getPottedBlockMap() {
+        return FlowerPotBlock.POTTED_BY_CONTENT;
     }
 
 }
