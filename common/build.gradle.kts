@@ -6,19 +6,19 @@ plugins {
     id("org.spongepowered.gradle.vanilla") version "0.2.1-SNAPSHOT"
 }
 
-minecraft {
-    version(Versions.INTERNAL_MINECRAFT)
-    val aw = file("src/main/resources/${Properties.MOD_ID}.accesswidener")
-    if (aw.exists())
-        accessWideners(aw)
-}
-
 sourceSets {
     create("generated") {
         resources {
             srcDir("src/generated/resources")
         }
     }
+}
+
+minecraft {
+    version(Versions.INTERNAL_MINECRAFT)
+    val aw = file("src/main/resources/${Properties.MOD_ID}.accesswidener")
+    if (aw.exists())
+        accessWideners(aw)
 }
 
 dependencies {
