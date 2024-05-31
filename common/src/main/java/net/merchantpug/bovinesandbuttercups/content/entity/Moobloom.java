@@ -2,7 +2,6 @@ package net.merchantpug.bovinesandbuttercups.content.entity;
 
 import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
 import net.merchantpug.bovinesandbuttercups.api.CowType;
-import net.merchantpug.bovinesandbuttercups.api.CowTypeConfiguration;
 import net.merchantpug.bovinesandbuttercups.api.cowtype.OffspringConditionsConfiguration;
 import net.merchantpug.bovinesandbuttercups.content.block.entity.CustomFlowerBlockEntity;
 import net.merchantpug.bovinesandbuttercups.content.component.ItemCustomFlower;
@@ -18,6 +17,7 @@ import net.merchantpug.bovinesandbuttercups.registry.BovinesDataComponents;
 import net.merchantpug.bovinesandbuttercups.registry.BovinesEntityTypes;
 import net.merchantpug.bovinesandbuttercups.registry.BovinesItems;
 import net.merchantpug.bovinesandbuttercups.registry.BovinesLootContextParamSets;
+import net.merchantpug.bovinesandbuttercups.registry.BovinesLootContextParams;
 import net.merchantpug.bovinesandbuttercups.registry.BovinesRegistryKeys;
 import net.merchantpug.bovinesandbuttercups.registry.BovinesSoundEvents;
 import net.minecraft.core.BlockPos;
@@ -75,7 +75,9 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.EnumSet;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -90,7 +92,7 @@ public class Moobloom extends Cow {
     public Bee bee;
     private boolean hasRefreshedDimensionsForLaying;
     @Nullable private UUID lastLightningBoltUUID;
-    private final List<Vec3> particlePositions = new ArrayList<>();
+    private final Map<Holder<CowType<?>>, List<Vec3>> particlePositions = new HashMap<>();
 
     public Moobloom(EntityType<? extends Moobloom> entityType, Level level) {
         super(entityType, level);
@@ -161,25 +163,19 @@ public class Moobloom extends Cow {
                 }
                 setPreviousTypeId(getTypeId());
 
-                List<CowTypeConfiguration.WeightedCowType> compatibleList = new ArrayList<>();
+                List<WeightedEntry.Wrapper<Holder<CowType<MoobloomConfiguration>>>> compatibleList = getMoobloomType().value().configuration().settings().filterThunderConverts(BovinesCowTypeTypes.MOOBLOOM_TYPE);
                 int totalWeight = 0;
-
-                for (CowTypeConfiguration.WeightedCowType weightedCowType : getMoobloomType().value().configuration().settings().thunderConverts()) {
-                    if (weightedCowType.weight() > 0) {
-                        compatibleList.add(weightedCowType);
-                    }
-                }
 
                 if (compatibleList.isEmpty()) {
                     super.thunderHit(level, bolt);
                     return;
                 } else if (compatibleList.size() == 1) {
-                    setFlowerType((Holder)compatibleList.getFirst().cowType(), level);
+                    setFlowerType(compatibleList.getFirst().data(), level);
                 } else {
-                    for (CowTypeConfiguration.WeightedCowType cct : compatibleList) {
-                        totalWeight -= cct.weight();
+                    for (WeightedEntry.Wrapper<Holder<CowType<MoobloomConfiguration>>> cct : compatibleList) {
+                        totalWeight -= cct.weight().asInt();
                         if (totalWeight <= 0) {
-                            setFlowerType((Holder)cct.cowType(), level);
+                            setFlowerType(cct.data(), level);
                             break;
                         }
                     }
@@ -322,37 +318,40 @@ public class Moobloom extends Cow {
         List<Holder<CowType<MoobloomConfiguration>>> eligibleCowTypes = new ArrayList<>();
 
         for (Holder.Reference<CowType<?>> cowType : level.registryAccess().registry(BovinesRegistryKeys.COW_TYPE).orElseThrow().holders().filter(type -> type.isBound() && type.value().type() == BovinesCowTypeTypes.MOOBLOOM_TYPE).toList()) {
-            Holder.Reference<CowType<MoobloomConfiguration>> flowerCowType = (Holder.Reference) cowType;
-            if (flowerCowType.value().configuration().offspringConditions() == OffspringConditionsConfiguration.EMPTY) continue;
-            var conditions = flowerCowType.value().configuration().offspringConditions();
+            Holder.Reference<CowType<MoobloomConfiguration>> moobloomType = (Holder.Reference) cowType;
+            if (moobloomType.value().configuration().offspringConditions() == OffspringConditionsConfiguration.EMPTY) continue;
+            var conditions = moobloomType.value().configuration().offspringConditions();
 
             LootParams.Builder params = new LootParams.Builder(level);
             params.withParameter(LootContextParams.THIS_ENTITY, this);
-            params.withParameter(BovinesLootContextParamSets.PARTNER, otherParent);
-            params.withParameter(BovinesLootContextParamSets.CHILD, child);
-            params.withParameter(LootContextParams.ORIGIN, child.position());
+            params.withParameter(BovinesLootContextParams.PARTNER, otherParent);
+            params.withParameter(BovinesLootContextParams.CHILD, child);
+            params.withParameter(LootContextParams.ORIGIN, this.position());
+            params.withParameter(BovinesLootContextParams.BREEDING_TYPE, cowType);
 
             LootContext thisContext = new LootContext.Builder(params.create(BovinesLootContextParamSets.BREEDING)).create(Optional.empty());
 
             params.withParameter(LootContextParams.THIS_ENTITY, otherParent);
-            params.withParameter(BovinesLootContextParamSets.PARTNER, this);
+            params.withParameter(BovinesLootContextParams.PARTNER, this);
             LootContext otherContext = new LootContext.Builder(params.create(BovinesLootContextParamSets.BREEDING)).create(Optional.empty());
 
             if (conditions.thisConditions().stream().allMatch(condition -> condition.test(thisContext))
             && conditions.otherConditions().stream().allMatch(condition -> condition.test(otherContext)))
-                eligibleCowTypes.add(flowerCowType);
+                eligibleCowTypes.add(moobloomType);
         }
 
         if (!eligibleCowTypes.isEmpty()) {
             int random = this.getRandom().nextInt(eligibleCowTypes.size());
             var randomType = eligibleCowTypes.get(random);
 
-            child.createParticles();
+            child.createParticles(randomType, this.position());
 
             if (this.getLoveCause() != null)
                 BovinesCriteriaTriggers.MUTATION.trigger(this.getLoveCause(), this, otherParent, child, (Holder) randomType);
             return randomType;
         }
+
+        child.particlePositions.clear();
 
         if (!otherParent.getMoobloomType().equals(this.getMoobloomType()) && this.getRandom().nextBoolean())
             return otherParent.getMoobloomType();
@@ -360,35 +359,34 @@ public class Moobloom extends Cow {
         return this.getMoobloomType();
     }
 
-    public void addParticlePosition(Vec3 pos) {
-        particlePositions.add(pos);
+    public void addParticlePosition(Holder<CowType<?>> type, Vec3 pos) {
+        particlePositions.computeIfAbsent(type, holder -> new ArrayList<>()).add(pos);
     }
 
-    public void createParticles() {
-        if (!getMoobloomType().isBound() || getMoobloomType().value().configuration().settings().particle().isEmpty())
+    public void createParticles(Holder<CowType<MoobloomConfiguration>> type, Vec3 parentPos) {
+        if (!type.isBound() || type.value().configuration().settings().particle().isEmpty())
             return;
 
         if (particlePositions.isEmpty() && !level().isClientSide())
-            ((ServerLevel)this.level()).sendParticles(getMoobloomType().value().configuration().settings().particle().get(), getX(), getY(0.5), getZ(), 6, 0.05, 0.05, 0.05, 0.01);
+            ((ServerLevel)this.level()).sendParticles(type.value().configuration().settings().particle().get(), getX(), getY(0.5), getZ(), 6, 0.05, 0.05, 0.05, 0.01);
 
-        for (Vec3 pos : particlePositions)
-            createParticleTrail(pos, getMoobloomType().value().configuration().settings().particle().get());
+        for (Vec3 pos : particlePositions.get(type))
+            createParticleTrail(pos, parentPos, type.value().configuration().settings().particle().get());
 
         particlePositions.clear();
     }
 
-    public void createParticleTrail(Vec3 pos, ParticleOptions options) {
-        double value = (1 - (1 / (pos.distanceTo(position()) + 1))) / 4;
+    public void createParticleTrail(Vec3 pos, Vec3 parentPos, ParticleOptions options) {
+        double value = (1 - (1 / (pos.distanceTo(this.position()) + 1))) / 4;
 
-        for (double d = 0.0; d < 1.0; d += value) {
-            ((ServerLevel)level()).sendParticles(options, Mth.lerp(d, pos.x(), position().x()), Mth.lerp(d, pos.y(), position().y()), Mth.lerp(d, pos.z(), position().z()), 1, 0.05, 0.05,  0.05, 0.01);
-        }
+        for (double d = 0.0; d < 1.0; d += value)
+            ((ServerLevel)level()).sendParticles(options, Mth.lerp(d, pos.x(), parentPos.x()), Mth.lerp(d, pos.y(), parentPos.y()), Mth.lerp(d, pos.z(), parentPos.z()), 1, 0.05, 0.05,  0.05, 0.01);
     }
 
     @Override
-    public Moobloom getBreedOffspring(ServerLevel serverLevel, AgeableMob ageableMob) {
-        Moobloom moobloom = BovinesEntityTypes.MOOBLOOM.create(serverLevel);
-        moobloom.setFlowerType(chooseBabyType(serverLevel, (Moobloom)ageableMob, moobloom), serverLevel);
+    public Moobloom getBreedOffspring(ServerLevel level, AgeableMob otherParent) {
+        Moobloom moobloom = BovinesEntityTypes.MOOBLOOM.create(level);
+        moobloom.setFlowerType(chooseBabyType(level, (Moobloom)otherParent, moobloom), level);
         return moobloom;
     }
 

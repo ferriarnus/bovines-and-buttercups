@@ -1,6 +1,8 @@
 {
   "type": "bovinesandbuttercups:moobloom",
-  "back_grass": {},
+  "back_grass": {
+    "texture_location": "bovinesandbuttercups:textures/entity/bovinesandbuttercups/moobloom/moobloom_grass.png"
+  },
   "bud": {
     "model_location": "bovinesandbuttercups:bovinesandbuttercups/bird_of_paradise_bud"
   },

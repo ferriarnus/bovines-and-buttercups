@@ -1,5 +1,6 @@
 package net.merchantpug.bovinesandbuttercups.api.codec;
 
+import com.mojang.datafixers.util.Either;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.util.random.Weight;
@@ -17,9 +18,17 @@ public class BovinesCodecs {
     ).apply(inst, AABB::new));
 
     public static <T> Codec<WeightedEntry.Wrapper<T>> wrapperCodec(Codec<T> codec, String fieldName) {
-        return RecordCodecBuilder.create(inst -> inst.group(
+        Codec<WeightedEntry.Wrapper<T>> direct = RecordCodecBuilder.create(inst -> inst.group(
                 codec.fieldOf(fieldName).forGetter(WeightedEntry.Wrapper::data),
                 Weight.CODEC.optionalFieldOf("weight", Weight.of(1)).forGetter(WeightedEntry.Wrapper::weight)
         ).apply(inst, WeightedEntry.Wrapper::new));
+
+        return Codec.either(codec, direct)
+                .xmap(either -> either.map(t -> new WeightedEntry.Wrapper<>(t, Weight.of(1)), weighted -> weighted),
+                wrapper -> {
+                    if (wrapper.weight().asInt() == 1)
+                        return Either.left(wrapper.data());
+                    return Either.right(wrapper);
+                });
     }
 }

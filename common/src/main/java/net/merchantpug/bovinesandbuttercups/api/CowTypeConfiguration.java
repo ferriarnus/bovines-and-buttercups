@@ -4,13 +4,18 @@ import com.mojang.datafixers.util.Either;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
 import net.merchantpug.bovinesandbuttercups.api.codec.BovinesCodecs;
+import net.merchantpug.bovinesandbuttercups.registry.BovinesBlocks;
+import net.merchantpug.bovinesandbuttercups.registry.BovinesRegistries;
+import net.merchantpug.bovinesandbuttercups.registry.BovinesRegistryKeys;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderSet;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.HolderSetCodec;
+import net.minecraft.resources.RegistryFixedCodec;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.random.WeightedEntry;
@@ -35,29 +40,22 @@ public interface CowTypeConfiguration {
      */
     record Settings(Optional<ResourceLocation> cowTexture,
                     List<WeightedEntry.Wrapper<HolderSet<Biome>>> biomes,
-                    List<WeightedCowType> thunderConverts,
+                    List<WeightedEntry.Wrapper<Holder<CowType<?>>>> thunderConverts,
                     Optional<ParticleOptions> particle) {
         public static final MapCodec<Settings> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
                 ResourceLocation.CODEC.optionalFieldOf("texture_location").forGetter(Settings::cowTexture),
                 BovinesCodecs.wrapperCodec(HolderSetCodec.create(Registries.BIOME, Biome.CODEC, false), "biomes").listOf().fieldOf("natural_spawns").forGetter(Settings::biomes),
-                WeightedCowType.CODEC.listOf().optionalFieldOf("thunder_conversion_types", List.of()).forGetter(Settings::thunderConverts),
+                BovinesCodecs.wrapperCodec(RegistryFixedCodec.create(BovinesRegistryKeys.COW_TYPE), "type").listOf().optionalFieldOf("thunder_conversion_types", List.of()).forGetter(Settings::thunderConverts),
                 ParticleTypes.CODEC.optionalFieldOf("particle").forGetter(Settings::particle)
         ).apply(instance, Settings::new));
-    }
 
-    /**
-     * A reference to a {@link CowTypeType}, as well as an integer weight. Used for weight based random chance selection.
-     *
-     * @param cowType   A {@link Holder} that should contain a configured cow type.
-     * @param weight    The weight of this WeightedConfiguredCowType.
-     */
-    record WeightedCowType(Holder<CowType<?>> cowType, int weight) {
-        public static final Codec<WeightedCowType> DIRECT_CODEC =RecordCodecBuilder.create(builder -> builder.group(
-                CowType.CODEC.fieldOf("type").forGetter(WeightedCowType::cowType),
-                    Codec.INT.optionalFieldOf("weight", 1).forGetter(WeightedCowType::weight)
-            ).apply(builder, WeightedCowType::new));
-
-        public static final Codec<WeightedCowType> CODEC = Codec.either(DIRECT_CODEC, CowType.CODEC)
-                .xmap(either -> either.map(o -> o, type -> new WeightedCowType(type, 1)), Either::left);;
+        public <C extends CowTypeConfiguration, T extends CowTypeType<C>> List<WeightedEntry.Wrapper<Holder<CowType<C>>>> filterThunderConverts(T type) {
+            return (List)thunderConverts.stream().filter(holderWrapper -> {
+                boolean bl = holderWrapper.data().isBound() && holderWrapper.data().value().type() == type;
+                if (!bl)
+                    BovinesAndButtercups.LOG.error("Attempted to add CowType '{}', which does not have CowTypeType '{}' to thunder conversion list.", holderWrapper.data().unwrapKey().map(key -> key.location()).orElse(null), BovinesRegistries.COW_TYPE_TYPE.getKey(type));
+                return bl;
+            }).toList();
+        }
     }
 }

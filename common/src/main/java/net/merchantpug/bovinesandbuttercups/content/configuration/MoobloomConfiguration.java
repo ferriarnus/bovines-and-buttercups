@@ -23,13 +23,13 @@ public record MoobloomConfiguration(Settings settings,
                                     NectarEffects nectarEffects,
                                     OffspringConditionsConfiguration offspringConditions) implements CowTypeConfiguration {
 
-    public static final MoobloomConfiguration DEFAULT = new MoobloomConfiguration(new CowTypeConfiguration.Settings(Optional.empty(), List.of(), List.of(), Optional.empty()), new BlockReference<>(Optional.empty(), Optional.empty(), Optional.of(Holder.direct(CustomFlowerType.MISSING))), new BlockReference<>(Optional.empty(), Optional.empty(), Optional.of(Holder.direct(CustomFlowerType.MISSING))), Optional.of(new BackGrassConfiguration(BovinesAndButtercups.asResource("textures/entity/bovinesandbuttercups/moobloom/moobloom_grass.png"), true)), Optional.empty(), NectarEffects.EMPTY, OffspringConditionsConfiguration.EMPTY);
+    public static final MoobloomConfiguration DEFAULT = new MoobloomConfiguration(new CowTypeConfiguration.Settings(Optional.empty(), List.of(), List.of(), Optional.empty()), new BlockReference<>(Optional.empty(), Optional.empty(), Optional.of(Holder.direct(CustomFlowerType.MISSING))), new BlockReference<>(Optional.empty(), Optional.empty(), Optional.of(Holder.direct(CustomFlowerType.MISSING))), Optional.of(new BackGrassConfiguration(BovinesAndButtercups.asResource("bovinesandbuttercups/moobloom/moobloom_grass"), true)), Optional.empty(), NectarEffects.EMPTY, OffspringConditionsConfiguration.EMPTY);
 
     public static final MapCodec<MoobloomConfiguration> CODEC = RecordCodecBuilder.mapCodec(builder -> builder.group(
             Settings.CODEC.forGetter(MoobloomConfiguration::settings),
             BlockReference.createCodec(CustomFlowerType.CODEC, "custom_flower").fieldOf("flower").forGetter(MoobloomConfiguration::flower),
             BlockReference.createCodec(CustomFlowerType.CODEC, "custom_flower").fieldOf("bud").forGetter(MoobloomConfiguration::bud),
-            BackGrassConfiguration.codec(BovinesAndButtercups.asResource("textures/entity/bovinesandbuttercups/moobloom/moobloom_grass.png"), true).optionalFieldOf("back_grass").forGetter(MoobloomConfiguration::backGrass),
+            BackGrassConfiguration.codec(BovinesAndButtercups.asResource("bovinesandbuttercups/moobloom/moobloom_grass"), true).optionalFieldOf("back_grass").forGetter(MoobloomConfiguration::backGrass),
             ResourceLocation.CODEC.optionalFieldOf("nectar_palette").forGetter(MoobloomConfiguration::nectarPalette),
             NectarEffects.CODEC.optionalFieldOf("nectar_effects", NectarEffects.EMPTY).forGetter(MoobloomConfiguration::nectarEffects),
             OffspringConditionsConfiguration.CODEC.optionalFieldOf("offspring_conditions", OffspringConditionsConfiguration.EMPTY).forGetter(MoobloomConfiguration::offspringConditions)

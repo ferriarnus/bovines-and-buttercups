@@ -1,8 +1,6 @@
 {
   "type": "bovinesandbuttercups:moobloom",
-  "back_grass": {
-    "texture_location": "bovinesandbuttercups:bovinesandbuttercups/moobloom/moobloom_grass"
-  },
+  "back_grass": {},
   "bud": {
     "model_location": "bovinesandbuttercups:bovinesandbuttercups/bird_of_paradise_bud"
   },
@@ -31,26 +29,19 @@
                 "condition": "minecraft:any_of",
                 "terms": [
                   {
-                    "block": "minecraft:melon",
+                    "block": {
+                      "blocks": [
+                        "minecraft:melon",
+                        "minecraft:melon_stem"
+                      ]
+                    },
                     "condition": "bovinesandbuttercups:block_in_radius",
                     "radius": {
                       "max_x": 6.0,
-                      "max_y": 8.0,
+                      "max_y": 1.0,
                       "max_z": 6.0,
                       "min_x": -6.0,
-                      "min_y": 2.0,
-                      "min_z": -6.0
-                    }
-                  },
-                  {
-                    "block": "minecraft:melon_stem",
-                    "condition": "bovinesandbuttercups:block_in_radius",
-                    "radius": {
-                      "max_x": 6.0,
-                      "max_y": 8.0,
-                      "max_z": 6.0,
-                      "min_x": -6.0,
-                      "min_y": 2.0,
+                      "min_y": -5.0,
                       "min_z": -6.0
                     }
                   }
@@ -60,26 +51,19 @@
                 "condition": "minecraft:any_of",
                 "terms": [
                   {
-                    "block": "minecraft:poppy",
+                    "block": {
+                      "blocks": [
+                        "minecraft:poppy",
+                        "minecraft:potted_poppy"
+                      ]
+                    },
                     "condition": "bovinesandbuttercups:block_in_radius",
                     "radius": {
                       "max_x": 6.0,
-                      "max_y": 8.0,
+                      "max_y": 1.0,
                       "max_z": 6.0,
                       "min_x": -6.0,
-                      "min_y": 2.0,
-                      "min_z": -6.0
-                    }
-                  },
-                  {
-                    "block": "minecraft:potted_poppy",
-                    "condition": "bovinesandbuttercups:block_in_radius",
-                    "radius": {
-                      "max_x": 6.0,
-                      "max_y": 8.0,
-                      "max_z": 6.0,
-                      "min_x": -6.0,
-                      "min_y": 2.0,
+                      "min_y": -5.0,
                       "min_z": -6.0
                     }
                   }
@@ -89,50 +73,21 @@
                 "condition": "minecraft:any_of",
                 "terms": [
                   {
-                    "block": "minecraft:acacia_log",
+                    "block": {
+                      "blocks": [
+                        "minecraft:acacia_log",
+                        "minecraft:acacia_wood",
+                        "minecraft:acacia_sapling",
+                        "minecraft:potted_acacia_sapling"
+                      ]
+                    },
                     "condition": "bovinesandbuttercups:block_in_radius",
                     "radius": {
                       "max_x": 6.0,
-                      "max_y": 8.0,
+                      "max_y": 1.0,
                       "max_z": 6.0,
                       "min_x": -6.0,
-                      "min_y": 2.0,
-                      "min_z": -6.0
-                    }
-                  },
-                  {
-                    "block": "minecraft:acacia_wood",
-                    "condition": "bovinesandbuttercups:block_in_radius",
-                    "radius": {
-                      "max_x": 6.0,
-                      "max_y": 8.0,
-                      "max_z": 6.0,
-                      "min_x": -6.0,
-                      "min_y": 2.0,
-                      "min_z": -6.0
-                    }
-                  },
-                  {
-                    "block": "minecraft:acacia_sapling",
-                    "condition": "bovinesandbuttercups:block_in_radius",
-                    "radius": {
-                      "max_x": 6.0,
-                      "max_y": 8.0,
-                      "max_z": 6.0,
-                      "min_x": -6.0,
-                      "min_y": 2.0,
-                      "min_z": -6.0
-                    }
-                  },
-                  {
-                    "block": "minecraft:potted_acacia_sapling",
-                    "condition": "bovinesandbuttercups:block_in_radius",
-                    "radius": {
-                      "max_x": 6.0,
-                      "max_y": 8.0,
-                      "max_z": 6.0,
-                      "min_x": -6.0,
-                      "min_y": 2.0,
+                      "min_y": -5.0,
                       "min_z": -6.0
                     }
                   }
@@ -141,33 +96,21 @@
             ]
           },
           {
-            "condition": "minecraft:any_of",
-            "terms": [
-              {
-                "block": "bovinesandbuttercups:bird_of_paradise",
-                "condition": "bovinesandbuttercups:block_in_radius",
-                "radius": {
-                  "max_x": 6.0,
-                  "max_y": 8.0,
-                  "max_z": 6.0,
-                  "min_x": -6.0,
-                  "min_y": 2.0,
-                  "min_z": -6.0
-                }
-              },
-              {
-                "block": "bovinesandbuttercups:potted_bird_of_paradise",
-                "condition": "bovinesandbuttercups:block_in_radius",
-                "radius": {
-                  "max_x": 6.0,
-                  "max_y": 8.0,
-                  "max_z": 6.0,
-                  "min_x": -6.0,
-                  "min_y": 2.0,
-                  "min_z": -6.0
-                }
-              }
-            ]
+            "block": {
+              "blocks": [
+                "bovinesandbuttercups:bird_of_paradise",
+                "bovinesandbuttercups:potted_bird_of_paradise"
+              ]
+            },
+            "condition": "bovinesandbuttercups:block_in_radius",
+            "radius": {
+              "max_x": 6.0,
+              "max_y": 1.0,
+              "max_z": 6.0,
+              "min_x": -6.0,
+              "min_y": -5.0,
+              "min_z": -6.0
+            }
           }
         ]
       }
@@ -178,8 +121,6 @@
     "color": 15041842
   },
   "thunder_conversion_types": [
-    {
-      "type": "bovinesandbuttercups:chargelily"
-    }
+    "bovinesandbuttercups:chargelily"
   ]
 }

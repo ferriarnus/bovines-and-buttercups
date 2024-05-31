@@ -16,9 +16,7 @@
   },
   "texture_location": "minecraft:cow/brown_mooshroom",
   "thunder_conversion_types": [
-    {
-      "type": "bovinesandbuttercups:brown_mushroom"
-    }
+    "bovinesandbuttercups:brown_mushroom"
   ],
   "vanilla_spawning_hack": true
 }

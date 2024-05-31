@@ -24,6 +24,7 @@ public record CustomFlowerType(SuspiciousStewEffects stewEffectInstances, Option
     ).apply(builder, CustomFlowerType::new));
 
     public static final Codec<Holder<CustomFlowerType>> CODEC = RegistryFileCodec.create(BovinesRegistryKeys.CUSTOM_FLOWER_TYPE, DIRECT_CODEC);
+    public static final ResourceKey<CustomFlowerType> MISSING_KEY = ResourceKey.create(BovinesRegistryKeys.CUSTOM_FLOWER_TYPE, BovinesAndButtercups.asResource("missing_flower"));
     public static final CustomFlowerType MISSING = new CustomFlowerType(SuspiciousStewEffects.EMPTY, Optional.empty());
 
     @Override

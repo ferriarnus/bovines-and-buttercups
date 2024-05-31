@@ -1,17 +1,13 @@
 package net.merchantpug.bovinesandbuttercups.content.predicate;
 
-import com.mojang.datafixers.util.Either;
-import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.merchantpug.bovinesandbuttercups.api.codec.BovinesCodecs;
 import net.merchantpug.bovinesandbuttercups.content.entity.Moobloom;
-import net.merchantpug.bovinesandbuttercups.registry.BovinesLootContextParamSets;
+import net.merchantpug.bovinesandbuttercups.registry.BovinesLootContextParams;
+import net.minecraft.advancements.critereon.BlockPredicate;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Holder;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
@@ -19,12 +15,13 @@ import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemConditionType;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.phys.shapes.VoxelShape;
 
-import java.util.Optional;
+import java.util.Comparator;
 
-public record BlockInRadiusCondition(Either<Holder<Block>, BlockState> blockOrState, AABB radius) implements LootItemCondition {
+public record BlockInRadiusCondition(BlockPredicate predicate, AABB radius) implements LootItemCondition {
     public static final MapCodec<BlockInRadiusCondition> CODEC = RecordCodecBuilder.mapCodec(inst -> inst.group(
-            Codec.either(BuiltInRegistries.BLOCK.holderByNameCodec(), BlockState.CODEC).fieldOf("block").forGetter(BlockInRadiusCondition::blockOrState),
+            BlockPredicate.CODEC.fieldOf("block").forGetter(BlockInRadiusCondition::predicate),
             BovinesCodecs.AABB.fieldOf("radius").forGetter(BlockInRadiusCondition::radius)
     ).apply(inst, BlockInRadiusCondition::new));
     public static final LootItemConditionType TYPE = new LootItemConditionType(CODEC);
@@ -33,13 +30,15 @@ public record BlockInRadiusCondition(Either<Holder<Block>, BlockState> blockOrSt
     public boolean test(LootContext context) {
         Vec3 origin = context.getParam(LootContextParams.ORIGIN);
         AABB aabb = radius.move(origin);
-        return BlockPos.betweenClosedStream(aabb).anyMatch(pos -> {
+        return BlockPos.betweenClosedStream(aabb).map(BlockPos::immutable).sorted(Comparator.comparing(pos -> origin.distanceTo(pos.getCenter()))).toList().stream().anyMatch(pos -> {
             BlockState state = context.getLevel().getBlockState(pos);
-            boolean bl = blockOrState.map(state::is, blockState -> blockState.getProperties().equals(state.getProperties()));
-            if (bl && context.hasParam(BovinesLootContextParamSets.CHILD)) {
-                Entity child = context.getParam(BovinesLootContextParamSets.CHILD);
-                if (child instanceof Moobloom moobloom)
-                    moobloom.addParticlePosition(state.getCollisionShape(context.getLevel(), pos).bounds().getCenter());
+            boolean bl = predicate.matches(context.getLevel(), pos);
+            if (bl && context.hasParam(BovinesLootContextParams.BREEDING_TYPE) && context.hasParam(BovinesLootContextParams.CHILD)) {
+                Entity child = context.getParam(BovinesLootContextParams.CHILD);
+                if (child instanceof Moobloom moobloom) {
+                    VoxelShape shape = state.getCollisionShape(context.getLevel(), pos);
+                    moobloom.addParticlePosition(context.getParam(BovinesLootContextParams.BREEDING_TYPE), shape.isEmpty() || state.isCollisionShapeFullBlock(context.getLevel(), pos) ? pos.getCenter() : shape.bounds().getCenter().add(Vec3.atLowerCornerOf(pos)));
+                }
             }
             return bl;
         });
@@ -51,20 +50,15 @@ public record BlockInRadiusCondition(Either<Holder<Block>, BlockState> blockOrSt
     }
 
     public static class Builder implements LootItemCondition.Builder {
-        private Either<Holder<Block>, BlockState> block;
+        private final BlockPredicate block;
         private AABB radius = AABB.ofSize(Vec3.ZERO, 0, 0, 0);
-        private Optional<Vec3> offset = Optional.empty();
 
-        public Builder(Either<Holder<Block>, BlockState> block) {
+        public Builder(BlockPredicate block) {
             this.block = block;
         }
 
-        public Builder(Holder<Block> block) {
-            this.block = Either.left(block);
-        }
-
-        public Builder(BlockState blockState) {
-            this.block = Either.right(blockState);
+        public Builder(BlockPredicate.Builder block) {
+            this.block = block.build();
         }
 
         public Builder withRadius(double xz, double y) {

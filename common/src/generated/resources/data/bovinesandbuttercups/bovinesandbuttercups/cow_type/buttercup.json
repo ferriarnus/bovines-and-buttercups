@@ -1,8 +1,6 @@
 {
   "type": "bovinesandbuttercups:moobloom",
-  "back_grass": {
-    "texture_location": "bovinesandbuttercups:bovinesandbuttercups/moobloom/moobloom_grass"
-  },
+  "back_grass": {},
   "bud": {
     "model_location": "bovinesandbuttercups:bovinesandbuttercups/buttercup_bud"
   },
@@ -37,18 +35,18 @@
                 "terms": [
                   {
                     "block": {
-                      "Name": "minecraft:sunflower",
-                      "Properties": {
+                      "blocks": "minecraft:sunflower",
+                      "state": {
                         "half": "upper"
                       }
                     },
                     "condition": "bovinesandbuttercups:block_in_radius",
                     "radius": {
                       "max_x": 6.0,
-                      "max_y": 8.0,
+                      "max_y": 1.0,
                       "max_z": 6.0,
                       "min_x": -6.0,
-                      "min_y": 2.0,
+                      "min_y": -5.0,
                       "min_z": -6.0
                     }
                   }
@@ -58,26 +56,19 @@
                 "condition": "minecraft:any_of",
                 "terms": [
                   {
-                    "block": "minecraft:dandelion",
+                    "block": {
+                      "blocks": [
+                        "minecraft:dandelion",
+                        "minecraft:potted_dandelion"
+                      ]
+                    },
                     "condition": "bovinesandbuttercups:block_in_radius",
                     "radius": {
                       "max_x": 6.0,
-                      "max_y": 8.0,
+                      "max_y": 1.0,
                       "max_z": 6.0,
                       "min_x": -6.0,
-                      "min_y": 2.0,
-                      "min_z": -6.0
-                    }
-                  },
-                  {
-                    "block": "minecraft:potted_dandelion",
-                    "condition": "bovinesandbuttercups:block_in_radius",
-                    "radius": {
-                      "max_x": 6.0,
-                      "max_y": 8.0,
-                      "max_z": 6.0,
-                      "min_x": -6.0,
-                      "min_y": 2.0,
+                      "min_y": -5.0,
                       "min_z": -6.0
                     }
                   }
@@ -87,50 +78,21 @@
                 "condition": "minecraft:any_of",
                 "terms": [
                   {
-                    "block": "minecraft:birch_log",
+                    "block": {
+                      "blocks": [
+                        "minecraft:birch_log",
+                        "minecraft:birch_wood",
+                        "minecraft:birch_sapling",
+                        "minecraft:potted_birch_sapling"
+                      ]
+                    },
                     "condition": "bovinesandbuttercups:block_in_radius",
                     "radius": {
                       "max_x": 6.0,
-                      "max_y": 8.0,
+                      "max_y": 1.0,
                       "max_z": 6.0,
                       "min_x": -6.0,
-                      "min_y": 2.0,
-                      "min_z": -6.0
-                    }
-                  },
-                  {
-                    "block": "minecraft:birch_wood",
-                    "condition": "bovinesandbuttercups:block_in_radius",
-                    "radius": {
-                      "max_x": 6.0,
-                      "max_y": 8.0,
-                      "max_z": 6.0,
-                      "min_x": -6.0,
-                      "min_y": 2.0,
-                      "min_z": -6.0
-                    }
-                  },
-                  {
-                    "block": "minecraft:birch_sapling",
-                    "condition": "bovinesandbuttercups:block_in_radius",
-                    "radius": {
-                      "max_x": 6.0,
-                      "max_y": 8.0,
-                      "max_z": 6.0,
-                      "min_x": -6.0,
-                      "min_y": 2.0,
-                      "min_z": -6.0
-                    }
-                  },
-                  {
-                    "block": "minecraft:potted_birch_sapling",
-                    "condition": "bovinesandbuttercups:block_in_radius",
-                    "radius": {
-                      "max_x": 6.0,
-                      "max_y": 8.0,
-                      "max_z": 6.0,
-                      "min_x": -6.0,
-                      "min_y": 2.0,
+                      "min_y": -5.0,
                       "min_z": -6.0
                     }
                   }
@@ -139,33 +101,21 @@
             ]
           },
           {
-            "condition": "minecraft:any_of",
-            "terms": [
-              {
-                "block": "bovinesandbuttercups:buttercup",
-                "condition": "bovinesandbuttercups:block_in_radius",
-                "radius": {
-                  "max_x": 6.0,
-                  "max_y": 8.0,
-                  "max_z": 6.0,
-                  "min_x": -6.0,
-                  "min_y": 2.0,
-                  "min_z": -6.0
-                }
-              },
-              {
-                "block": "bovinesandbuttercups:potted_buttercup",
-                "condition": "bovinesandbuttercups:block_in_radius",
-                "radius": {
-                  "max_x": 6.0,
-                  "max_y": 8.0,
-                  "max_z": 6.0,
-                  "min_x": -6.0,
-                  "min_y": 2.0,
-                  "min_z": -6.0
-                }
-              }
-            ]
+            "block": {
+              "blocks": [
+                "bovinesandbuttercups:buttercup",
+                "bovinesandbuttercups:potted_buttercup"
+              ]
+            },
+            "condition": "bovinesandbuttercups:block_in_radius",
+            "radius": {
+              "max_x": 6.0,
+              "max_y": 1.0,
+              "max_z": 6.0,
+              "min_x": -6.0,
+              "min_y": -5.0,
+              "min_z": -6.0
+            }
           }
         ]
       }
@@ -176,8 +126,6 @@
     "color": 16635136
   },
   "thunder_conversion_types": [
-    {
-      "type": "bovinesandbuttercups:chargelily"
-    }
+    "bovinesandbuttercups:chargelily"
   ]
 }

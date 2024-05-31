@@ -23,6 +23,7 @@ public record CustomMushroomType(Optional<Holder<StructureTemplatePool>> hugeMus
     ).apply(builder, CustomMushroomType::new));
 
     public static final Codec<Holder<CustomMushroomType>> CODEC = RegistryFileCodec.create(BovinesRegistryKeys.CUSTOM_MUSHROOM_TYPE, DIRECT_CODEC);
+    public static final ResourceKey<CustomMushroomType> MISSING_KEY = ResourceKey.create(BovinesRegistryKeys.CUSTOM_MUSHROOM_TYPE, BovinesAndButtercups.asResource("missing_mushroom"));
     public static final CustomMushroomType MISSING = new CustomMushroomType(Optional.empty(), false);
 
     @Override
