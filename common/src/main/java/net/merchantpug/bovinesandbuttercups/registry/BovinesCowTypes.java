@@ -161,7 +161,7 @@ public class BovinesCowTypes {
                 new OffspringConditionsConfiguration(List.of(createCondition(
                         List.of(
                                 BlockPredicate.Builder.block().of(Blocks.LILAC).setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(BlockStateProperties.DOUBLE_BLOCK_HALF, DoubleBlockHalf.UPPER)),
-                                BlockPredicate.Builder.block().of(Blocks.ALLIUM, Blocks.POTTED_ALLIUM, Blocks.PINK_PETALS),
+                                BlockPredicate.Builder.block().of(Blocks.ALLIUM, Blocks.POTTED_ALLIUM, Blocks.PINK_TULIP, Blocks.POTTED_PINK_TULIP, Blocks.PINK_PETALS),
                                 BlockPredicate.Builder.block().of(Blocks.OAK_LOG, Blocks.OAK_WOOD, Blocks.OAK_SAPLING, Blocks.POTTED_OAK_SAPLING,
                                         Blocks.CHERRY_LOG, Blocks.CHERRY_WOOD, Blocks.CHERRY_SAPLING, Blocks.POTTED_CHERRY_SAPLING)
                         ),

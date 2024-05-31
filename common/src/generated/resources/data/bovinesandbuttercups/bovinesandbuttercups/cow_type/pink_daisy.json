@@ -57,6 +57,8 @@
                       "blocks": [
                         "minecraft:allium",
                         "minecraft:potted_allium",
+                        "minecraft:pink_tulip",
+                        "minecraft:potted_pink_tulip",
                         "minecraft:pink_petals"
                       ]
                     },
