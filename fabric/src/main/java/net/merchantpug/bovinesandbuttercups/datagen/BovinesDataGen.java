@@ -1,51 +1,33 @@
 package net.merchantpug.bovinesandbuttercups.datagen;
 
-import com.mojang.datafixers.util.Either;
 import com.mojang.serialization.Lifecycle;
 import net.fabricmc.fabric.api.datagen.v1.DataGeneratorEntrypoint;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricBlockLootTableProvider;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricDynamicRegistryProvider;
+import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
 import net.fabricmc.fabric.api.datagen.v1.provider.SimpleFabricLootTableProvider;
-import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
-import net.merchantpug.bovinesandbuttercups.api.CowType;
-import net.merchantpug.bovinesandbuttercups.api.CowTypeConfiguration;
-import net.merchantpug.bovinesandbuttercups.api.block.BlockReference;
-import net.merchantpug.bovinesandbuttercups.api.cowtype.BackGrassConfiguration;
-import net.merchantpug.bovinesandbuttercups.api.cowtype.OffspringConditionsConfiguration;
-import net.merchantpug.bovinesandbuttercups.content.component.NectarEffects;
-import net.merchantpug.bovinesandbuttercups.content.configuration.MoobloomConfiguration;
-import net.merchantpug.bovinesandbuttercups.content.configuration.MooshroomConfiguration;
-import net.merchantpug.bovinesandbuttercups.content.predicate.BlockInRadiusCondition;
+import net.merchantpug.bovinesandbuttercups.api.BovinesTags;
 import net.merchantpug.bovinesandbuttercups.registry.BovinesBlocks;
-import net.merchantpug.bovinesandbuttercups.registry.BovinesCowTypeTypes;
 import net.merchantpug.bovinesandbuttercups.registry.BovinesCowTypes;
+import net.merchantpug.bovinesandbuttercups.registry.BovinesItems;
 import net.merchantpug.bovinesandbuttercups.registry.BovinesLootTables;
-import net.merchantpug.bovinesandbuttercups.registry.BovinesParticleTypes;
 import net.merchantpug.bovinesandbuttercups.registry.BovinesRegistryKeys;
 import net.minecraft.advancements.critereon.EntityFlagsPredicate;
 import net.minecraft.advancements.critereon.EntityPredicate;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.core.HolderSet;
 import net.minecraft.core.Registry;
 import net.minecraft.core.RegistrySetBuilder;
-import net.minecraft.core.particles.ColorParticleOption;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.Biomes;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
@@ -54,16 +36,11 @@ import net.minecraft.world.level.storage.loot.functions.LootingEnchantFunction;
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
 import net.minecraft.world.level.storage.loot.functions.SmeltItemFunction;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
-import net.minecraft.world.level.storage.loot.predicates.AllOfCondition;
-import net.minecraft.world.level.storage.loot.predicates.AnyOfCondition;
-import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemEntityPropertyCondition;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.List;
-import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.BiConsumer;
 
@@ -75,6 +52,9 @@ public class BovinesDataGen implements DataGeneratorEntrypoint {
         pack.addProvider(BlockLootTableProvider::new);
         pack.addProvider(ChestLootTableProvider::new);
         pack.addProvider(EntityLootTableProvider::new);
+        pack.addProvider(BiomeTagProvider::new);
+        pack.addProvider(BlockTagProvider::new);
+        pack.addProvider(ItemTagProvider::new);
     }
 
     @Override
@@ -219,6 +199,70 @@ public class BovinesDataGen implements DataGeneratorEntrypoint {
                                     .apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0.0F, 1.0F))))
                     )
             );
+        }
+    }
+
+    private static class BiomeTagProvider extends FabricTagProvider<Biome> {
+        public BiomeTagProvider(FabricDataOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
+            super(output, Registries.BIOME, registriesFuture);
+        }
+
+        @Override
+        protected void addTags(HolderLookup.Provider wrapperLookup) {
+            tag(BovinesTags.BiomeTags.HAS_MOOBLOOM_FLOWER_FOREST)
+                    .add(Biomes.FLOWER_FOREST);
+            tag(BovinesTags.BiomeTags.PREVENT_COW_SPAWNS)
+                    .addTag(BovinesTags.BiomeTags.HAS_MOOBLOOM_FLOWER_FOREST);
+        }
+    }
+
+    private static class BlockTagProvider extends FabricTagProvider.BlockTagProvider {
+        public BlockTagProvider(FabricDataOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
+            super(output, registriesFuture);
+        }
+
+        @Override
+        protected void addTags(HolderLookup.Provider wrapperLookup) {
+            tag(BovinesTags.BlockTags.MOOBLOOM_FLOWERS)
+                    .add(
+                            reverseLookup(BovinesBlocks.BIRD_OF_PARADISE),
+                            reverseLookup(BovinesBlocks.BUTTERCUP),
+                            reverseLookup(BovinesBlocks.CHARGELILY),
+                            reverseLookup(BovinesBlocks.CUSTOM_FLOWER),
+                            reverseLookup(BovinesBlocks.FREESIA),
+                            reverseLookup(BovinesBlocks.HYACINTH),
+                            reverseLookup(BovinesBlocks.LIMELIGHT),
+                            reverseLookup(BovinesBlocks.PINK_DAISY),
+                            reverseLookup(BovinesBlocks.SNOWDROP),
+                            reverseLookup(BovinesBlocks.TROPICAL_BLUE)
+                    );
+            tag(BovinesTags.BlockTags.SNOWDROP_PLACEABLE)
+                    .add(
+                            reverseLookup(Blocks.SNOW_BLOCK)
+                    );
+        }
+    }
+
+    private static class ItemTagProvider extends FabricTagProvider.ItemTagProvider {
+        public ItemTagProvider(FabricDataOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
+            super(output, registriesFuture);
+        }
+
+        @Override
+        protected void addTags(HolderLookup.Provider wrapperLookup) {
+            tag(BovinesTags.ItemTags.MOOBLOOM_FLOWERS)
+                    .add(
+                            reverseLookup(BovinesItems.BIRD_OF_PARADISE),
+                            reverseLookup(BovinesItems.BUTTERCUP),
+                            reverseLookup(BovinesItems.CHARGELILY),
+                            reverseLookup(BovinesItems.CUSTOM_FLOWER),
+                            reverseLookup(BovinesItems.FREESIA),
+                            reverseLookup(BovinesItems.HYACINTH),
+                            reverseLookup(BovinesItems.LIMELIGHT),
+                            reverseLookup(BovinesItems.PINK_DAISY),
+                            reverseLookup(BovinesItems.SNOWDROP),
+                            reverseLookup(BovinesItems.TROPICAL_BLUE)
+                    );
         }
     }
 }
