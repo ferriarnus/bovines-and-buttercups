@@ -40,7 +40,7 @@ public class RegistryDataLoaderMixin {
     private static <E> void bovinesandbuttercups$loadMissingTypes(ResourceManager manager, RegistryOps.RegistryInfoLookup lookup, WritableRegistry<E> registry, Decoder<E> decoder, Map<ResourceKey<?>, Exception> exceptionMap, CallbackInfo ci) {
         if (registry.key() == (ResourceKey) BovinesRegistryKeys.COW_TYPE)
             for (Map.Entry<ResourceKey<CowTypeType<?>>, CowTypeType<?>> entry : BovinesRegistries.COW_TYPE_TYPE.entrySet())
-                registry.register((ResourceKey<E>) ResourceKey.create(BovinesRegistryKeys.COW_TYPE, entry.getKey().location().withPath(string -> "missing_" + string)), (E) new CowType(entry.getValue(), entry.getValue().defaultConfig()), RegistrationInfo.BUILT_IN);
+                registry.register((ResourceKey<E>)entry.getValue().defaultKey(), (E) new CowType(entry.getValue(), entry.getValue().defaultConfig()), RegistrationInfo.BUILT_IN);
 
         if (registry.key() == (ResourceKey) BovinesRegistryKeys.CUSTOM_FLOWER_TYPE)
             registry.register((ResourceKey<E>) CustomFlowerType.MISSING_KEY, (E) CustomFlowerType.MISSING, RegistrationInfo.BUILT_IN);
@@ -55,9 +55,9 @@ public class RegistryDataLoaderMixin {
             return;
 
         if (registry.key() == (ResourceKey) BovinesRegistryKeys.COW_TYPE) {
-            Optional<ResourceLocation> optional = BovinesRegistries.COW_TYPE_TYPE.keySet().stream().filter(k -> k.withPath(string -> "missing_" + string).equals(key.location())).findFirst();
+            Optional<CowTypeType<?>> optional = BovinesRegistries.COW_TYPE_TYPE.stream().filter(k -> k.defaultKey().location().equals(key.location())).findFirst();
             if (optional.isPresent()) {
-                BovinesAndButtercups.LOG.error("Attempted modification of default cow type '{}'. (Skipping).", optional.get().withPath(str -> "missing_" + str));
+                BovinesAndButtercups.LOG.error("Attempted modification of default cow type '{}'. (Skipping).", optional.get().defaultKey().location());
                 ci.cancel();
             }
         }
