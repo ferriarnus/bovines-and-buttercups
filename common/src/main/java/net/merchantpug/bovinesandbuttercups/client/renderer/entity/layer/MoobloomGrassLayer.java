@@ -30,6 +30,6 @@ public class MoobloomGrassLayer<T extends Moobloom, M extends CowModel<T>> exten
             g = (biomeColor >> 8 & 0xFF) / 255.0F;
             b = (biomeColor & 0xFF) / 255.0f;
         }
-        this.getParentModel().renderToBuffer(poseStack, buffer.getBuffer(RenderType.entityTranslucent(entity.getMoobloomType().value().configuration().backGrass().get().textureLocation())), light, LivingEntityRenderer.getOverlayCoords(entity, 0.0F), r, g, b, 1.0F);
+        this.getParentModel().renderToBuffer(poseStack, buffer.getBuffer(RenderType.entityTranslucent(entity.getMoobloomType().value().configuration().backGrass().get().textureLocation().withPath(string -> "textures/entity/" + string + ".png"))), light, LivingEntityRenderer.getOverlayCoords(entity, 0.0F), r, g, b, 1.0F);
     }
 }

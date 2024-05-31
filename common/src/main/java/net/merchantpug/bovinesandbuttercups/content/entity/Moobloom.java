@@ -161,10 +161,10 @@ public class Moobloom extends Cow {
                 }
                 setPreviousTypeId(getTypeId());
 
-                List<MoobloomConfiguration.WeightedConfiguredCowType<MoobloomConfiguration>> compatibleList = new ArrayList<>();
+                List<CowTypeConfiguration.WeightedCowType> compatibleList = new ArrayList<>();
                 int totalWeight = 0;
 
-                for (CowTypeConfiguration.WeightedConfiguredCowType<MoobloomConfiguration> weightedCowType : getMoobloomType().value().configuration().settings().thunderConverts()) {
+                for (CowTypeConfiguration.WeightedCowType weightedCowType : getMoobloomType().value().configuration().settings().thunderConverts()) {
                     if (weightedCowType.weight() > 0) {
                         compatibleList.add(weightedCowType);
                     }
@@ -174,12 +174,12 @@ public class Moobloom extends Cow {
                     super.thunderHit(level, bolt);
                     return;
                 } else if (compatibleList.size() == 1) {
-                    setFlowerType(compatibleList.getFirst().cowType(), level);
+                    setFlowerType((Holder)compatibleList.getFirst().cowType(), level);
                 } else {
-                    for (CowTypeConfiguration.WeightedConfiguredCowType<MoobloomConfiguration> cct : compatibleList) {
+                    for (CowTypeConfiguration.WeightedCowType cct : compatibleList) {
                         totalWeight -= cct.weight();
                         if (totalWeight <= 0) {
-                            setFlowerType(cct.cowType(), level);
+                            setFlowerType((Holder)cct.cowType(), level);
                             break;
                         }
                     }
@@ -308,7 +308,7 @@ public class Moobloom extends Cow {
                     return InteractionResult.PASS;
                 }
 
-                itemStack2.set(BovinesDataComponents.MOOBLOOM_TYPE, new ItemMoobloomType(getMoobloomType()));
+                itemStack2.set(BovinesDataComponents.MOOBLOOM_TYPE, new ItemMoobloomType((Holder)getMoobloomType()));
                 ItemStack itemStack3 = ItemUtils.createFilledResult(itemStack, player, itemStack2, false);
                 player.setItemInHand(hand, itemStack3);
                 this.playSound(BovinesSoundEvents.MOOBLOOM_MILK, 1.0f, 1.0f);
@@ -467,7 +467,7 @@ public class Moobloom extends Cow {
     public static int getTotalSpawnWeight(LevelAccessor level, BlockPos pos) {
         int totalWeight = 0;
 
-        for (CowType<?> cowType : level.registryAccess().registry(BovinesRegistryKeys.COW_TYPE).orElseThrow().stream().filter(configuredCowType -> configuredCowType.configuration() instanceof MoobloomConfiguration).toList()) {
+        for (CowType<?> cowType : level.registryAccess().registry(BovinesRegistryKeys.COW_TYPE).orElseThrow().stream().filter(cowType -> cowType.configuration() instanceof MoobloomConfiguration).toList()) {
             if (!(cowType.configuration() instanceof MoobloomConfiguration configuration))
                 continue;
 

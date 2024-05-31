@@ -37,13 +37,14 @@ public class BovinesAndButtercupsFabric implements ModInitializer {
     @Override
     public void onInitialize() {
         BovinesAndButtercups.init(new BovinesPlatformHelperFabric());
-        BovinesFabricDynamicRegistries.init();
 
         ResourceManagerHelper.get(PackType.CLIENT_RESOURCES).registerReloadListener(new CowTextureReloadListenerFabric());
 
         registerContents();
         registerNetwork();
         registerCreativeTabEntries();
+
+        BovinesFabricDynamicRegistries.init();
 
         FabricDefaultAttributeRegistry.register(BovinesEntityTypes.MOOBLOOM, Moobloom.createAttributes());
     }

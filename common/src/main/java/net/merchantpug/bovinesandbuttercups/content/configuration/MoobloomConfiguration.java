@@ -9,14 +9,13 @@ import net.merchantpug.bovinesandbuttercups.api.block.CustomFlowerType;
 import net.merchantpug.bovinesandbuttercups.api.cowtype.BackGrassConfiguration;
 import net.merchantpug.bovinesandbuttercups.api.cowtype.OffspringConditionsConfiguration;
 import net.merchantpug.bovinesandbuttercups.content.component.NectarEffects;
-import net.merchantpug.bovinesandbuttercups.registry.BovinesCowTypeTypes;
 import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceLocation;
 
 import java.util.List;
 import java.util.Optional;
 
-public record MoobloomConfiguration(Settings<MoobloomConfiguration> settings,
+public record MoobloomConfiguration(Settings settings,
                                     BlockReference<Holder<CustomFlowerType>> flower,
                                     BlockReference<Holder<CustomFlowerType>> bud,
                                     Optional<BackGrassConfiguration> backGrass,
@@ -24,10 +23,10 @@ public record MoobloomConfiguration(Settings<MoobloomConfiguration> settings,
                                     NectarEffects nectarEffects,
                                     OffspringConditionsConfiguration offspringConditions) implements CowTypeConfiguration {
 
-    public static final MoobloomConfiguration DEFAULT = new MoobloomConfiguration(new CowTypeConfiguration.Settings<>(Optional.empty(), List.of(), List.of(), Optional.empty()), new BlockReference<>(Optional.empty(), Optional.empty(), Optional.of(Holder.direct(CustomFlowerType.MISSING))), new BlockReference<>(Optional.empty(), Optional.empty(), Optional.of(Holder.direct(CustomFlowerType.MISSING))), Optional.of(new BackGrassConfiguration(BovinesAndButtercups.asResource("textures/entity/bovinesandbuttercups/moobloom/moobloom_grass.png"), true)), Optional.empty(), NectarEffects.EMPTY, OffspringConditionsConfiguration.EMPTY);
+    public static final MoobloomConfiguration DEFAULT = new MoobloomConfiguration(new CowTypeConfiguration.Settings(Optional.empty(), List.of(), List.of(), Optional.empty()), new BlockReference<>(Optional.empty(), Optional.empty(), Optional.of(Holder.direct(CustomFlowerType.MISSING))), new BlockReference<>(Optional.empty(), Optional.empty(), Optional.of(Holder.direct(CustomFlowerType.MISSING))), Optional.of(new BackGrassConfiguration(BovinesAndButtercups.asResource("textures/entity/bovinesandbuttercups/moobloom/moobloom_grass.png"), true)), Optional.empty(), NectarEffects.EMPTY, OffspringConditionsConfiguration.EMPTY);
 
     public static final MapCodec<MoobloomConfiguration> CODEC = RecordCodecBuilder.mapCodec(builder -> builder.group(
-            Settings.codec(BovinesCowTypeTypes.MOOBLOOM_TYPE).forGetter(MoobloomConfiguration::settings),
+            Settings.CODEC.forGetter(MoobloomConfiguration::settings),
             BlockReference.createCodec(CustomFlowerType.CODEC, "custom_flower").fieldOf("flower").forGetter(MoobloomConfiguration::flower),
             BlockReference.createCodec(CustomFlowerType.CODEC, "custom_flower").fieldOf("bud").forGetter(MoobloomConfiguration::bud),
             BackGrassConfiguration.codec(BovinesAndButtercups.asResource("textures/entity/bovinesandbuttercups/moobloom/moobloom_grass.png"), true).optionalFieldOf("back_grass").forGetter(MoobloomConfiguration::backGrass),

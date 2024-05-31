@@ -159,14 +159,13 @@ public class MoobloomFlowerLayer<T extends Moobloom, M extends CowModel<T>> exte
         BakedModel flowerModel;
         flowerModel = flowerState.map(blockRenderDispatcher::getBlockModel).orElseGet(() -> BovinesAndButtercupsClient.getHelper().getModel(resourceLocation));
 
-        if (outlineAndInvisible) {
+        if (outlineAndInvisible)
             blockRenderDispatcher.getModelRenderer().renderModel(poseStack.last(), buffer.getBuffer(RenderType.outline(InventoryMenu.BLOCK_ATLAS)), null, flowerModel, 0.0f, 0.0f, 0.0f, light, overlay);
-        } else {
-            if (flowerState.isPresent()) {
+        else {
+            if (flowerState.isPresent())
                 blockRenderDispatcher.renderSingleBlock(flowerState.get(), poseStack, buffer, light, overlay);
-            } else {
+            else
                 blockRenderDispatcher.getModelRenderer().renderModel(poseStack.last(), buffer.getBuffer(Sheets.cutoutBlockSheet()), null, flowerModel, 1.0F, 1.0F, 1.0F, light, overlay);
-            }
         }
     }
 }

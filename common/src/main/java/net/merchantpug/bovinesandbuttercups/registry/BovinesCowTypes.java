@@ -58,7 +58,7 @@ public class BovinesCowTypes {
     public static void bootstrap(BootstrapContext<CowType<?>> context) {
         // Moobloom Types
         context.register(MoobloomKeys.CHARGELILY, new CowType<>(BovinesCowTypeTypes.MOOBLOOM_TYPE, new MoobloomConfiguration(
-                new CowTypeConfiguration.Settings<>(Optional.empty(), List.of(), List.of(), Optional.of(ColorParticleOption.create(BovinesParticleTypes.BLOOM, 7584494))),
+                new CowTypeConfiguration.Settings(Optional.empty(), List.of(), List.of(), Optional.of(ColorParticleOption.create(BovinesParticleTypes.BLOOM, 7584494))),
                 new BlockReference<>(Optional.of(BovinesBlocks.BIRD_OF_PARADISE.defaultBlockState()), Optional.empty(), Optional.empty()),
                 new BlockReference<>(Optional.empty(), Optional.of(BovinesAndButtercups.asResource("bovinesandbuttercups/bird_of_paradise_bud")), Optional.empty()),
                 Optional.of(new BackGrassConfiguration(BovinesAndButtercups.asResource("textures/entity/bovinesandbuttercups/moobloom/moobloom_grass.png"), true)),
@@ -69,10 +69,10 @@ public class BovinesCowTypes {
         Holder.Reference<CowType<MoobloomConfiguration>> chargelilyMoobloom = (Holder.Reference)context.lookup(BovinesRegistryKeys.COW_TYPE).getOrThrow(MoobloomKeys.CHARGELILY);
         List<WeightedEntry.Wrapper<HolderSet<Biome>>> buttercupFlowerForestSet = List.of(WeightedEntry.wrap(context.lookup(Registries.BIOME).getOrThrow(BovinesTags.BiomeTags.HAS_MOOBLOOM_FLOWER_FOREST), 7));
         List<WeightedEntry.Wrapper<HolderSet<Biome>>> pinkDaisyFlowerForestSet = List.of(WeightedEntry.wrap(context.lookup(Registries.BIOME).getOrThrow(BovinesTags.BiomeTags.HAS_MOOBLOOM_FLOWER_FOREST), 1));
-        List<CowTypeConfiguration.WeightedConfiguredCowType<MoobloomConfiguration>> chargelilyWeighted = List.of(new CowTypeConfiguration.WeightedConfiguredCowType<>(chargelilyMoobloom, 1));
+        List<CowTypeConfiguration.WeightedCowType> chargelilyWeighted = List.of(new CowTypeConfiguration.WeightedCowType((Holder)chargelilyMoobloom, 1));
 
         context.register(MoobloomKeys.BIRD_OF_PARADISE, new CowType<>(BovinesCowTypeTypes.MOOBLOOM_TYPE, new MoobloomConfiguration(
-                new CowTypeConfiguration.Settings<>(Optional.empty(), List.of(), chargelilyWeighted, Optional.of(ColorParticleOption.create(BovinesParticleTypes.BLOOM, 15041842))),
+                new CowTypeConfiguration.Settings(Optional.empty(), List.of(), chargelilyWeighted, Optional.of(ColorParticleOption.create(BovinesParticleTypes.BLOOM, 15041842))),
                 new BlockReference<>(Optional.of(BovinesBlocks.BIRD_OF_PARADISE.defaultBlockState()), Optional.empty(), Optional.empty()),
                 new BlockReference<>(Optional.empty(), Optional.of(BovinesAndButtercups.asResource("bovinesandbuttercups/bird_of_paradise_bud")), Optional.empty()),
                 Optional.of(new BackGrassConfiguration(BovinesAndButtercups.asResource("bovinesandbuttercups/moobloom/moobloom_grass"), true)),
@@ -87,7 +87,7 @@ public class BovinesCowTypes {
                         List.of(BovinesBlocks.BIRD_OF_PARADISE.builtInRegistryHolder(), BovinesBlocks.POTTED_BIRD_OF_PARADISE.builtInRegistryHolder()))),
                         List.of()))));
         context.register(MoobloomKeys.BUTTERCUP, new CowType<>(BovinesCowTypeTypes.MOOBLOOM_TYPE, new MoobloomConfiguration(
-                new CowTypeConfiguration.Settings<>(Optional.empty(), buttercupFlowerForestSet, chargelilyWeighted, Optional.of(ColorParticleOption.create(BovinesParticleTypes.BLOOM, 16635136))),
+                new CowTypeConfiguration.Settings(Optional.empty(), buttercupFlowerForestSet, chargelilyWeighted, Optional.of(ColorParticleOption.create(BovinesParticleTypes.BLOOM, 16635136))),
                 new BlockReference<>(Optional.of(BovinesBlocks.BUTTERCUP.defaultBlockState()), Optional.empty(), Optional.empty()),
                 new BlockReference<>(Optional.empty(), Optional.of(BovinesAndButtercups.asResource("bovinesandbuttercups/buttercup_bud")), Optional.empty()),
                 Optional.of(new BackGrassConfiguration(BovinesAndButtercups.asResource("bovinesandbuttercups/moobloom/moobloom_grass"), true)),
@@ -102,7 +102,7 @@ public class BovinesCowTypes {
                         List.of(BovinesBlocks.BUTTERCUP.builtInRegistryHolder(), BovinesBlocks.POTTED_BUTTERCUP.builtInRegistryHolder()))),
                         List.of()))));
         context.register(MoobloomKeys.FREESIA, new CowType<>(BovinesCowTypeTypes.MOOBLOOM_TYPE, new MoobloomConfiguration(
-                new CowTypeConfiguration.Settings<>(Optional.empty(), List.of(), chargelilyWeighted, Optional.of(ColorParticleOption.create(BovinesParticleTypes.BLOOM, 15614261))),
+                new CowTypeConfiguration.Settings(Optional.empty(), List.of(), chargelilyWeighted, Optional.of(ColorParticleOption.create(BovinesParticleTypes.BLOOM, 15614261))),
                 new BlockReference<>(Optional.of(BovinesBlocks.FREESIA.defaultBlockState()), Optional.empty(), Optional.empty()),
                 new BlockReference<>(Optional.empty(), Optional.of(BovinesAndButtercups.asResource("bovinesandbuttercups/freesia_bud")), Optional.empty()),
                 Optional.of(new BackGrassConfiguration(BovinesAndButtercups.asResource("bovinesandbuttercups/moobloom/moobloom_grass"), true)),
@@ -116,7 +116,7 @@ public class BovinesCowTypes {
                         List.of(BovinesBlocks.FREESIA.builtInRegistryHolder(), BovinesBlocks.POTTED_FREESIA.builtInRegistryHolder()))),
                         List.of()))));
         context.register(MoobloomKeys.HYACINTH, new CowType<>(BovinesCowTypeTypes.MOOBLOOM_TYPE, new MoobloomConfiguration(
-                new CowTypeConfiguration.Settings<>(Optional.empty(), List.of(), chargelilyWeighted, Optional.of(ColorParticleOption.create(BovinesParticleTypes.BLOOM, 7027382))),
+                new CowTypeConfiguration.Settings(Optional.empty(), List.of(), chargelilyWeighted, Optional.of(ColorParticleOption.create(BovinesParticleTypes.BLOOM, 7027382))),
                 new BlockReference<>(Optional.of(BovinesBlocks.HYACINTH.defaultBlockState()), Optional.empty(), Optional.empty()),
                 new BlockReference<>(Optional.empty(), Optional.of(BovinesAndButtercups.asResource("bovinesandbuttercups/hyacinth_bud")), Optional.empty()),
                 Optional.of(new BackGrassConfiguration(BovinesAndButtercups.asResource("bovinesandbuttercups/moobloom/moobloom_grass"), true)),
@@ -131,7 +131,7 @@ public class BovinesCowTypes {
                         List.of(BovinesBlocks.HYACINTH.builtInRegistryHolder(), BovinesBlocks.POTTED_HYACINTH.builtInRegistryHolder()))),
                         List.of()))));
         context.register(MoobloomKeys.LIMELIGHT, new CowType<>(BovinesCowTypeTypes.MOOBLOOM_TYPE, new MoobloomConfiguration(
-                new CowTypeConfiguration.Settings<>(Optional.empty(), List.of(), chargelilyWeighted, Optional.of(ColorParticleOption.create(BovinesParticleTypes.BLOOM, 10876830))),
+                new CowTypeConfiguration.Settings(Optional.empty(), List.of(), chargelilyWeighted, Optional.of(ColorParticleOption.create(BovinesParticleTypes.BLOOM, 10876830))),
                 new BlockReference<>(Optional.of(BovinesBlocks.LIMELIGHT.defaultBlockState()), Optional.empty(), Optional.empty()),
                 new BlockReference<>(Optional.empty(), Optional.of(BovinesAndButtercups.asResource("bovinesandbuttercups/limelight_bud")), Optional.empty()),
                 Optional.of(new BackGrassConfiguration(BovinesAndButtercups.asResource("bovinesandbuttercups/moobloom/moobloom_grass"), true)),
@@ -146,7 +146,7 @@ public class BovinesCowTypes {
                         List.of(BovinesBlocks.LIMELIGHT.builtInRegistryHolder(), BovinesBlocks.POTTED_LIMELIGHT.builtInRegistryHolder()))),
                         List.of()))));
         context.register(MoobloomKeys.PINK_DAISY, new CowType<>(BovinesCowTypeTypes.MOOBLOOM_TYPE, new MoobloomConfiguration(
-                new CowTypeConfiguration.Settings<>(Optional.empty(), pinkDaisyFlowerForestSet, chargelilyWeighted, Optional.of(ColorParticleOption.create(BovinesParticleTypes.BLOOM, 16631260))),
+                new CowTypeConfiguration.Settings(Optional.empty(), pinkDaisyFlowerForestSet, chargelilyWeighted, Optional.of(ColorParticleOption.create(BovinesParticleTypes.BLOOM, 16631260))),
                 new BlockReference<>(Optional.of(BovinesBlocks.PINK_DAISY.defaultBlockState()), Optional.empty(), Optional.empty()),
                 new BlockReference<>(Optional.empty(), Optional.of(BovinesAndButtercups.asResource("bovinesandbuttercups/pink_daisy_bud")), Optional.empty()),
                 Optional.of(new BackGrassConfiguration(BovinesAndButtercups.asResource("bovinesandbuttercups/moobloom/moobloom_grass"), true)),
@@ -162,7 +162,7 @@ public class BovinesCowTypes {
                         List.of(BovinesBlocks.PINK_DAISY.builtInRegistryHolder(), BovinesBlocks.POTTED_PINK_DAISY.builtInRegistryHolder()))),
                         List.of()))));
         context.register(MoobloomKeys.SNOWDROP, new CowType<>(BovinesCowTypeTypes.MOOBLOOM_TYPE, new MoobloomConfiguration(
-                new CowTypeConfiguration.Settings<>(Optional.empty(), List.of(), chargelilyWeighted, Optional.of(ColorParticleOption.create(BovinesParticleTypes.BLOOM, 12635883))),
+                new CowTypeConfiguration.Settings(Optional.empty(), List.of(), chargelilyWeighted, Optional.of(ColorParticleOption.create(BovinesParticleTypes.BLOOM, 12635883))),
                 new BlockReference<>(Optional.of(BovinesBlocks.SNOWDROP.defaultBlockState()), Optional.empty(), Optional.empty()),
                 new BlockReference<>(Optional.empty(), Optional.of(BovinesAndButtercups.asResource("bovinesandbuttercups/snowdrop_bud")), Optional.empty()),
                 Optional.of(new BackGrassConfiguration(BovinesAndButtercups.asResource("bovinesandbuttercups/moobloom/moobloom_grass"), true)),
@@ -177,7 +177,7 @@ public class BovinesCowTypes {
                         List.of(BovinesBlocks.SNOWDROP.builtInRegistryHolder(), BovinesBlocks.POTTED_SNOWDROP.builtInRegistryHolder()))),
                         List.of()))));
         context.register(MoobloomKeys.TROPICAL_BLUE, new CowType<>(BovinesCowTypeTypes.MOOBLOOM_TYPE, new MoobloomConfiguration(
-                new CowTypeConfiguration.Settings<>(Optional.empty(), List.of(), chargelilyWeighted, Optional.of(ColorParticleOption.create(BovinesParticleTypes.BLOOM, 4279795))),
+                new CowTypeConfiguration.Settings(Optional.empty(), List.of(), chargelilyWeighted, Optional.of(ColorParticleOption.create(BovinesParticleTypes.BLOOM, 4279795))),
                 new BlockReference<>(Optional.of(BovinesBlocks.TROPICAL_BLUE.defaultBlockState()), Optional.empty(), Optional.empty()),
                 new BlockReference<>(Optional.empty(), Optional.of(BovinesAndButtercups.asResource("bovinesandbuttercups/tropical_blue_bud")), Optional.empty()),
                 Optional.of(new BackGrassConfiguration(BovinesAndButtercups.asResource("bovinesandbuttercups/moobloom/moobloom_grass"), true)),
@@ -194,14 +194,14 @@ public class BovinesCowTypes {
 
         // Mooshroom Types
         context.register(MooshroomKeys.RED_MUSHROOM, new CowType<>(BovinesCowTypeTypes.MOOSHROOM_TYPE, new MooshroomConfiguration(
-                new CowTypeConfiguration.Settings<>(Optional.of(new ResourceLocation("cow/brown_mooshroom")), List.of(), List.of(new CowTypeConfiguration.WeightedConfiguredCowType<>((Holder.Reference)context.lookup(BovinesRegistryKeys.COW_TYPE).getOrThrow(MooshroomKeys.BROWN_MUSHROOM), 1)), Optional.of(ColorParticleOption.create(BovinesParticleTypes.SHROOM, 11014162))),
+                new CowTypeConfiguration.Settings(Optional.of(new ResourceLocation("cow/brown_mooshroom")), List.of(), List.of(new CowTypeConfiguration.WeightedCowType(context.lookup(BovinesRegistryKeys.COW_TYPE).getOrThrow(MooshroomKeys.BROWN_MUSHROOM), 1)), Optional.of(ColorParticleOption.create(BovinesParticleTypes.SHROOM, 11014162))),
                 new BlockReference<>(Optional.of(Blocks.RED_MUSHROOM.defaultBlockState()), Optional.empty(), Optional.empty()),
                 Optional.of(new BackGrassConfiguration(BovinesAndButtercups.asResource("bovinesandbuttercups/moobloom/mooshroom_mycelium"), false)),
                 false,
                 true
         )));
         context.register(MooshroomKeys.BROWN_MUSHROOM, new CowType<>(BovinesCowTypeTypes.MOOSHROOM_TYPE, new MooshroomConfiguration(
-                new CowTypeConfiguration.Settings<>(Optional.of(new ResourceLocation("cow/brown_mooshroom")), List.of(), List.of(new CowTypeConfiguration.WeightedConfiguredCowType<>((Holder.Reference)context.lookup(BovinesRegistryKeys.COW_TYPE).getOrThrow(MooshroomKeys.RED_MUSHROOM), 1)), Optional.of(ColorParticleOption.create(BovinesParticleTypes.SHROOM, 9397834))),
+                new CowTypeConfiguration.Settings(Optional.of(new ResourceLocation("cow/brown_mooshroom")), List.of(), List.of(new CowTypeConfiguration.WeightedCowType(context.lookup(BovinesRegistryKeys.COW_TYPE).getOrThrow(MooshroomKeys.RED_MUSHROOM), 1)), Optional.of(ColorParticleOption.create(BovinesParticleTypes.SHROOM, 9397834))),
                 new BlockReference<>(Optional.of(Blocks.BROWN_MUSHROOM.defaultBlockState()), Optional.empty(), Optional.empty()),
                 Optional.of(new BackGrassConfiguration(BovinesAndButtercups.asResource("bovinesandbuttercups/moobloom/mooshroom_mycelium"), false)),
                 true,

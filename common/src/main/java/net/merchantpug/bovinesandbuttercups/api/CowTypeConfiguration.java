@@ -11,6 +11,7 @@ import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.HolderSetCodec;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.random.WeightedEntry;
 import net.minecraft.world.level.biome.Biome;
@@ -32,18 +33,16 @@ public interface CowTypeConfiguration {
      * @param thunderConverts    A list of weighted cow types that this cow will/have a chance to convert into upon being struck by lightning.
      *                           Can be Optional.empty() to keep the default thunder behavior.
      */
-    record Settings<C extends CowTypeConfiguration>(Optional<ResourceLocation> cowTexture,
-                                                    List<WeightedEntry.Wrapper<HolderSet<Biome>>> biomes,
-                                                    List<WeightedConfiguredCowType<C>> thunderConverts,
-                                                    Optional<ParticleOptions> particle) {
-        public static <C extends CowTypeConfiguration, T extends CowTypeType<C>> MapCodec<Settings<C>> codec(T cowType) {
-            return RecordCodecBuilder.mapCodec(instance -> instance.group(
-                    ResourceLocation.CODEC.optionalFieldOf("texture_location").forGetter(Settings::cowTexture),
-                    BovinesCodecs.wrapperCodec(HolderSetCodec.create(Registries.BIOME, Biome.CODEC, false), "biomes").listOf().fieldOf("natural_spawns").forGetter(Settings::biomes),
-                    Codec.list(WeightedConfiguredCowType.codec(cowType)).optionalFieldOf("thunder_conversion_types", List.of()).forGetter(Settings::thunderConverts),
-                    ParticleTypes.CODEC.optionalFieldOf("particle").forGetter(Settings::particle)
-            ).apply(instance, Settings::new));
-        }
+    record Settings(Optional<ResourceLocation> cowTexture,
+                    List<WeightedEntry.Wrapper<HolderSet<Biome>>> biomes,
+                    List<WeightedCowType> thunderConverts,
+                    Optional<ParticleOptions> particle) {
+        public static final MapCodec<Settings> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
+                ResourceLocation.CODEC.optionalFieldOf("texture_location").forGetter(Settings::cowTexture),
+                BovinesCodecs.wrapperCodec(HolderSetCodec.create(Registries.BIOME, Biome.CODEC, false), "biomes").listOf().fieldOf("natural_spawns").forGetter(Settings::biomes),
+                WeightedCowType.CODEC.listOf().optionalFieldOf("thunder_conversion_types", List.of()).forGetter(Settings::thunderConverts),
+                ParticleTypes.CODEC.optionalFieldOf("particle").forGetter(Settings::particle)
+        ).apply(instance, Settings::new));
     }
 
     /**
@@ -52,17 +51,13 @@ public interface CowTypeConfiguration {
      * @param cowType   A {@link Holder} that should contain a configured cow type.
      * @param weight    The weight of this WeightedConfiguredCowType.
      */
-    record WeightedConfiguredCowType<C extends CowTypeConfiguration>(Holder<CowType<C>> cowType, int weight) {
-        public static <C extends CowTypeConfiguration, T extends CowTypeType<C>> Codec<WeightedConfiguredCowType<C>> directCodec(T cowType) {
-            return RecordCodecBuilder.create(builder -> builder.group(
-                    CowType.filteredCodec(cowType).fieldOf("type").forGetter(WeightedConfiguredCowType::cowType),
-                    Codec.INT.optionalFieldOf("weight", 1).forGetter(WeightedConfiguredCowType::weight)
-            ).apply(builder, WeightedConfiguredCowType::new));
-        }
+    record WeightedCowType(Holder<CowType<?>> cowType, int weight) {
+        public static final Codec<WeightedCowType> DIRECT_CODEC =RecordCodecBuilder.create(builder -> builder.group(
+                CowType.CODEC.fieldOf("type").forGetter(WeightedCowType::cowType),
+                    Codec.INT.optionalFieldOf("weight", 1).forGetter(WeightedCowType::weight)
+            ).apply(builder, WeightedCowType::new));
 
-        public static <C extends CowTypeConfiguration, T extends CowTypeType<C>> Codec<WeightedConfiguredCowType<C>> codec(T cowType) {
-            return Codec.either(directCodec(cowType), CowType.filteredCodec(cowType))
-                    .xmap(either -> either.map(o -> o, type -> new WeightedConfiguredCowType<>(type, 1)), Either::left);
-        }
+        public static final Codec<WeightedCowType> CODEC = Codec.either(DIRECT_CODEC, CowType.CODEC)
+                .xmap(either -> either.map(o -> o, type -> new WeightedCowType(type, 1)), Either::left);;
     }
 }

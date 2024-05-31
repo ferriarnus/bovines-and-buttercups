@@ -4,6 +4,7 @@ import com.mojang.blaze3d.platform.Lighting;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
 import net.merchantpug.bovinesandbuttercups.client.bovinestate.BovineStatesAssociationRegistry;
+import net.merchantpug.bovinesandbuttercups.content.configuration.MoobloomConfiguration;
 import net.merchantpug.bovinesandbuttercups.content.item.NectarBowlItem;
 import net.merchantpug.bovinesandbuttercups.registry.BovinesDataComponents;
 import net.merchantpug.bovinesandbuttercups.util.QuaternionUtil;
@@ -28,7 +29,7 @@ public class NectarBowlItemRendererHelper {
         if (level == null) return;
 
         if (stack.has(BovinesDataComponents.MOOBLOOM_TYPE)) {
-            Optional<ResourceLocation> modelLocationWithoutVariant = Optional.ofNullable(stack.get(BovinesDataComponents.MOOBLOOM_TYPE)).flatMap(itemMoobloomType -> itemMoobloomType.cowType().value().configuration().nectarPalette());
+            Optional<ResourceLocation> modelLocationWithoutVariant = Optional.ofNullable(stack.get(BovinesDataComponents.MOOBLOOM_TYPE)).filter(itemMoobloomType -> itemMoobloomType.cowType().isBound() && itemMoobloomType.cowType().value().configuration() instanceof MoobloomConfiguration).flatMap(itemMoobloomType -> ((MoobloomConfiguration)itemMoobloomType.cowType().value().configuration()).nectarPalette());
             if (modelLocationWithoutVariant.isPresent())
                 modelResourceLocation = new ModelResourceLocation(BovineStatesAssociationRegistry.getItem(modelLocationWithoutVariant.get(), true).orElse(BovinesAndButtercups.asResource("buttercup_nectar_bowl")), "inventory");
         } else

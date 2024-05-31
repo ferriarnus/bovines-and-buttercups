@@ -18,25 +18,22 @@ import net.minecraft.world.item.component.TooltipProvider;
 
 import java.util.function.Consumer;
 
-public record ItemMoobloomType(Holder<CowType<MoobloomConfiguration>> cowType) implements TooltipProvider {
-    public static final Codec<ItemMoobloomType> CODEC = CowType.filteredCodec(BovinesCowTypeTypes.MOOBLOOM_TYPE)
+public record ItemMoobloomType(Holder<CowType<?>> cowType) implements TooltipProvider {
+    public static final Codec<ItemMoobloomType> CODEC = CowType.CODEC
             .xmap(ItemMoobloomType::new, ItemMoobloomType::cowType);
-    public static final StreamCodec<RegistryFriendlyByteBuf, ItemMoobloomType> STREAM_CODEC = ByteBufCodecs.holderRegistry(BovinesRegistryKeys.COW_TYPE).map(cowType -> {
-        if (cowType.isBound() && cowType.value().type() == BovinesCowTypeTypes.MOOBLOOM_TYPE) {
-            new ItemMoobloomType((Holder) cowType);
-        }
-        throw new IllegalArgumentException("Cow Type was not a Moobloom.");
-    }, itemMoobloomType -> (Holder) itemMoobloomType.cowType());
+    public static final StreamCodec<RegistryFriendlyByteBuf, ItemMoobloomType> STREAM_CODEC = ByteBufCodecs.holderRegistry(BovinesRegistryKeys.COW_TYPE).map(cowType -> new ItemMoobloomType((Holder) cowType), itemMoobloomType -> (Holder) itemMoobloomType.cowType());
 
     @Override
     public void addToTooltip(Item.TooltipContext context, Consumer<Component> component, TooltipFlag flag) {
-        if (cowType.value().configuration().flower().blockState().isPresent()) {
-            component.accept(Component.translatable(cowType.value().configuration().flower().blockState().get().getBlock().getDescriptionId()).withStyle(ChatFormatting.BLUE));
-        } else if (cowType.value().configuration().flower().customType().isPresent()) {
-            ResourceLocation location = cowType.value().configuration().flower().customType().get().unwrapKey().orElseThrow().location();
-            component.accept(Component.translatable("block." + location.getNamespace() + "." + location.getPath()).withStyle(ChatFormatting.BLUE));
-        } else {
-            component.accept(Component.translatable("configured_cow_type." + cowType.unwrapKey().orElseThrow().location().getNamespace() + "." + cowType.unwrapKey().orElseThrow().location().getPath() + ".name").withStyle(ChatFormatting.BLUE));
+        if (cowType.isBound() && cowType.value().configuration() instanceof MoobloomConfiguration configuration) {
+            if (configuration.flower().blockState().isPresent()) {
+                component.accept(Component.translatable(configuration.flower().blockState().get().getBlock().getDescriptionId()).withStyle(ChatFormatting.BLUE));
+            } else if (configuration.flower().customType().isPresent()) {
+                ResourceLocation location = configuration.flower().customType().get().unwrapKey().orElseThrow().location();
+                component.accept(Component.translatable("block." + location.getNamespace() + "." + location.getPath()).withStyle(ChatFormatting.BLUE));
+            } else {
+                component.accept(Component.translatable("configured_cow_type." + cowType.unwrapKey().orElseThrow().location().getNamespace() + "." + cowType.unwrapKey().orElseThrow().location().getPath() + ".name").withStyle(ChatFormatting.BLUE));
+            }
         }
     }
 }
