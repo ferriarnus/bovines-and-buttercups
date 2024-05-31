@@ -23,7 +23,7 @@ import java.util.Optional;
 public class MutationTrigger extends SimpleCriterionTrigger<MutationTrigger.TriggerInstance> {
     public static final ResourceLocation ID = BovinesAndButtercups.asResource("mutation");
     public static final Codec<TriggerInstance> CODEC = RecordCodecBuilder.create(inst -> inst.group(
-            CowTypeType.CODEC.optionalFieldOf("base_cow_type").forGetter(TriggerInstance::cowType),
+            CowTypeType.CODEC.optionalFieldOf("cow_type_type").forGetter(TriggerInstance::cowType),
             RegistryCodecs.homogeneousList(BovinesRegistryKeys.COW_TYPE).optionalFieldOf("cow_types", HolderSet.direct()).forGetter(TriggerInstance::types),
             ContextAwarePredicate.CODEC.optionalFieldOf("parent").forGetter(TriggerInstance::parent),
             ContextAwarePredicate.CODEC.optionalFieldOf("partner").forGetter(TriggerInstance::partner),
