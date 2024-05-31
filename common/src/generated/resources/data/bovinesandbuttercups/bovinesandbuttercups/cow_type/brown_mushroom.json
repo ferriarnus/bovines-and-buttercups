@@ -1,0 +1,24 @@
+{
+  "type": "bovinesandbuttercups:mooshroom",
+  "back_grass": {
+    "texture_location": "bovinesandbuttercups:bovinesandbuttercups/moobloom/mooshroom_mycelium"
+  },
+  "can_eat_flowers": true,
+  "mushroom": {
+    "block_state": {
+      "Name": "minecraft:brown_mushroom"
+    }
+  },
+  "natural_spawns": [],
+  "particle": {
+    "type": "bovinesandbuttercups:shroom",
+    "color": 9397834
+  },
+  "texture_location": "minecraft:cow/brown_mooshroom",
+  "thunder_conversion_types": [
+    {
+      "type": "bovinesandbuttercups:red_mushroom"
+    }
+  ],
+  "vanilla_spawning_hack": false
+}
