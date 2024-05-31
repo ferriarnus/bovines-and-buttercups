@@ -1,57 +1,39 @@
 package net.merchantpug.bovinesandbuttercups.content.advancements.criterion;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
-import net.minecraft.advancements.critereon.AbstractCriterionTriggerInstance;
 import net.minecraft.advancements.critereon.ContextAwarePredicate;
-import net.minecraft.advancements.critereon.DeserializationContext;
+import net.minecraft.advancements.critereon.EntityPredicate;
 import net.minecraft.advancements.critereon.SimpleCriterionTrigger;
+import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffect;
 
+import java.util.List;
 import java.util.Optional;
 
 public class PreventEffectTrigger extends SimpleCriterionTrigger<PreventEffectTrigger.TriggerInstance> {
     public static final ResourceLocation ID = BovinesAndButtercups.asResource("prevent_effect");
+    public static final Codec<TriggerInstance> CODEC = RecordCodecBuilder.create(inst -> inst.group(
+            EntityPredicate.ADVANCEMENT_CODEC.optionalFieldOf("player").forGetter(TriggerInstance::player),
+            BuiltInRegistries.MOB_EFFECT.holderByNameCodec().listOf().optionalFieldOf("effect").forGetter(TriggerInstance::effect)
+    ).apply(inst, TriggerInstance::new));
 
-    @Override
-    protected TriggerInstance createInstance(JsonObject json, Optional<ContextAwarePredicate> predicate, DeserializationContext context) {
-        Optional<MobEffect> effect = Optional.empty();
-        if (json.has("effect")) {
-            effect = BuiltInRegistries.MOB_EFFECT.getOptional(ResourceLocation.tryParse(json.getAsJsonPrimitive("effect").getAsString()));
-        }
-        return new TriggerInstance(predicate, effect);
-    }
-
-
-    public void trigger(ServerPlayer serverPlayer, MobEffect effect) {
+    public void trigger(ServerPlayer serverPlayer, Holder<MobEffect> effect) {
         this.trigger(serverPlayer, (triggerInstance) -> triggerInstance.matches(effect));
     }
 
-    public static class TriggerInstance extends AbstractCriterionTriggerInstance {
-        private final Optional<MobEffect> effect;
+    @Override
+    public Codec<TriggerInstance> codec() {
+        return CODEC;
+    }
 
-        public TriggerInstance(Optional<ContextAwarePredicate> predicate, Optional<MobEffect> effect) {
-            super(predicate);
-            this.effect = effect;
-        }
-
-        public boolean matches(MobEffect value) {
-            return effect.isEmpty() || effect.get() == value;
-        }
-
-        public JsonObject serializeToJson() {
-            JsonObject json = super.serializeToJson();
-            Optional<MobEffect> effect = BuiltInRegistries.MOB_EFFECT.getOptional(ResourceLocation.tryParse(json.getAsJsonPrimitive("effect").getAsString()));
-            if (effect.isPresent()) {
-                JsonElement element = JsonParser.parseString(json.getAsJsonPrimitive("effect").getAsString());
-                json.add("effect", element);
-            }
-            return json;
+    public record TriggerInstance(Optional<ContextAwarePredicate> player, Optional<List<Holder<MobEffect>>> effect) implements SimpleInstance {
+        public boolean matches(Holder<MobEffect> value) {
+            return effect.isEmpty() || effect.get().contains(value);
         }
     }
 }

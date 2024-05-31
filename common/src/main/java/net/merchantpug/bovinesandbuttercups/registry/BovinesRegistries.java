@@ -1,13 +1,11 @@
 package net.merchantpug.bovinesandbuttercups.registry;
 
-import net.merchantpug.bovinesandbuttercups.api.BovinesResourceKeys;
-import net.merchantpug.bovinesandbuttercups.api.CowType;
-import net.merchantpug.bovinesandbuttercups.platform.services.IBovinesPlatformHelper;
+import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
+import net.merchantpug.bovinesandbuttercups.api.CowTypeType;
 import net.minecraft.core.Registry;
 
 public class BovinesRegistries {
-
-    public static final Registry<CowType<?>> COW_TYPE_REGISTRY = IBovinesPlatformHelper.INSTANCE.createRegistry(BovinesResourceKeys.COW_TYPE);
+    public static final Registry<CowTypeType<?>> COW_TYPE_TYPE = BovinesAndButtercups.getHelper().createRegistry(BovinesRegistryKeys.COW_TYPE_TYPE);
 
     public static void init() {
     }

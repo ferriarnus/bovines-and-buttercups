@@ -1,13 +1,16 @@
 package net.merchantpug.bovinesandbuttercups.content.block;
 
-import net.merchantpug.bovinesandbuttercups.api.BovinesResourceKeys;
+import com.mojang.serialization.MapCodec;
 import net.merchantpug.bovinesandbuttercups.api.block.CustomMushroomType;
 import net.merchantpug.bovinesandbuttercups.content.block.entity.CustomMushroomBlockEntity;
+import net.merchantpug.bovinesandbuttercups.content.block.entity.CustomMushroomPotBlockEntity;
 import net.merchantpug.bovinesandbuttercups.registry.BovinesBlockEntityTypes;
 import net.merchantpug.bovinesandbuttercups.registry.BovinesBlocks;
+import net.merchantpug.bovinesandbuttercups.registry.BovinesDataComponents;
+import net.merchantpug.bovinesandbuttercups.registry.BovinesItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.Holder;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.RandomSource;
@@ -36,23 +39,25 @@ import org.jetbrains.annotations.Nullable;
 
 public class CustomMushroomBlock extends BaseEntityBlock implements BonemealableBlock {
     protected static final VoxelShape SHAPE = Block.box(5.0D, 0.0D, 5.0D, 11.0D, 6.0D, 11.0D);
+    private static final MapCodec<CustomMushroomBlock> CODEC = simpleCodec(CustomMushroomBlock::new);
+
 
     public CustomMushroomBlock(Properties properties) {
         super(properties);
     }
 
     @Override
-    public ItemStack getCloneItemStack(BlockGetter blockGetter, BlockPos blockPos, BlockState blockState) {
-        ItemStack itemStack = new ItemStack(this);
-        BlockEntity blockEntity = blockGetter.getBlockEntity(blockPos);
-        if (blockEntity instanceof CustomMushroomBlockEntity cmbe && cmbe.getLevel() != null) {
-            CompoundTag compound = new CompoundTag();
-            if (cmbe.customMushroomType() != null && !cmbe.customMushroomType().equals(CustomMushroomType.MISSING)) {
-                compound.putString("Type", cmbe.getLevel().registryAccess().registry(BovinesResourceKeys.CUSTOM_MUSHROOM_TYPE).orElseThrow().getKey(cmbe.customMushroomType()).toString());
-                itemStack.getOrCreateTag().put("BlockEntityTag", compound);
-            }
-        }
-        return itemStack;
+    protected MapCodec<? extends BaseEntityBlock> codec() {
+        return CODEC;
+    }
+
+    @Override
+    public ItemStack getCloneItemStack(LevelReader level, BlockPos pos, BlockState state) {
+        ItemStack stack = new ItemStack(BovinesItems.CUSTOM_MUSHROOM);
+        BlockEntity blockEntity = level.getBlockEntity(pos);
+        if (blockEntity instanceof CustomMushroomPotBlockEntity cmpbe)
+            stack.set(BovinesDataComponents.CUSTOM_MUSHROOM, cmpbe.getMushroomType());
+        return stack;
     }
 
     @Override
@@ -85,8 +90,8 @@ public class CustomMushroomBlock extends BaseEntityBlock implements Bonemealable
             }
 
             if (level.isEmptyBlock(blockpos1) && state.canSurvive(level, blockpos1)) {
-                level.setBlock(blockpos1, BovinesBlocks.CUSTOM_MUSHROOM_BLOCK.value().defaultBlockState(), 2);
-                ((CustomMushroomBlockEntity)level.getBlockEntity(blockpos1)).setMushroomTypeName(((CustomMushroomBlockEntity)level.getBlockEntity(pos)).getMushroomTypeName());
+                level.setBlock(blockpos1, BovinesBlocks.CUSTOM_MUSHROOM_BLOCK.defaultBlockState(), 2);
+                ((CustomMushroomBlockEntity)level.getBlockEntity(blockpos1)).setMushroomType(((CustomMushroomBlockEntity)level.getBlockEntity(pos)).getMushroomType());
                 level.getBlockEntity(blockpos1).setChanged();
                 level.sendBlockUpdated(blockpos1, level.getBlockState(blockpos1), level.getBlockState(pos), Block.UPDATE_ALL);
             }
@@ -110,7 +115,7 @@ public class CustomMushroomBlock extends BaseEntityBlock implements Bonemealable
 
     public boolean isValidBonemealTarget(LevelReader level, BlockPos pos, BlockState state) {
         if (state.hasBlockEntity() && level.getBlockEntity(pos) instanceof CustomMushroomBlockEntity mushroomBlockEntity) {
-            return mushroomBlockEntity.customMushroomType().hugeMushroomStructurePool().isPresent();
+            return mushroomBlockEntity.getMushroomType().holder().isBound() && mushroomBlockEntity.getMushroomType().holder().value().hugeMushroomStructurePool().isPresent();
         }
         return false;
     }
@@ -123,11 +128,12 @@ public class CustomMushroomBlock extends BaseEntityBlock implements Bonemealable
         if (state.hasBlockEntity() && level.getBlockEntity(pos) instanceof CustomMushroomBlockEntity mushroomBlockEntity) {
             StructureTemplateManager structureTemplateManager = level.getStructureManager();
 
-            if (mushroomBlockEntity.customMushroomType().hugeMushroomStructurePool().isPresent()) {
-                StructurePoolElement structurePoolElement = mushroomBlockEntity.customMushroomType().hugeMushroomStructurePool().get().value().getRandomTemplate(level.random);
+            Holder<CustomMushroomType> customMushroom = mushroomBlockEntity.getMushroomType().holder();
+            if (customMushroom.isBound() && customMushroom.value().hugeMushroomStructurePool().isPresent()) {
+                StructurePoolElement structurePoolElement = customMushroom.value().hugeMushroomStructurePool().get().value().getRandomTemplate(level.random);
 
                 level.removeBlock(pos, false);
-                Rotation rotation = mushroomBlockEntity.customMushroomType().randomlyRotateHugeStructure() ? Rotation.getRandom(level.random) : Rotation.NONE;
+                Rotation rotation = customMushroom.value().randomlyRotateHugeStructure() ? Rotation.getRandom(level.random) : Rotation.NONE;
                 BlockPos centeredPos = new BlockPos(pos.getX() - structurePoolElement.getSize(structureTemplateManager, rotation).getX() / 2, pos.getY(), pos.getZ() - structurePoolElement.getSize(structureTemplateManager, rotation).getZ() / 2);
                 if (ChunkPos.rangeClosed(new ChunkPos(centeredPos), new ChunkPos(centeredPos.offset(structurePoolElement.getSize(structureTemplateManager, rotation)))).allMatch((chunkPos) -> level.isLoaded(chunkPos.getWorldPosition()))) {
                     BoundingBox structureBox = structurePoolElement.getBoundingBox(structureTemplateManager, centeredPos, rotation);
@@ -138,7 +144,7 @@ public class CustomMushroomBlock extends BaseEntityBlock implements Bonemealable
                 }
 
                 level.setBlock(pos, state, Block.UPDATE_ALL);
-                ((CustomMushroomBlockEntity)level.getBlockEntity(pos)).setMushroomTypeName(mushroomBlockEntity.getMushroomTypeName());
+                ((CustomMushroomBlockEntity)level.getBlockEntity(pos)).setMushroomType(mushroomBlockEntity.getMushroomType());
                 level.getBlockEntity(pos).setChanged();
                 level.sendBlockUpdated(pos, state, level.getBlockState(pos), Block.UPDATE_ALL);
             }
@@ -148,7 +154,7 @@ public class CustomMushroomBlock extends BaseEntityBlock implements Bonemealable
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return BovinesBlockEntityTypes.CUSTOM_MUSHROOM.value().create(pos, state);
+        return BovinesBlockEntityTypes.CUSTOM_MUSHROOM.create(pos, state);
     }
 
     @Override
@@ -164,7 +170,7 @@ public class CustomMushroomBlock extends BaseEntityBlock implements Bonemealable
         return blockState.getFluidState().isEmpty();
     }
 
-    public boolean isPathfindable(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos, PathComputationType pathComputationType) {
-        return pathComputationType == PathComputationType.AIR && !this.hasCollision || super.isPathfindable(blockState, blockGetter, blockPos, pathComputationType);
+    public boolean isPathfindable(BlockState blockState, PathComputationType pathComputationType) {
+        return pathComputationType == PathComputationType.AIR && !this.hasCollision || super.isPathfindable(blockState, pathComputationType);
     }
 }

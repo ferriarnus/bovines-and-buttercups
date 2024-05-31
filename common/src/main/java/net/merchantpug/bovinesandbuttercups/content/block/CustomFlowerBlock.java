@@ -1,12 +1,11 @@
 package net.merchantpug.bovinesandbuttercups.content.block;
 
-import net.merchantpug.bovinesandbuttercups.api.BovinesResourceKeys;
-import net.merchantpug.bovinesandbuttercups.api.block.CustomFlowerType;
+import com.mojang.serialization.MapCodec;
 import net.merchantpug.bovinesandbuttercups.content.block.entity.CustomFlowerBlockEntity;
 import net.merchantpug.bovinesandbuttercups.registry.BovinesBlockEntityTypes;
+import net.merchantpug.bovinesandbuttercups.registry.BovinesDataComponents;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
@@ -25,9 +24,15 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class CustomFlowerBlock extends BaseEntityBlock {
     protected static final VoxelShape SHAPE = Block.box(5.0, 0.0, 5.0, 11.0, 10.0, 11.0);
+    private static final MapCodec<CustomFlowerBlock> CODEC = simpleCodec(CustomFlowerBlock::new);
 
     public CustomFlowerBlock(Properties properties) {
         super(properties);
+    }
+
+    @Override
+    protected MapCodec<? extends BaseEntityBlock> codec() {
+        return CODEC;
     }
 
     protected boolean mayPlaceOn(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos) {
@@ -35,16 +40,13 @@ public class CustomFlowerBlock extends BaseEntityBlock {
     }
 
     @Override
-    public ItemStack getCloneItemStack(BlockGetter blockGetter, BlockPos blockPos, BlockState blockState) {
+    public ItemStack getCloneItemStack(LevelReader level, BlockPos blockPos, BlockState blockState) {
         ItemStack itemStack = new ItemStack(this);
-        BlockEntity blockEntity = blockGetter.getBlockEntity(blockPos);
-        if (blockEntity instanceof CustomFlowerBlockEntity cfbe) {
-            CompoundTag compound = new CompoundTag();
-            if (cfbe.customFlowerType() != null && !cfbe.customFlowerType().equals(CustomFlowerType.MISSING)) {
-                compound.putString("Type", blockEntity.getLevel().registryAccess().registry(BovinesResourceKeys.CUSTOM_FLOWER_TYPE).orElseThrow().getKey(cfbe.customFlowerType()).toString());
-                itemStack.getOrCreateTag().put("BlockEntityTag", compound);
-            }
-        }
+        BlockEntity blockEntity = level.getBlockEntity(blockPos);
+        if (blockEntity instanceof CustomFlowerBlockEntity cfbe)
+            if (cfbe.getFlowerType() != null)
+                itemStack.set(BovinesDataComponents.CUSTOM_FLOWER, cfbe.getFlowerType());
+
         return itemStack;
     }
 
@@ -71,8 +73,8 @@ public class CustomFlowerBlock extends BaseEntityBlock {
     }
 
     @Override
-    public boolean isPathfindable(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos, PathComputationType pathComputationType) {
-        return pathComputationType == PathComputationType.AIR && !this.hasCollision || super.isPathfindable(blockState, blockGetter, blockPos, pathComputationType);
+    public boolean isPathfindable(BlockState blockState, PathComputationType pathComputationType) {
+        return pathComputationType == PathComputationType.AIR && !this.hasCollision || super.isPathfindable(blockState, pathComputationType);
     }
 
     @Override
@@ -82,7 +84,7 @@ public class CustomFlowerBlock extends BaseEntityBlock {
 
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return BovinesBlockEntityTypes.CUSTOM_FLOWER.value().create(pos, state);
+        return BovinesBlockEntityTypes.CUSTOM_FLOWER.create(pos, state);
     }
 
 }

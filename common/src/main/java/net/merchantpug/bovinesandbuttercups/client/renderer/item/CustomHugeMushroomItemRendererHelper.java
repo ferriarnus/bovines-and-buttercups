@@ -5,7 +5,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
 import net.merchantpug.bovinesandbuttercups.client.bovinestate.BovineStatesAssociationRegistry;
 import net.merchantpug.bovinesandbuttercups.client.resources.BovineBlockstateTypes;
-import net.merchantpug.bovinesandbuttercups.content.item.CustomHugeMushroomItem;
+import net.merchantpug.bovinesandbuttercups.registry.BovinesDataComponents;
 import net.merchantpug.bovinesandbuttercups.util.QuaternionUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -28,8 +28,8 @@ public class CustomHugeMushroomItemRendererHelper {
         Level level = Minecraft.getInstance().level;
         if (level == null) return;
 
-        if (CustomHugeMushroomItem.getMushroomTypeFromTag(stack, level.registryAccess()).isPresent()) {
-            Optional<ResourceLocation> modelLocationWithoutVariant = BovineStatesAssociationRegistry.getItem(CustomHugeMushroomItem.getMushroomTypeKeyFromTag(stack, level.registryAccess()), BovineBlockstateTypes.MUSHROOM_BLOCK, false);
+        if (stack.has(BovinesDataComponents.CUSTOM_MUSHROOM)) {
+            Optional<ResourceLocation> modelLocationWithoutVariant = BovineStatesAssociationRegistry.getItem(stack.get(BovinesDataComponents.CUSTOM_MUSHROOM).holder().unwrapKey().get().location(), BovineBlockstateTypes.MUSHROOM_BLOCK, false);
             if (modelLocationWithoutVariant.isPresent()) {
                 modelResourceLocation = new ModelResourceLocation(modelLocationWithoutVariant.get(), "inventory");
             }

@@ -3,12 +3,12 @@ package net.merchantpug.bovinesandbuttercups.client.renderer.entity.layer;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
-import net.merchantpug.bovinesandbuttercups.api.BovinesResourceKeys;
+import net.merchantpug.bovinesandbuttercups.client.BovinesAndButtercupsClient;
 import net.merchantpug.bovinesandbuttercups.client.bovinestate.BovineStatesAssociationRegistry;
-import net.merchantpug.bovinesandbuttercups.client.platform.IBovinesClientHelper;
 import net.merchantpug.bovinesandbuttercups.client.resources.BovineBlockstateTypes;
 import net.merchantpug.bovinesandbuttercups.content.configuration.MoobloomConfiguration;
 import net.merchantpug.bovinesandbuttercups.content.entity.Moobloom;
+import net.merchantpug.bovinesandbuttercups.registry.BovinesRegistryKeys;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.CowModel;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -41,7 +41,7 @@ public class MoobloomFlowerLayer<T extends Moobloom, M extends CowModel<T>> exte
         bl = Minecraft.getInstance().shouldEntityAppearGlowing(entity) && entity.isInvisible();
         if (entity.isInvisible() && !bl) return;
 
-        MoobloomConfiguration configuration = entity.getMoobloomType().configuration();
+        MoobloomConfiguration configuration = entity.getMoobloomType().value().configuration();
 
         int m = LivingEntityRenderer.getOverlayCoords(entity, 0.0f);
 
@@ -50,23 +50,23 @@ public class MoobloomFlowerLayer<T extends Moobloom, M extends CowModel<T>> exte
 
         if (entity.isBaby()) {
             if (configuration.bud().modelLocation().isPresent()) {
-                modelResourceLocation = new ModelResourceLocation(configuration.bud().modelLocation().get(), "bovinesandbuttercups_");
+                modelResourceLocation = new ModelResourceLocation(configuration.bud().modelLocation().get(), "");
             } else if (configuration.bud().customType().isPresent()) {
-                ResourceLocation modelLocationWithoutVariant = BovineStatesAssociationRegistry.getBlock(entity.level().registryAccess().registry(BovinesResourceKeys.CUSTOM_FLOWER_TYPE).orElseThrow().getKey(configuration.bud().customType().get().value()), BovineBlockstateTypes.FLOWER).orElseGet(() -> BovinesAndButtercups.asResource("bovinesandbuttercups/missing_flower"));
-                modelResourceLocation = new ModelResourceLocation(modelLocationWithoutVariant, "bovinesandbuttercups_persistent=true");
+                ResourceLocation modelLocationWithoutVariant = BovineStatesAssociationRegistry.getBlock(entity.level().registryAccess().registry(BovinesRegistryKeys.CUSTOM_FLOWER_TYPE).orElseThrow().getKey(configuration.bud().customType().get().value()), BovineBlockstateTypes.FLOWER).orElseGet(() -> BovinesAndButtercups.asResource("bovinesandbuttercups/missing_flower"));
+                modelResourceLocation = new ModelResourceLocation(modelLocationWithoutVariant, "");
             } else {
-                modelResourceLocation = new ModelResourceLocation(BovinesAndButtercups.asResource("bovinesandbuttercups/missing_flower"), "bovinesandbuttercups_");
+                modelResourceLocation = new ModelResourceLocation(BovinesAndButtercups.asResource("bovinesandbuttercups/missing_flower"), "");
             }
             blockState = configuration.bud().blockState();
             handleMoobudRender(poseStack, buffer, entity, packedLight, bl, m, blockState, modelResourceLocation);
         } else {
             if (configuration.flower().modelLocation().isPresent()) {
-                modelResourceLocation = new ModelResourceLocation(configuration.flower().modelLocation().get(), "bovinesandbuttercups_");
+                modelResourceLocation = new ModelResourceLocation(configuration.flower().modelLocation().get(), "");
             } else if (configuration.flower().customType().isPresent()) {
-                ResourceLocation modelLocationWithoutVariant = BovineStatesAssociationRegistry.getBlock(entity.level().registryAccess().registry(BovinesResourceKeys.CUSTOM_FLOWER_TYPE).orElseThrow().getKey(configuration.bud().customType().get().value()), BovineBlockstateTypes.FLOWER).orElseGet(() -> BovinesAndButtercups.asResource("bovinesandbuttercups/missing_flower"));
-                modelResourceLocation = new ModelResourceLocation(modelLocationWithoutVariant, "bovinesandbuttercups_persistent=true");
+                ResourceLocation modelLocationWithoutVariant = BovineStatesAssociationRegistry.getBlock(entity.level().registryAccess().registry(BovinesRegistryKeys.CUSTOM_FLOWER_TYPE).orElseThrow().getKey(configuration.bud().customType().get().value()), BovineBlockstateTypes.FLOWER).orElseGet(() -> BovinesAndButtercups.asResource("bovinesandbuttercups/missing_flower"));
+                modelResourceLocation = new ModelResourceLocation(modelLocationWithoutVariant, "");
             } else {
-                modelResourceLocation = new ModelResourceLocation(BovinesAndButtercups.asResource("bovinesandbuttercups/missing_flower"), "bovinesandbuttercups_");
+                modelResourceLocation = new ModelResourceLocation(BovinesAndButtercups.asResource("bovinesandbuttercups/missing_flower"), "");
             }
             blockState = configuration.flower().blockState();
             handleMoobloomRender(poseStack, buffer, entity, packedLight, bl, m, blockState, modelResourceLocation);
@@ -157,7 +157,7 @@ public class MoobloomFlowerLayer<T extends Moobloom, M extends CowModel<T>> exte
 
     private void renderFlowerOrBud(PoseStack poseStack, MultiBufferSource buffer, int light, boolean outlineAndInvisible, BlockRenderDispatcher blockRenderDispatcher, int overlay, Optional<BlockState> flowerState, ResourceLocation resourceLocation) {
         BakedModel flowerModel;
-        flowerModel = flowerState.map(blockRenderDispatcher::getBlockModel).orElseGet(() -> IBovinesClientHelper.INSTANCE.getModel(resourceLocation));
+        flowerModel = flowerState.map(blockRenderDispatcher::getBlockModel).orElseGet(() -> BovinesAndButtercupsClient.getHelper().getModel(resourceLocation));
 
         if (outlineAndInvisible) {
             blockRenderDispatcher.getModelRenderer().renderModel(poseStack.last(), buffer.getBuffer(RenderType.outline(InventoryMenu.BLOCK_ATLAS)), null, flowerModel, 0.0f, 0.0f, 0.0f, light, overlay);

@@ -6,31 +6,26 @@ import net.merchantpug.bovinesandbuttercups.content.block.entity.CustomFlowerPot
 import net.merchantpug.bovinesandbuttercups.content.block.entity.CustomHugeMushroomBlockEntity;
 import net.merchantpug.bovinesandbuttercups.content.block.entity.CustomMushroomBlockEntity;
 import net.merchantpug.bovinesandbuttercups.content.block.entity.CustomMushroomPotBlockEntity;
-import net.merchantpug.bovinesandbuttercups.registry.internal.RegistrationProvider;
+import net.merchantpug.bovinesandbuttercups.registry.internal.RegistrationCallback;
 import net.minecraft.Util;
 import net.minecraft.core.Holder;
-import net.minecraft.core.registries.Registries;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.util.datafix.fixes.References;
-import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 
-import java.util.function.Supplier;
-
 public class BovinesBlockEntityTypes {
-    private static final RegistrationProvider<BlockEntityType<?>> BLOCK_ENTITY_TYPES = RegistrationProvider.get(Registries.BLOCK_ENTITY_TYPE, BovinesAndButtercups.MOD_ID);
+    public static final BlockEntityType<CustomFlowerBlockEntity> CUSTOM_FLOWER = BlockEntityType.Builder.of(CustomFlowerBlockEntity::new, BovinesBlocks.CUSTOM_FLOWER).build(Util.fetchChoiceType(References.BLOCK_ENTITY, BovinesAndButtercups.asResource("custom_flower").toString()));
+    public static final BlockEntityType<CustomMushroomBlockEntity> CUSTOM_MUSHROOM = BlockEntityType.Builder.of(CustomMushroomBlockEntity::new, BovinesBlocks.CUSTOM_MUSHROOM).build(Util.fetchChoiceType(References.BLOCK_ENTITY, BovinesAndButtercups.asResource("custom_mushroom").toString()));
+    public static final BlockEntityType<CustomFlowerPotBlockEntity> POTTED_CUSTOM_FLOWER = BlockEntityType.Builder.of(CustomFlowerPotBlockEntity::new, BovinesBlocks.POTTED_CUSTOM_FLOWER).build(Util.fetchChoiceType(References.BLOCK_ENTITY, BovinesAndButtercups.asResource("custom_potted_flower").toString()));
+    public static final BlockEntityType<CustomMushroomPotBlockEntity> POTTED_CUSTOM_MUSHROOM = BlockEntityType.Builder.of(CustomMushroomPotBlockEntity::new, BovinesBlocks.POTTED_CUSTOM_MUSHROOM).build(Util.fetchChoiceType(References.BLOCK_ENTITY, BovinesAndButtercups.asResource("custom_potted_mushroom").toString()));
+    public static final BlockEntityType<CustomHugeMushroomBlockEntity> CUSTOM_MUSHROOM_BLOCK = BlockEntityType.Builder.of(CustomHugeMushroomBlockEntity::new, BovinesBlocks.CUSTOM_MUSHROOM_BLOCK).build(Util.fetchChoiceType(References.BLOCK_ENTITY, BovinesAndButtercups.asResource("custom_mushroom_block").toString()));
 
-
-    public static final Holder<BlockEntityType<CustomFlowerBlockEntity>> CUSTOM_FLOWER = register("custom_flower", () -> BlockEntityType.Builder.of(CustomFlowerBlockEntity::new, BovinesBlocks.CUSTOM_FLOWER.value()).build(Util.fetchChoiceType(References.BLOCK_ENTITY, BovinesAndButtercups.asResource("custom_flower").toString())));
-    public static final Holder<BlockEntityType<CustomMushroomBlockEntity>> CUSTOM_MUSHROOM = register("custom_mushroom", () -> BlockEntityType.Builder.of(CustomMushroomBlockEntity::new, BovinesBlocks.CUSTOM_MUSHROOM.value()).build(Util.fetchChoiceType(References.BLOCK_ENTITY, BovinesAndButtercups.asResource("custom_mushroom").toString())));
-    public static final Holder<BlockEntityType<CustomFlowerPotBlockEntity>> POTTED_CUSTOM_FLOWER = register("potted_custom_flower", () -> BlockEntityType.Builder.of(CustomFlowerPotBlockEntity::new, BovinesBlocks.POTTED_CUSTOM_FLOWER.value()).build(Util.fetchChoiceType(References.BLOCK_ENTITY, BovinesAndButtercups.asResource("custom_potted_flower").toString())));
-    public static final Holder<BlockEntityType<CustomMushroomPotBlockEntity>> POTTED_CUSTOM_MUSHROOM = register("potted_custom_mushroom", () -> BlockEntityType.Builder.of(CustomMushroomPotBlockEntity::new, BovinesBlocks.POTTED_CUSTOM_MUSHROOM.value()).build(Util.fetchChoiceType(References.BLOCK_ENTITY, BovinesAndButtercups.asResource("custom_potted_mushroom").toString())));
-    public static final Holder<BlockEntityType<CustomHugeMushroomBlockEntity>> CUSTOM_MUSHROOM_BLOCK = register("custom_mushroom_block", () -> BlockEntityType.Builder.of(CustomHugeMushroomBlockEntity::new, BovinesBlocks.CUSTOM_MUSHROOM_BLOCK.value()).build(Util.fetchChoiceType(References.BLOCK_ENTITY, BovinesAndButtercups.asResource("custom_mushroom_block").toString())));
-
-    public static void register() {
-
-    }
-
-    private static <T extends BlockEntity> Holder<BlockEntityType<T>> register(String name, Supplier<BlockEntityType<T>> type) {
-        return BLOCK_ENTITY_TYPES.register(name, type);
+    public static void registerAll(RegistrationCallback<BlockEntityType<?>> callback) {
+        callback.register(BuiltInRegistries.BLOCK_ENTITY_TYPE, BovinesAndButtercups.asResource("custom_flower"), CUSTOM_FLOWER);
+        callback.register(BuiltInRegistries.BLOCK_ENTITY_TYPE, BovinesAndButtercups.asResource("custom_mushroom"), CUSTOM_MUSHROOM);
+        callback.register(BuiltInRegistries.BLOCK_ENTITY_TYPE, BovinesAndButtercups.asResource("potted_custom_flower"), POTTED_CUSTOM_FLOWER);
+        callback.register(BuiltInRegistries.BLOCK_ENTITY_TYPE, BovinesAndButtercups.asResource("potted_custom_mushroom"), POTTED_CUSTOM_MUSHROOM);
+        callback.register(BuiltInRegistries.BLOCK_ENTITY_TYPE, BovinesAndButtercups.asResource("custom_mushroom_block"), CUSTOM_MUSHROOM_BLOCK);
     }
 }

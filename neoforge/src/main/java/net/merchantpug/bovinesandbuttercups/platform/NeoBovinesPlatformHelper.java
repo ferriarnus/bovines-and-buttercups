@@ -1,24 +1,29 @@
 package net.merchantpug.bovinesandbuttercups.platform;
 
-import com.google.auto.service.AutoService;
-import net.merchantpug.bovinesandbuttercups.platform.services.IBovinesPlatformHelper;
+import net.merchantpug.bovinesandbuttercups.api.attachment.LockdownAttachment;
+import net.merchantpug.bovinesandbuttercups.registry.BovinesAttachments;
 import net.merchantpug.bovinesandbuttercups.util.PottedBlockMapUtil;
 import net.minecraft.core.Registry;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.fml.ModList;
 import net.neoforged.fml.loading.FMLLoader;
+import net.neoforged.neoforge.network.PacketDistributor;
+import net.neoforged.neoforge.network.registration.NetworkChannel;
 import net.neoforged.neoforge.registries.RegistryBuilder;
 
 import java.util.Map;
 
-@AutoService(IBovinesPlatformHelper.class)
-public class NeoBovinesPlatformHelper implements IBovinesPlatformHelper {
+public class NeoBovinesPlatformHelper implements BovinesPlatformHelper {
+
+    private static final NeoBovinesRegistryHelper REGISTRY = new NeoBovinesRegistryHelper();
 
     @Override
-    public String getPlatformName() {
-
-        return "Forge";
+    public BovinesPlatform getPlatform() {
+        return BovinesPlatform.NEOFORGE;
     }
 
     @Override
@@ -41,6 +46,20 @@ public class NeoBovinesPlatformHelper implements IBovinesPlatformHelper {
     @Override
     public Map<Block, Block> getPottedBlockMap() {
         return PottedBlockMapUtil.getPottedContentMap();
+    }
+
+    public BovinesRegistryHelper getRegistryHelper() {
+        return REGISTRY;
+    }
+
+    @Override
+    public LockdownAttachment getLockdownAttachment(LivingEntity entity) {
+        return entity.getData(BovinesAttachments.LOCKDOWN);
+    }
+
+    @Override
+    public void sendTrackingClientboundPacket(CustomPacketPayload payload, LivingEntity entity) {
+        PacketDistributor.sendToPlayersTrackingEntity(entity, payload);
     }
 
 }

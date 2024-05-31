@@ -1,15 +1,16 @@
 package net.merchantpug.bovinesandbuttercups.content.block;
 
-import net.merchantpug.bovinesandbuttercups.api.BovinesResourceKeys;
-import net.merchantpug.bovinesandbuttercups.api.block.CustomMushroomType;
+import com.mojang.serialization.MapCodec;
 import net.merchantpug.bovinesandbuttercups.content.block.entity.CustomHugeMushroomBlockEntity;
+import net.merchantpug.bovinesandbuttercups.content.block.entity.CustomMushroomPotBlockEntity;
 import net.merchantpug.bovinesandbuttercups.registry.BovinesBlockEntityTypes;
+import net.merchantpug.bovinesandbuttercups.registry.BovinesDataComponents;
+import net.merchantpug.bovinesandbuttercups.registry.BovinesItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Mirror;
@@ -32,22 +33,24 @@ public class CustomHugeMushroomBlock extends BaseEntityBlock {
     public static final BooleanProperty DOWN = PipeBlock.DOWN;
     private static final Map<Direction, BooleanProperty> PROPERTY_BY_DIRECTION = PipeBlock.PROPERTY_BY_DIRECTION;
 
+    private static final MapCodec<CustomHugeMushroomBlock> CODEC = simpleCodec(CustomHugeMushroomBlock::new);
+
     public CustomHugeMushroomBlock(Properties properties) {
         super(properties);
     }
 
     @Override
-    public ItemStack getCloneItemStack(BlockGetter blockGetter, BlockPos blockPos, BlockState blockState) {
-        ItemStack itemStack = new ItemStack(this);
-        BlockEntity blockEntity = blockGetter.getBlockEntity(blockPos);
-        if (blockEntity instanceof CustomHugeMushroomBlockEntity chmbe && chmbe.getLevel() != null) {
-            CompoundTag compound = new CompoundTag();
-            if (chmbe.customMushroomType() != null && !chmbe.customMushroomType().equals(CustomMushroomType.MISSING)) {
-                compound.putString("Type", chmbe.getLevel().registryAccess().registry(BovinesResourceKeys.CUSTOM_MUSHROOM_TYPE).orElseThrow().getKey(chmbe.customMushroomType()).toString());
-                itemStack.getOrCreateTag().put("BlockEntityTag", compound);
-            }
-        }
-        return itemStack;
+    protected MapCodec<? extends BaseEntityBlock> codec() {
+        return CODEC;
+    }
+
+    @Override
+    public ItemStack getCloneItemStack(LevelReader level, BlockPos pos, BlockState state) {
+        ItemStack stack = new ItemStack(BovinesItems.CUSTOM_MUSHROOM);
+        BlockEntity blockEntity = level.getBlockEntity(pos);
+        if (blockEntity instanceof CustomMushroomPotBlockEntity cmpbe)
+            stack.set(BovinesDataComponents.CUSTOM_MUSHROOM, cmpbe.getMushroomType());
+        return stack;
     }
 
     public BlockState updateShape(BlockState state, Direction direction, BlockState state2, LevelAccessor level, BlockPos pos, BlockPos pos2) {
@@ -71,6 +74,6 @@ public class CustomHugeMushroomBlock extends BaseEntityBlock {
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return BovinesBlockEntityTypes.CUSTOM_MUSHROOM_BLOCK.value().create(pos, state);
+        return BovinesBlockEntityTypes.CUSTOM_MUSHROOM_BLOCK.create(pos, state);
     }
 }

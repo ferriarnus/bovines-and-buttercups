@@ -1,69 +1,36 @@
 package net.merchantpug.bovinesandbuttercups.content.block.entity;
 
-import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
-import net.merchantpug.bovinesandbuttercups.api.BovineRegistryUtil;
-import net.merchantpug.bovinesandbuttercups.api.BovinesResourceKeys;
-import net.merchantpug.bovinesandbuttercups.api.block.CustomMushroomType;
-import net.merchantpug.bovinesandbuttercups.data.block.MushroomType;
-import net.merchantpug.bovinesandbuttercups.registry.BovineBlockEntityTypes;
+import net.merchantpug.bovinesandbuttercups.content.component.ItemCustomMushroom;
+import net.merchantpug.bovinesandbuttercups.registry.BovinesBlockEntityTypes;
+import net.merchantpug.bovinesandbuttercups.registry.BovinesDataComponents;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Objects;
-
 public class CustomMushroomPotBlockEntity extends BlockEntity {
-    @Nullable private MushroomType cachedMushroomType;
-    @Nullable private String mushroomTypeName;
+    @Nullable
+    private ItemCustomMushroom customMushroom;
 
     public CustomMushroomPotBlockEntity(BlockPos worldPosition, BlockState blockState) {
-        super(BovineBlockEntityTypes.POTTED_CUSTOM_MUSHROOM.get(), worldPosition, blockState);
+        super(BovinesBlockEntityTypes.POTTED_CUSTOM_MUSHROOM, worldPosition, blockState);
     }
 
-    @Override
-    public void load(CompoundTag tag) {
-        super.load(tag);
-        mushroomTypeName = tag.getString("Type");
+    protected void applyImplicitComponents(BlockEntity.DataComponentInput input) {
+        customMushroom = input.get(BovinesDataComponents.CUSTOM_MUSHROOM);
     }
 
-    @Override
-    protected void saveAdditional(CompoundTag tag) {
-        super.saveAdditional(tag);
-        tag.putString("Type", Objects.requireNonNullElse(this.mushroomTypeName, "bovinesandbuttercups:missing_mushroom"));
+    @Nullable public ItemCustomMushroom getMushroomType() {
+        return customMushroom;
     }
 
-    @Nullable public String getMushroomTypeName() {
-        return mushroomTypeName;
-    }
-
-    public void setMushroomTypeName(@Nullable String value) {
-        mushroomTypeName = value;
-        this.customMushroomType();
-    }
-
-    public CustomMushroomType customMushroomType() {
-        try {
-            if (this.getLevel() != null) {
-                if (mushroomTypeName == null) {
-                    return CustomMushroomType.MISSING;
-                } else if (cachedMushroomType != this.level.registryAccess().registry(BovinesResourceKeys.CUSTOM_MUSHROOM_TYPE).orElseThrow().get(ResourceLocation.tryParse(mushroomTypeName))) {
-                    cachedMushroomType = this.level.registryAccess().registry(BovinesResourceKeys.CUSTOM_MUSHROOM_TYPE).orElseThrow().get(ResourceLocation.tryParse(mushroomTypeName));
-                    return cachedMushroomType;
-                } else if (cachedMushroomType != null) {
-                    return cachedMushroomType;
-                }
-            }
-        } catch (Exception e) {
-            this.cachedMushroomType = CustomMushroomType.MISSING;
-            BovinesAndButtercups.LOG.warn("Could not load MushroomType at BlockPos '" + this.getBlockPos().toString() + "': ", e.getMessage());
-        }
-        return CustomMushroomType.MISSING;
+    public void setMushroomType(@Nullable ItemCustomMushroom value) {
+        customMushroom = value;
     }
 
     @Nullable
@@ -73,7 +40,7 @@ public class CustomMushroomPotBlockEntity extends BlockEntity {
     }
 
     @Override
-    public CompoundTag getUpdateTag() {
-        return saveWithoutMetadata();
+    public CompoundTag getUpdateTag(HolderLookup.Provider provider) {
+        return saveWithoutMetadata(provider);
     }
 }

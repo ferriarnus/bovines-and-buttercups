@@ -5,40 +5,52 @@ import net.merchantpug.bovinesandbuttercups.content.item.CustomFlowerItem;
 import net.merchantpug.bovinesandbuttercups.content.item.CustomHugeMushroomItem;
 import net.merchantpug.bovinesandbuttercups.content.item.CustomMushroomItem;
 import net.merchantpug.bovinesandbuttercups.content.item.NectarBowlItem;
-import net.merchantpug.bovinesandbuttercups.platform.services.IBovinesRegistryHelper;
-import net.merchantpug.bovinesandbuttercups.registry.internal.RegistrationProvider;
+import net.merchantpug.bovinesandbuttercups.platform.BovinesRegistryHelper;
+import net.merchantpug.bovinesandbuttercups.registry.internal.RegistrationCallback;
 import net.minecraft.core.Holder;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.SpawnEggItem;
 
 import java.util.function.Supplier;
 
 public class BovinesItems {
-    private static final RegistrationProvider<Item> ITEMS = RegistrationProvider.get(Registries.ITEM, BovinesAndButtercups.MOD_ID);
+    public static final NectarBowlItem NECTAR_BOWL = BovinesAndButtercups.getHelper().getRegistryHelper().createNectarBowlItem(new Item.Properties().stacksTo(1).craftRemainder(Items.BOWL));
+    public static final Item MOOBLOOM_SPAWN_EGG = new SpawnEggItem(BovinesEntityTypes.MOOBLOOM, 0xfad200, 0x437f34, new Item.Properties());
 
-    public static final Holder<NectarBowlItem> NECTAR_BOWL = register("nectar_bowl", () -> IBovinesRegistryHelper.INSTANCE.createNectarBowlItem(new Item.Properties().stacksTo(1)));
-    public static final Holder<Item> MOOBLOOM_SPAWN_EGG = register("moobloom_spawn_egg", () -> IBovinesRegistryHelper.INSTANCE.createSpawnEggItem(BovinesEntityTypes.MOOBLOOM::value, 0xfad200, 0x437f34, new Item.Properties()));
+    public static final BlockItem BUTTERCUP = new BlockItem(BovinesBlocks.BUTTERCUP, new Item.Properties());
+    public static final BlockItem PINK_DAISY = new BlockItem(BovinesBlocks.PINK_DAISY, new Item.Properties());
+    public static final BlockItem LIMELIGHT = new BlockItem(BovinesBlocks.LIMELIGHT, new Item.Properties());
+    public static final BlockItem BIRD_OF_PARADISE = new BlockItem(BovinesBlocks.BIRD_OF_PARADISE, new Item.Properties());
+    public static final BlockItem CHARGELILY = new BlockItem(BovinesBlocks.CHARGELILY, new Item.Properties());
+    public static final BlockItem HYACINTH = new BlockItem(BovinesBlocks.HYACINTH, new Item.Properties());
+    public static final BlockItem SNOWDROP = new BlockItem(BovinesBlocks.SNOWDROP, new Item.Properties());
+    public static final BlockItem TROPICAL_BLUE = new BlockItem(BovinesBlocks.TROPICAL_BLUE, new Item.Properties());
+    public static final BlockItem FREESIA = new BlockItem(BovinesBlocks.FREESIA, new Item.Properties());
 
-    public static final Holder<BlockItem> BUTTERCUP = register("buttercup", () -> new BlockItem(BovinesBlocks.BUTTERCUP.value(), new Item.Properties()));
-    public static final Holder<BlockItem> PINK_DAISY = register("pink_daisy", () -> new BlockItem(BovinesBlocks.PINK_DAISY.value(), new Item.Properties()));
-    public static final Holder<BlockItem> LIMELIGHT = register("limelight", () -> new BlockItem(BovinesBlocks.LIMELIGHT.value(), new Item.Properties()));
-    public static final Holder<BlockItem> BIRD_OF_PARADISE = register("bird_of_paradise", () -> new BlockItem(BovinesBlocks.BIRD_OF_PARADISE.value(), new Item.Properties()));
-    public static final Holder<BlockItem> CHARGELILY = register("chargelily", () -> new BlockItem(BovinesBlocks.CHARGELILY.value(), new Item.Properties()));
-    public static final Holder<BlockItem> HYACINTH = register("hyacinth", () -> new BlockItem(BovinesBlocks.HYACINTH.value(), new Item.Properties()));
-    public static final Holder<BlockItem> SNOWDROP = register("snowdrop", () -> new BlockItem(BovinesBlocks.SNOWDROP.value(), new Item.Properties()));
-    public static final Holder<BlockItem> TROPICAL_BLUE = register("tropical_blue", () -> new BlockItem(BovinesBlocks.TROPICAL_BLUE.value(), new Item.Properties()));
-    public static final Holder<BlockItem> FREESIA = register("freesia", () -> new BlockItem(BovinesBlocks.FREESIA.value(), new Item.Properties()));
+    public static final CustomFlowerItem CUSTOM_FLOWER = BovinesAndButtercups.getHelper().getRegistryHelper().createCustomFlowerItem();
+    public static final CustomMushroomItem CUSTOM_MUSHROOM = BovinesAndButtercups.getHelper().getRegistryHelper().createCustomMushroomItem();
+    public static final CustomHugeMushroomItem CUSTOM_MUSHROOM_BLOCK = BovinesAndButtercups.getHelper().getRegistryHelper().createCustomHugeMushroomItem();
 
-    public static final Holder<CustomFlowerItem> CUSTOM_FLOWER = register("custom_flower", IBovinesRegistryHelper.INSTANCE::createCustomFlowerItem);
-    public static final Holder<CustomMushroomItem> CUSTOM_MUSHROOM = register("custom_mushroom", IBovinesRegistryHelper.INSTANCE::createCustomMushroomItem);
-    public static final Holder<CustomHugeMushroomItem> CUSTOM_MUSHROOM_BLOCK = register("custom_mushroom_block", IBovinesRegistryHelper.INSTANCE::createCustomHugeMushroomItem);
+    public static void registerAll(RegistrationCallback<Item> callback) {
+        callback.register(BuiltInRegistries.ITEM, BovinesAndButtercups.asResource("nectar_bowl"), NECTAR_BOWL);
+        callback.register(BuiltInRegistries.ITEM, BovinesAndButtercups.asResource("moobloom_spawn_egg"), MOOBLOOM_SPAWN_EGG);
 
-    public static void register() {
+        callback.register(BuiltInRegistries.ITEM, BovinesAndButtercups.asResource("buttercup"), BUTTERCUP);
+        callback.register(BuiltInRegistries.ITEM, BovinesAndButtercups.asResource("pink_daisy"), PINK_DAISY);
+        callback.register(BuiltInRegistries.ITEM, BovinesAndButtercups.asResource("limelight"), LIMELIGHT);
+        callback.register(BuiltInRegistries.ITEM, BovinesAndButtercups.asResource("bird_of_paradise"), BIRD_OF_PARADISE);
+        callback.register(BuiltInRegistries.ITEM, BovinesAndButtercups.asResource("chargelily"), CHARGELILY);
+        callback.register(BuiltInRegistries.ITEM, BovinesAndButtercups.asResource("hyacinth"), HYACINTH);
+        callback.register(BuiltInRegistries.ITEM, BovinesAndButtercups.asResource("snowdrop"), SNOWDROP);
+        callback.register(BuiltInRegistries.ITEM, BovinesAndButtercups.asResource("tropical_blue"), TROPICAL_BLUE);
+        callback.register(BuiltInRegistries.ITEM, BovinesAndButtercups.asResource("freesia"), FREESIA);
 
-    }
-
-    private static <T extends Item> Holder<T> register(String name, Supplier<T> item) {
-        return ITEMS.register(name, item);
+        callback.register(BuiltInRegistries.ITEM, BovinesAndButtercups.asResource("custom_flower"), CUSTOM_FLOWER);
+        callback.register(BuiltInRegistries.ITEM, BovinesAndButtercups.asResource("custom_mushroom"), CUSTOM_MUSHROOM);
+        callback.register(BuiltInRegistries.ITEM, BovinesAndButtercups.asResource("custom_mushroom_block"), CUSTOM_MUSHROOM_BLOCK);
     }
 }

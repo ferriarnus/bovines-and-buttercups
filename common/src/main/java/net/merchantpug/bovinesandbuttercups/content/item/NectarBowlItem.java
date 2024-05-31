@@ -1,92 +1,26 @@
 package net.merchantpug.bovinesandbuttercups.content.item;
 
-import net.merchantpug.bovinesandbuttercups.api.BovinesResourceKeys;
-import net.merchantpug.bovinesandbuttercups.api.ConfiguredCowType;
-import net.merchantpug.bovinesandbuttercups.api.CowType;
-import net.merchantpug.bovinesandbuttercups.content.configuration.MoobloomConfiguration;
-import net.merchantpug.bovinesandbuttercups.platform.services.IBovinesComponentHelper;
-import net.merchantpug.bovinesandbuttercups.registry.BovinesEffects;
-import net.minecraft.ChatFormatting;
+import net.merchantpug.bovinesandbuttercups.content.component.NectarEffects;
+import net.merchantpug.bovinesandbuttercups.registry.BovinesDataComponents;
 import net.minecraft.advancements.CriteriaTriggers;
-import net.minecraft.core.RegistryAccess;
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.Tag;
-import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
-import net.minecraft.world.effect.MobEffect;
-import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ItemUtils;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Optional;
-
 public class NectarBowlItem extends Item {
-    public static final String SOURCE_KEY = "Source";
-    public static final String EFFECTS_KEY = "Effects";
-    public static final String EFFECT_ID_KEY = "EffectId";
-    public static final String EFFECT_DURATION_KEY = "EffectDuration";
 
     public NectarBowlItem(Properties properties) {
         super(properties);
-    }
-
-    public static void saveMobEffect(ItemStack nectar, MobEffect effect, int duration) {
-        CompoundTag compoundTag = nectar.getOrCreateTag();
-        ListTag listTag = compoundTag.getList(EFFECTS_KEY, 9);
-        CompoundTag compoundTag2 = new CompoundTag();
-        ResourceLocation effectLocation = BuiltInRegistries.MOB_EFFECT.getKey(effect);
-        if (effectLocation != null) {
-            compoundTag2.putString(EFFECT_ID_KEY, effectLocation.toString());
-            compoundTag2.putInt(EFFECT_DURATION_KEY, duration);
-        }
-        listTag.add(compoundTag2);
-        compoundTag.put(EFFECTS_KEY, listTag);
-    }
-
-    public static void saveMoobloomTypeKey(ItemStack nectar, ResourceLocation location) {
-        CompoundTag tag = nectar.getOrCreateTag();
-        tag.putString(SOURCE_KEY, location.toString());
-    }
-
-    public void appendHoverText(ItemStack stack, Level level, List<Component> components, TooltipFlag flag) {
-        CompoundTag tag = stack.getTag();
-        if (tag != null && tag.contains(SOURCE_KEY, Tag.TAG_STRING)) {
-            ResourceLocation location = ResourceLocation.tryParse(tag.getString(SOURCE_KEY));
-            getMoobloomName(location, level.registryAccess()).ifPresent(components::add);
-        }
-    }
-
-    private Optional<Component> getMoobloomName(ResourceLocation moobloomLocation, RegistryAccess access) {
-        if (access.registry(BovinesResourceKeys.CONFIGURED_COW_TYPE).orElseThrow().containsKey(moobloomLocation) && access.registry(BovinesResourceKeys.CONFIGURED_COW_TYPE).orElseThrow().get(moobloomLocation).configuration() instanceof MoobloomConfiguration) {
-            ConfiguredCowType<MoobloomConfiguration, CowType<MoobloomConfiguration>> moobloom = (ConfiguredCowType<MoobloomConfiguration, CowType<MoobloomConfiguration>>) access.registry(BovinesResourceKeys.CONFIGURED_COW_TYPE).orElseThrow().get(moobloomLocation);
-            if (!moobloom.equals(MoobloomConfiguration.DEFAULT)) {
-                if (moobloom.configuration().flower().blockState().isPresent()) {
-                    return Optional.of(Component.translatable(moobloom.configuration().flower().blockState().get().getBlock().getDescriptionId()).withStyle(ChatFormatting.BLUE));
-                } else if (moobloom.configuration().flower().customType().isPresent()) {
-                    ResourceLocation location = access.registry(BovinesResourceKeys.CUSTOM_FLOWER_TYPE).orElseThrow().getKey(moobloom.configuration().flower().customType().get().value());
-                    return Optional.of(Component.translatable("block." + location.getNamespace() + "." + location.getPath()).withStyle(ChatFormatting.BLUE));
-                } else {
-                    return Optional.of(Component.translatable("configured_cow_type." + moobloomLocation.getNamespace() + "." + moobloomLocation.getPath() + ".name").withStyle(ChatFormatting.BLUE));
-                }
-            }
-        }
-        return Optional.empty();
     }
 
     @Override
@@ -99,30 +33,8 @@ public class NectarBowlItem extends Item {
         if (livingEntity instanceof Player && !((Player)livingEntity).getAbilities().instabuild) {
             itemStack.shrink(1);
         }
-        CompoundTag compoundTag = itemStack.getTag();
-        if (compoundTag != null && compoundTag.contains(EFFECTS_KEY, 9)) {
-            HashMap<MobEffect, Integer> lockedEffectHashmap = new HashMap<>();
-            int duration = 0;
-            ListTag nbtList = compoundTag.getList(EFFECTS_KEY, 10);
-            for (int i = 0; i < nbtList.size(); ++i) {
-                MobEffect statusEffect;
-                CompoundTag compoundTag2 = nbtList.getCompound(i);
-                if ((statusEffect = BuiltInRegistries.MOB_EFFECT.get(ResourceLocation.tryParse(compoundTag2.getString(EFFECT_ID_KEY)))) == null) continue;
-                if (compoundTag2.contains(EFFECT_DURATION_KEY, Tag.TAG_INT)) {
-                    int compoundDuration = compoundTag2.getInt(EFFECT_DURATION_KEY);
-                    if (compoundDuration > duration) {
-                        duration = compoundDuration;
-                    }
-                    if (!lockedEffectHashmap.containsKey(statusEffect) || lockedEffectHashmap.containsKey(statusEffect) && duration > lockedEffectHashmap.get(statusEffect)) {
-                        lockedEffectHashmap.put(statusEffect, compoundDuration);
-                    }
-                }
-            }
-            MobEffectInstance instance = new MobEffectInstance(BovinesEffects.LOCKDOWN.value(), duration);
-            lockedEffectHashmap.forEach((effect, integer) -> IBovinesComponentHelper.INSTANCE.getLockdown(livingEntity).addLockdownMobEffect(effect, integer));
-            IBovinesComponentHelper.INSTANCE.getLockdown(livingEntity).sync();
-            livingEntity.addEffect(instance);
-        }
+        NectarEffects effects = itemStack.getOrDefault(BovinesDataComponents.NECTAR_EFFECTS, NectarEffects.EMPTY);
+        effects.applyEffectInstance(livingEntity);
         if (player != null) {
             player.awardStat(Stats.ITEM_USED.get(this));
             if (!player.getAbilities().instabuild) {
@@ -133,16 +45,6 @@ public class NectarBowlItem extends Item {
             return new ItemStack(Items.BOWL);
         }
         return itemStack;
-    }
-
-    public static ConfiguredCowType<MoobloomConfiguration, CowType<MoobloomConfiguration>> getCowTypeFromStack(ItemStack stack, RegistryAccess access) {
-        CompoundTag tag = stack.getTag();
-        if (tag != null && tag.contains(SOURCE_KEY, Tag.TAG_STRING)) {
-            ResourceLocation resourceLocation = ResourceLocation.tryParse(tag.getString(SOURCE_KEY));
-            if (resourceLocation != null && access.registry(BovinesResourceKeys.CONFIGURED_COW_TYPE).orElseThrow().containsKey(resourceLocation) && access.registry(BovinesResourceKeys.CONFIGURED_COW_TYPE).orElseThrow().get(resourceLocation).configuration() instanceof MoobloomConfiguration)
-                return (ConfiguredCowType<MoobloomConfiguration, CowType<MoobloomConfiguration>>) access.registry(BovinesResourceKeys.CONFIGURED_COW_TYPE).orElseThrow().get(resourceLocation);
-        }
-        return null;
     }
 
     @Override

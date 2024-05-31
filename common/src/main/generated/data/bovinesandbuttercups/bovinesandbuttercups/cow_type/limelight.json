@@ -1,0 +1,173 @@
+{
+  "type": "bovinesandbuttercups:moobloom",
+  "back_grass": {
+    "texture_location": "bovinesandbuttercups:bovinesandbuttercups/moobloom/moobloom_grass"
+  },
+  "bud": {
+    "model_location": "bovinesandbuttercups:bovinesandbuttercups/limelight_bud"
+  },
+  "flower": {
+    "block_state": {
+      "Name": "bovinesandbuttercups:limelight"
+    }
+  },
+  "natural_spawns": [],
+  "nectar_effects": [
+    {
+      "duration": 2400,
+      "id": "minecraft:regeneration"
+    }
+  ],
+  "nectar_palette": "bovinesandbuttercups:bovinesandbuttercups/item/limelight_nectar_bowl",
+  "offspring_conditions": {
+    "this_conditions": [
+      {
+        "condition": "minecraft:any_of",
+        "terms": [
+          {
+            "condition": "minecraft:all_of",
+            "terms": [
+              {
+                "condition": "minecraft:any_of",
+                "terms": [
+                  {
+                    "block": "minecraft:cave_vines",
+                    "condition": "bovinesandbuttercups:block_in_radius",
+                    "radius": {
+                      "max_x": 6.0,
+                      "max_y": 8.0,
+                      "max_z": 6.0,
+                      "min_x": -6.0,
+                      "min_y": 2.0,
+                      "min_z": -6.0
+                    }
+                  },
+                  {
+                    "block": "minecraft:cave_vines_plant",
+                    "condition": "bovinesandbuttercups:block_in_radius",
+                    "radius": {
+                      "max_x": 6.0,
+                      "max_y": 8.0,
+                      "max_z": 6.0,
+                      "min_x": -6.0,
+                      "min_y": 2.0,
+                      "min_z": -6.0
+                    }
+                  }
+                ]
+              },
+              {
+                "condition": "minecraft:any_of",
+                "terms": [
+                  {
+                    "block": "minecraft:big_dripleaf",
+                    "condition": "bovinesandbuttercups:block_in_radius",
+                    "radius": {
+                      "max_x": 6.0,
+                      "max_y": 8.0,
+                      "max_z": 6.0,
+                      "min_x": -6.0,
+                      "min_y": 2.0,
+                      "min_z": -6.0
+                    }
+                  },
+                  {
+                    "block": "minecraft:small_dripleaf",
+                    "condition": "bovinesandbuttercups:block_in_radius",
+                    "radius": {
+                      "max_x": 6.0,
+                      "max_y": 8.0,
+                      "max_z": 6.0,
+                      "min_x": -6.0,
+                      "min_y": 2.0,
+                      "min_z": -6.0
+                    }
+                  }
+                ]
+              },
+              {
+                "condition": "minecraft:any_of",
+                "terms": [
+                  {
+                    "block": "minecraft:flowering_azalea_leaves",
+                    "condition": "bovinesandbuttercups:block_in_radius",
+                    "radius": {
+                      "max_x": 6.0,
+                      "max_y": 8.0,
+                      "max_z": 6.0,
+                      "min_x": -6.0,
+                      "min_y": 2.0,
+                      "min_z": -6.0
+                    }
+                  },
+                  {
+                    "block": "minecraft:flowering_azalea",
+                    "condition": "bovinesandbuttercups:block_in_radius",
+                    "radius": {
+                      "max_x": 6.0,
+                      "max_y": 8.0,
+                      "max_z": 6.0,
+                      "min_x": -6.0,
+                      "min_y": 2.0,
+                      "min_z": -6.0
+                    }
+                  },
+                  {
+                    "block": "minecraft:potted_flowering_azalea_bush",
+                    "condition": "bovinesandbuttercups:block_in_radius",
+                    "radius": {
+                      "max_x": 6.0,
+                      "max_y": 8.0,
+                      "max_z": 6.0,
+                      "min_x": -6.0,
+                      "min_y": 2.0,
+                      "min_z": -6.0
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "condition": "minecraft:any_of",
+            "terms": [
+              {
+                "block": "bovinesandbuttercups:limelight",
+                "condition": "bovinesandbuttercups:block_in_radius",
+                "radius": {
+                  "max_x": 6.0,
+                  "max_y": 8.0,
+                  "max_z": 6.0,
+                  "min_x": -6.0,
+                  "min_y": 2.0,
+                  "min_z": -6.0
+                }
+              },
+              {
+                "block": "bovinesandbuttercups:potted_limelight",
+                "condition": "bovinesandbuttercups:block_in_radius",
+                "radius": {
+                  "max_x": 6.0,
+                  "max_y": 8.0,
+                  "max_z": 6.0,
+                  "min_x": -6.0,
+                  "min_y": 2.0,
+                  "min_z": -6.0
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "particle": {
+    "type": "bovinesandbuttercups:bloom",
+    "color": 10876830
+  },
+  "thunder_conversion_types": [
+    {
+      "type": "bovinesandbuttercups:chargelily"
+    }
+  ]
+}

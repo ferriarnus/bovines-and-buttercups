@@ -5,7 +5,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
 import net.merchantpug.bovinesandbuttercups.client.bovinestate.BovineStatesAssociationRegistry;
 import net.merchantpug.bovinesandbuttercups.client.resources.BovineBlockstateTypes;
-import net.merchantpug.bovinesandbuttercups.content.item.CustomFlowerItem;
+import net.merchantpug.bovinesandbuttercups.registry.BovinesDataComponents;
 import net.merchantpug.bovinesandbuttercups.util.QuaternionUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -27,8 +27,8 @@ public class CustomFlowerItemRendererHelper {
         Level level = Minecraft.getInstance().level;
         if (level == null) return;
 
-        if (CustomFlowerItem.getFlowerTypeFromTag(stack, level.registryAccess()).isPresent()) {
-            Optional<ResourceLocation> modelLocationWithoutVariant = BovineStatesAssociationRegistry.getItem(CustomFlowerItem.getFlowerTypeKeyFromTag(stack, level.registryAccess()), BovineBlockstateTypes.FLOWER, false);
+        if (stack.has(BovinesDataComponents.CUSTOM_FLOWER)) {
+            Optional<ResourceLocation> modelLocationWithoutVariant = BovineStatesAssociationRegistry.getItem(stack.get(BovinesDataComponents.CUSTOM_FLOWER).holder().unwrapKey().get().location(), BovineBlockstateTypes.FLOWER, false);
             if (modelLocationWithoutVariant.isPresent()) {
                 modelResourceLocation = new ModelResourceLocation(modelLocationWithoutVariant.get(), "inventory");
             }

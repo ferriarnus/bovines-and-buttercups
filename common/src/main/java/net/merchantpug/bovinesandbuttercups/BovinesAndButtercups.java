@@ -1,7 +1,7 @@
 package net.merchantpug.bovinesandbuttercups;
 
-import net.merchantpug.bovinesandbuttercups.registry.BovinesCowTypes;
-import net.merchantpug.bovinesandbuttercups.registry.BovinesEntityTypes;
+import net.merchantpug.bovinesandbuttercups.platform.BovinesPlatformHelper;
+import net.merchantpug.bovinesandbuttercups.registry.BovinesCriteriaTriggers;
 import net.merchantpug.bovinesandbuttercups.registry.BovinesRegistries;
 import net.minecraft.resources.ResourceLocation;
 import org.slf4j.Logger;
@@ -12,11 +12,16 @@ public class BovinesAndButtercups {
     public static final String MOD_NAME = "Bovines and Buttercups";
     public static final Logger LOG = LoggerFactory.getLogger(MOD_NAME);
 
-    public static void init() {
-        BovinesRegistries.init();
+    private static BovinesPlatformHelper helper;
 
-        BovinesCowTypes.init();
-        BovinesEntityTypes.registerAll();
+    public static void init(BovinesPlatformHelper helper) {
+        BovinesAndButtercups.helper = helper;
+        BovinesRegistries.init();
+        BovinesCriteriaTriggers.registerAll();
+    }
+
+    public static BovinesPlatformHelper getHelper() {
+        return helper;
     }
 
     public static ResourceLocation asResource(String path) {

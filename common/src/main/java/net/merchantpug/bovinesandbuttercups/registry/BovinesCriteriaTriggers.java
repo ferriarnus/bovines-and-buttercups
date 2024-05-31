@@ -10,7 +10,7 @@ public class BovinesCriteriaTriggers {
     public static final PreventEffectTrigger PREVENT_EFFECT = CriteriaTriggers.register(PreventEffectTrigger.ID.toString(), new PreventEffectTrigger());
     public static final MutationTrigger MUTATION = CriteriaTriggers.register(MutationTrigger.ID.toString(), new MutationTrigger());
 
-    public static void register() {
+    public static void registerAll() {
 
     }
 }

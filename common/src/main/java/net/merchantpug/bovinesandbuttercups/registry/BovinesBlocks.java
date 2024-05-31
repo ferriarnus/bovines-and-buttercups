@@ -6,9 +6,8 @@ import net.merchantpug.bovinesandbuttercups.content.block.CustomFlowerPotBlock;
 import net.merchantpug.bovinesandbuttercups.content.block.CustomHugeMushroomBlock;
 import net.merchantpug.bovinesandbuttercups.content.block.CustomMushroomBlock;
 import net.merchantpug.bovinesandbuttercups.content.block.CustomMushroomPotBlock;
-import net.merchantpug.bovinesandbuttercups.registry.internal.RegistrationProvider;
-import net.minecraft.core.Holder;
-import net.minecraft.core.registries.Registries;
+import net.merchantpug.bovinesandbuttercups.registry.internal.RegistrationCallback;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.FlowerBlock;
@@ -16,44 +15,60 @@ import net.minecraft.world.level.block.FlowerPotBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 
-import java.util.function.Supplier;
-
 public class BovinesBlocks {
-    private static final RegistrationProvider<Block> BLOCKS = RegistrationProvider.get(Registries.BLOCK, BovinesAndButtercups.MOD_ID);
+    public static final FlowerBlock BUTTERCUP = new FlowerBlock(MobEffects.POISON, 12, BlockBehaviour.Properties.of().noCollission().randomTicks().instabreak().sound(SoundType.GRASS).offsetType(BlockBehaviour.OffsetType.XZ));
+    public static final FlowerBlock PINK_DAISY = new FlowerBlock(MobEffects.DAMAGE_BOOST, 3, BlockBehaviour.Properties.of().noCollission().randomTicks().instabreak().sound(SoundType.GRASS).offsetType(BlockBehaviour.OffsetType.XZ));
+    public static final FlowerBlock LIMELIGHT = new FlowerBlock(MobEffects.REGENERATION, 8, BlockBehaviour.Properties.of().noCollission().randomTicks().instabreak().sound(SoundType.GRASS).offsetType(BlockBehaviour.OffsetType.XZ));
+    public static final FlowerBlock BIRD_OF_PARADISE = new FlowerBlock(MobEffects.SLOW_FALLING, 6, BlockBehaviour.Properties.of().noCollission().randomTicks().instabreak().sound(SoundType.GRASS).offsetType(BlockBehaviour.OffsetType.XZ));
+    public static final FlowerBlock CHARGELILY = new FlowerBlock(MobEffects.MOVEMENT_SPEED, 4, BlockBehaviour.Properties.of().noCollission().randomTicks().instabreak().sound(SoundType.GRASS).offsetType(BlockBehaviour.OffsetType.XZ));
+    public static final FlowerBlock HYACINTH = new FlowerBlock(MobEffects.POISON, 12, BlockBehaviour.Properties.of().noCollission().randomTicks().instabreak().sound(SoundType.GRASS).offsetType(BlockBehaviour.OffsetType.XZ));
+    public static final FlowerBlock SNOWDROP = new FlowerBlock(MobEffects.MOVEMENT_SLOWDOWN, 5, BlockBehaviour.Properties.of().noCollission().randomTicks().instabreak().sound(SoundType.GRASS).offsetType(BlockBehaviour.OffsetType.XZ));
+    public static final FlowerBlock TROPICAL_BLUE = new FlowerBlock(MobEffects.FIRE_RESISTANCE, 4, BlockBehaviour.Properties.of().noCollission().randomTicks().instabreak().sound(SoundType.GRASS).offsetType(BlockBehaviour.OffsetType.XZ));
+    public static final FlowerBlock FREESIA = new FlowerBlock(MobEffects.WATER_BREATHING, 8, BlockBehaviour.Properties.of().noCollission().randomTicks().instabreak().sound(SoundType.GRASS).offsetType(BlockBehaviour.OffsetType.XZ));
 
-    public static final Holder<FlowerBlock> BUTTERCUP = register("buttercup", () -> new FlowerBlock(MobEffects.POISON, 12, BlockBehaviour.Properties.of().noCollission().randomTicks().instabreak().sound(SoundType.GRASS).offsetType(BlockBehaviour.OffsetType.XZ)));
-    public static final Holder<FlowerBlock> PINK_DAISY = register("pink_daisy", () -> new FlowerBlock(MobEffects.DAMAGE_BOOST, 3, BlockBehaviour.Properties.of().noCollission().randomTicks().instabreak().sound(SoundType.GRASS).offsetType(BlockBehaviour.OffsetType.XZ)));
-    public static final Holder<FlowerBlock> LIMELIGHT = register("limelight", () -> new FlowerBlock(MobEffects.REGENERATION, 8, BlockBehaviour.Properties.of().noCollission().randomTicks().instabreak().sound(SoundType.GRASS).offsetType(BlockBehaviour.OffsetType.XZ)));
-    public static final Holder<FlowerBlock> BIRD_OF_PARADISE = register("bird_of_paradise", () -> new FlowerBlock(MobEffects.SLOW_FALLING, 6, BlockBehaviour.Properties.of().noCollission().randomTicks().instabreak().sound(SoundType.GRASS).offsetType(BlockBehaviour.OffsetType.XZ)));
-    public static final Holder<FlowerBlock> CHARGELILY = register("chargelily", () -> new FlowerBlock(MobEffects.MOVEMENT_SPEED, 4, BlockBehaviour.Properties.of().noCollission().randomTicks().instabreak().sound(SoundType.GRASS).offsetType(BlockBehaviour.OffsetType.XZ)));
-    public static final Holder<FlowerBlock> HYACINTH = register("hyacinth", () -> new FlowerBlock(MobEffects.POISON, 12, BlockBehaviour.Properties.of().noCollission().randomTicks().instabreak().sound(SoundType.GRASS).offsetType(BlockBehaviour.OffsetType.XZ)));
-    public static final Holder<FlowerBlock> SNOWDROP = register("snowdrop", () -> new FlowerBlock(MobEffects.MOVEMENT_SLOWDOWN, 5, BlockBehaviour.Properties.of().noCollission().randomTicks().instabreak().sound(SoundType.GRASS).offsetType(BlockBehaviour.OffsetType.XZ)));
-    public static final Holder<FlowerBlock> TROPICAL_BLUE = register("tropical_blue", () -> new FlowerBlock(MobEffects.FIRE_RESISTANCE, 4, BlockBehaviour.Properties.of().noCollission().randomTicks().instabreak().sound(SoundType.GRASS).offsetType(BlockBehaviour.OffsetType.XZ)));
-    public static final Holder<FlowerBlock> FREESIA = register("freesia", () -> new FlowerBlock(MobEffects.WATER_BREATHING, 8, BlockBehaviour.Properties.of().noCollission().randomTicks().instabreak().sound(SoundType.GRASS).offsetType(BlockBehaviour.OffsetType.XZ)));
-
-    public static final Holder<FlowerPotBlock> POTTED_BUTTERCUP = register("potted_buttercup", () -> new FlowerPotBlock(BUTTERCUP.value(), BlockBehaviour.Properties.of().instabreak().noOcclusion()));
-    public static final Holder<FlowerPotBlock> POTTED_PINK_DAISY = register("potted_pink_daisy", () -> new FlowerPotBlock(PINK_DAISY.value(), BlockBehaviour.Properties.of().instabreak().noOcclusion()));
-    public static final Holder<FlowerPotBlock> POTTED_LIMELIGHT = register("potted_limelight", () -> new FlowerPotBlock(LIMELIGHT.value(), BlockBehaviour.Properties.of().instabreak().noOcclusion()));
-    public static final Holder<FlowerPotBlock> POTTED_BIRD_OF_PARADISE = register("potted_bird_of_paradise", () -> new FlowerPotBlock(BIRD_OF_PARADISE.value(), BlockBehaviour.Properties.of().instabreak().noOcclusion()));
-    public static final Holder<FlowerPotBlock> POTTED_CHARGELILY = register("potted_chargelily", () -> new FlowerPotBlock(CHARGELILY.value(), BlockBehaviour.Properties.of().instabreak().noOcclusion()));
-    public static final Holder<FlowerPotBlock> POTTED_HYACINTH = register("potted_hyacinth", () -> new FlowerPotBlock(HYACINTH.value(), BlockBehaviour.Properties.of().instabreak().noOcclusion()));
-    public static final Holder<FlowerPotBlock> POTTED_SNOWDROP = register("potted_snowdrop", () -> new FlowerPotBlock(SNOWDROP.value(), BlockBehaviour.Properties.of().instabreak().noOcclusion()));
-    public static final Holder<FlowerPotBlock> POTTED_TROPICAL_BLUE = register("potted_tropical_blue", () -> new FlowerPotBlock(TROPICAL_BLUE.value(), BlockBehaviour.Properties.of().instabreak().noOcclusion()));
-    public static final Holder<FlowerPotBlock> POTTED_FREESIA = register("potted_freesia", () -> new FlowerPotBlock(FREESIA.value(), BlockBehaviour.Properties.of().instabreak().noOcclusion()));
+    public static final FlowerPotBlock POTTED_BUTTERCUP = new FlowerPotBlock(BUTTERCUP, BlockBehaviour.Properties.of().instabreak().noOcclusion());
+    public static final FlowerPotBlock POTTED_PINK_DAISY = new FlowerPotBlock(PINK_DAISY, BlockBehaviour.Properties.of().instabreak().noOcclusion());
+    public static final FlowerPotBlock POTTED_LIMELIGHT = new FlowerPotBlock(LIMELIGHT, BlockBehaviour.Properties.of().instabreak().noOcclusion());
+    public static final FlowerPotBlock POTTED_BIRD_OF_PARADISE = new FlowerPotBlock(BIRD_OF_PARADISE, BlockBehaviour.Properties.of().instabreak().noOcclusion());
+    public static final FlowerPotBlock POTTED_CHARGELILY = new FlowerPotBlock(CHARGELILY, BlockBehaviour.Properties.of().instabreak().noOcclusion());
+    public static final FlowerPotBlock POTTED_HYACINTH = new FlowerPotBlock(HYACINTH, BlockBehaviour.Properties.of().instabreak().noOcclusion());
+    public static final FlowerPotBlock POTTED_SNOWDROP = new FlowerPotBlock(SNOWDROP, BlockBehaviour.Properties.of().instabreak().noOcclusion());
+    public static final FlowerPotBlock POTTED_TROPICAL_BLUE = new FlowerPotBlock(TROPICAL_BLUE, BlockBehaviour.Properties.of().instabreak().noOcclusion());
+    public static final FlowerPotBlock POTTED_FREESIA = new FlowerPotBlock(FREESIA, BlockBehaviour.Properties.of().instabreak().noOcclusion());
 
 
-    public static final Holder<CustomFlowerBlock> CUSTOM_FLOWER = register("custom_flower", () -> new CustomFlowerBlock(BlockBehaviour.Properties.of().noCollission().instabreak().sound(SoundType.GRASS).offsetType(BlockBehaviour.OffsetType.XZ)));
-    public static final Holder<CustomFlowerPotBlock> POTTED_CUSTOM_FLOWER = register("potted_custom_flower", () -> new CustomFlowerPotBlock(BlockBehaviour.Properties.of().instabreak().noOcclusion()));
+    public static final CustomFlowerBlock CUSTOM_FLOWER = new CustomFlowerBlock(BlockBehaviour.Properties.of().noCollission().instabreak().sound(SoundType.GRASS).offsetType(BlockBehaviour.OffsetType.XZ));
+    public static final CustomFlowerPotBlock POTTED_CUSTOM_FLOWER = new CustomFlowerPotBlock(BlockBehaviour.Properties.of().instabreak().noOcclusion());
 
-    public static final Holder<CustomMushroomBlock> CUSTOM_MUSHROOM = register("custom_mushroom", () -> new CustomMushroomBlock(BlockBehaviour.Properties.of().noCollission().randomTicks().instabreak().sound(SoundType.GRASS).lightLevel((value) -> 1)));
-    public static final Holder<CustomHugeMushroomBlock> CUSTOM_MUSHROOM_BLOCK = register("custom_mushroom_block", () -> new CustomHugeMushroomBlock(BlockBehaviour.Properties.of().strength(0.2F).sound(SoundType.WOOD)));
-    public static final Holder<CustomMushroomPotBlock> POTTED_CUSTOM_MUSHROOM = register("potted_custom_mushroom", () -> new CustomMushroomPotBlock(BlockBehaviour.Properties.of().instabreak().noOcclusion()));
+    public static final CustomMushroomBlock CUSTOM_MUSHROOM = new CustomMushroomBlock(BlockBehaviour.Properties.of().noCollission().randomTicks().instabreak().sound(SoundType.GRASS).lightLevel((value) -> 1));
+    public static final CustomHugeMushroomBlock CUSTOM_MUSHROOM_BLOCK = new CustomHugeMushroomBlock(BlockBehaviour.Properties.of().strength(0.2F).sound(SoundType.WOOD));
+    public static final CustomMushroomPotBlock POTTED_CUSTOM_MUSHROOM = new CustomMushroomPotBlock(BlockBehaviour.Properties.of().instabreak().noOcclusion());
 
-    public static void init() {
+    public static void registerAll(RegistrationCallback<Block> callback) {
+        callback.register(BuiltInRegistries.BLOCK, BovinesAndButtercups.asResource("buttercup"), BUTTERCUP);
+        callback.register(BuiltInRegistries.BLOCK, BovinesAndButtercups.asResource("pink_daisy"), PINK_DAISY);
+        callback.register(BuiltInRegistries.BLOCK, BovinesAndButtercups.asResource("limelight"), LIMELIGHT);
+        callback.register(BuiltInRegistries.BLOCK, BovinesAndButtercups.asResource("bird_of_paradise"), BIRD_OF_PARADISE);
+        callback.register(BuiltInRegistries.BLOCK, BovinesAndButtercups.asResource("chargelily"), CHARGELILY);
+        callback.register(BuiltInRegistries.BLOCK, BovinesAndButtercups.asResource("hyacinth"), HYACINTH);
+        callback.register(BuiltInRegistries.BLOCK, BovinesAndButtercups.asResource("snowdrop"), SNOWDROP);
+        callback.register(BuiltInRegistries.BLOCK, BovinesAndButtercups.asResource("tropical_blue"), TROPICAL_BLUE);
+        callback.register(BuiltInRegistries.BLOCK, BovinesAndButtercups.asResource("freesia"), FREESIA);
 
-    }
+        callback.register(BuiltInRegistries.BLOCK, BovinesAndButtercups.asResource("potted_buttercup"), POTTED_BUTTERCUP);
+        callback.register(BuiltInRegistries.BLOCK, BovinesAndButtercups.asResource("potted_pink_daisy"), POTTED_PINK_DAISY);
+        callback.register(BuiltInRegistries.BLOCK, BovinesAndButtercups.asResource("potted_limelight"), POTTED_LIMELIGHT);
+        callback.register(BuiltInRegistries.BLOCK, BovinesAndButtercups.asResource("potted_bird_of_paradise"), POTTED_BIRD_OF_PARADISE);
+        callback.register(BuiltInRegistries.BLOCK, BovinesAndButtercups.asResource("potted_chargelily"), POTTED_CHARGELILY);
+        callback.register(BuiltInRegistries.BLOCK, BovinesAndButtercups.asResource("potted_hyacinth"), POTTED_HYACINTH);
+        callback.register(BuiltInRegistries.BLOCK, BovinesAndButtercups.asResource("potted_snowdrop"), POTTED_SNOWDROP);
+        callback.register(BuiltInRegistries.BLOCK, BovinesAndButtercups.asResource("potted_tropical_blue"), POTTED_TROPICAL_BLUE);
+        callback.register(BuiltInRegistries.BLOCK, BovinesAndButtercups.asResource("potted_freesia"), POTTED_FREESIA);
 
-    private static <T extends Block> Holder<T> register(String name, Supplier<T> block) {
-        return BLOCKS.register(name, block);
+        callback.register(BuiltInRegistries.BLOCK, BovinesAndButtercups.asResource("custom_flower"), CUSTOM_FLOWER);
+        callback.register(BuiltInRegistries.BLOCK, BovinesAndButtercups.asResource("potted_custom_flower"), POTTED_CUSTOM_FLOWER);
+        callback.register(BuiltInRegistries.BLOCK, BovinesAndButtercups.asResource("custom_mushroom"), CUSTOM_MUSHROOM);
+        callback.register(BuiltInRegistries.BLOCK, BovinesAndButtercups.asResource("custom_mushroom_block"), CUSTOM_MUSHROOM_BLOCK);
+        callback.register(BuiltInRegistries.BLOCK, BovinesAndButtercups.asResource("potted_custom_mushroom"), POTTED_CUSTOM_MUSHROOM);
     }
 }
