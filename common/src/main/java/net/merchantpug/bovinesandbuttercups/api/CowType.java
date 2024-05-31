@@ -10,6 +10,7 @@ import net.minecraft.core.Holder;
 import net.minecraft.resources.RegistryFileCodec;
 import net.minecraft.resources.RegistryOps;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
 
 public record CowType<C extends CowTypeConfiguration>(CowTypeType<C> type, C configuration) {
     public static final Codec<CowType<?>> DIRECT_CODEC = BovinesRegistries.COW_TYPE_TYPE.byNameCodec().dispatch(CowType::type, CowTypeType::cowCodec);
@@ -19,16 +20,12 @@ public record CowType<C extends CowTypeConfiguration>(CowTypeType<C> type, C con
         return new Codec<>() {
             @Override
             public <TOps> DataResult<Pair<Holder<CowType<C>>, TOps>> decode(DynamicOps<TOps> ops, TOps input) {
-                if (ops instanceof RegistryOps<TOps>) {
-                    var original = CowType.CODEC.decode(ops, input);
-                    if (original.error().isPresent()) {
-                        return DataResult.error(() -> original.error().get().message());
+                if (ops instanceof RegistryOps<TOps> registryOps) {
+                    var target = registryOps.getter(BovinesRegistryKeys.COW_TYPE).get().get(ResourceKey.create(BovinesRegistryKeys.COW_TYPE, ResourceLocation.of(registryOps.getStringValue(input).getOrThrow(), ':')));
+                    if (target.isPresent() && target.get().isBound() && cowType.equals(target.get().value().type())) {
+                        return DataResult.success(Pair.of((Holder)target.get(), input));
                     }
-                    var result = original.result().get().getFirst();
-                    if (original.result().isPresent() && cowType.equals(result.value().type())) {
-                        return original.map(holderTPair -> Pair.of((Holder)holderTPair.getFirst(), holderTPair.getSecond()));
-                    }
-                    return DataResult.error(() -> "Specified ConfiguredCowType '" + original.result().get().getFirst().unwrapKey().map(ResourceKey::location).orElse(null) + " + is not assignable to the cow type of '" + BovinesRegistries.COW_TYPE_TYPE.getKey(cowType) + "'.");
+                    return DataResult.error(() -> "Specified ConfiguredCowType '" + target.flatMap(Holder.Reference::unwrapKey).orElse(null) + " + is not assignable to the cow type of '" + BovinesRegistries.COW_TYPE_TYPE.getKey(cowType) + "'.");
                 }
                 return DataResult.error(() -> "Filtered Cow Type codec is not supported by non RegistryOps ops.");
             }
