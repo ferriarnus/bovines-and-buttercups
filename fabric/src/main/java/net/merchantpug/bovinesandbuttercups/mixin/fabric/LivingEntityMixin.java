@@ -5,7 +5,6 @@ import net.merchantpug.bovinesandbuttercups.content.advancements.criterion.LockE
 import net.merchantpug.bovinesandbuttercups.content.advancements.criterion.PreventEffectTrigger;
 import net.merchantpug.bovinesandbuttercups.content.effect.LockdownEffect;
 import net.merchantpug.bovinesandbuttercups.registry.BovinesAttachments;
-import net.merchantpug.bovinesandbuttercups.registry.BovinesCriteriaTriggers;
 import net.merchantpug.bovinesandbuttercups.registry.BovinesEffects;
 import net.minecraft.Util;
 import net.minecraft.core.Holder;
