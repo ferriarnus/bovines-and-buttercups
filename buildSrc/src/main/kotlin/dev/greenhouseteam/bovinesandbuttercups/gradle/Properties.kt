@@ -5,7 +5,7 @@ object Properties {
     const val MOD_NAME = "Bovines and Buttercups"
     const val MOD_ID = "bovinesandbuttercups"
     const val MOD_AUTHOR = "Greenhouse Team"
-    const val MOD_CONTRIBUTORS = "MerchantPug"
+    const val MOD_CONTRIBUTORS = "MerchantPug, SpiderKolo, Omniv"
     const val DESCRIPTION = "A fresh, new take on the 2020 Mob Vote's Moobloom."
     const val LICENSE = "MPL-2.0"
 
