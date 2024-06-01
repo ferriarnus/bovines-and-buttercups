@@ -1,6 +1,8 @@
 package net.merchantpug.bovinesandbuttercups.mixin.fabric;
 
 import net.merchantpug.bovinesandbuttercups.api.attachment.LockdownAttachment;
+import net.merchantpug.bovinesandbuttercups.content.advancements.criterion.LockEffectTrigger;
+import net.merchantpug.bovinesandbuttercups.content.advancements.criterion.PreventEffectTrigger;
 import net.merchantpug.bovinesandbuttercups.content.effect.LockdownEffect;
 import net.merchantpug.bovinesandbuttercups.registry.BovinesAttachments;
 import net.merchantpug.bovinesandbuttercups.registry.BovinesCriteriaTriggers;
@@ -66,7 +68,7 @@ public abstract class LivingEntityMixin extends Entity {
             if (!level().isClientSide && (LivingEntity) (Object) this instanceof ServerPlayer serverPlayer && !attachment.effects().isEmpty()) {
                 attachment.effects().forEach((effect1, duration) -> {
                     if (!this.hasEffect(effect1)) return;
-                    BovinesCriteriaTriggers.LOCK_EFFECT.trigger(serverPlayer, effect1);
+                    LockEffectTrigger.INSTANCE.trigger(serverPlayer, effect1);
                 });
             }
         }
@@ -97,7 +99,7 @@ public abstract class LivingEntityMixin extends Entity {
         LockdownAttachment attachment = this.getAttached(BovinesAttachments.LOCKDOWN);
         if (hasEffect(BovinesEffects.LOCKDOWN) && attachment != null && attachment.effects().containsKey(effect.getEffect())) {
             if (!level().isClientSide && (LivingEntity)(Object)this instanceof ServerPlayer serverPlayer)
-                BovinesCriteriaTriggers.PREVENT_EFFECT.trigger(serverPlayer, effect.getEffect());
+                PreventEffectTrigger.INSTANCE.trigger(serverPlayer, effect.getEffect());
 
             cir.setReturnValue(false);
         }
