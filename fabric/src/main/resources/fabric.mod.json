@@ -2,19 +2,18 @@
     "schemaVersion": 1,
     "id": "${mod_id}",
     "version": "${version}",
-    "name": "Bovines and Buttercups",
-    "description": "A fresh, new take on the 2020 Mob Vote's Moobloom.",
+    "name": "${mod_name}",
+    "description": "${mod_description}",
     "authors": [
-        "Greenhouse Team",
-        "MerchantPug"
+        "${mod_author}"
     ],
     "contributors": [
-        "SpiderKolo"
+        ${fabric_mod_contributors}
     ],
     "contact": {
-        "homepage": "https://modrinth.com/mod/bovines-and-buttercups",
-        "issues": "https://github.com/MerchantPug/bovines-and-buttercups/issues",
-        "sources": "https://github.com/MerchantPug/bovines-and-buttercups"
+        "homepage": "${homepage}",
+        "issues": "${issues}",
+        "sources": "${sources}"
     },
     "license": "${mod_license}",
     "icon": "assets/bovinesandbuttercups/icon.png",
@@ -30,17 +29,11 @@
             "net.merchantpug.bovinesandbuttercups.datagen.BovinesDataGen"
         ]
     },
-    "custom": {
-        "cardinal-components": [
-            "bovinesandbuttercups:lockdown",
-            "bovinesandbuttercups:moobloom_target",
-            "bovinesandbuttercups:mooshroom_type"
-        ]
-    },
     "mixins": [
-        "bovinesandbuttercups.mixins.json",
-        "bovinesandbuttercups.fabric.mixins.json"
+        "${mod_id}.mixins.json",
+        "${mod_id}.fabric.mixins.json"
     ],
+    "accessWidener": "${mod_id}.accesswidener",
     "depends": {
         "fabricloader": "${fabric_loader_range}",
         "fabric-api": "*",

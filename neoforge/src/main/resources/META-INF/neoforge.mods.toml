@@ -9,11 +9,19 @@ version="${version}"
 displayName="Bovines and Buttercups"
 logoFile="bovinesandbuttercups.png"
 updateJSONURL = "https://api.modrinth.com/updates/BDg6nMn3/forge_updates.json"
-authors="Greenhouse Team, MerchantPug"
-credits="SpiderKolo"
+authors="${mod_author}"
+credits="${mod_contributors}"
 description='''
-A fresh, new take on the 2020 Mob Vote's Moobloom.
+${description}
 '''
+
+[[mixins]]
+config = "${mod_id}.mixins.json"
+[[mixins]]
+config = "${mod_id}.neoforge.mixins.json"
+
+[[accessTransformers]]
+file="${mod_id}.cfg"
 
 [[dependencies.${mod_id}]]
 modId="neoforge"

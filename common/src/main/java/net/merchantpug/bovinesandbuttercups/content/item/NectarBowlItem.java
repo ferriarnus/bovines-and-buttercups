@@ -25,14 +25,14 @@ public class NectarBowlItem extends Item {
 
     @Override
     public @NotNull ItemStack finishUsingItem(ItemStack itemStack, Level level, LivingEntity livingEntity) {
-        Player player = livingEntity instanceof Player ? (Player)livingEntity : null;
+        Player player = livingEntity instanceof Player ? (Player) livingEntity : null;
         if (player instanceof ServerPlayer serverPlayer) {
             CriteriaTriggers.CONSUME_ITEM.trigger(serverPlayer, itemStack);
             serverPlayer.awardStat(Stats.ITEM_USED.get(this));
         }
-        if (livingEntity instanceof Player && !((Player)livingEntity).getAbilities().instabuild) {
+        if (livingEntity instanceof Player && !player.getAbilities().instabuild)
             itemStack.shrink(1);
-        }
+
         NectarEffects effects = itemStack.getOrDefault(BovinesDataComponents.NECTAR_EFFECTS, NectarEffects.EMPTY);
         effects.applyEffectInstance(livingEntity);
         if (player != null) {

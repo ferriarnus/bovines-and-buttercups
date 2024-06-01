@@ -7,11 +7,15 @@
   "mixins": [
     "ChunkGeneratorMixin",
     "EntityAccessor",
+    "JigsawStructureAccessor",
+    "MobEffectInstanceMixin",
     "PlacedFeatureMixin",
     "RegistryDataLoaderMixin",
     "ServerLevelAccessor"
   ],
   "client": [
+    "client.EffectRenderingInventoryScreenMixin",
+    "client.GuiGraphicsMixin",
     "client.ModelBakeryMixin"
   ],
   "server": [

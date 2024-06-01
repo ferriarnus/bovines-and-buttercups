@@ -1,10 +1,24 @@
 package net.merchantpug.bovinesandbuttercups;
 
+import net.merchantpug.bovinesandbuttercups.api.attachment.LockdownAttachment;
+import net.merchantpug.bovinesandbuttercups.content.effect.LockdownEffect;
 import net.merchantpug.bovinesandbuttercups.content.entity.Moobloom;
+import net.merchantpug.bovinesandbuttercups.network.clientbound.SyncLockdownEffectsClientboundPacket;
 import net.merchantpug.bovinesandbuttercups.platform.NeoBovinesPlatformHelper;
+import net.merchantpug.bovinesandbuttercups.registry.BovinesAttachments;
+import net.merchantpug.bovinesandbuttercups.registry.BovinesCriteriaTriggers;
+import net.merchantpug.bovinesandbuttercups.registry.BovinesEffects;
 import net.merchantpug.bovinesandbuttercups.registry.BovinesEntityTypes;
 import net.merchantpug.bovinesandbuttercups.registry.BovinesItems;
 import net.merchantpug.bovinesandbuttercups.util.CreativeTabHelper;
+import net.minecraft.Util;
+import net.minecraft.core.Holder;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.SpawnPlacementTypes;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.CreativeModeTabs;
@@ -19,12 +33,89 @@ import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
 import net.neoforged.neoforge.event.entity.SpawnPlacementRegisterEvent;
+import net.neoforged.neoforge.event.entity.living.MobEffectEvent;
+import net.neoforged.neoforge.event.tick.EntityTickEvent;
+import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
+
+import java.util.HashMap;
+import java.util.Optional;
 
 @Mod(BovinesAndButtercups.MOD_ID)
 public class BovinesAndButtercupsNeo {
     
     public BovinesAndButtercupsNeo(IEventBus eventBus) {
         BovinesAndButtercups.init(new NeoBovinesPlatformHelper());
+    }
+
+    @EventBusSubscriber(modid = BovinesAndButtercups.MOD_ID, bus = EventBusSubscriber.Bus.GAME)
+    public static class GameEvents {
+        @SubscribeEvent
+        public static void onLivingTick(EntityTickEvent event) {
+            if (!event.getEntity().level().isClientSide() && event.getEntity() instanceof LivingEntity living && living.hasEffect(BovinesEffects.LOCKDOWN)) {
+                HashMap<Holder<MobEffect>, Integer> lockdownEffectsToUpdate = new HashMap<>();
+                living.getExistingData(BovinesAttachments.LOCKDOWN).ifPresent(attachment -> attachment.effects().forEach(((effect, integer) -> {
+                    if (integer > 0) {
+                        lockdownEffectsToUpdate.put(effect, --integer);
+                    } else if (integer == -1) {
+                        lockdownEffectsToUpdate.put(effect, -1);
+                    }
+                })));
+                living.getData(BovinesAttachments.LOCKDOWN).setLockdownMobEffects(lockdownEffectsToUpdate);
+                LockdownAttachment.sync(living);
+            }
+        }
+        @SubscribeEvent
+        public static void onMobEffectAdded(MobEffectEvent.Added event) {
+            LivingEntity entity = event.getEntity();
+
+            LockdownAttachment attachment = entity.getData(BovinesAttachments.LOCKDOWN);
+            MobEffectInstance effect = event.getEffectInstance();
+            if (!entity.level().isClientSide && effect.getEffect() instanceof LockdownEffect && (attachment.effects().isEmpty() || attachment.effects().values().stream().allMatch(value -> value < effect.getDuration()))) {
+                Optional<Holder.Reference<MobEffect>> randomEffect = Util.getRandomSafe(BuiltInRegistries.MOB_EFFECT.holders().filter(holder -> holder.isBound() && holder.value().isEnabled(entity.level().enabledFeatures())).toList(), entity.level().getRandom());
+                randomEffect.ifPresent(entry -> {
+                    attachment.addLockdownMobEffect(entry, effect.getDuration());
+                    LockdownAttachment.sync(entity);
+                });
+            }
+            if (!entity.level().isClientSide && entity instanceof ServerPlayer serverPlayer && effect.getEffect() instanceof LockdownEffect && !attachment.effects().isEmpty()) {
+                attachment.effects().forEach((effect1, duration) -> {
+                    if (!entity.hasEffect(effect1)) return;
+                    BovinesCriteriaTriggers.LOCK_EFFECT.trigger(serverPlayer, effect1);
+                });
+            }
+        }
+
+        @SubscribeEvent
+        public static void onMobEffectRemoved(MobEffectEvent.Remove event) {
+            if (event.getEffectInstance() == null || !(event.getEffectInstance().getEffect() instanceof LockdownEffect)) return;
+            Optional<LockdownAttachment> attachment = event.getEntity().getExistingData(BovinesAttachments.LOCKDOWN);
+            if (attachment.isPresent()) {
+                attachment.get().effects().clear();
+                LockdownAttachment.sync(event.getEntity());
+            }
+        }
+
+        @SubscribeEvent
+        public static void onMobEffectExpired(MobEffectEvent.Expired event) {
+            if (event.getEffectInstance() == null || !(event.getEffectInstance().getEffect() instanceof LockdownEffect)) return;
+            Optional<LockdownAttachment> attachment = event.getEntity().getExistingData(BovinesAttachments.LOCKDOWN);
+            if (attachment.isPresent()) {
+                attachment.get().effects().clear();
+                LockdownAttachment.sync(event.getEntity());
+            }
+        }
+
+        @SubscribeEvent
+        public static void changeMobEffectApplicability(MobEffectEvent.Applicable event) {
+            Entity entity = event.getEntity();
+            Optional<LockdownAttachment> attachment = event.getEntity().getExistingData(BovinesAttachments.LOCKDOWN);
+            if (attachment.isPresent() && attachment.get().effects().containsKey(event.getEffectInstance().getEffect())) {
+                if (!entity.level().isClientSide && entity instanceof ServerPlayer serverPlayer) {
+                    BovinesCriteriaTriggers.PREVENT_EFFECT.trigger(serverPlayer, event.getEffectInstance().getEffect());
+                }
+                event.setResult(MobEffectEvent.Applicable.Result.DO_NOT_APPLY);
+            }
+        }
     }
 
     @EventBusSubscriber(modid = BovinesAndButtercups.MOD_ID, bus = EventBusSubscriber.Bus.MOD)
@@ -40,6 +131,12 @@ public class BovinesAndButtercupsNeo {
             event.register(BovinesEntityTypes.MOOBLOOM, SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Moobloom::canMoobloomSpawn, SpawnPlacementRegisterEvent.Operation.REPLACE);
             // TODO: Mooshroom data.
             // event.register(EntityType.MOOSHROOM, (entityType, levelAccessor, mobSpawnType, blockPos, randomSource) -> (levelAccessor.getBiome(blockPos).is(Biomes.MUSHROOM_FIELDS) && levelAccessor.getBlockState(blockPos.below()).is(BlockTags.MOOSHROOMS_SPAWNABLE_ON) || !levelAccessor.getBiome(blockPos).is(Biomes.MUSHROOM_FIELDS) && levelAccessor.getBlockState(blockPos.below()).is(BlockTags.ANIMALS_SPAWNABLE_ON)) && Animal.isBrightEnoughToSpawn(levelAccessor, blockPos) && (MushroomCowSpawnUtil.getTotalSpawnWeight(levelAccessor, blockPos) > 0 || (MushroomCowSpawnUtil.getTotalSpawnWeight(levelAccessor, blockPos) > 0 || MushroomCowSpawnUtil.getTotalSpawnWeight(levelAccessor, blockPos) == 0 && levelAccessor.getBiome(blockPos).is(Biomes.MUSHROOM_FIELDS) && BovineRegistryUtil.configuredCowTypeStream().anyMatch(configuredCowType -> configuredCowType.configuration() instanceof MushroomCowConfiguration mushroomCowConfiguration && mushroomCowConfiguration.usesVanillaSpawningHack()) && MushroomCow.checkMushroomSpawnRules(entityType, levelAccessor, mobSpawnType, blockPos, randomSource))), SpawnPlacementRegisterEvent.Operation.REPLACE);
+        }
+
+        @SubscribeEvent
+        public static void registerPackets(RegisterPayloadHandlersEvent event) {
+            event.registrar("2.0.0")
+                    .playToClient(SyncLockdownEffectsClientboundPacket.TYPE, SyncLockdownEffectsClientboundPacket.STREAM_CODEC, (payload, context) -> payload.handle());
         }
 
         @SubscribeEvent

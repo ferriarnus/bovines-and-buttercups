@@ -6,6 +6,7 @@ import net.merchantpug.bovinesandbuttercups.content.component.ItemCustomFlower;
 import net.merchantpug.bovinesandbuttercups.content.component.ItemCustomMushroom;
 import net.merchantpug.bovinesandbuttercups.content.component.ItemMoobloomType;
 import net.merchantpug.bovinesandbuttercups.content.configuration.MoobloomConfiguration;
+import net.merchantpug.bovinesandbuttercups.registry.BovinesCowTypes;
 import net.merchantpug.bovinesandbuttercups.registry.BovinesDataComponents;
 import net.merchantpug.bovinesandbuttercups.registry.BovinesItems;
 import net.merchantpug.bovinesandbuttercups.registry.BovinesRegistryKeys;
@@ -41,9 +42,9 @@ public class CreativeTabHelper {
     }
 
     public static List<ItemStack> getNectarBowlsForCreativeTab(HolderLookup.Provider lookup) {
-        return lookup.lookupOrThrow(BovinesRegistryKeys.COW_TYPE).listElements().filter(cowType -> cowType.isBound() && cowType.value().configuration() instanceof MoobloomConfiguration && cowType.value().configuration() != MoobloomConfiguration.DEFAULT).map(cowType -> {
+        return lookup.lookupOrThrow(BovinesRegistryKeys.COW_TYPE).listElements().filter(cowType -> cowType.isBound() && cowType.value().configuration() instanceof MoobloomConfiguration && !cowType.key().location().equals(BovinesCowTypes.MoobloomKeys.MISSING_MOOBLOOM.location())).map(cowType -> {
             ItemStack stack = new ItemStack(BovinesItems.NECTAR_BOWL);
-            stack.set(BovinesDataComponents.MOOBLOOM_TYPE, new ItemMoobloomType((Holder) cowType));
+            stack.set(BovinesDataComponents.MOOBLOOM_TYPE, new ItemMoobloomType(cowType));
             stack.set(BovinesDataComponents.NECTAR_EFFECTS, ((MoobloomConfiguration) cowType.value().configuration()).nectarEffects());
             return stack;
         }).toList();

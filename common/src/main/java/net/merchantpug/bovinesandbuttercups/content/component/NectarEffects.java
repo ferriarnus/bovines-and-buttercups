@@ -33,10 +33,10 @@ public record NectarEffects(List<NectarEffects.Entry> effects) {
     }
 
     public void applyEffectInstance(LivingEntity entity) {
-        entity.addEffect(new MobEffectInstance(BovinesEffects.LOCKDOWN, effects.stream().map(Entry::duration).max(Comparator.comparingInt(value -> value)).orElse(0)));
         for (Entry entry : effects) {
             BovinesAndButtercups.getHelper().getLockdownAttachment(entity).addLockdownMobEffect(entry.effect, entry.duration);
         }
+        entity.addEffect(new MobEffectInstance(BovinesEffects.LOCKDOWN, effects.stream().map(Entry::duration).max(Comparator.comparingInt(value -> value)).orElse(0)));
         LockdownAttachment.sync(entity);
     }
 

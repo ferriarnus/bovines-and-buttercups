@@ -1,15 +1,18 @@
 package net.merchantpug.bovinesandbuttercups;
 
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerEntityEvents;
 import net.fabricmc.fabric.api.event.registry.RegistryEntryAddedCallback;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
+import net.merchantpug.bovinesandbuttercups.api.attachment.LockdownAttachment;
 import net.merchantpug.bovinesandbuttercups.client.util.CowTextureReloadListenerFabric;
 import net.merchantpug.bovinesandbuttercups.content.entity.Moobloom;
 import net.merchantpug.bovinesandbuttercups.network.clientbound.SyncLockdownEffectsClientboundPacket;
 import net.merchantpug.bovinesandbuttercups.platform.BovinesPlatformHelperFabric;
+import net.merchantpug.bovinesandbuttercups.registry.BovinesAttachments;
 import net.merchantpug.bovinesandbuttercups.registry.BovinesBlockEntityTypes;
 import net.merchantpug.bovinesandbuttercups.registry.BovinesBlocks;
 import net.merchantpug.bovinesandbuttercups.registry.BovinesCowTypeTypes;
@@ -26,6 +29,7 @@ import net.merchantpug.bovinesandbuttercups.registry.BovinesStructureTypes;
 import net.merchantpug.bovinesandbuttercups.util.CreativeTabHelper;
 import net.minecraft.core.Registry;
 import net.minecraft.server.packs.PackType;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -38,6 +42,10 @@ public class BovinesAndButtercupsFabric implements ModInitializer {
     public void onInitialize() {
         BovinesAndButtercups.init(new BovinesPlatformHelperFabric());
 
+        ServerEntityEvents.ENTITY_LOAD.register((entity, world) -> {
+            if (entity instanceof LivingEntity living)
+                LockdownAttachment.sync(living);
+        });
         ResourceManagerHelper.get(PackType.CLIENT_RESOURCES).registerReloadListener(new CowTextureReloadListenerFabric());
 
         registerContents();

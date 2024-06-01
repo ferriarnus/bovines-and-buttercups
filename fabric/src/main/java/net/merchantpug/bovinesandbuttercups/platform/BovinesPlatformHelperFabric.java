@@ -5,6 +5,7 @@ import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.fabricmc.loader.api.FabricLoader;
 import net.merchantpug.bovinesandbuttercups.api.attachment.LockdownAttachment;
+import net.merchantpug.bovinesandbuttercups.registry.BovinesAttachments;
 import net.minecraft.core.Registry;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceKey;
@@ -53,7 +54,7 @@ public class BovinesPlatformHelperFabric implements BovinesPlatformHelper {
 
     @Override
     public LockdownAttachment getLockdownAttachment(LivingEntity entity) {
-        return null;
+        return entity.getAttachedOrCreate(BovinesAttachments.LOCKDOWN);
     }
 
     @Override
