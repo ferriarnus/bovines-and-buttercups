@@ -201,7 +201,7 @@ public class Moobloom extends Cow {
                     }
                 }
             } else {
-                setCurrentAndPreviousCowType(this.getPreviousCowType());
+                setCurrentAndPreviousCowType(getPreviousCowType());
                 CowTypeAttachment.sync(this);
             }
             lastLightningBoltUUID = uuid;
@@ -426,8 +426,8 @@ public class Moobloom extends Cow {
         CowTypeAttachment.setCowType(this, value);
     }
 
-    public void setCurrentAndPreviousCowType(Holder<CowType<MoobloomConfiguration>> current) {
-        CowTypeAttachment.setCowType(this, current, this.getCowType());
+    public void setCurrentAndPreviousCowType(Holder<CowType<MoobloomConfiguration>> value) {
+        CowTypeAttachment.setCowType(this, value, this.getCowType());
     }
 
     public int getPollinatedResetTicks() {

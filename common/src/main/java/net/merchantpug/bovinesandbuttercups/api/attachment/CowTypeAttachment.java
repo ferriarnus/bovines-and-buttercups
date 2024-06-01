@@ -7,9 +7,7 @@ import net.merchantpug.bovinesandbuttercups.api.CowType;
 import net.merchantpug.bovinesandbuttercups.api.CowTypeConfiguration;
 import net.merchantpug.bovinesandbuttercups.api.CowTypeType;
 import net.merchantpug.bovinesandbuttercups.network.clientbound.SyncCowTypeClientboundPacket;
-import net.merchantpug.bovinesandbuttercups.registry.BovinesRegistryKeys;
 import net.minecraft.core.Holder;
-import net.minecraft.resources.RegistryFixedCodec;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 import org.jetbrains.annotations.Nullable;
@@ -19,8 +17,8 @@ import java.util.Optional;
 public record CowTypeAttachment(Holder<CowType<?>> cowType, Optional<Holder<CowType<?>>> previousCowType) {
     public static final ResourceLocation ID = BovinesAndButtercups.asResource("cow_type");
     public static final Codec<CowTypeAttachment> CODEC = RecordCodecBuilder.create(inst -> inst.group(
-            RegistryFixedCodec.create(BovinesRegistryKeys.COW_TYPE).fieldOf("cow_type").forGetter(CowTypeAttachment::cowType),
-            RegistryFixedCodec.create(BovinesRegistryKeys.COW_TYPE).optionalFieldOf("previous_cow_type").forGetter(CowTypeAttachment::previousCowType)
+            CowType.CODEC.fieldOf("current").forGetter(CowTypeAttachment::cowType),
+            CowType.CODEC.optionalFieldOf("previous").forGetter(CowTypeAttachment::previousCowType)
     ).apply(inst, CowTypeAttachment::new));
 
     @Nullable
