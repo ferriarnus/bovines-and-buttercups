@@ -175,13 +175,13 @@ public class BovinesAndButtercupsNeo {
 
                 ItemStack freesia = new ItemStack(BovinesItems.FREESIA);
                 ItemStack birdOfParadise = new ItemStack(BovinesItems.BIRD_OF_PARADISE);
-                ItemStack buttercup = new ItemStack(BovinesItems.FREESIA);
-                ItemStack limelight = new ItemStack(BovinesItems.BIRD_OF_PARADISE);
-                ItemStack chargelily = new ItemStack(BovinesItems.FREESIA);
-                ItemStack tropicalBlue = new ItemStack(BovinesItems.BIRD_OF_PARADISE);
-                ItemStack hyacinth = new ItemStack(BovinesItems.BIRD_OF_PARADISE);
-                ItemStack pinkDaisy = new ItemStack(BovinesItems.BIRD_OF_PARADISE);
-                ItemStack snowdrop = new ItemStack(BovinesItems.BIRD_OF_PARADISE);
+                ItemStack buttercup = new ItemStack(BovinesItems.BUTTERCUP);
+                ItemStack limelight = new ItemStack(BovinesItems.LIMELIGHT);
+                ItemStack chargelily = new ItemStack(BovinesItems.CHARGELILY);
+                ItemStack tropicalBlue = new ItemStack(BovinesItems.TROPICAL_BLUE);
+                ItemStack hyacinth = new ItemStack(BovinesItems.HYACINTH);
+                ItemStack pinkDaisy = new ItemStack(BovinesItems.PINK_DAISY);
+                ItemStack snowdrop = new ItemStack(BovinesItems.SNOWDROP);
 
                 event.getEntries().putAfter(lilyOfTheValley, freesia, CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
                 event.getEntries().putAfter(freesia, birdOfParadise, CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
