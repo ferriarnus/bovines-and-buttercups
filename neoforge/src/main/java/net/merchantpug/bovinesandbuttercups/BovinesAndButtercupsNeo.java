@@ -173,15 +173,25 @@ public class BovinesAndButtercupsNeo {
                     }
                 }
 
-                event.getEntries().putAfter(lilyOfTheValley, new ItemStack(BovinesItems.FREESIA), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
-                event.getEntries().putAfter(new ItemStack(BovinesItems.FREESIA), new ItemStack(BovinesItems.BIRD_OF_PARADISE), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
-                event.getEntries().putAfter(new ItemStack(BovinesItems.BIRD_OF_PARADISE), new ItemStack(BovinesItems.BUTTERCUP), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
-                event.getEntries().putAfter(new ItemStack(BovinesItems.BUTTERCUP), new ItemStack(BovinesItems.LIMELIGHT), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
-                event.getEntries().putAfter(new ItemStack(BovinesItems.LIMELIGHT), new ItemStack(BovinesItems.CHARGELILY), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
-                event.getEntries().putAfter(new ItemStack(BovinesItems.CHARGELILY), new ItemStack(BovinesItems.TROPICAL_BLUE), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
-                event.getEntries().putAfter(new ItemStack(BovinesItems.TROPICAL_BLUE), new ItemStack(BovinesItems.HYACINTH), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
-                event.getEntries().putAfter(new ItemStack(BovinesItems.HYACINTH), new ItemStack(BovinesItems.PINK_DAISY), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
-                event.getEntries().putAfter(new ItemStack(BovinesItems.PINK_DAISY), new ItemStack(BovinesItems.SNOWDROP), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+                ItemStack freesia = new ItemStack(BovinesItems.FREESIA);
+                ItemStack birdOfParadise = new ItemStack(BovinesItems.BIRD_OF_PARADISE);
+                ItemStack buttercup = new ItemStack(BovinesItems.FREESIA);
+                ItemStack limelight = new ItemStack(BovinesItems.BIRD_OF_PARADISE);
+                ItemStack chargelily = new ItemStack(BovinesItems.FREESIA);
+                ItemStack tropicalBlue = new ItemStack(BovinesItems.BIRD_OF_PARADISE);
+                ItemStack hyacinth = new ItemStack(BovinesItems.BIRD_OF_PARADISE);
+                ItemStack pinkDaisy = new ItemStack(BovinesItems.BIRD_OF_PARADISE);
+                ItemStack snowdrop = new ItemStack(BovinesItems.BIRD_OF_PARADISE);
+
+                event.getEntries().putAfter(lilyOfTheValley, freesia, CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+                event.getEntries().putAfter(freesia, birdOfParadise, CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+                event.getEntries().putAfter(birdOfParadise, buttercup, CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+                event.getEntries().putAfter(buttercup, limelight, CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+                event.getEntries().putAfter(limelight, chargelily, CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+                event.getEntries().putAfter(chargelily, tropicalBlue, CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+                event.getEntries().putAfter(tropicalBlue, hyacinth, CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+                event.getEntries().putAfter(hyacinth, pinkDaisy, CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+                event.getEntries().putAfter(pinkDaisy, snowdrop, CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
 
                 CreativeTabHelper.getCustomFlowersForCreativeTab(event.getParameters().holders()).forEach(stack -> event.getEntries().putAfter(new ItemStack(BovinesItems.SNOWDROP), stack, CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS));
                 CreativeTabHelper.getCustomMushroomsForCreativeTab(event.getParameters().holders()).forEach(stack -> event.getEntries().putAfter(new ItemStack(Items.RED_MUSHROOM), stack, CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS));
