@@ -1,5 +1,6 @@
 package net.merchantpug.bovinesandbuttercups.platform;
 
+import net.merchantpug.bovinesandbuttercups.api.attachment.CowTypeAttachment;
 import net.merchantpug.bovinesandbuttercups.api.attachment.LockdownAttachment;
 import net.minecraft.core.Registry;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
@@ -30,6 +31,10 @@ public interface BovinesPlatformHelper {
     BovinesRegistryHelper getRegistryHelper();
 
     LockdownAttachment getLockdownAttachment(LivingEntity entity);
+
+    CowTypeAttachment getCowTypeAttachment(LivingEntity entity);
+
+    void setCowTypeAttachment(LivingEntity entity, CowTypeAttachment attachment);
 
     void sendTrackingClientboundPacket(CustomPacketPayload payload, LivingEntity entity);
 }

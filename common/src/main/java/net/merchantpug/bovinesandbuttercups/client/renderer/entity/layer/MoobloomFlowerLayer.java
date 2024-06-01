@@ -41,7 +41,7 @@ public class MoobloomFlowerLayer<T extends Moobloom, M extends CowModel<T>> exte
         bl = Minecraft.getInstance().shouldEntityAppearGlowing(entity) && entity.isInvisible();
         if (entity.isInvisible() && !bl) return;
 
-        MoobloomConfiguration configuration = entity.getMoobloomType().value().configuration();
+        MoobloomConfiguration configuration = entity.getCowType().value().configuration();
 
         int m = LivingEntityRenderer.getOverlayCoords(entity, 0.0f);
 

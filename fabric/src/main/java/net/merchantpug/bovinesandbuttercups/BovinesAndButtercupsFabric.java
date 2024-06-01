@@ -2,14 +2,16 @@ package net.merchantpug.bovinesandbuttercups;
 
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerEntityEvents;
-import net.fabricmc.fabric.api.event.registry.RegistryEntryAddedCallback;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
+import net.fabricmc.fabric.api.networking.v1.EntityTrackingEvents;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
+import net.merchantpug.bovinesandbuttercups.api.attachment.CowTypeAttachment;
 import net.merchantpug.bovinesandbuttercups.api.attachment.LockdownAttachment;
 import net.merchantpug.bovinesandbuttercups.client.util.CowTextureReloadListenerFabric;
 import net.merchantpug.bovinesandbuttercups.content.entity.Moobloom;
+import net.merchantpug.bovinesandbuttercups.network.clientbound.SyncCowTypeClientboundPacket;
 import net.merchantpug.bovinesandbuttercups.network.clientbound.SyncLockdownEffectsClientboundPacket;
 import net.merchantpug.bovinesandbuttercups.platform.BovinesPlatformHelperFabric;
 import net.merchantpug.bovinesandbuttercups.registry.BovinesAttachments;
@@ -23,7 +25,6 @@ import net.merchantpug.bovinesandbuttercups.registry.BovinesFabricDynamicRegistr
 import net.merchantpug.bovinesandbuttercups.registry.BovinesItems;
 import net.merchantpug.bovinesandbuttercups.registry.BovinesLootItemConditionTypes;
 import net.merchantpug.bovinesandbuttercups.registry.BovinesParticleTypes;
-import net.merchantpug.bovinesandbuttercups.registry.BovinesRegistryKeys;
 import net.merchantpug.bovinesandbuttercups.registry.BovinesSoundEvents;
 import net.merchantpug.bovinesandbuttercups.registry.BovinesStructureTypes;
 import net.merchantpug.bovinesandbuttercups.util.CreativeTabHelper;
@@ -42,11 +43,16 @@ public class BovinesAndButtercupsFabric implements ModInitializer {
     public void onInitialize() {
         BovinesAndButtercups.init(new BovinesPlatformHelperFabric());
 
-        ServerEntityEvents.ENTITY_LOAD.register((entity, world) -> {
-            if (entity instanceof LivingEntity living)
-                LockdownAttachment.sync(living);
+        EntityTrackingEvents.START_TRACKING.register((entity, world) -> {
+            if (entity instanceof LivingEntity living) {
+                if (entity.hasAttached(BovinesAttachments.LOCKDOWN))
+                    LockdownAttachment.sync(living);
+                if (entity.hasAttached(BovinesAttachments.COW_TYPE))
+                    CowTypeAttachment.sync(living);
+            }
         });
-        ResourceManagerHelper.get(PackType.CLIENT_RESOURCES).registerReloadListener(new CowTextureReloadListenerFabric());
+        ResourceManagerHelper.get(PackType.CLIENT_RESOURCES)
+                .registerReloadListener(new CowTextureReloadListenerFabric());
 
         registerContents();
         registerNetwork();
@@ -58,6 +64,7 @@ public class BovinesAndButtercupsFabric implements ModInitializer {
     }
 
     public static void registerNetwork() {
+        PayloadTypeRegistry.playS2C().register(SyncCowTypeClientboundPacket.TYPE, SyncCowTypeClientboundPacket.STREAM_CODEC);
         PayloadTypeRegistry.playS2C().register(SyncLockdownEffectsClientboundPacket.TYPE, SyncLockdownEffectsClientboundPacket.STREAM_CODEC);
     }
 

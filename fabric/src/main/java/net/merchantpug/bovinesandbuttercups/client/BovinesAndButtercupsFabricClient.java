@@ -24,6 +24,7 @@ import net.merchantpug.bovinesandbuttercups.client.renderer.item.CustomHugeMushr
 import net.merchantpug.bovinesandbuttercups.client.renderer.item.CustomMushroomItemRenderer;
 import net.merchantpug.bovinesandbuttercups.client.renderer.item.NectarBowlItemRenderer;
 import net.merchantpug.bovinesandbuttercups.client.util.BovineStateModelUtil;
+import net.merchantpug.bovinesandbuttercups.network.clientbound.SyncCowTypeClientboundPacket;
 import net.merchantpug.bovinesandbuttercups.network.clientbound.SyncLockdownEffectsClientboundPacket;
 import net.merchantpug.bovinesandbuttercups.registry.BovinesBlockEntityTypes;
 import net.merchantpug.bovinesandbuttercups.registry.BovinesBlocks;
@@ -48,6 +49,7 @@ public class BovinesAndButtercupsFabricClient implements ClientModInitializer {
                         CompletableFuture.completedFuture(BovineStateModelUtil.getModels(resourceManager)),
                 (data, pluginContext) -> pluginContext.addModels(data));
 
+        ClientPlayNetworking.registerGlobalReceiver(SyncCowTypeClientboundPacket.TYPE, (packet, context) -> packet.handle());
         ClientPlayNetworking.registerGlobalReceiver(SyncLockdownEffectsClientboundPacket.TYPE, (packet, context) -> packet.handle());
 
         registerBlockLayers();

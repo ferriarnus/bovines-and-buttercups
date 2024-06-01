@@ -1,0 +1,41 @@
+package net.merchantpug.bovinesandbuttercups.network.clientbound;
+
+import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
+import net.merchantpug.bovinesandbuttercups.api.attachment.CowTypeAttachment;
+import net.minecraft.client.Minecraft;
+import net.minecraft.nbt.NbtOps;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+
+public record SyncCowTypeClientboundPacket(int entityId, CowTypeAttachment attachment) implements CustomPacketPayload {
+    public static final ResourceLocation ID = BovinesAndButtercups.asResource("sync_cow_type");
+    public static final Type<SyncCowTypeClientboundPacket> TYPE = new Type<>(ID);
+    public static final StreamCodec<RegistryFriendlyByteBuf, SyncCowTypeClientboundPacket> STREAM_CODEC = StreamCodec.of(SyncCowTypeClientboundPacket::write, SyncCowTypeClientboundPacket::new);
+
+    public SyncCowTypeClientboundPacket(RegistryFriendlyByteBuf buf) {
+        this(buf.readInt(), CowTypeAttachment.CODEC.decode(NbtOps.INSTANCE, buf.readNbt()).getOrThrow().getFirst());
+    }
+
+    public static void write(RegistryFriendlyByteBuf buf, SyncCowTypeClientboundPacket packet) {
+        buf.writeInt(packet.entityId);
+        buf.writeNbt(CowTypeAttachment.CODEC.encodeStart(NbtOps.INSTANCE, packet.attachment).getOrThrow());
+    }
+
+    public void handle() {
+        Minecraft.getInstance().execute(() -> {
+            Entity entity = Minecraft.getInstance().level.getEntity(entityId);
+            if (!(entity instanceof LivingEntity living))
+                return;
+            BovinesAndButtercups.getHelper().setCowTypeAttachment(living, attachment);
+        });
+    }
+
+    @Override
+    public Type<? extends CustomPacketPayload> type() {
+        return TYPE;
+    }
+}

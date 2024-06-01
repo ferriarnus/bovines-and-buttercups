@@ -17,11 +17,11 @@ public record SyncLockdownEffectsClientboundPacket(int entityId, LockdownAttachm
     public static final Type<SyncLockdownEffectsClientboundPacket> TYPE = new Type<>(ID);
     public static final StreamCodec<RegistryFriendlyByteBuf, SyncLockdownEffectsClientboundPacket> STREAM_CODEC = StreamCodec.of(SyncLockdownEffectsClientboundPacket::write, SyncLockdownEffectsClientboundPacket::new);
 
-    public SyncLockdownEffectsClientboundPacket(FriendlyByteBuf buf) {
+    public SyncLockdownEffectsClientboundPacket(RegistryFriendlyByteBuf buf) {
         this(buf.readInt(), LockdownAttachment.CODEC.decode(NbtOps.INSTANCE, buf.readNbt()).getOrThrow().getFirst());
     }
 
-    public static void write(FriendlyByteBuf buf, SyncLockdownEffectsClientboundPacket packet) {
+    public static void write(RegistryFriendlyByteBuf buf, SyncLockdownEffectsClientboundPacket packet) {
         buf.writeInt(packet.entityId);
         buf.writeNbt(LockdownAttachment.CODEC.encodeStart(NbtOps.INSTANCE, packet.attachment).getOrThrow());
     }

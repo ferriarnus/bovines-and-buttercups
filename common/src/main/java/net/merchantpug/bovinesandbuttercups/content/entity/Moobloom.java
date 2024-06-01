@@ -2,6 +2,7 @@ package net.merchantpug.bovinesandbuttercups.content.entity;
 
 import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
 import net.merchantpug.bovinesandbuttercups.api.CowType;
+import net.merchantpug.bovinesandbuttercups.api.attachment.CowTypeAttachment;
 import net.merchantpug.bovinesandbuttercups.api.cowtype.OffspringConditionsConfiguration;
 import net.merchantpug.bovinesandbuttercups.content.block.entity.CustomFlowerBlockEntity;
 import net.merchantpug.bovinesandbuttercups.content.component.ItemCustomFlower;
@@ -82,12 +83,9 @@ import java.util.Optional;
 import java.util.UUID;
 
 public class Moobloom extends Cow {
-    private static final EntityDataAccessor<String> TYPE_ID = SynchedEntityData.defineId(Moobloom.class, EntityDataSerializers.STRING);
-    private static final EntityDataAccessor<String> PREVIOUS_TYPE_ID = SynchedEntityData.defineId(Moobloom.class, EntityDataSerializers.STRING);
     private static final EntityDataAccessor<Integer> POLLINATED_RESET_TICKS = SynchedEntityData.defineId(Moobloom.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> STANDING_STILL_FOR_BEE_TICKS = SynchedEntityData.defineId(Moobloom.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Boolean> ALLOW_SHEARING = SynchedEntityData.defineId(Moobloom.class, EntityDataSerializers.BOOLEAN);
-    private Holder<CowType<?>> type;
     @Nullable
     public Bee bee;
     private boolean hasRefreshedDimensionsForLaying;
@@ -96,14 +94,13 @@ public class Moobloom extends Cow {
 
     public Moobloom(EntityType<? extends Moobloom> entityType, Level level) {
         super(entityType, level);
-        this.bee = null;
+        bee = null;
+        setCowType((Holder)level.registryAccess().registry(BovinesRegistryKeys.COW_TYPE).orElseThrow().getHolder(BovinesCowTypes.MoobloomKeys.MISSING_MOOBLOOM).orElseThrow());
     }
 
     @Override
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
         super.defineSynchedData(builder);
-        builder.define(TYPE_ID, "bovinesandbuttercups:missing_moobloom");
-        builder.define(PREVIOUS_TYPE_ID, "");
         builder.define(POLLINATED_RESET_TICKS, 0);
         builder.define(STANDING_STILL_FOR_BEE_TICKS, 0);
         builder.define(ALLOW_SHEARING, true);
@@ -117,33 +114,53 @@ public class Moobloom extends Cow {
     }
 
     @Override
-    public void addAdditionalSaveData(CompoundTag compound) {
-        super.addAdditionalSaveData(compound);
-        compound.putString("Type", getTypeId());
-        if (!this.getPreviousTypeId().equals("")) {
-            compound.putString("PreviousType", getPreviousTypeId());
-        }
-        compound.putInt("PollinatedResetTicks", getPollinatedResetTicks());
-        compound.putBoolean("AllowShearing", shouldAllowShearing());
+    public void addAdditionalSaveData(CompoundTag tag) {
+        super.addAdditionalSaveData(tag);
+        tag.putInt("pollinated_reset_ticks", getPollinatedResetTicks());
+        tag.putBoolean("allow_shearing", shouldAllowShearing());
     }
 
     @Override
-    public void readAdditionalSaveData(CompoundTag compound) {
-        super.readAdditionalSaveData(compound);
-        if (compound.contains("Type")) {
-            this.setFlowerType(compound.getString("Type"));
-        }
-        if (compound.contains("PreviousType")) {
-            this.setPreviousTypeId(compound.getString("PreviousType"));
-        }
-        if (compound.contains("PollinatedResetTicks", 99)) {
-            this.setPollinatedResetTicks(compound.getInt("PollinatedResetTicks"));
-        }
-        if (compound.contains("AllowShearing", Tag.TAG_BYTE)) {
-            this.setAllowShearing(compound.getBoolean("AllowShearing"));
-        }
+    public void readAdditionalSaveData(CompoundTag tag) {
+        super.readAdditionalSaveData(tag);
+        backwardsCompat(tag);
+        if (tag.contains("pollinated_reset_ticks", Tag.TAG_INT))
+            setPollinatedResetTicks(tag.getInt("pollinated_reset_ticks"));
+        if (tag.contains("allow_shearing", Tag.TAG_BYTE))
+            setAllowShearing(tag.getBoolean("allow_shearing"));
     }
 
+    public void backwardsCompat(CompoundTag tag) {
+        if (tag.contains("Type", Tag.TAG_STRING)) {
+            Optional<Holder.Reference<CowType<?>>> cowType = level().registryAccess().registry(BovinesRegistryKeys.COW_TYPE).orElseThrow().getHolder(new ResourceLocation(tag.getString("Type")));
+            if (cowType.isEmpty()) {
+                BovinesAndButtercups.LOG.error("Could not deserialize legacy cow type tag \"{}\" into a cow type holder.", tag.getString("Type"));
+                return;
+            }
+            if (!cowType.get().isBound() || cowType.get().value().type() != BovinesCowTypeTypes.MOOBLOOM_TYPE)  {
+                BovinesAndButtercups.LOG.error("Cow Type \"{}\" is not bound or is not a moobloom.", cowType);
+                return;
+            }
+            if (tag.contains("PreviousType", Tag.TAG_STRING)) {
+                Optional<Holder.Reference<CowType<?>>> previousCowType = level().registryAccess().registry(BovinesRegistryKeys.COW_TYPE).orElseThrow().getHolder(new ResourceLocation(tag.getString("Type")));
+                if (previousCowType.isEmpty()) {
+                    BovinesAndButtercups.LOG.error("Could not deserialize legacy cow type tag \"{}\" into a cow type holder.", tag.getString("Type"));
+                    return;
+                }
+                if (!previousCowType.get().isBound() || previousCowType.get().value().type() != BovinesCowTypeTypes.MOOBLOOM_TYPE) {
+                    BovinesAndButtercups.LOG.error("Previous Cow Type \"{}\" is not bound or is not a moobloom.", cowType);
+                    return;
+                }
+                BovinesAndButtercups.getHelper().setCowTypeAttachment(this, new CowTypeAttachment(cowType.get(), previousCowType.map(cowTypeReference -> (Holder)cowTypeReference)));
+            } else
+                setCowType((Holder) cowType.get());
+        }
+        if (tag.contains("PollinatedResetTicks", Tag.TAG_INT))
+            setPollinatedResetTicks(tag.getInt("PollinatedResetTicks"));
+        if (tag.contains("AllowShearing", Tag.TAG_BYTE))
+            setAllowShearing(tag.getBoolean("AllowShearing"));
+    }
+    
     public void setBee(@Nullable Bee value) {
         this.bee = value;
     }
@@ -156,33 +173,31 @@ public class Moobloom extends Cow {
     public void thunderHit(ServerLevel level, LightningBolt bolt) {
         UUID uuid = bolt.getUUID();
         if (!uuid.equals(this.lastLightningBoltUUID)) {
-            if (getPreviousTypeId().equals("")) {
-                if (getMoobloomType().value().configuration().settings().thunderConverts().isEmpty()) {
+            if (getPreviousCowType() == null) {
+                if (getCowType().value().configuration().settings().thunderConverts().isEmpty()) {
                     super.thunderHit(level, bolt);
                     return;
                 }
-                setPreviousTypeId(getTypeId());
 
-                List<WeightedEntry.Wrapper<Holder<CowType<MoobloomConfiguration>>>> compatibleList = getMoobloomType().value().configuration().settings().filterThunderConverts(BovinesCowTypeTypes.MOOBLOOM_TYPE);
+                List<WeightedEntry.Wrapper<Holder<CowType<MoobloomConfiguration>>>> compatibleList = getCowType().value().configuration().settings().filterThunderConverts(BovinesCowTypeTypes.MOOBLOOM_TYPE);
                 int totalWeight = 0;
 
                 if (compatibleList.isEmpty()) {
                     super.thunderHit(level, bolt);
                     return;
                 } else if (compatibleList.size() == 1) {
-                    setFlowerType(compatibleList.getFirst().data(), level);
+                    setCowType(compatibleList.getFirst().data());
                 } else {
                     for (WeightedEntry.Wrapper<Holder<CowType<MoobloomConfiguration>>> cct : compatibleList) {
                         totalWeight -= cct.weight().asInt();
                         if (totalWeight <= 0) {
-                            setFlowerType(cct.data(), level);
+                            setCowType(cct.data());
                             break;
                         }
                     }
                 }
             } else {
-                setFlowerType(this.getPreviousTypeId());
-                setPreviousTypeId("");
+                setCurrentAndPreviousCowType(this.getPreviousCowType());
             }
             lastLightningBoltUUID = uuid;
             playSound(BovinesSoundEvents.MOOBLOOM_CONVERT, 2.0F, 1.0F);
@@ -233,13 +248,13 @@ public class Moobloom extends Cow {
         if (this.level().isClientSide) return;
 
         BlockState state = null;
-        if (getMoobloomType().value().configuration().flower().blockState().isPresent())
-            state = getMoobloomType().value().configuration().flower().blockState().get().getBlock().defaultBlockState();
-        else if (getMoobloomType().value().configuration().flower().customType().isPresent())
+        if (getCowType().value().configuration().flower().blockState().isPresent())
+            state = getCowType().value().configuration().flower().blockState().get().getBlock().defaultBlockState();
+        else if (getCowType().value().configuration().flower().customType().isPresent())
             state = BovinesBlocks.CUSTOM_FLOWER.defaultBlockState();
 
         if (state == null) {
-            BovinesAndButtercups.LOG.warn("Moobloom with type '{}' tried to spread flowers without a valid flower type.", getMoobloomType().getRegisteredName());
+            BovinesAndButtercups.LOG.warn("Moobloom with type '{}' tried to spread flowers without a valid flower type.", getCowType().getRegisteredName());
             return;
         }
 
@@ -257,11 +272,11 @@ public class Moobloom extends Cow {
     public void setBlockToFlower(BlockState state, BlockPos pos) {
         if (this.level().isClientSide) return;
         ((ServerLevel) this.level()).sendParticles(ParticleTypes.HAPPY_VILLAGER, pos.getX() + 0.5D, pos.getY() + 0.3D, pos.getZ() + 0.5D, 4, 0.2, 0.1, 0.2, 0.0);
-        if (state.getBlock() == BovinesBlocks.CUSTOM_FLOWER && this.getMoobloomType().value().configuration().flower().customType().isPresent()) {
+        if (state.getBlock() == BovinesBlocks.CUSTOM_FLOWER && getCowType().value().configuration().flower().customType().isPresent()) {
             this.level().setBlock(pos, state, 3);
             BlockEntity blockEntity = this.level().getBlockEntity(pos);
             if (blockEntity instanceof CustomFlowerBlockEntity customFlowerBlockEntity) {
-                customFlowerBlockEntity.setCustomFlower(new ItemCustomFlower(getMoobloomType().value().configuration().flower().customType().get()));
+                customFlowerBlockEntity.setCustomFlower(new ItemCustomFlower(getCowType().value().configuration().flower().customType().get()));
                 customFlowerBlockEntity.setChanged();
             }
         } else {
@@ -294,17 +309,17 @@ public class Moobloom extends Cow {
             } else if (itemStack.is(Items.BOWL)) {
                 ItemStack itemStack2;
                 itemStack2 = new ItemStack(BovinesItems.NECTAR_BOWL);
-                if (!getMoobloomType().value().configuration().nectarEffects().effects().isEmpty()) {
-                    itemStack2.set(BovinesDataComponents.NECTAR_EFFECTS, getMoobloomType().value().configuration().nectarEffects());
-                } else if (getMoobloomType().value().configuration().flower().blockState().isPresent() && this.getMoobloomType().value().configuration().flower().blockState().get().getBlock() instanceof FlowerBlock) {
-                    ((FlowerBlock)getMoobloomType().value().configuration().flower().blockState().get().getBlock()).getSuspiciousEffects().effects().forEach(effectEntry -> {
+                if (!getCowType().value().configuration().nectarEffects().effects().isEmpty()) {
+                    itemStack2.set(BovinesDataComponents.NECTAR_EFFECTS, getCowType().value().configuration().nectarEffects());
+                } else if (getCowType().value().configuration().flower().blockState().isPresent() && this.getCowType().value().configuration().flower().blockState().get().getBlock() instanceof FlowerBlock) {
+                    ((FlowerBlock)getCowType().value().configuration().flower().blockState().get().getBlock()).getSuspiciousEffects().effects().forEach(effectEntry -> {
                         itemStack2.set(BovinesDataComponents.NECTAR_EFFECTS, itemStack2.getOrDefault(BovinesDataComponents.NECTAR_EFFECTS, new NectarEffects(List.of()).withEffectAdded(new NectarEffects.Entry(effectEntry.effect(), effectEntry.duration()))));
                     });
                 } else {
                     return InteractionResult.PASS;
                 }
 
-                itemStack2.set(BovinesDataComponents.MOOBLOOM_TYPE, new ItemMoobloomType((Holder)getMoobloomType()));
+                itemStack2.set(BovinesDataComponents.MOOBLOOM_TYPE, new ItemMoobloomType((Holder)getCowType()));
                 ItemStack itemStack3 = ItemUtils.createFilledResult(itemStack, player, itemStack2, false);
                 player.setItemInHand(hand, itemStack3);
                 this.playSound(BovinesSoundEvents.MOOBLOOM_MILK, 1.0f, 1.0f);
@@ -353,10 +368,10 @@ public class Moobloom extends Cow {
 
         child.particlePositions.clear();
 
-        if (!otherParent.getMoobloomType().equals(this.getMoobloomType()) && this.getRandom().nextBoolean())
-            return otherParent.getMoobloomType();
+        if (!otherParent.getCowType().equals(this.getCowType()) && this.getRandom().nextBoolean())
+            return otherParent.getCowType();
 
-        return this.getMoobloomType();
+        return this.getCowType();
     }
 
     public void addParticlePosition(Holder<CowType<?>> type, Vec3 pos) {
@@ -386,7 +401,7 @@ public class Moobloom extends Cow {
     @Override
     public Moobloom getBreedOffspring(ServerLevel level, AgeableMob otherParent) {
         Moobloom moobloom = BovinesEntityTypes.MOOBLOOM.create(level);
-        moobloom.setFlowerType(chooseBabyType(level, (Moobloom)otherParent, moobloom), level);
+        moobloom.setCowType(chooseBabyType(level, (Moobloom)otherParent, moobloom));
         return moobloom;
     }
 
@@ -394,48 +409,20 @@ public class Moobloom extends Cow {
         return isAlive() && !isBaby() && entityData.get(ALLOW_SHEARING);
     }
 
-    public Holder<CowType<MoobloomConfiguration>> getMoobloomType() {
-        try {
-            Registry<CowType<?>> registry = this.level().registryAccess().registry(BovinesRegistryKeys.COW_TYPE).orElseThrow();
-            if (type != null && type.isBound() && getTypeId() != null && registry.containsKey(new ResourceLocation(getTypeId())) && registry.get(new ResourceLocation(getTypeId())).configuration() instanceof MoobloomConfiguration && type.value().configuration() != registry.get(new ResourceLocation(getTypeId())).configuration()) {
-                type = registry.getHolder(new ResourceLocation(getTypeId())).orElseThrow();
-                return (Holder) type;
-            } else if (type != null && type.isBound()) {
-                return (Holder) type;
-            } else if (getTypeId() != null && registry.containsKey(new ResourceLocation(getTypeId())) && registry.get(new ResourceLocation(getTypeId())).configuration() instanceof MoobloomConfiguration) {
-                type = registry.getHolder(new ResourceLocation(getTypeId())).orElseThrow();
-                return (Holder) type;
-            }
-            type = level().registryAccess().registry(BovinesRegistryKeys.COW_TYPE).orElseThrow().getHolder(BovinesCowTypes.MoobloomKeys.MISSING_MOOBLOOM).orElseThrow();
-            BovinesAndButtercups.LOG.warn("Could not find type '{}' from moobloom at {}. Setting type to 'bovinesandbuttercups:missing_moobloom'.", ResourceLocation.tryParse(getTypeId()), position());
-            return (Holder)type;
-        } catch (Exception e) {
-            type = level().registryAccess().registry(BovinesRegistryKeys.COW_TYPE).orElseThrow().getHolder(BovinesCowTypes.MoobloomKeys.MISSING_MOOBLOOM).orElseThrow();
-            BovinesAndButtercups.LOG.warn("Could not get type '{}' from moobloom at {}. Setting type to 'bovinesandbuttercups:missing_moobloom'. {}", ResourceLocation.tryParse(getTypeId()), position(), e.getMessage());
-            return (Holder)type;
-        }
+    public Holder<CowType<MoobloomConfiguration>> getCowType() {
+        return CowTypeAttachment.getCowTypeHolderFromEntity(this, BovinesCowTypeTypes.MOOBLOOM_TYPE);
+    }
+    
+    public Holder<CowType<MoobloomConfiguration>> getPreviousCowType() {
+        return CowTypeAttachment.getPreviousCowTypeHolderFromEntity(this, BovinesCowTypeTypes.MOOBLOOM_TYPE);
     }
 
-    public String getTypeId() {
-        return this.entityData.get(TYPE_ID);
+    public void setCowType(Holder<CowType<MoobloomConfiguration>> value) {
+        CowTypeAttachment.setCowType(this, value);
     }
 
-    public String getPreviousTypeId() {
-        return this.entityData.get(PREVIOUS_TYPE_ID);
-    }
-
-    public void setPreviousTypeId(String value) {
-        this.entityData.set(PREVIOUS_TYPE_ID, value);
-    }
-
-    public void setFlowerType(String value) {
-        this.entityData.set(TYPE_ID, value);
-        this.getMoobloomType();
-    }
-
-    public void setFlowerType(Holder<CowType<MoobloomConfiguration>> value, LevelAccessor level) {
-        this.entityData.set(TYPE_ID, value.getRegisteredName());
-        this.getMoobloomType();
+    public void setCurrentAndPreviousCowType(Holder<CowType<MoobloomConfiguration>> current) {
+        CowTypeAttachment.setCowType(this, current, this.getCowType());
     }
 
     public int getPollinatedResetTicks() {
@@ -497,11 +484,11 @@ public class Moobloom extends Cow {
                 cowEntity.setInvulnerable(this.isInvulnerable());
                 this.level().addFreshEntity(cowEntity);
                 for (int i = 0; i < 5; ++i) {
-                    if (getMoobloomType().value().configuration().flower().blockState().isPresent()) {
-                        stacks.add(new ItemStack(getMoobloomType().value().configuration().flower().blockState().get().getBlock()));
-                    } else if (getMoobloomType().value().configuration().flower().customType().isPresent()) {
+                    if (getCowType().value().configuration().flower().blockState().isPresent()) {
+                        stacks.add(new ItemStack(getCowType().value().configuration().flower().blockState().get().getBlock()));
+                    } else if (getCowType().value().configuration().flower().customType().isPresent()) {
                         ItemStack itemStack = new ItemStack(BovinesItems.CUSTOM_FLOWER);
-                        itemStack.set(BovinesDataComponents.CUSTOM_FLOWER, new ItemCustomFlower(getMoobloomType().value().configuration().flower().customType().get()));
+                        itemStack.set(BovinesDataComponents.CUSTOM_FLOWER, new ItemCustomFlower(getCowType().value().configuration().flower().customType().get()));
                         stacks.add(itemStack);
                     }
                 }
@@ -515,7 +502,7 @@ public class Moobloom extends Cow {
         if (data == null) {
             data = new MoobloomGroupData();
         }
-        this.setFlowerType(((MoobloomGroupData)data).getSpawnType(blockPosition(), level, level.getRandom()), level);
+        setCowType(((MoobloomGroupData)data).getSpawnType(blockPosition(), level, level.getRandom()));
         return super.finalizeSpawn(level, difficulty, spawnType, data);
     }
 

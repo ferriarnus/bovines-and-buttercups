@@ -3,6 +3,7 @@ package net.merchantpug.bovinesandbuttercups;
 import net.merchantpug.bovinesandbuttercups.api.attachment.LockdownAttachment;
 import net.merchantpug.bovinesandbuttercups.content.effect.LockdownEffect;
 import net.merchantpug.bovinesandbuttercups.content.entity.Moobloom;
+import net.merchantpug.bovinesandbuttercups.network.clientbound.SyncCowTypeClientboundPacket;
 import net.merchantpug.bovinesandbuttercups.network.clientbound.SyncLockdownEffectsClientboundPacket;
 import net.merchantpug.bovinesandbuttercups.platform.NeoBovinesPlatformHelper;
 import net.merchantpug.bovinesandbuttercups.registry.BovinesAttachments;
@@ -136,6 +137,7 @@ public class BovinesAndButtercupsNeo {
         @SubscribeEvent
         public static void registerPackets(RegisterPayloadHandlersEvent event) {
             event.registrar("2.0.0")
+                    .playToClient(SyncCowTypeClientboundPacket.TYPE, SyncCowTypeClientboundPacket.STREAM_CODEC, (payload, context) -> payload.handle())
                     .playToClient(SyncLockdownEffectsClientboundPacket.TYPE, SyncLockdownEffectsClientboundPacket.STREAM_CODEC, (payload, context) -> payload.handle());
         }
 

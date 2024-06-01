@@ -1,18 +1,17 @@
 package net.merchantpug.bovinesandbuttercups.platform;
 
+import net.merchantpug.bovinesandbuttercups.api.attachment.CowTypeAttachment;
 import net.merchantpug.bovinesandbuttercups.api.attachment.LockdownAttachment;
 import net.merchantpug.bovinesandbuttercups.registry.BovinesAttachments;
 import net.merchantpug.bovinesandbuttercups.util.PottedBlockMapUtil;
 import net.minecraft.core.Registry;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.fml.ModList;
 import net.neoforged.fml.loading.FMLLoader;
 import net.neoforged.neoforge.network.PacketDistributor;
-import net.neoforged.neoforge.network.registration.NetworkChannel;
 import net.neoforged.neoforge.registries.RegistryBuilder;
 
 import java.util.Map;
@@ -55,6 +54,16 @@ public class NeoBovinesPlatformHelper implements BovinesPlatformHelper {
     @Override
     public LockdownAttachment getLockdownAttachment(LivingEntity entity) {
         return entity.getData(BovinesAttachments.LOCKDOWN);
+    }
+
+    @Override
+    public CowTypeAttachment getCowTypeAttachment(LivingEntity entity) {
+        return entity.getExistingData(BovinesAttachments.COW_TYPE).orElse(null);
+    }
+
+    @Override
+    public void setCowTypeAttachment(LivingEntity entity, CowTypeAttachment attachment) {
+        entity.setData(BovinesAttachments.COW_TYPE, attachment);
     }
 
     @Override
