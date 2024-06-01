@@ -43,10 +43,10 @@
                     "condition": "bovinesandbuttercups:block_in_radius",
                     "radius": {
                       "max_x": 6.0,
-                      "max_y": 1.0,
+                      "max_y": 4.0,
                       "max_z": 6.0,
                       "min_x": -6.0,
-                      "min_y": -5.0,
+                      "min_y": -2.0,
                       "min_z": -6.0
                     }
                   }
@@ -65,10 +65,10 @@
                     "condition": "bovinesandbuttercups:block_in_radius",
                     "radius": {
                       "max_x": 6.0,
-                      "max_y": 1.0,
+                      "max_y": 4.0,
                       "max_z": 6.0,
                       "min_x": -6.0,
-                      "min_y": -5.0,
+                      "min_y": -2.0,
                       "min_z": -6.0
                     }
                   }
@@ -89,10 +89,10 @@
                     "condition": "bovinesandbuttercups:block_in_radius",
                     "radius": {
                       "max_x": 6.0,
-                      "max_y": 1.0,
+                      "max_y": 4.0,
                       "max_z": 6.0,
                       "min_x": -6.0,
-                      "min_y": -5.0,
+                      "min_y": -2.0,
                       "min_z": -6.0
                     }
                   }
@@ -110,10 +110,10 @@
             "condition": "bovinesandbuttercups:block_in_radius",
             "radius": {
               "max_x": 6.0,
-              "max_y": 1.0,
+              "max_y": 4.0,
               "max_z": 6.0,
               "min_x": -6.0,
-              "min_y": -5.0,
+              "min_y": -2.0,
               "min_z": -6.0
             }
           }

@@ -217,8 +217,8 @@ public class BovinesCowTypes {
 
     private static LootItemCondition createCondition(List<BlockPredicate.Builder> blocks, BlockPredicate.Builder flowerBlocks) {
         return AnyOfCondition.anyOf(
-                AllOfCondition.allOf(blocks.stream().map(predicate -> AnyOfCondition.anyOf(new BlockInRadiusCondition.Builder(predicate).withRadius(12, 6).withOffset(0, -2, 0))).toArray(LootItemCondition.Builder[]::new)),
-                new BlockInRadiusCondition.Builder(flowerBlocks).withRadius(12, 6).withOffset(0, -2, 0)
+                AllOfCondition.allOf(blocks.stream().map(predicate -> AnyOfCondition.anyOf(new BlockInRadiusCondition.Builder(predicate).withRadius(12, 6).withOffset(0, 1, 0))).toArray(LootItemCondition.Builder[]::new)),
+                new BlockInRadiusCondition.Builder(flowerBlocks).withRadius(12, 6).withOffset(0, 1, 0)
         ).build();
     }
 
