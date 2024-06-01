@@ -1,8 +1,6 @@
 {
   "type": "bovinesandbuttercups:mooshroom",
-  "back_grass": {
-    "texture_location": "bovinesandbuttercups:bovinesandbuttercups/moobloom/mooshroom_mycelium"
-  },
+  "back_grass": {},
   "can_eat_flowers": true,
   "mushroom": {
     "block_state": {

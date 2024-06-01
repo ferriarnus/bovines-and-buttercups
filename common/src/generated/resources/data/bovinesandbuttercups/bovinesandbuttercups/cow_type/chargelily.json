@@ -1,14 +1,12 @@
 {
   "type": "bovinesandbuttercups:moobloom",
-  "back_grass": {
-    "texture_location": "bovinesandbuttercups:textures/entity/bovinesandbuttercups/moobloom/moobloom_grass.png"
-  },
+  "back_grass": {},
   "bud": {
-    "model_location": "bovinesandbuttercups:bovinesandbuttercups/bird_of_paradise_bud"
+    "model_location": "bovinesandbuttercups:bovinesandbuttercups/chargelily_bud"
   },
   "flower": {
     "block_state": {
-      "Name": "bovinesandbuttercups:bird_of_paradise"
+      "Name": "bovinesandbuttercups:chargelily"
     }
   },
   "natural_spawns": [],
@@ -18,7 +16,7 @@
       "id": "minecraft:haste"
     }
   ],
-  "nectar_palette": "bovinesandbuttercups:bovinesandbuttercups/item/bird_of_paradise_nectar_bowl",
+  "nectar_palette": "bovinesandbuttercups:bovinesandbuttercups/item/chargelily_nectar_bowl",
   "particle": {
     "type": "bovinesandbuttercups:bloom",
     "color": 7584494
