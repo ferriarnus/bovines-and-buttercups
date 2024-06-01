@@ -101,7 +101,7 @@ public class BovinesAndButtercupsFabric implements ModInitializer {
 
     public static void registerCreativeTabEntries() {
         ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.NATURAL_BLOCKS).register(entries -> {
-            entries.addAfter(Items.PINK_PETALS, Stream.of(
+            entries.addAfter(Items.SPORE_BLOSSOM, Stream.of(
                     BovinesItems.FREESIA,
                     BovinesItems.BIRD_OF_PARADISE,
                     BovinesItems.BUTTERCUP,
