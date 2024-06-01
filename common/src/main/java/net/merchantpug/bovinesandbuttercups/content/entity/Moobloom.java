@@ -188,13 +188,13 @@ public class Moobloom extends Cow {
                     super.thunderHit(level, bolt);
                     return;
                 } else if (compatibleList.size() == 1) {
-                    setCowType(compatibleList.getFirst().data());
+                    setCurrentAndPreviousCowType(compatibleList.getFirst().data());
                     CowTypeAttachment.sync(this);
                 } else {
                     for (WeightedEntry.Wrapper<Holder<CowType<MoobloomConfiguration>>> cct : compatibleList) {
                         totalWeight -= cct.weight().asInt();
                         if (totalWeight <= 0) {
-                            setCowType(cct.data());
+                            setCurrentAndPreviousCowType(cct.data());
                             CowTypeAttachment.sync(this);
                             break;
                         }
