@@ -1,6 +1,9 @@
 package net.merchantpug.bovinesandbuttercups;
 
+import net.merchantpug.bovinesandbuttercups.api.attachment.CowTypeAttachment;
 import net.merchantpug.bovinesandbuttercups.api.attachment.LockdownAttachment;
+import net.merchantpug.bovinesandbuttercups.content.advancements.criterion.LockEffectTrigger;
+import net.merchantpug.bovinesandbuttercups.content.advancements.criterion.PreventEffectTrigger;
 import net.merchantpug.bovinesandbuttercups.content.effect.LockdownEffect;
 import net.merchantpug.bovinesandbuttercups.content.entity.Moobloom;
 import net.merchantpug.bovinesandbuttercups.network.clientbound.SyncCowTypeClientboundPacket;
@@ -21,10 +24,13 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.SpawnPlacementTypes;
+import net.minecraft.world.entity.animal.Bee;
+import net.minecraft.world.entity.animal.MushroomCow;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.IEventBus;
@@ -33,12 +39,17 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
+import net.neoforged.neoforge.event.entity.EntityEvent;
+import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
 import net.neoforged.neoforge.event.entity.SpawnPlacementRegisterEvent;
 import net.neoforged.neoforge.event.entity.living.MobEffectEvent;
+import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.tick.EntityTickEvent;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 import java.util.Optional;
 
 @Mod(BovinesAndButtercups.MOD_ID)
@@ -51,7 +62,17 @@ public class BovinesAndButtercupsNeo {
     @EventBusSubscriber(modid = BovinesAndButtercups.MOD_ID, bus = EventBusSubscriber.Bus.GAME)
     public static class GameEvents {
         @SubscribeEvent
-        public static void onLivingTick(EntityTickEvent event) {
+        public static void onStartTracking(PlayerEvent.StartTracking event) {
+            if (event.getTarget() instanceof LivingEntity living) {
+                if (living.hasData(BovinesAttachments.LOCKDOWN))
+                    LockdownAttachment.sync(living);
+                if (living.hasData(BovinesAttachments.COW_TYPE))
+                    CowTypeAttachment.sync(living);
+            }
+        }
+
+        @SubscribeEvent
+        public static void onLivingTick(EntityTickEvent.Post event) {
             if (!event.getEntity().level().isClientSide() && event.getEntity() instanceof LivingEntity living && living.hasEffect(BovinesEffects.LOCKDOWN)) {
                 HashMap<Holder<MobEffect>, Integer> lockdownEffectsToUpdate = new HashMap<>();
                 living.getExistingData(BovinesAttachments.LOCKDOWN).ifPresent(attachment -> attachment.effects().forEach(((effect, integer) -> {
@@ -81,7 +102,7 @@ public class BovinesAndButtercupsNeo {
             if (!entity.level().isClientSide && entity instanceof ServerPlayer serverPlayer && effect.getEffect() instanceof LockdownEffect && !attachment.effects().isEmpty()) {
                 attachment.effects().forEach((effect1, duration) -> {
                     if (!entity.hasEffect(effect1)) return;
-                    BovinesCriteriaTriggers.LOCK_EFFECT.trigger(serverPlayer, effect1);
+                    LockEffectTrigger.INSTANCE.trigger(serverPlayer, effect1);
                 });
             }
         }
@@ -112,7 +133,7 @@ public class BovinesAndButtercupsNeo {
             Optional<LockdownAttachment> attachment = event.getEntity().getExistingData(BovinesAttachments.LOCKDOWN);
             if (attachment.isPresent() && attachment.get().effects().containsKey(event.getEffectInstance().getEffect())) {
                 if (!entity.level().isClientSide && entity instanceof ServerPlayer serverPlayer) {
-                    BovinesCriteriaTriggers.PREVENT_EFFECT.trigger(serverPlayer, event.getEffectInstance().getEffect());
+                    PreventEffectTrigger.INSTANCE.trigger(serverPlayer, event.getEffectInstance().getEffect());
                 }
                 event.setResult(MobEffectEvent.Applicable.Result.DO_NOT_APPLY);
             }
@@ -144,7 +165,15 @@ public class BovinesAndButtercupsNeo {
         @SubscribeEvent
         public static void buildCreativeModeTabs(BuildCreativeModeTabContentsEvent event) {
             if (event.getTabKey() == CreativeModeTabs.NATURAL_BLOCKS) {
-                event.getEntries().putAfter(new ItemStack(Items.LILY_OF_THE_VALLEY), new ItemStack(BovinesItems.FREESIA), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+                ItemStack lilyOfTheValley = null;
+                for (Map.Entry<ItemStack, CreativeModeTab.TabVisibility> entry : event.getEntries()) {
+                    if (entry.getKey().is(Items.LILY_OF_THE_VALLEY)) {
+                        lilyOfTheValley = entry.getKey();
+                        break;
+                    }
+                }
+
+                event.getEntries().putAfter(lilyOfTheValley, new ItemStack(BovinesItems.FREESIA), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
                 event.getEntries().putAfter(new ItemStack(BovinesItems.FREESIA), new ItemStack(BovinesItems.BIRD_OF_PARADISE), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
                 event.getEntries().putAfter(new ItemStack(BovinesItems.BIRD_OF_PARADISE), new ItemStack(BovinesItems.BUTTERCUP), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
                 event.getEntries().putAfter(new ItemStack(BovinesItems.BUTTERCUP), new ItemStack(BovinesItems.LIMELIGHT), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);

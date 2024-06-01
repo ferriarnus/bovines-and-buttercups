@@ -4,6 +4,7 @@ import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
 import net.merchantpug.bovinesandbuttercups.api.CowType;
 import net.merchantpug.bovinesandbuttercups.api.attachment.CowTypeAttachment;
 import net.merchantpug.bovinesandbuttercups.api.cowtype.OffspringConditionsConfiguration;
+import net.merchantpug.bovinesandbuttercups.content.advancements.criterion.MutationTrigger;
 import net.merchantpug.bovinesandbuttercups.content.block.entity.CustomFlowerBlockEntity;
 import net.merchantpug.bovinesandbuttercups.content.component.ItemCustomFlower;
 import net.merchantpug.bovinesandbuttercups.content.component.ItemMoobloomType;
@@ -13,7 +14,6 @@ import net.merchantpug.bovinesandbuttercups.mixin.EntityAccessor;
 import net.merchantpug.bovinesandbuttercups.registry.BovinesBlocks;
 import net.merchantpug.bovinesandbuttercups.registry.BovinesCowTypeTypes;
 import net.merchantpug.bovinesandbuttercups.registry.BovinesCowTypes;
-import net.merchantpug.bovinesandbuttercups.registry.BovinesCriteriaTriggers;
 import net.merchantpug.bovinesandbuttercups.registry.BovinesDataComponents;
 import net.merchantpug.bovinesandbuttercups.registry.BovinesEntityTypes;
 import net.merchantpug.bovinesandbuttercups.registry.BovinesItems;
@@ -24,7 +24,6 @@ import net.merchantpug.bovinesandbuttercups.registry.BovinesSoundEvents;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderSet;
-import net.minecraft.core.Registry;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
@@ -151,9 +150,12 @@ public class Moobloom extends Cow {
                     BovinesAndButtercups.LOG.error("Previous Cow Type \"{}\" is not bound or is not a moobloom.", cowType);
                     return;
                 }
-                BovinesAndButtercups.getHelper().setCowTypeAttachment(this, new CowTypeAttachment(cowType.get(), previousCowType.map(cowTypeReference -> (Holder)cowTypeReference)));
-            } else
+                BovinesAndButtercups.getHelper().setCowTypeAttachment(this, new CowTypeAttachment(cowType.get(), previousCowType.map(cowTypeReference -> cowTypeReference)));
+                CowTypeAttachment.sync(this);
+            } else {
                 setCowType((Holder) cowType.get());
+                CowTypeAttachment.sync(this);
+            }
         }
         if (tag.contains("PollinatedResetTicks", Tag.TAG_INT))
             setPollinatedResetTicks(tag.getInt("PollinatedResetTicks"));
@@ -187,17 +189,20 @@ public class Moobloom extends Cow {
                     return;
                 } else if (compatibleList.size() == 1) {
                     setCowType(compatibleList.getFirst().data());
+                    CowTypeAttachment.sync(this);
                 } else {
                     for (WeightedEntry.Wrapper<Holder<CowType<MoobloomConfiguration>>> cct : compatibleList) {
                         totalWeight -= cct.weight().asInt();
                         if (totalWeight <= 0) {
                             setCowType(cct.data());
+                            CowTypeAttachment.sync(this);
                             break;
                         }
                     }
                 }
             } else {
                 setCurrentAndPreviousCowType(this.getPreviousCowType());
+                CowTypeAttachment.sync(this);
             }
             lastLightningBoltUUID = uuid;
             playSound(BovinesSoundEvents.MOOBLOOM_CONVERT, 2.0F, 1.0F);
@@ -362,7 +367,7 @@ public class Moobloom extends Cow {
             child.createParticles(randomType, this.position());
 
             if (this.getLoveCause() != null)
-                BovinesCriteriaTriggers.MUTATION.trigger(this.getLoveCause(), this, otherParent, child, (Holder) randomType);
+                MutationTrigger.INSTANCE.trigger(this.getLoveCause(), this, otherParent, child, (Holder) randomType);
             return randomType;
         }
 

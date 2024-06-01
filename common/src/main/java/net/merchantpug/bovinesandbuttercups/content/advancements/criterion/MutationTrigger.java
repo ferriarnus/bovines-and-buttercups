@@ -21,6 +21,7 @@ import net.minecraft.world.level.storage.loot.LootContext;
 import java.util.Optional;
 
 public class MutationTrigger extends SimpleCriterionTrigger<MutationTrigger.TriggerInstance> {
+    public static final MutationTrigger INSTANCE = new MutationTrigger();
     public static final ResourceLocation ID = BovinesAndButtercups.asResource("mutation");
     public static final Codec<TriggerInstance> CODEC = RecordCodecBuilder.create(inst -> inst.group(
             CowTypeType.CODEC.optionalFieldOf("cow_type_type").forGetter(TriggerInstance::cowType),
@@ -29,6 +30,8 @@ public class MutationTrigger extends SimpleCriterionTrigger<MutationTrigger.Trig
             ContextAwarePredicate.CODEC.optionalFieldOf("partner").forGetter(TriggerInstance::partner),
             ContextAwarePredicate.CODEC.optionalFieldOf("child").forGetter(TriggerInstance::child)
     ).apply(inst, TriggerInstance::new));
+
+    private MutationTrigger() {}
 
     public void trigger(ServerPlayer serverPlayer, Animal parent, Animal partner, AgeableMob child, Holder<CowType<?>> moobloomType) {
         LootContext parentContext = EntityPredicate.createContext(serverPlayer, parent);

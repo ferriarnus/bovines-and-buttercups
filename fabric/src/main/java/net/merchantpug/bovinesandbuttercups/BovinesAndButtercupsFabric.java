@@ -1,11 +1,11 @@
 package net.merchantpug.bovinesandbuttercups;
 
 import net.fabricmc.api.ModInitializer;
-import net.fabricmc.fabric.api.event.lifecycle.v1.ServerEntityEvents;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.fabricmc.fabric.api.networking.v1.EntityTrackingEvents;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
+import net.fabricmc.fabric.api.registry.CompostingChanceRegistry;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.merchantpug.bovinesandbuttercups.api.attachment.CowTypeAttachment;
 import net.merchantpug.bovinesandbuttercups.api.attachment.LockdownAttachment;
@@ -18,6 +18,7 @@ import net.merchantpug.bovinesandbuttercups.registry.BovinesAttachments;
 import net.merchantpug.bovinesandbuttercups.registry.BovinesBlockEntityTypes;
 import net.merchantpug.bovinesandbuttercups.registry.BovinesBlocks;
 import net.merchantpug.bovinesandbuttercups.registry.BovinesCowTypeTypes;
+import net.merchantpug.bovinesandbuttercups.registry.BovinesCriteriaTriggers;
 import net.merchantpug.bovinesandbuttercups.registry.BovinesDataComponents;
 import net.merchantpug.bovinesandbuttercups.registry.BovinesEffects;
 import net.merchantpug.bovinesandbuttercups.registry.BovinesEntityTypes;
@@ -80,8 +81,22 @@ public class BovinesAndButtercupsFabric implements ModInitializer {
         BovinesParticleTypes.registerAll(Registry::register);
         BovinesSoundEvents.registerAll(Registry::register);
         BovinesStructureTypes.registerAll(Registry::register);
+        BovinesCriteriaTriggers.registerAll(Registry::register);
+    }
 
-
+    private static void registerCompostables() {
+        CompostingChanceRegistry.INSTANCE.add(BovinesItems.BIRD_OF_PARADISE, 0.65F);
+        CompostingChanceRegistry.INSTANCE.add(BovinesItems.BUTTERCUP, 0.65F);
+        CompostingChanceRegistry.INSTANCE.add(BovinesItems.CHARGELILY, 0.65F);
+        CompostingChanceRegistry.INSTANCE.add(BovinesItems.FREESIA, 0.65F);
+        CompostingChanceRegistry.INSTANCE.add(BovinesItems.HYACINTH, 0.65F);
+        CompostingChanceRegistry.INSTANCE.add(BovinesItems.LIMELIGHT, 0.65F);
+        CompostingChanceRegistry.INSTANCE.add(BovinesItems.PINK_DAISY, 0.65F);
+        CompostingChanceRegistry.INSTANCE.add(BovinesItems.SNOWDROP, 0.65F);
+        CompostingChanceRegistry.INSTANCE.add(BovinesItems.TROPICAL_BLUE, 0.65F);
+        CompostingChanceRegistry.INSTANCE.add(BovinesItems.CUSTOM_FLOWER, 0.65F);
+        CompostingChanceRegistry.INSTANCE.add(BovinesItems.CUSTOM_MUSHROOM, 0.65F);
+        CompostingChanceRegistry.INSTANCE.add(BovinesItems.CUSTOM_MUSHROOM_BLOCK, 0.85F);
     }
 
     public static void registerCreativeTabEntries() {

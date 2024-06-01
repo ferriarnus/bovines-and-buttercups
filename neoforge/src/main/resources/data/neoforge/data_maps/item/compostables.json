@@ -1,0 +1,40 @@
+{
+  "values": {
+    "bovinesandbuttercups:bird_of_paradise": {
+      "chance": 0.65
+    },
+    "bovinesandbuttercups:buttercup": {
+      "chance": 0.65
+    },
+    "bovinesandbuttercups:chargelily": {
+      "chance": 0.65
+    },
+    "bovinesandbuttercups:freesia": {
+      "chance": 0.65
+    },
+    "bovinesandbuttercups:hyacinth": {
+      "chance": 0.65
+    },
+    "bovinesandbuttercups:limelight": {
+      "chance": 0.65
+    },
+    "bovinesandbuttercups:pink_daisy": {
+      "chance": 0.65
+    },
+    "bovinesandbuttercups:snowdrop": {
+      "chance": 0.65
+    },
+    "bovinesandbuttercups:tropical_blue": {
+      "chance": 0.65
+    },
+    "bovinesandbuttercups:custom_flower": {
+      "chance": 0.65
+    },
+    "bovinesandbuttercups:custom_mushroom": {
+      "chance": 0.65
+    },
+    "bovinesandbuttercups:custom_mushroom_block": {
+      "chance": 0.85
+    }
+  }
+}

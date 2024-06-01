@@ -16,11 +16,6 @@ public class BovinesAndButtercupsClient {
 
     public static void init(BovinesClientHelper helper) {
         clientHelper = helper;
-        BovineBlockstateTypes.init();
-
-        if (!BovinesAndButtercups.getHelper().getPlatform().equals(BovinesPlatform.NEOFORGE)) {
-            registerCowTexturePaths();
-        }
     }
 
     public static BovinesClientHelper getHelper() {

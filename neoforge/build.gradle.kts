@@ -5,7 +5,7 @@ import org.apache.tools.ant.filters.LineContains
 
 plugins {
     id("bovinesandbuttercups.loader")
-    id("net.neoforged.gradle.userdev") version "7.0.136"
+    id("net.neoforged.gradle.userdev") version "7.0.138"
 }
 
 val at = file("src/main/resources/${Properties.MOD_ID}.cfg")

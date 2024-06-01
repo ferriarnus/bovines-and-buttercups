@@ -16,8 +16,6 @@ public class BovinesAndButtercups {
 
     public static void init(BovinesPlatformHelper helper) {
         BovinesAndButtercups.helper = helper;
-        BovinesRegistries.init();
-        BovinesCriteriaTriggers.registerAll();
     }
 
     public static BovinesPlatformHelper getHelper() {

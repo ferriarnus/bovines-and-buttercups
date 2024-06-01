@@ -16,11 +16,14 @@ import java.util.List;
 import java.util.Optional;
 
 public class LockEffectTrigger extends SimpleCriterionTrigger<LockEffectTrigger.TriggerInstance> {
+    public static final LockEffectTrigger INSTANCE = new LockEffectTrigger();
     public static final ResourceLocation ID = BovinesAndButtercups.asResource("lock_effect");
     public static final Codec<TriggerInstance> CODEC = RecordCodecBuilder.create(inst -> inst.group(
             EntityPredicate.ADVANCEMENT_CODEC.optionalFieldOf("player").forGetter(TriggerInstance::player),
             BuiltInRegistries.MOB_EFFECT.holderByNameCodec().listOf().optionalFieldOf("effect").forGetter(TriggerInstance::effect)
     ).apply(inst, TriggerInstance::new));
+
+    private LockEffectTrigger() {}
 
     public void trigger(ServerPlayer serverPlayer, Holder<MobEffect> effect) {
         this.trigger(serverPlayer, (triggerInstance) -> triggerInstance.matches(effect));

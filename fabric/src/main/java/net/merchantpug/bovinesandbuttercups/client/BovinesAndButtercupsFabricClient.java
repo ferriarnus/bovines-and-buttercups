@@ -8,6 +8,7 @@ import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.BuiltinItemRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
+import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
 import net.merchantpug.bovinesandbuttercups.client.particle.BloomParticle;
 import net.merchantpug.bovinesandbuttercups.client.particle.ModelLocationParticle;
 import net.merchantpug.bovinesandbuttercups.client.particle.ShroomParticle;
@@ -23,6 +24,7 @@ import net.merchantpug.bovinesandbuttercups.client.renderer.item.CustomFlowerIte
 import net.merchantpug.bovinesandbuttercups.client.renderer.item.CustomHugeMushroomItemRenderer;
 import net.merchantpug.bovinesandbuttercups.client.renderer.item.CustomMushroomItemRenderer;
 import net.merchantpug.bovinesandbuttercups.client.renderer.item.NectarBowlItemRenderer;
+import net.merchantpug.bovinesandbuttercups.client.resources.BovineBlockstateTypes;
 import net.merchantpug.bovinesandbuttercups.client.util.BovineStateModelUtil;
 import net.merchantpug.bovinesandbuttercups.network.clientbound.SyncCowTypeClientboundPacket;
 import net.merchantpug.bovinesandbuttercups.network.clientbound.SyncLockdownEffectsClientboundPacket;
@@ -41,6 +43,8 @@ public class BovinesAndButtercupsFabricClient implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
         BovinesAndButtercupsClient.init(new BovinesClientHelperFabric());
+        BovineBlockstateTypes.init();
+        BovinesAndButtercupsClient.registerCowTexturePaths();
 
         EntityModelLayerRegistry.registerModelLayer(BovinesModelLayers.MOOBLOOM_MODEL_LAYER, CowModel::createBodyLayer);
         EntityRendererRegistry.register(BovinesEntityTypes.MOOBLOOM, MoobloomRenderer::new);
