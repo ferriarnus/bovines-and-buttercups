@@ -201,7 +201,7 @@ public class Moobloom extends Cow {
                     }
                 }
             } else {
-                setCurrentAndPreviousCowType(getPreviousCowType());
+                setCowType(getPreviousCowType());
                 CowTypeAttachment.sync(this);
             }
             lastLightningBoltUUID = uuid;
