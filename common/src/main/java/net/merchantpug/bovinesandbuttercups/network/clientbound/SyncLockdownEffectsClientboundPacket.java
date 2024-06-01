@@ -8,6 +8,7 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.resources.RegistryOps;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -18,12 +19,12 @@ public record SyncLockdownEffectsClientboundPacket(int entityId, LockdownAttachm
     public static final StreamCodec<RegistryFriendlyByteBuf, SyncLockdownEffectsClientboundPacket> STREAM_CODEC = StreamCodec.of(SyncLockdownEffectsClientboundPacket::write, SyncLockdownEffectsClientboundPacket::new);
 
     public SyncLockdownEffectsClientboundPacket(RegistryFriendlyByteBuf buf) {
-        this(buf.readInt(), LockdownAttachment.CODEC.decode(NbtOps.INSTANCE, buf.readNbt()).getOrThrow().getFirst());
+        this(buf.readInt(), LockdownAttachment.CODEC.decode(RegistryOps.create(NbtOps.INSTANCE, buf.registryAccess()), buf.readNbt()).getOrThrow().getFirst());
     }
 
     public static void write(RegistryFriendlyByteBuf buf, SyncLockdownEffectsClientboundPacket packet) {
         buf.writeInt(packet.entityId);
-        buf.writeNbt(LockdownAttachment.CODEC.encodeStart(NbtOps.INSTANCE, packet.attachment).getOrThrow());
+        buf.writeNbt(LockdownAttachment.CODEC.encodeStart(RegistryOps.create(NbtOps.INSTANCE, buf.registryAccess()), packet.attachment).getOrThrow());
     }
 
     public void handle() {

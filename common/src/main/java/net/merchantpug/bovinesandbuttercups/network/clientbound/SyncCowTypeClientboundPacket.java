@@ -7,6 +7,7 @@ import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.resources.RegistryOps;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -17,12 +18,12 @@ public record SyncCowTypeClientboundPacket(int entityId, CowTypeAttachment attac
     public static final StreamCodec<RegistryFriendlyByteBuf, SyncCowTypeClientboundPacket> STREAM_CODEC = StreamCodec.of(SyncCowTypeClientboundPacket::write, SyncCowTypeClientboundPacket::new);
 
     public SyncCowTypeClientboundPacket(RegistryFriendlyByteBuf buf) {
-        this(buf.readInt(), CowTypeAttachment.CODEC.decode(NbtOps.INSTANCE, buf.readNbt()).getOrThrow().getFirst());
+        this(buf.readInt(), CowTypeAttachment.CODEC.decode(RegistryOps.create(NbtOps.INSTANCE, buf.registryAccess()), buf.readNbt()).getOrThrow().getFirst());
     }
 
     public static void write(RegistryFriendlyByteBuf buf, SyncCowTypeClientboundPacket packet) {
         buf.writeInt(packet.entityId);
-        buf.writeNbt(CowTypeAttachment.CODEC.encodeStart(NbtOps.INSTANCE, packet.attachment).getOrThrow());
+        buf.writeNbt(CowTypeAttachment.CODEC.encodeStart(RegistryOps.create(NbtOps.INSTANCE, buf.registryAccess()), packet.attachment).getOrThrow());
     }
 
     public void handle() {
