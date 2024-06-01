@@ -165,10 +165,10 @@ public class BovinesAndButtercupsNeo {
         @SubscribeEvent
         public static void buildCreativeModeTabs(BuildCreativeModeTabContentsEvent event) {
             if (event.getTabKey() == CreativeModeTabs.NATURAL_BLOCKS) {
-                ItemStack lilyOfTheValley = null;
+                ItemStack pinkPetals = null;
                 for (Map.Entry<ItemStack, CreativeModeTab.TabVisibility> entry : event.getEntries()) {
-                    if (entry.getKey().is(Items.LILY_OF_THE_VALLEY)) {
-                        lilyOfTheValley = entry.getKey();
+                    if (entry.getKey().is(Items.PINK_PETALS)) {
+                        pinkPetals = entry.getKey();
                         break;
                     }
                 }
@@ -183,7 +183,7 @@ public class BovinesAndButtercupsNeo {
                 ItemStack pinkDaisy = new ItemStack(BovinesItems.PINK_DAISY);
                 ItemStack snowdrop = new ItemStack(BovinesItems.SNOWDROP);
 
-                event.getEntries().putAfter(lilyOfTheValley, freesia, CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+                event.getEntries().putAfter(pinkPetals, freesia, CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
                 event.getEntries().putAfter(freesia, birdOfParadise, CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
                 event.getEntries().putAfter(birdOfParadise, buttercup, CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
                 event.getEntries().putAfter(buttercup, limelight, CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
