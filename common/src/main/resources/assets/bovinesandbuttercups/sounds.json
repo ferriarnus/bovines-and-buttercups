@@ -1,0 +1,38 @@
+{
+  "entity.moobloom.convert": {
+    "sounds": [
+      {
+        "name": "mob/mooshroom/convert1",
+        "volume": 0.75
+      },
+      {
+        "name": "mob/mooshroom/convert2",
+        "volume": 0.75
+      }
+    ],
+    "subtitle": "subtitles.entity.moobloom.convert"
+  },
+  "entity.moobloom.eat": {
+    "subtitle": "subtitles.entity.moobloom.eat",
+    "sounds": [
+      "mob/mooshroom/eat1",
+      "mob/mooshroom/eat2",
+      "mob/mooshroom/eat3",
+      "mob/mooshroom/eat4"
+    ]
+  },
+  "entity.moobloom.milk": {
+    "subtitle": "subtitles.entity.moobloom.milk",
+    "sounds": [
+      "bovinesandbuttercups:mob/moobloom/milk1",
+      "bovinesandbuttercups:mob/moobloom/milk2",
+      "bovinesandbuttercups:mob/moobloom/milk3"
+    ]
+  },
+  "entity.moobloom.shear": {
+    "subtitle": "subtitles.item.shears.shear",
+    "sounds": [
+      "mob/sheep/shear"
+    ]
+  }
+}
