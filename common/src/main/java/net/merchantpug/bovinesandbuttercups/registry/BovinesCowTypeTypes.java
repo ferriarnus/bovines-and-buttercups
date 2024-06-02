@@ -2,8 +2,8 @@ package net.merchantpug.bovinesandbuttercups.registry;
 
 import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
 import net.merchantpug.bovinesandbuttercups.api.CowTypeType;
-import net.merchantpug.bovinesandbuttercups.content.configuration.MoobloomConfiguration;
-import net.merchantpug.bovinesandbuttercups.content.configuration.MooshroomConfiguration;
+import net.merchantpug.bovinesandbuttercups.content.data.configuration.MoobloomConfiguration;
+import net.merchantpug.bovinesandbuttercups.content.data.configuration.MooshroomConfiguration;
 import net.merchantpug.bovinesandbuttercups.registry.internal.RegistrationCallback;
 import net.minecraft.world.entity.EntityType;
 

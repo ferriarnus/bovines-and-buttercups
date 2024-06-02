@@ -1,6 +1,5 @@
 {
   "type": "bovinesandbuttercups:moobloom",
-  "back_grass": {},
   "bud": {
     "model_location": "bovinesandbuttercups:bovinesandbuttercups/tropical_blue_bud"
   },
@@ -9,6 +8,16 @@
       "Name": "bovinesandbuttercups:tropical_blue"
     }
   },
+  "layers": [
+    {
+      "texture_location": "bovinesandbuttercups:bovinesandbuttercups/moobloom/moobloom_grass_layer",
+      "texture_modifiers": [
+        {
+          "type": "bovinesandbuttercups:grass_tint"
+        }
+      ]
+    }
+  ],
   "natural_spawns": [],
   "nectar_effects": [
     {

@@ -1,6 +1,5 @@
 {
   "type": "bovinesandbuttercups:moobloom",
-  "back_grass": {},
   "bud": {
     "model_location": "bovinesandbuttercups:bovinesandbuttercups/snowdrop_bud"
   },
@@ -9,6 +8,42 @@
       "Name": "bovinesandbuttercups:snowdrop"
     }
   },
+  "layers": [
+    {
+      "texture_location": "bovinesandbuttercups:bovinesandbuttercups/moobloom/moobloom_grass_layer",
+      "texture_modifiers": [
+        {
+          "type": "bovinesandbuttercups:grass_tint"
+        },
+        {
+          "type": "bovinesandbuttercups:conditioned",
+          "condition": [
+            {
+              "condition": "minecraft:inverted",
+              "term": {
+                "condition": "bovinesandbuttercups:snowing"
+              }
+            }
+          ],
+          "id": "bovinesandbuttercups:snowdrop/grass_layer_without_snow"
+        }
+      ]
+    },
+    {
+      "texture_location": "bovinesandbuttercups:bovinesandbuttercups/moobloom/moobloom_snow_layer",
+      "texture_modifiers": [
+        {
+          "type": "bovinesandbuttercups:conditioned",
+          "condition": [
+            {
+              "condition": "bovinesandbuttercups:snowing"
+            }
+          ],
+          "id": "bovinesandbuttercups:snowdrop/snow_layer_with_snow"
+        }
+      ]
+    }
+  ],
   "natural_spawns": [],
   "nectar_effects": [
     {

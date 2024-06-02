@@ -6,11 +6,11 @@ import net.merchantpug.bovinesandbuttercups.content.advancements.criterion.LockE
 import net.merchantpug.bovinesandbuttercups.content.advancements.criterion.PreventEffectTrigger;
 import net.merchantpug.bovinesandbuttercups.content.effect.LockdownEffect;
 import net.merchantpug.bovinesandbuttercups.content.entity.Moobloom;
+import net.merchantpug.bovinesandbuttercups.network.clientbound.SyncConditionedTextureModifier;
 import net.merchantpug.bovinesandbuttercups.network.clientbound.SyncCowTypeClientboundPacket;
 import net.merchantpug.bovinesandbuttercups.network.clientbound.SyncLockdownEffectsClientboundPacket;
 import net.merchantpug.bovinesandbuttercups.platform.NeoBovinesPlatformHelper;
 import net.merchantpug.bovinesandbuttercups.registry.BovinesAttachments;
-import net.merchantpug.bovinesandbuttercups.registry.BovinesCriteriaTriggers;
 import net.merchantpug.bovinesandbuttercups.registry.BovinesEffects;
 import net.merchantpug.bovinesandbuttercups.registry.BovinesEntityTypes;
 import net.merchantpug.bovinesandbuttercups.registry.BovinesItems;
@@ -24,13 +24,10 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.SpawnPlacementTypes;
-import net.minecraft.world.entity.animal.Bee;
-import net.minecraft.world.entity.animal.MushroomCow;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.IEventBus;
@@ -39,8 +36,6 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
-import net.neoforged.neoforge.event.entity.EntityEvent;
-import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
 import net.neoforged.neoforge.event.entity.SpawnPlacementRegisterEvent;
 import net.neoforged.neoforge.event.entity.living.MobEffectEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
@@ -48,7 +43,6 @@ import net.neoforged.neoforge.event.tick.EntityTickEvent;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.Optional;
 
@@ -85,6 +79,9 @@ public class BovinesAndButtercupsNeo {
                 living.getData(BovinesAttachments.LOCKDOWN).setLockdownMobEffects(lockdownEffectsToUpdate);
                 LockdownAttachment.sync(living);
             }
+
+            if (event.getEntity().hasData(BovinesAttachments.COW_TYPE) && event.getEntity().getData(BovinesAttachments.COW_TYPE).cowType().isBound())
+                event.getEntity().getData(BovinesAttachments.COW_TYPE).cowType().value().configuration().tick(event.getEntity());
         }
         @SubscribeEvent
         public static void onMobEffectAdded(MobEffectEvent.Added event) {
@@ -158,6 +155,7 @@ public class BovinesAndButtercupsNeo {
         @SubscribeEvent
         public static void registerPackets(RegisterPayloadHandlersEvent event) {
             event.registrar("2.0.0")
+                    .playToClient(SyncConditionedTextureModifier.TYPE, SyncConditionedTextureModifier.STREAM_CODEC, (payload, context) -> payload.handle())
                     .playToClient(SyncCowTypeClientboundPacket.TYPE, SyncCowTypeClientboundPacket.STREAM_CODEC, (payload, context) -> payload.handle())
                     .playToClient(SyncLockdownEffectsClientboundPacket.TYPE, SyncLockdownEffectsClientboundPacket.STREAM_CODEC, (payload, context) -> payload.handle());
         }

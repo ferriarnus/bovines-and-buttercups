@@ -3,7 +3,7 @@ package net.merchantpug.bovinesandbuttercups.client.renderer.block;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
 import net.merchantpug.bovinesandbuttercups.client.bovinestate.BovineStatesAssociationRegistry;
-import net.merchantpug.bovinesandbuttercups.client.resources.BovineBlockstateTypes;
+import net.merchantpug.bovinesandbuttercups.client.bovinestate.BovineBlockstateTypes;
 import net.merchantpug.bovinesandbuttercups.content.block.entity.CustomFlowerBlockEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;

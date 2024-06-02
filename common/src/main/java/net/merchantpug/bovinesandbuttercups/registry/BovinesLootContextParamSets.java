@@ -11,4 +11,9 @@ public class BovinesLootContextParamSets {
             .required(BovinesLootContextParams.CHILD)
             .optional(BovinesLootContextParams.BREEDING_TYPE)
             .build();
+
+    public static final LootContextParamSet ENTITY = LootContextParamSet.builder()
+            .required(LootContextParams.THIS_ENTITY)
+            .required(LootContextParams.ORIGIN)
+            .build();
 }

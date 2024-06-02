@@ -3,13 +3,13 @@ package net.merchantpug.bovinesandbuttercups.content.entity;
 import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
 import net.merchantpug.bovinesandbuttercups.api.CowType;
 import net.merchantpug.bovinesandbuttercups.api.attachment.CowTypeAttachment;
-import net.merchantpug.bovinesandbuttercups.api.cowtype.OffspringConditionsConfiguration;
+import net.merchantpug.bovinesandbuttercups.api.cowtype.OffspringConditions;
 import net.merchantpug.bovinesandbuttercups.content.advancements.criterion.MutationTrigger;
 import net.merchantpug.bovinesandbuttercups.content.block.entity.CustomFlowerBlockEntity;
 import net.merchantpug.bovinesandbuttercups.content.component.ItemCustomFlower;
 import net.merchantpug.bovinesandbuttercups.content.component.ItemMoobloomType;
 import net.merchantpug.bovinesandbuttercups.content.component.NectarEffects;
-import net.merchantpug.bovinesandbuttercups.content.configuration.MoobloomConfiguration;
+import net.merchantpug.bovinesandbuttercups.content.data.configuration.MoobloomConfiguration;
 import net.merchantpug.bovinesandbuttercups.mixin.EntityAccessor;
 import net.merchantpug.bovinesandbuttercups.registry.BovinesBlocks;
 import net.merchantpug.bovinesandbuttercups.registry.BovinesCowTypeTypes;
@@ -94,7 +94,7 @@ public class Moobloom extends Cow {
     public Moobloom(EntityType<? extends Moobloom> entityType, Level level) {
         super(entityType, level);
         bee = null;
-        setCowType((Holder)level.registryAccess().registry(BovinesRegistryKeys.COW_TYPE).orElseThrow().getHolder(BovinesCowTypes.MoobloomKeys.MISSING_MOOBLOOM).orElseThrow());
+        setCowType((Holder)level().registryAccess().registry(BovinesRegistryKeys.COW_TYPE).orElseThrow().getHolder(BovinesCowTypes.MoobloomKeys.MISSING_MOOBLOOM).orElseThrow());
     }
 
     @Override
@@ -231,6 +231,7 @@ public class Moobloom extends Cow {
             setStandingStillForBeeTicks(getStandingStillForBeeTicks() - 1);
 
         super.tick();
+
         if (getPollinatedResetTicks() > 0)
             setPollinatedResetTicks(getPollinatedResetTicks() - 1);
 
@@ -339,7 +340,7 @@ public class Moobloom extends Cow {
 
         for (Holder.Reference<CowType<?>> cowType : level.registryAccess().registry(BovinesRegistryKeys.COW_TYPE).orElseThrow().holders().filter(type -> type.isBound() && type.value().type() == BovinesCowTypeTypes.MOOBLOOM_TYPE).toList()) {
             Holder.Reference<CowType<MoobloomConfiguration>> moobloomType = (Holder.Reference) cowType;
-            if (moobloomType.value().configuration().offspringConditions() == OffspringConditionsConfiguration.EMPTY) continue;
+            if (moobloomType.value().configuration().offspringConditions() == OffspringConditions.EMPTY) continue;
             var conditions = moobloomType.value().configuration().offspringConditions();
 
             LootParams.Builder params = new LootParams.Builder(level);

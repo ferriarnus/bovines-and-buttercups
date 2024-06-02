@@ -12,7 +12,7 @@ import net.merchantpug.bovinesandbuttercups.client.renderer.block.CustomHugeMush
 import net.merchantpug.bovinesandbuttercups.client.renderer.block.CustomMushroomPotBlockRenderer;
 import net.merchantpug.bovinesandbuttercups.client.renderer.block.CustomMushroomRenderer;
 import net.merchantpug.bovinesandbuttercups.client.renderer.entity.MoobloomRenderer;
-import net.merchantpug.bovinesandbuttercups.client.resources.BovineBlockstateTypes;
+import net.merchantpug.bovinesandbuttercups.client.bovinestate.BovineBlockstateTypes;
 import net.merchantpug.bovinesandbuttercups.client.util.BovineStateModelUtil;
 import net.merchantpug.bovinesandbuttercups.client.util.CowTextureReloadListener;
 import net.merchantpug.bovinesandbuttercups.registry.BovinesBlockEntityTypes;

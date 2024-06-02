@@ -8,7 +8,6 @@ import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.BuiltinItemRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
-import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
 import net.merchantpug.bovinesandbuttercups.client.particle.BloomParticle;
 import net.merchantpug.bovinesandbuttercups.client.particle.ModelLocationParticle;
 import net.merchantpug.bovinesandbuttercups.client.particle.ShroomParticle;
@@ -24,8 +23,9 @@ import net.merchantpug.bovinesandbuttercups.client.renderer.item.CustomFlowerIte
 import net.merchantpug.bovinesandbuttercups.client.renderer.item.CustomHugeMushroomItemRenderer;
 import net.merchantpug.bovinesandbuttercups.client.renderer.item.CustomMushroomItemRenderer;
 import net.merchantpug.bovinesandbuttercups.client.renderer.item.NectarBowlItemRenderer;
-import net.merchantpug.bovinesandbuttercups.client.resources.BovineBlockstateTypes;
+import net.merchantpug.bovinesandbuttercups.client.bovinestate.BovineBlockstateTypes;
 import net.merchantpug.bovinesandbuttercups.client.util.BovineStateModelUtil;
+import net.merchantpug.bovinesandbuttercups.network.clientbound.SyncConditionedTextureModifier;
 import net.merchantpug.bovinesandbuttercups.network.clientbound.SyncCowTypeClientboundPacket;
 import net.merchantpug.bovinesandbuttercups.network.clientbound.SyncLockdownEffectsClientboundPacket;
 import net.merchantpug.bovinesandbuttercups.registry.BovinesBlockEntityTypes;
@@ -53,6 +53,7 @@ public class BovinesAndButtercupsFabricClient implements ClientModInitializer {
                         CompletableFuture.completedFuture(BovineStateModelUtil.getModels(resourceManager)),
                 (data, pluginContext) -> pluginContext.addModels(data));
 
+        ClientPlayNetworking.registerGlobalReceiver(SyncConditionedTextureModifier.TYPE, (packet, context) -> packet.handle());
         ClientPlayNetworking.registerGlobalReceiver(SyncCowTypeClientboundPacket.TYPE, (packet, context) -> packet.handle());
         ClientPlayNetworking.registerGlobalReceiver(SyncLockdownEffectsClientboundPacket.TYPE, (packet, context) -> packet.handle());
 

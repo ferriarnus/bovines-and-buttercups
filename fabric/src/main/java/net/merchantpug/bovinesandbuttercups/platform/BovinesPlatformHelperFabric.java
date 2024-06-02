@@ -11,6 +11,7 @@ import net.minecraft.core.Registry;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.FlowerPotBlock;
@@ -69,7 +70,7 @@ public class BovinesPlatformHelperFabric implements BovinesPlatformHelper {
     }
 
     @Override
-    public void sendTrackingClientboundPacket(CustomPacketPayload payload, LivingEntity entity) {
+    public void sendTrackingClientboundPacket(CustomPacketPayload payload, Entity entity) {
         for (ServerPlayer other : PlayerLookup.tracking(entity)) {
             ServerPlayNetworking.send(other, payload);
         }

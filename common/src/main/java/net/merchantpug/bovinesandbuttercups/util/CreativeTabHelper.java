@@ -5,12 +5,11 @@ import net.merchantpug.bovinesandbuttercups.api.block.CustomMushroomType;
 import net.merchantpug.bovinesandbuttercups.content.component.ItemCustomFlower;
 import net.merchantpug.bovinesandbuttercups.content.component.ItemCustomMushroom;
 import net.merchantpug.bovinesandbuttercups.content.component.ItemMoobloomType;
-import net.merchantpug.bovinesandbuttercups.content.configuration.MoobloomConfiguration;
+import net.merchantpug.bovinesandbuttercups.content.data.configuration.MoobloomConfiguration;
 import net.merchantpug.bovinesandbuttercups.registry.BovinesCowTypes;
 import net.merchantpug.bovinesandbuttercups.registry.BovinesDataComponents;
 import net.merchantpug.bovinesandbuttercups.registry.BovinesItems;
 import net.merchantpug.bovinesandbuttercups.registry.BovinesRegistryKeys;
-import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.world.item.ItemStack;
 

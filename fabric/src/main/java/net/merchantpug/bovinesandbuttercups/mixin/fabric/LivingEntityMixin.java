@@ -36,7 +36,7 @@ public abstract class LivingEntityMixin extends Entity {
         super(type, level);
     }
 
-    @Inject(method = "baseTick", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;tickEffects()V", shift = At.Shift.AFTER))
+    @Inject(method = "baseTick", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/profiling/ProfilerFiller;pop()V"))
     private void bovinesandbuttercups$tickLockdown(CallbackInfo ci) {
         LivingEntity entity = (LivingEntity)(Object)this;
         if (!this.level().isClientSide() && entity.hasEffect(BovinesEffects.LOCKDOWN)) {
@@ -51,6 +51,9 @@ public abstract class LivingEntityMixin extends Entity {
             entity.getAttached(BovinesAttachments.LOCKDOWN).setLockdownMobEffects(lockdownEffectsToUpdate);
             LockdownAttachment.sync(entity);
         }
+
+        if (entity.hasAttached(BovinesAttachments.COW_TYPE) && entity.getAttached(BovinesAttachments.COW_TYPE).cowType().isBound())
+            entity.getAttached(BovinesAttachments.COW_TYPE).cowType().value().configuration().tick(this);
     }
 
     @Inject(method = "onEffectAdded", at = @At("TAIL"))

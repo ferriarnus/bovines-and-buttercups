@@ -11,6 +11,7 @@ import net.merchantpug.bovinesandbuttercups.api.attachment.CowTypeAttachment;
 import net.merchantpug.bovinesandbuttercups.api.attachment.LockdownAttachment;
 import net.merchantpug.bovinesandbuttercups.client.util.CowTextureReloadListenerFabric;
 import net.merchantpug.bovinesandbuttercups.content.entity.Moobloom;
+import net.merchantpug.bovinesandbuttercups.network.clientbound.SyncConditionedTextureModifier;
 import net.merchantpug.bovinesandbuttercups.network.clientbound.SyncCowTypeClientboundPacket;
 import net.merchantpug.bovinesandbuttercups.network.clientbound.SyncLockdownEffectsClientboundPacket;
 import net.merchantpug.bovinesandbuttercups.platform.BovinesPlatformHelperFabric;
@@ -28,6 +29,7 @@ import net.merchantpug.bovinesandbuttercups.registry.BovinesLootItemConditionTyp
 import net.merchantpug.bovinesandbuttercups.registry.BovinesParticleTypes;
 import net.merchantpug.bovinesandbuttercups.registry.BovinesSoundEvents;
 import net.merchantpug.bovinesandbuttercups.registry.BovinesStructureTypes;
+import net.merchantpug.bovinesandbuttercups.registry.BovinesTextureModificationFactories;
 import net.merchantpug.bovinesandbuttercups.util.CreativeTabHelper;
 import net.minecraft.core.Registry;
 import net.minecraft.server.packs.PackType;
@@ -65,6 +67,7 @@ public class BovinesAndButtercupsFabric implements ModInitializer {
     }
 
     public static void registerNetwork() {
+        PayloadTypeRegistry.playS2C().register(SyncConditionedTextureModifier.TYPE, SyncConditionedTextureModifier.STREAM_CODEC);
         PayloadTypeRegistry.playS2C().register(SyncCowTypeClientboundPacket.TYPE, SyncCowTypeClientboundPacket.STREAM_CODEC);
         PayloadTypeRegistry.playS2C().register(SyncLockdownEffectsClientboundPacket.TYPE, SyncLockdownEffectsClientboundPacket.STREAM_CODEC);
     }
@@ -81,6 +84,7 @@ public class BovinesAndButtercupsFabric implements ModInitializer {
         BovinesParticleTypes.registerAll(Registry::register);
         BovinesSoundEvents.registerAll(Registry::register);
         BovinesStructureTypes.registerAll(Registry::register);
+        BovinesTextureModificationFactories.registerAll(Registry::register);
         BovinesCriteriaTriggers.registerAll(Registry::register);
     }
 

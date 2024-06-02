@@ -31,6 +31,7 @@ public class BovinesRegistryEvents {
         register(event, BovinesParticleTypes::registerAll);
         register(event, BovinesSoundEvents::registerAll);
         register(event, BovinesStructureTypes::registerAll);
+        register(event, BovinesTextureModificationFactories::registerAll);
 
         if (event.getRegistryKey() == Registries.MOB_EFFECT)
             BovinesEffects.registerAll(Registry::registerForHolder);
@@ -44,6 +45,7 @@ public class BovinesRegistryEvents {
     @SubscribeEvent
     public static void createNewRegistries(NewRegistryEvent event) {
         event.register(BovinesRegistries.COW_TYPE_TYPE);
+        event.register(BovinesRegistries.TEXTURE_MODIFIER);
     }
 
     @SubscribeEvent

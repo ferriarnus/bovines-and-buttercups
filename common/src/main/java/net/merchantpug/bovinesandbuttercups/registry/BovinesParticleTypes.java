@@ -1,7 +1,6 @@
 package net.merchantpug.bovinesandbuttercups.registry;
 
 import com.mojang.serialization.MapCodec;
-import io.netty.buffer.ByteBuf;
 import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
 import net.merchantpug.bovinesandbuttercups.content.particle.ModelLocationParticleOptions;
 import net.merchantpug.bovinesandbuttercups.registry.internal.RegistrationCallback;
@@ -9,7 +8,6 @@ import net.minecraft.core.particles.ColorParticleOption;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 

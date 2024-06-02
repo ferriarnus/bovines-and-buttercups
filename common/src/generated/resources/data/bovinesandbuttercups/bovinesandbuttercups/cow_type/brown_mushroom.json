@@ -1,7 +1,11 @@
 {
   "type": "bovinesandbuttercups:mooshroom",
-  "back_grass": {},
   "can_eat_flowers": true,
+  "layers": [
+    {
+      "texture_location": "bovinesandbuttercups:bovinesandbuttercups/mooshroom/mooshroom_mycelium_layer"
+    }
+  ],
   "mushroom": {
     "block_state": {
       "Name": "minecraft:brown_mushroom"

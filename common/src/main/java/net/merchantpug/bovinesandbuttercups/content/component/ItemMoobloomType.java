@@ -2,8 +2,7 @@ package net.merchantpug.bovinesandbuttercups.content.component;
 
 import com.mojang.serialization.Codec;
 import net.merchantpug.bovinesandbuttercups.api.CowType;
-import net.merchantpug.bovinesandbuttercups.content.configuration.MoobloomConfiguration;
-import net.merchantpug.bovinesandbuttercups.registry.BovinesCowTypeTypes;
+import net.merchantpug.bovinesandbuttercups.content.data.configuration.MoobloomConfiguration;
 import net.merchantpug.bovinesandbuttercups.registry.BovinesRegistryKeys;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.Holder;

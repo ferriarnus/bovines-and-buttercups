@@ -4,7 +4,7 @@ import com.mojang.blaze3d.platform.Lighting;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
 import net.merchantpug.bovinesandbuttercups.client.bovinestate.BovineStatesAssociationRegistry;
-import net.merchantpug.bovinesandbuttercups.client.resources.BovineBlockstateTypes;
+import net.merchantpug.bovinesandbuttercups.client.bovinestate.BovineBlockstateTypes;
 import net.merchantpug.bovinesandbuttercups.registry.BovinesDataComponents;
 import net.merchantpug.bovinesandbuttercups.util.QuaternionUtil;
 import net.minecraft.client.Minecraft;

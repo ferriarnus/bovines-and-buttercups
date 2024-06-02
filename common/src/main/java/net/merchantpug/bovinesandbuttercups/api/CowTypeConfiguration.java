@@ -1,12 +1,10 @@
 package net.merchantpug.bovinesandbuttercups.api;
 
-import com.mojang.datafixers.util.Either;
-import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
 import net.merchantpug.bovinesandbuttercups.api.codec.BovinesCodecs;
-import net.merchantpug.bovinesandbuttercups.registry.BovinesBlocks;
+import net.merchantpug.bovinesandbuttercups.api.cowtype.color.TextureModifierFactory;
 import net.merchantpug.bovinesandbuttercups.registry.BovinesRegistries;
 import net.merchantpug.bovinesandbuttercups.registry.BovinesRegistryKeys;
 import net.minecraft.core.Holder;
@@ -16,9 +14,9 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.HolderSetCodec;
 import net.minecraft.resources.RegistryFixedCodec;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.random.WeightedEntry;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.biome.Biome;
 
 import java.util.List;
@@ -29,6 +27,12 @@ import java.util.Optional;
  * the game knows that your cow types are cow types.
  */
 public interface CowTypeConfiguration {
+    default void tick(Entity entity) {}
+
+    default List<TextureModifierFactory<?>> getTextureModifierFactories() {
+        return List.of();
+    }
+
     /**
      * Optional settings for your cow type, they are not in the base class as you may not want them.
      *

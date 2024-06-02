@@ -2,8 +2,6 @@ package net.merchantpug.bovinesandbuttercups.client;
 
 import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
 import net.merchantpug.bovinesandbuttercups.client.platform.BovinesClientHelper;
-import net.merchantpug.bovinesandbuttercups.client.resources.BovineBlockstateTypes;
-import net.merchantpug.bovinesandbuttercups.platform.BovinesPlatform;
 import net.minecraft.resources.ResourceLocation;
 
 import java.util.HashSet;
@@ -16,6 +14,11 @@ public class BovinesAndButtercupsClient {
 
     public static void init(BovinesClientHelper helper) {
         clientHelper = helper;
+    }
+
+    public static void registerCowTexturePaths() {
+        registerCowTexturePath("textures/entity/cow");
+        registerCowTexturePath("textures/entity/bovinesandbuttercups");
     }
 
     public static BovinesClientHelper getHelper() {
@@ -31,10 +34,5 @@ public class BovinesAndButtercupsClient {
             COW_TEXTURE_PATHS.add(path);
         else
             BovinesAndButtercups.LOG.warn("Tried registering cow texture path '{}' more than once. (Skipping).", path);
-    }
-
-    public static void registerCowTexturePaths() {
-        registerCowTexturePath("textures/entity/cow");
-        registerCowTexturePath("textures/entity/bovinesandbuttercups");
     }
 }

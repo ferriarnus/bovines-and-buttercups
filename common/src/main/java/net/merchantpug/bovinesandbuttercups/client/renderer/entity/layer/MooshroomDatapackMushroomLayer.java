@@ -5,7 +5,7 @@ package net.merchantpug.bovinesandbuttercups.client.renderer.entity.layer;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
-import net.merchantpug.bovinesandbuttercups.client.resources.BovineBlockstateTypes;
+import net.merchantpug.bovinesandbuttercups.client.bovinestate.BovineBlockstateTypes;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.CowModel;
 import net.minecraft.client.renderer.MultiBufferSource;

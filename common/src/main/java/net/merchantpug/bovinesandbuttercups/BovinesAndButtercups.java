@@ -1,8 +1,6 @@
 package net.merchantpug.bovinesandbuttercups;
 
 import net.merchantpug.bovinesandbuttercups.platform.BovinesPlatformHelper;
-import net.merchantpug.bovinesandbuttercups.registry.BovinesCriteriaTriggers;
-import net.merchantpug.bovinesandbuttercups.registry.BovinesRegistries;
 import net.minecraft.resources.ResourceLocation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -1,7 +1,6 @@
-package net.merchantpug.bovinesandbuttercups.client.resources;
+package net.merchantpug.bovinesandbuttercups.client.bovinestate;
 
 import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
-import net.merchantpug.bovinesandbuttercups.client.bovinestate.BovinesBlockstateTypeRegistry;
 import net.merchantpug.bovinesandbuttercups.registry.BovinesBlocks;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
