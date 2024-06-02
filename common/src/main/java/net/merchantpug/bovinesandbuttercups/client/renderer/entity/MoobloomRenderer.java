@@ -5,7 +5,7 @@ import net.merchantpug.bovinesandbuttercups.client.BovinesAndButtercupsClient;
 import net.merchantpug.bovinesandbuttercups.client.model.MoobloomModel;
 import net.merchantpug.bovinesandbuttercups.client.registry.BovinesModelLayers;
 import net.merchantpug.bovinesandbuttercups.client.renderer.entity.layer.MoobloomFlowerLayer;
-import net.merchantpug.bovinesandbuttercups.client.renderer.entity.layer.MoobloomGrassLayer;
+import net.merchantpug.bovinesandbuttercups.client.renderer.entity.layer.CowGrassLayer;
 import net.merchantpug.bovinesandbuttercups.content.entity.Moobloom;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
@@ -17,7 +17,7 @@ public class MoobloomRenderer extends MobRenderer<Moobloom, MoobloomModel> {
 
     public MoobloomRenderer(EntityRendererProvider.Context context) {
         super(context, new MoobloomModel(context.bakeLayer(BovinesModelLayers.MOOBLOOM_MODEL_LAYER)), 0.7f);
-        this.addLayer(new MoobloomGrassLayer<>(this));
+        this.addLayer(new CowGrassLayer<>(this));
         this.addLayer(new MoobloomFlowerLayer<>(this, context.getBlockRenderDispatcher()));
     }
 

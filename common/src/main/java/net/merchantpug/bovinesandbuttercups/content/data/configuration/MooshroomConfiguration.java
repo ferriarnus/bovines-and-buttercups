@@ -8,7 +8,6 @@ import net.merchantpug.bovinesandbuttercups.api.CowTypeConfiguration;
 import net.merchantpug.bovinesandbuttercups.api.block.BlockReference;
 import net.merchantpug.bovinesandbuttercups.api.block.CustomMushroomType;
 import net.merchantpug.bovinesandbuttercups.api.cowtype.CowModelLayer;
-import net.merchantpug.bovinesandbuttercups.api.cowtype.color.TextureModifierFactory;
 import net.minecraft.core.Holder;
 import net.minecraft.world.entity.Entity;
 
@@ -33,10 +32,5 @@ public record MooshroomConfiguration(Settings settings,
 
     public void tick(Entity entity) {
         layers.forEach(cowModelLayer -> cowModelLayer.tickTextureModifiers(entity));
-    }
-
-    @Override
-    public List<TextureModifierFactory<?>> getTextureModifierFactories() {
-        return layers.stream().flatMap(cowModelLayer -> cowModelLayer.textureModifiers().stream()).toList();
     }
 }

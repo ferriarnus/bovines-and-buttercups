@@ -38,7 +38,7 @@ public record SyncConditionedTextureModifier(int entityId, ResourceLocation cond
             Holder<CowType<?>> cowType = BovinesAndButtercups.getHelper().getCowTypeAttachment(living).cowType();
             if (!cowType.isBound())
                 return;
-            cowType.value().configuration().getTextureModifierFactories().stream().filter(textureModifierFactory -> {
+            cowType.value().configuration().layers().stream().flatMap(cowModelLayer -> cowModelLayer.textureModifiers().stream()).filter(textureModifierFactory -> {
                 if (textureModifierFactory instanceof ConditionedModifierFactory conditioned)
                     return conditioned.getConditionId().equals(conditionId);
                 return false;

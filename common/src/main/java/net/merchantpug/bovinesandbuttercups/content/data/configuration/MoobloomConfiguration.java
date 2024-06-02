@@ -8,7 +8,6 @@ import net.merchantpug.bovinesandbuttercups.api.block.BlockReference;
 import net.merchantpug.bovinesandbuttercups.api.block.CustomFlowerType;
 import net.merchantpug.bovinesandbuttercups.api.cowtype.CowModelLayer;
 import net.merchantpug.bovinesandbuttercups.api.cowtype.OffspringConditions;
-import net.merchantpug.bovinesandbuttercups.api.cowtype.color.TextureModifierFactory;
 import net.merchantpug.bovinesandbuttercups.content.component.NectarEffects;
 import net.merchantpug.bovinesandbuttercups.content.data.modifier.GrassTintTextureModifierFactory;
 import net.minecraft.core.Holder;
@@ -40,10 +39,5 @@ public record MoobloomConfiguration(Settings settings,
 
     public void tick(Entity entity) {
         layers.forEach(cowModelLayer -> cowModelLayer.tickTextureModifiers(entity));
-    }
-
-    @Override
-    public List<TextureModifierFactory<?>> getTextureModifierFactories() {
-        return layers.stream().flatMap(cowModelLayer -> cowModelLayer.textureModifiers().stream()).toList();
     }
 }
