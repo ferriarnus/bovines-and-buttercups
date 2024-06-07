@@ -60,6 +60,7 @@ public class BovinesAndButtercupsFabric implements ModInitializer {
         registerContents();
         registerNetwork();
         registerCreativeTabEntries();
+        registerCompostables();
 
         BovinesFabricDynamicRegistries.init();
 
