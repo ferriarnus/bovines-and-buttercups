@@ -2,7 +2,6 @@ package net.merchantpug.bovinesandbuttercups.client;
 
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
-import net.fabricmc.fabric.api.client.model.loading.v1.PreparableModelLoadingPlugin;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.BuiltinItemRendererRegistry;
@@ -24,7 +23,6 @@ import net.merchantpug.bovinesandbuttercups.client.renderer.item.CustomHugeMushr
 import net.merchantpug.bovinesandbuttercups.client.renderer.item.CustomMushroomItemRenderer;
 import net.merchantpug.bovinesandbuttercups.client.renderer.item.NectarBowlItemRenderer;
 import net.merchantpug.bovinesandbuttercups.client.bovinestate.BovineBlockstateTypes;
-import net.merchantpug.bovinesandbuttercups.client.util.BovineStateModelUtil;
 import net.merchantpug.bovinesandbuttercups.network.clientbound.SyncConditionedTextureModifier;
 import net.merchantpug.bovinesandbuttercups.network.clientbound.SyncCowTypeClientboundPacket;
 import net.merchantpug.bovinesandbuttercups.network.clientbound.SyncLockdownEffectsClientboundPacket;
@@ -37,8 +35,6 @@ import net.minecraft.client.model.CowModel;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 
-import java.util.concurrent.CompletableFuture;
-
 public class BovinesAndButtercupsFabricClient implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
@@ -48,10 +44,6 @@ public class BovinesAndButtercupsFabricClient implements ClientModInitializer {
 
         EntityModelLayerRegistry.registerModelLayer(BovinesModelLayers.MOOBLOOM_MODEL_LAYER, CowModel::createBodyLayer);
         EntityRendererRegistry.register(BovinesEntityTypes.MOOBLOOM, MoobloomRenderer::new);
-
-        PreparableModelLoadingPlugin.register((resourceManager, executor) ->
-                        CompletableFuture.completedFuture(BovineStateModelUtil.getModels(resourceManager)),
-                (data, pluginContext) -> pluginContext.addModels(data));
 
         ClientPlayNetworking.registerGlobalReceiver(SyncConditionedTextureModifier.TYPE, (packet, context) -> packet.handle());
         ClientPlayNetworking.registerGlobalReceiver(SyncCowTypeClientboundPacket.TYPE, (packet, context) -> packet.handle());

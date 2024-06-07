@@ -16,7 +16,7 @@
     "type": "bovinesandbuttercups:shroom",
     "color": 11014162
   },
-  "texture_location": "minecraft:cow/brown_mooshroom",
+  "texture_location": "minecraft:cow/red_mooshroom",
   "thunder_conversion_types": [
     "bovinesandbuttercups:brown_mushroom"
   ],

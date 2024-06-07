@@ -201,14 +201,14 @@ public class BovinesCowTypes {
 
         // Mooshroom Types
         context.register(MooshroomKeys.RED_MUSHROOM, new CowType<>(BovinesCowTypeTypes.MOOSHROOM_TYPE, new MooshroomConfiguration(
-                new CowTypeConfiguration.Settings(Optional.of(new ResourceLocation("cow/brown_mooshroom")), List.of(), List.of(WeightedEntry.wrap(context.lookup(BovinesRegistryKeys.COW_TYPE).getOrThrow(MooshroomKeys.BROWN_MUSHROOM), 1)), Optional.of(ColorParticleOption.create(BovinesParticleTypes.SHROOM, 11014162))),
+                new CowTypeConfiguration.Settings(Optional.of(ResourceLocation.parse("cow/red_mooshroom")), List.of(), List.of(WeightedEntry.wrap(context.lookup(BovinesRegistryKeys.COW_TYPE).getOrThrow(MooshroomKeys.BROWN_MUSHROOM), 1)), Optional.of(ColorParticleOption.create(BovinesParticleTypes.SHROOM, 11014162))),
                 new BlockReference<>(Optional.of(Blocks.RED_MUSHROOM.defaultBlockState()), Optional.empty(), Optional.empty()),
                 List.of(new CowModelLayer(BovinesAndButtercups.asResource("bovinesandbuttercups/moobloom/mooshroom_mycelium_layer"), List.of())),
                 false,
                 true
         )));
         context.register(MooshroomKeys.BROWN_MUSHROOM, new CowType<>(BovinesCowTypeTypes.MOOSHROOM_TYPE, new MooshroomConfiguration(
-                new CowTypeConfiguration.Settings(Optional.of(new ResourceLocation("cow/brown_mooshroom")), List.of(), List.of(WeightedEntry.wrap(context.lookup(BovinesRegistryKeys.COW_TYPE).getOrThrow(MooshroomKeys.RED_MUSHROOM), 1)), Optional.of(ColorParticleOption.create(BovinesParticleTypes.SHROOM, 9397834))),
+                new CowTypeConfiguration.Settings(Optional.of(ResourceLocation.parse("cow/brown_mooshroom")), List.of(), List.of(WeightedEntry.wrap(context.lookup(BovinesRegistryKeys.COW_TYPE).getOrThrow(MooshroomKeys.RED_MUSHROOM), 1)), Optional.of(ColorParticleOption.create(BovinesParticleTypes.SHROOM, 9397834))),
                 new BlockReference<>(Optional.of(Blocks.BROWN_MUSHROOM.defaultBlockState()), Optional.empty(), Optional.empty()),
                 List.of(new CowModelLayer(BovinesAndButtercups.asResource("bovinesandbuttercups/mooshroom/mooshroom_mycelium_layer"), List.of())),
                 true,

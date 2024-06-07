@@ -28,21 +28,16 @@ public class CowGrassLayer<T extends LivingEntity, M extends EntityModel<T>> ext
 
         loop: for (CowModelLayer cowLayer : attachment.cowType().value().configuration().layers()) {
             RenderType renderType = RenderType.entityTranslucent(cowLayer.textureLocation().withPath(string -> "textures/entity/" + string + ".png"));
-            int color = 0xFFFFFF;
-            float a = 1.0F;
+            int color = 0xFFFFFFFF;
             for (TextureModifierFactory<?> factory : cowLayer.textureModifiers()) {
                 if (!factory.canDisplay(entity))
                     continue loop;
                 TextureModifier provider = factory.getOrCreateProvider();
                 color = provider.color(entity, color);
-                a = provider.alpha(entity, a);
                 renderType = provider.renderType(cowLayer.textureLocation(), renderType);
             }
-            float r = (color >> 16 & 0xFF) / 255.0F;
-            float g = (color >> 8 & 0xFF) / 255.0F;
-            float b = (color & 0xFF) / 255.0f;
 
-            this.getParentModel().renderToBuffer(poseStack, buffer.getBuffer(renderType), light, LivingEntityRenderer.getOverlayCoords(entity, 0.0F), r, g, b, a);
+            this.getParentModel().renderToBuffer(poseStack, buffer.getBuffer(renderType), light, LivingEntityRenderer.getOverlayCoords(entity, 0.0F), color);
         }
     }
 }

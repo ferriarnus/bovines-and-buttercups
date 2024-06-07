@@ -18,11 +18,13 @@ import net.minecraft.world.level.levelgen.WorldGenerationContext;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.heightproviders.HeightProvider;
 import net.minecraft.world.level.levelgen.structure.StructureType;
+import net.minecraft.world.level.levelgen.structure.pools.DimensionPadding;
 import net.minecraft.world.level.levelgen.structure.pools.JigsawPlacement;
 import net.minecraft.world.level.levelgen.structure.pools.StructureTemplatePool;
 import net.minecraft.world.level.levelgen.structure.pools.alias.PoolAliasBinding;
 import net.minecraft.world.level.levelgen.structure.pools.alias.PoolAliasLookup;
 import net.minecraft.world.level.levelgen.structure.structures.JigsawStructure;
+import net.minecraft.world.level.levelgen.structure.templatesystem.LiquidSettings;
 
 import java.util.List;
 import java.util.Optional;
@@ -41,7 +43,9 @@ public class RanchStructure extends JigsawStructure {
             Codec.intRange(1, 128).fieldOf("max_distance_from_center").forGetter(RanchStructure::getMaxDistanceFromCenter),
             Codec.list(PoolAliasBinding.CODEC).optionalFieldOf("pool_aliases", List.of()).forGetter(RanchStructure::getPoolAliases),
             RegistryCodecs.homogeneousList(Registries.CONFIGURED_FEATURE).optionalFieldOf("allowed_features").forGetter(RanchStructure::getAllowedFeatures),
-            Codec.BOOL.optionalFieldOf("generate_in_fluids", true).forGetter(RanchStructure::isAbleToGenerateInFluids)
+            Codec.BOOL.optionalFieldOf("generate_in_fluids", true).forGetter(RanchStructure::isAbleToGenerateInFluids),
+            DimensionPadding.CODEC.optionalFieldOf("dimension_padding", DEFAULT_DIMENSION_PADDING).forGetter(RanchStructure::getDimensionPadding),
+            LiquidSettings.CODEC.optionalFieldOf("liquid_settings", DEFAULT_LIQUID_SETTINGS).forGetter(RanchStructure::getLiquidSettings)
     ).apply(builder, RanchStructure::new)).flatXmap(verifyRange(), verifyRange());
 
     private final Optional<HolderSet<ConfiguredFeature<?, ?>>> allowedFeatures;
@@ -59,8 +63,8 @@ public class RanchStructure extends JigsawStructure {
         };
     }
 
-    public RanchStructure(StructureSettings settings, Holder<StructureTemplatePool> startPool, Optional<ResourceLocation> startJigsawName, int maxDepth, HeightProvider startHeight, boolean usesExpansionHack, Optional<Heightmap.Types> projectStartToHeightmap, int maxDistanceFromCenter, List<PoolAliasBinding> poolAliasBindings, Optional<HolderSet<ConfiguredFeature<?, ?>>> allowedFeatures, boolean generateInFluids) {
-        super(settings, startPool, startJigsawName, maxDepth, startHeight, usesExpansionHack, projectStartToHeightmap, maxDistanceFromCenter, poolAliasBindings);
+    public RanchStructure(StructureSettings settings, Holder<StructureTemplatePool> startPool, Optional<ResourceLocation> startJigsawName, int maxDepth, HeightProvider startHeight, boolean usesExpansionHack, Optional<Heightmap.Types> projectStartToHeightmap, int maxDistanceFromCenter, List<PoolAliasBinding> poolAliasBindings, Optional<HolderSet<ConfiguredFeature<?, ?>>> allowedFeatures, boolean generateInFluids, DimensionPadding dimensionPadding, LiquidSettings liquidSettings) {
+        super(settings, startPool, startJigsawName, maxDepth, startHeight, usesExpansionHack, projectStartToHeightmap, maxDistanceFromCenter, poolAliasBindings, dimensionPadding, liquidSettings);
         this.generateInFluids = generateInFluids;
         this.allowedFeatures = allowedFeatures;
     }
@@ -97,6 +101,14 @@ public class RanchStructure extends JigsawStructure {
         return ((JigsawStructureAccessor)this).bovinesandbuttercups$getPoolAliases();
     }
 
+    public DimensionPadding getDimensionPadding() {
+        return ((JigsawStructureAccessor)this).bovinesandbuttercups$getDimensionPadding();
+    }
+
+    public LiquidSettings getLiquidSettings() {
+        return ((JigsawStructureAccessor)this).bovinesandbuttercups$getLiquidSettings();
+    }
+
     public Optional<HolderSet<ConfiguredFeature<?, ?>>> getAllowedFeatures() {
         return allowedFeatures;
     }
@@ -115,7 +127,7 @@ public class RanchStructure extends JigsawStructure {
         int height = this.getStartHeight().sample(context.random(), new WorldGenerationContext(context.chunkGenerator(), context.heightAccessor()));
         BlockPos pos = new BlockPos(chunkPos.getMinBlockX(), height, chunkPos.getMinBlockZ());
         currentlyGeneratingHeight = height;
-        return JigsawPlacement.addPieces(context, this.getStartPool(), this.getStartJigsawName(), this.getMaxDepth(), pos, false, this.getProjectStartToHeightmap(), this.getMaxDistanceFromCenter(), PoolAliasLookup.EMPTY);
+        return JigsawPlacement.addPieces(context, this.getStartPool(), this.getStartJigsawName(), this.getMaxDepth(), pos, false, this.getProjectStartToHeightmap(), this.getMaxDistanceFromCenter(), PoolAliasLookup.EMPTY, this.getDimensionPadding(), this.getLiquidSettings());
     }
 
     public StructureType<?> type() {

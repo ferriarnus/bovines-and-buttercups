@@ -27,8 +27,8 @@ import java.util.Objects;
 
 public class BovineStateModelUtil {
     private static final BlockModelDefinition.Context CONTEXT = new BlockModelDefinition.Context();
-    private static final Map<ResourceLocation, ResourceLocation> MODEL_TO_TYPE_MAP = new HashMap<>();
-    private static final Map<ResourceLocation, JsonElement> LOADED_JSON = new HashMap<>();
+    private static final Map<ModelResourceLocation, ResourceLocation> MODEL_TO_TYPE_MAP = new HashMap<>();
+    private static final Map<ModelResourceLocation, JsonElement> LOADED_JSON = new HashMap<>();
 
     public static List<ModelResourceLocation> getModels(ResourceManager manager) {
         BovineStatesAssociationRegistry.clear();
@@ -40,7 +40,7 @@ public class BovineStateModelUtil {
             newIdBuilder.replace(0, 12, "");
             newIdBuilder.replace(newIdBuilder.length() - 5, newIdBuilder.length(), "");
             String newId = newIdBuilder.toString();
-            ResourceLocation resourceLocation = new ResourceLocation(resourceEntry.getKey().getNamespace(), newId);
+            ResourceLocation resourceLocation = ResourceLocation.fromNamespaceAndPath(resourceEntry.getKey().getNamespace(), newId);
 
             try {
                 Reader reader = resourceEntry.getValue().openAsReader();
@@ -118,8 +118,8 @@ public class BovineStateModelUtil {
         return models;
     }
 
-    public static UnbakedModel getVariantModel(ResourceLocation modelId) {
-        if (modelId.getPath().startsWith("bovinesandbuttercups/") && modelId instanceof ModelResourceLocation modelLocation && !modelLocation.getVariant().equals("inventory")) {
+    public static UnbakedModel getVariantModel(ModelResourceLocation modelId) {
+        if (modelId.id().getPath().startsWith("bovinesandbuttercups/") && modelId instanceof ModelResourceLocation modelLocation && !modelLocation.getVariant().equals("inventory")) {
             ResourceLocation typeKey = MODEL_TO_TYPE_MAP.get(modelId);
             MODEL_TO_TYPE_MAP.remove(modelId);
             StateDefinition<Block, BlockState> stateDefinition = BovinesBlockstateTypeRegistry.get(typeKey);

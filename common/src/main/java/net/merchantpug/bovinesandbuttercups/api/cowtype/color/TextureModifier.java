@@ -9,10 +9,6 @@ public interface TextureModifier {
         return previous;
     }
 
-    default float alpha(Entity entity, float previous) {
-        return 1.0F;
-    }
-
     default RenderType renderType(ResourceLocation location, RenderType previous) {
         return previous;
     }

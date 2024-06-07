@@ -24,7 +24,7 @@ public class MoobloomRenderer extends MobRenderer<Moobloom, MoobloomModel> {
     @Override
     public ResourceLocation getTextureLocation(Moobloom entity) {
         ResourceLocation originalLocation = entity.getCowType().unwrapKey().get().location();
-        ResourceLocation remappedLocation = entity.getCowType().value().configuration().settings().cowTexture().map(texture -> new ResourceLocation(texture.getNamespace(), "textures/entity" + texture.getPath() + ".png")).orElseGet(() -> new ResourceLocation(originalLocation.getNamespace(), "textures/entity/bovinesandbuttercups/moobloom/" + originalLocation.getPath().toLowerCase(Locale.ROOT) + "_moobloom.png"));
+        ResourceLocation remappedLocation = entity.getCowType().value().configuration().settings().cowTexture().map(texture -> ResourceLocation.fromNamespaceAndPath(texture.getNamespace(), "textures/entity" + texture.getPath() + ".png")).orElseGet(() -> ResourceLocation.fromNamespaceAndPath(originalLocation.getNamespace(), "textures/entity/bovinesandbuttercups/moobloom/" + originalLocation.getPath().toLowerCase(Locale.ROOT) + "_moobloom.png"));
         if (BovinesAndButtercupsClient.LOADED_COW_TEXTURES.contains(remappedLocation))
             return remappedLocation;
 

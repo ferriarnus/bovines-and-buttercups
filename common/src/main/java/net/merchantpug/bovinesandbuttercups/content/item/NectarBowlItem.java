@@ -48,7 +48,7 @@ public class NectarBowlItem extends Item {
     }
 
     @Override
-    public int getUseDuration(ItemStack itemStack) {
+    public int getUseDuration(ItemStack itemStack, LivingEntity living) {
         return 32;
     }
 

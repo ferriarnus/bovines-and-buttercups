@@ -30,6 +30,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.pools.StructurePoolElement;
+import net.minecraft.world.level.levelgen.structure.templatesystem.LiquidSettings;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
 import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.AABB;
@@ -138,7 +139,7 @@ public class CustomMushroomBlock extends BaseEntityBlock implements Bonemealable
                 if (ChunkPos.rangeClosed(new ChunkPos(centeredPos), new ChunkPos(centeredPos.offset(structurePoolElement.getSize(structureTemplateManager, rotation)))).allMatch((chunkPos) -> level.isLoaded(chunkPos.getWorldPosition()))) {
                     BoundingBox structureBox = structurePoolElement.getBoundingBox(structureTemplateManager, centeredPos, rotation);
                     if (level.getBlockStates(AABB.of(structureBox)).allMatch(bs -> bs.isAir() || bs.is(BlockTags.LEAVES))) {
-                        structurePoolElement.place(structureTemplateManager, level, level.structureManager(), level.getChunkSource().getGenerator(), centeredPos, centeredPos, rotation, structureBox, randomSource, false);
+                        structurePoolElement.place(structureTemplateManager, level, level.structureManager(), level.getChunkSource().getGenerator(), centeredPos, centeredPos, rotation, structureBox, randomSource, LiquidSettings.APPLY_WATERLOGGING, false);
                         return;
                     }
                 }

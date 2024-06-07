@@ -16,8 +16,7 @@
   ],
   "client": [
     "client.EffectRenderingInventoryScreenMixin",
-    "client.GuiGraphicsMixin",
-    "client.ModelBakeryMixin"
+    "client.GuiGraphicsMixin"
   ],
   "server": [
   ],

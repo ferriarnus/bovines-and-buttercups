@@ -46,7 +46,7 @@ public class MoobloomFlowerLayer<T extends Moobloom, M extends CowModel<T>> exte
         int m = LivingEntityRenderer.getOverlayCoords(entity, 0.0f);
 
         Optional<BlockState> blockState;
-        ResourceLocation modelResourceLocation;
+        ModelResourceLocation modelResourceLocation;
 
         if (entity.isBaby()) {
             if (configuration.bud().modelLocation().isPresent()) {
@@ -73,7 +73,7 @@ public class MoobloomFlowerLayer<T extends Moobloom, M extends CowModel<T>> exte
         }
     }
 
-    private void handleMoobudRender(PoseStack poseStack, MultiBufferSource buffer, T entity, int i, boolean outlineAndInvisible, int overlay, Optional<BlockState> blockState, @Nullable ResourceLocation modelResourceLocation) {
+    private void handleMoobudRender(PoseStack poseStack, MultiBufferSource buffer, T entity, int i, boolean outlineAndInvisible, int overlay, Optional<BlockState> blockState, @Nullable ModelResourceLocation modelResourceLocation) {
         poseStack.pushPose();
         if (entity.getStandingStillForBeeTicks() > 0) {
             poseStack.translate(0.0f, 11.0f / 16.0f, 0.0f);
@@ -110,7 +110,7 @@ public class MoobloomFlowerLayer<T extends Moobloom, M extends CowModel<T>> exte
         poseStack.popPose();
     }
 
-    private void handleMoobloomRender(PoseStack poseStack, MultiBufferSource buffer, T entity, int i, boolean outlineAndInvisible, int overlay, Optional<BlockState> blockState, @Nullable ResourceLocation modelResourceLocation) {
+    private void handleMoobloomRender(PoseStack poseStack, MultiBufferSource buffer, T entity, int i, boolean outlineAndInvisible, int overlay, Optional<BlockState> blockState, @Nullable ModelResourceLocation modelResourceLocation) {
         poseStack.pushPose();
         if (entity.getStandingStillForBeeTicks() > 0) {
             poseStack.translate(0.0f, 11.0f / 16.0f, 0.0f);
@@ -155,9 +155,9 @@ public class MoobloomFlowerLayer<T extends Moobloom, M extends CowModel<T>> exte
         poseStack.popPose();
     }
 
-    private void renderFlowerOrBud(PoseStack poseStack, MultiBufferSource buffer, int light, boolean outlineAndInvisible, BlockRenderDispatcher blockRenderDispatcher, int overlay, Optional<BlockState> flowerState, ResourceLocation resourceLocation) {
+    private void renderFlowerOrBud(PoseStack poseStack, MultiBufferSource buffer, int light, boolean outlineAndInvisible, BlockRenderDispatcher blockRenderDispatcher, int overlay, Optional<BlockState> flowerState, ModelResourceLocation resourceLocation) {
         BakedModel flowerModel;
-        flowerModel = flowerState.map(blockRenderDispatcher::getBlockModel).orElseGet(() -> BovinesAndButtercupsClient.getHelper().getModel(resourceLocation));
+        flowerModel = flowerState.map(blockRenderDispatcher::getBlockModel).orElseGet(() -> Minecraft.getInstance().getModelManager().getModel(resourceLocation));
 
         if (outlineAndInvisible)
             blockRenderDispatcher.getModelRenderer().renderModel(poseStack.last(), buffer.getBuffer(RenderType.outline(InventoryMenu.BLOCK_ATLAS)), null, flowerModel, 0.0f, 0.0f, 0.0f, light, overlay);

@@ -5,6 +5,7 @@ import net.merchantpug.bovinesandbuttercups.api.attachment.LockdownAttachment;
 import net.merchantpug.bovinesandbuttercups.content.effect.LockdownEffect;
 import net.merchantpug.bovinesandbuttercups.registry.BovinesAttachments;
 import net.merchantpug.bovinesandbuttercups.registry.BovinesEffects;
+import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiGraphics;
@@ -32,7 +33,7 @@ public class GuiMixin {
     @Shadow @Final private Minecraft minecraft;
 
     @Inject(method = "renderEffects", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;blitSprite(Lnet/minecraft/resources/ResourceLocation;IIII)V", shift = At.Shift.AFTER), locals = LocalCapture.CAPTURE_FAILHARD)
-    private void bovinesandbuttercups$overlayLockdownBorder(GuiGraphics graphics, float partialTicks, CallbackInfo ci, Collection collection, int width, int height, MobEffectTextureManager mobEffectTextureManager, List list, Iterator var8, MobEffectInstance mobEffectInstance, Holder<MobEffect> effect, int i, int j, float f) {
+    private void bovinesandbuttercups$overlayLockdownBorder(GuiGraphics graphics, DeltaTracker deltaTracker, CallbackInfo ci, Collection collection, int width, int height, MobEffectTextureManager mobEffectTextureManager, List list, Iterator var8, MobEffectInstance mobEffectInstance, Holder<MobEffect> effect, int i, int j, float f) {
         if (minecraft.player == null || !minecraft.player.hasEffect(BovinesEffects.LOCKDOWN)) return;
 
         LockdownAttachment attachment = minecraft.player.getAttached(BovinesAttachments.LOCKDOWN);
@@ -42,7 +43,7 @@ public class GuiMixin {
     }
 
     @Inject(method = "renderEffects", at = @At(value = "INVOKE", target = "Ljava/util/List;add(Ljava/lang/Object;)Z"), locals = LocalCapture.CAPTURE_FAILHARD)
-    private void bovinesandbuttercups$renderLockdownStatusEffectOverlay(GuiGraphics guiGraphics, float partialTicks, CallbackInfo ci, Collection collection, int i, int j, MobEffectTextureManager mobEffectTextureManager, List<Runnable> list, Iterator var8, MobEffectInstance mobEffectInstance, Holder<MobEffect> holder, int k, int l, float g, TextureAtlasSprite textureAtlasSprite, int n, int o, float h) {
+    private void bovinesandbuttercups$renderLockdownStatusEffectOverlay(GuiGraphics graphics, DeltaTracker deltaTracker, CallbackInfo ci, Collection collection, int i, int j, MobEffectTextureManager mobEffectTextureManager, List<Runnable> list, Iterator var8, MobEffectInstance mobEffectInstance, Holder<MobEffect> holder, int k, int l, float g, TextureAtlasSprite textureAtlasSprite, int n, int o, float h) {
         if (!holder.isBound() || !(holder.value() instanceof LockdownEffect)) return;
 
         LockdownAttachment attachment = minecraft.player.getAttached(BovinesAttachments.LOCKDOWN);
@@ -76,9 +77,9 @@ public class GuiMixin {
         float a = alpha;
 
         list.add(() -> {
-            guiGraphics.setColor(1.0f, 1.0f, 1.0f, a);
-            guiGraphics.blit(n + 3, o + 3, 0, 18, 18, additionalSprite);
-            guiGraphics.setColor(1.0f, 1.0f, 1.0f, 1.0F);
+            graphics.setColor(1.0f, 1.0f, 1.0f, a);
+            graphics.blit(n + 3, o + 3, 0, 18, 18, additionalSprite);
+            graphics.setColor(1.0f, 1.0f, 1.0f, 1.0F);
         });
     }
 }

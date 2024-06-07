@@ -10,6 +10,7 @@
   "client": [
     "client.EffectRenderingInventoryScreenMixin",
     "client.GuiMixin",
+    "client.ModelBakeryMixin",
     "client.ModelManagerAccessor"
   ],
   "server": [

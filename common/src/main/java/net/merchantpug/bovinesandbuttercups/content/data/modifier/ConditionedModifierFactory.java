@@ -15,6 +15,7 @@ import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
+import net.minecraft.world.level.storage.loot.predicates.LootItemConditionType;
 import net.minecraft.world.level.storage.loot.predicates.LootItemConditions;
 
 import java.util.HashMap;
@@ -27,7 +28,7 @@ import java.util.WeakHashMap;
 public class ConditionedModifierFactory extends TextureModifierFactory<NoOpTextureModifier> {
     public static final MapCodec<ConditionedModifierFactory> CODEC = RecordCodecBuilder.mapCodec(inst -> inst.group(
             ResourceLocation.CODEC.fieldOf("id").forGetter(f -> f.id),
-            LootItemConditions.DIRECT_CODEC.listOf().fieldOf("condition").forGetter(f -> f.condition),
+            LootItemCondition.DIRECT_CODEC.listOf().fieldOf("condition").forGetter(f -> f.condition),
             Codec.intRange(1, Integer.MAX_VALUE).optionalFieldOf("tick_rate", 1).forGetter(f -> f.tickRate)
     ).apply(inst, ConditionedModifierFactory::new));
     private static final WeakHashMap<UUID, Map<ResourceLocation, Boolean>> CONDITION_VALUES = new WeakHashMap<>();

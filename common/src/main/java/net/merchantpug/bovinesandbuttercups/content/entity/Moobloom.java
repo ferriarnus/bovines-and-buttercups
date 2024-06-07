@@ -131,7 +131,7 @@ public class Moobloom extends Cow {
 
     public void backwardsCompat(CompoundTag tag) {
         if (tag.contains("Type", Tag.TAG_STRING)) {
-            Optional<Holder.Reference<CowType<?>>> cowType = level().registryAccess().registry(BovinesRegistryKeys.COW_TYPE).orElseThrow().getHolder(new ResourceLocation(tag.getString("Type")));
+            Optional<Holder.Reference<CowType<?>>> cowType = level().registryAccess().registry(BovinesRegistryKeys.COW_TYPE).orElseThrow().getHolder(ResourceLocation.parse(tag.getString("Type")));
             if (cowType.isEmpty()) {
                 BovinesAndButtercups.LOG.error("Could not deserialize legacy cow type tag \"{}\" into a cow type holder.", tag.getString("Type"));
                 return;
@@ -141,7 +141,7 @@ public class Moobloom extends Cow {
                 return;
             }
             if (tag.contains("PreviousType", Tag.TAG_STRING)) {
-                Optional<Holder.Reference<CowType<?>>> previousCowType = level().registryAccess().registry(BovinesRegistryKeys.COW_TYPE).orElseThrow().getHolder(new ResourceLocation(tag.getString("Type")));
+                Optional<Holder.Reference<CowType<?>>> previousCowType = level().registryAccess().registry(BovinesRegistryKeys.COW_TYPE).orElseThrow().getHolder(ResourceLocation.parse(tag.getString("Type")));
                 if (previousCowType.isEmpty()) {
                     BovinesAndButtercups.LOG.error("Could not deserialize legacy cow type tag \"{}\" into a cow type holder.", tag.getString("Type"));
                     return;
