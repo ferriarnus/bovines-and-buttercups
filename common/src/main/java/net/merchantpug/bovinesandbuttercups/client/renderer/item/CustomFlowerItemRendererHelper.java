@@ -3,6 +3,7 @@ package net.merchantpug.bovinesandbuttercups.client.renderer.item;
 import com.mojang.blaze3d.platform.Lighting;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
+import net.merchantpug.bovinesandbuttercups.client.BovinesAndButtercupsClient;
 import net.merchantpug.bovinesandbuttercups.client.bovinestate.BovineStatesAssociationRegistry;
 import net.merchantpug.bovinesandbuttercups.client.bovinestate.BovineBlockstateTypes;
 import net.merchantpug.bovinesandbuttercups.registry.BovinesDataComponents;
@@ -23,18 +24,18 @@ import java.util.Optional;
 
 public class CustomFlowerItemRendererHelper {
     public static void render(ItemStack stack, PoseStack poseStack, MultiBufferSource bufferSource, int light, int overlay, ItemDisplayContext transformType) {
-        ModelResourceLocation modelResourceLocation = new ModelResourceLocation(BovinesAndButtercups.asResource("missing_flower"), "inventory");
+        ResourceLocation resourceLocation = BovinesAndButtercups.asResource("bovinesandbuttercups/item/missing_flower/inventory");
         Level level = Minecraft.getInstance().level;
         if (level == null) return;
 
         if (stack.has(BovinesDataComponents.CUSTOM_FLOWER)) {
-            Optional<ResourceLocation> modelLocationWithoutVariant = BovineStatesAssociationRegistry.getItem(stack.get(BovinesDataComponents.CUSTOM_FLOWER).holder().unwrapKey().get().location(), BovineBlockstateTypes.FLOWER, false);
+            Optional<ResourceLocation> modelLocationWithoutVariant = BovineStatesAssociationRegistry.getItem(stack.get(BovinesDataComponents.CUSTOM_FLOWER).holder().unwrapKey().get().location(), BovineBlockstateTypes.FLOWER);
             if (modelLocationWithoutVariant.isPresent()) {
-                modelResourceLocation = new ModelResourceLocation(modelLocationWithoutVariant.get(), "inventory");
+                resourceLocation = modelLocationWithoutVariant.get();
             }
         }
 
-        BakedModel flowerModel = Minecraft.getInstance().getModelManager().getModel(modelResourceLocation);
+        BakedModel flowerModel = BovinesAndButtercupsClient.getHelper().getModel(resourceLocation);
         ItemRenderer itemRenderer =  Minecraft.getInstance().getItemRenderer();
 
         BakedModel originalModel = itemRenderer.getModel(stack, level, null, 0);

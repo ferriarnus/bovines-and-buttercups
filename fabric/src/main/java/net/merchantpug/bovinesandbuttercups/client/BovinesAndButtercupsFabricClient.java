@@ -2,11 +2,14 @@ package net.merchantpug.bovinesandbuttercups.client;
 
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
+import net.fabricmc.fabric.api.client.model.loading.v1.ModelLoadingPlugin;
+import net.fabricmc.fabric.api.client.model.loading.v1.PreparableModelLoadingPlugin;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.BuiltinItemRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
+import net.merchantpug.bovinesandbuttercups.client.bovinestate.BovinesBlockstateTypeRegistry;
 import net.merchantpug.bovinesandbuttercups.client.particle.BloomParticle;
 import net.merchantpug.bovinesandbuttercups.client.particle.ModelLocationParticle;
 import net.merchantpug.bovinesandbuttercups.client.particle.ShroomParticle;
@@ -23,6 +26,7 @@ import net.merchantpug.bovinesandbuttercups.client.renderer.item.CustomHugeMushr
 import net.merchantpug.bovinesandbuttercups.client.renderer.item.CustomMushroomItemRenderer;
 import net.merchantpug.bovinesandbuttercups.client.renderer.item.NectarBowlItemRenderer;
 import net.merchantpug.bovinesandbuttercups.client.bovinestate.BovineBlockstateTypes;
+import net.merchantpug.bovinesandbuttercups.client.util.BovineStateModelUtil;
 import net.merchantpug.bovinesandbuttercups.network.clientbound.SyncConditionedTextureModifier;
 import net.merchantpug.bovinesandbuttercups.network.clientbound.SyncCowTypeClientboundPacket;
 import net.merchantpug.bovinesandbuttercups.network.clientbound.SyncLockdownEffectsClientboundPacket;
@@ -31,9 +35,13 @@ import net.merchantpug.bovinesandbuttercups.registry.BovinesBlocks;
 import net.merchantpug.bovinesandbuttercups.registry.BovinesEntityTypes;
 import net.merchantpug.bovinesandbuttercups.registry.BovinesItems;
 import net.merchantpug.bovinesandbuttercups.registry.BovinesParticleTypes;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.CowModel;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
+import net.minecraft.client.resources.model.UnbakedModel;
+
+import java.util.concurrent.CompletableFuture;
 
 public class BovinesAndButtercupsFabricClient implements ClientModInitializer {
     @Override
@@ -44,6 +52,11 @@ public class BovinesAndButtercupsFabricClient implements ClientModInitializer {
 
         EntityModelLayerRegistry.registerModelLayer(BovinesModelLayers.MOOBLOOM_MODEL_LAYER, CowModel::createBodyLayer);
         EntityRendererRegistry.register(BovinesEntityTypes.MOOBLOOM, MoobloomRenderer::new);
+
+        PreparableModelLoadingPlugin.register(BovineStateModelUtil::getModels, (data, context) -> {
+            context.addModels(data);
+            context.resolveModel().register((ctx) -> BovineStateModelUtil.getUnbakedModel(ctx.id(), ctx::getOrLoadModel));
+        });
 
         ClientPlayNetworking.registerGlobalReceiver(SyncConditionedTextureModifier.TYPE, (packet, context) -> packet.handle());
         ClientPlayNetworking.registerGlobalReceiver(SyncCowTypeClientboundPacket.TYPE, (packet, context) -> packet.handle());

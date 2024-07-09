@@ -2,8 +2,10 @@ package net.merchantpug.bovinesandbuttercups.client.renderer.block;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
+import net.merchantpug.bovinesandbuttercups.client.BovinesAndButtercupsClient;
 import net.merchantpug.bovinesandbuttercups.client.bovinestate.BovineStatesAssociationRegistry;
 import net.merchantpug.bovinesandbuttercups.client.bovinestate.BovineBlockstateTypes;
+import net.merchantpug.bovinesandbuttercups.client.util.BovineStateModelUtil;
 import net.merchantpug.bovinesandbuttercups.content.block.entity.CustomFlowerBlockEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -30,16 +32,18 @@ public class CustomFlowerRenderer implements BlockEntityRenderer<CustomFlowerBlo
     @Override
     @SuppressWarnings("ConstantConditions")
     public void render(CustomFlowerBlockEntity blockEntity, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
-        ModelResourceLocation modelResourceLocation = BlockModelShaper.stateToModelLocation(BovinesAndButtercups.asResource("bovinesandbuttercups/missing_flower"), blockEntity.getBlockState());
+        ResourceLocation resourceLocation = BovinesAndButtercups.asResource("bovinesandbuttercups/missing_flower/" + BovineStateModelUtil.acceptedStateProperties(BlockModelShaper.statePropertiesToString(blockEntity.getBlockState().getValues())));
 
-        if (blockEntity.getFlowerType() != null) {
-            Optional<ResourceLocation> modelLocationWithoutVariant = BovineStatesAssociationRegistry.getBlock(blockEntity.getFlowerType().holder().unwrapKey().get().location(), BovineBlockstateTypes.FLOWER);
+        if (blockEntity.getFlowerType() != null && blockEntity.getFlowerType().holder().isBound()) {
+            Optional<ResourceLocation> modelLocationWithoutVariant = BovineStatesAssociationRegistry.getBlock(blockEntity.getFlowerType().holder().unwrapKey().get().location(), BovineBlockstateTypes.POTTED_FLOWER);
             if (modelLocationWithoutVariant.isPresent()) {
-                modelResourceLocation = new ModelResourceLocation(modelLocationWithoutVariant.get(), BlockModelShaper.statePropertiesToString(blockEntity.getBlockState().getValues()));
+                resourceLocation = modelLocationWithoutVariant.get();
             }
         }
 
-        BakedModel flowerModel = Minecraft.getInstance().getModelManager().getModel(modelResourceLocation);
+        BakedModel flowerModel = BovinesAndButtercupsClient.getHelper().getModel(resourceLocation);
+        if (flowerModel == null)
+            flowerModel = BovinesAndButtercupsClient.getHelper().getModel(BovinesAndButtercups.asResource("bovinesandbuttercups/missing_flower/" + BovineStateModelUtil.acceptedStateProperties(BlockModelShaper.statePropertiesToString(blockEntity.getBlockState().getValues()))));
 
         blockRenderDispatcher.getModelRenderer().tesselateBlock(blockEntity.getLevel(), flowerModel, blockEntity.getBlockState(), blockEntity.getBlockPos(), poseStack, bufferSource.getBuffer(RenderType.cutout()), false, RandomSource.create(), blockEntity.getBlockState().getSeed(blockEntity.getBlockPos()), OverlayTexture.NO_OVERLAY);
     }

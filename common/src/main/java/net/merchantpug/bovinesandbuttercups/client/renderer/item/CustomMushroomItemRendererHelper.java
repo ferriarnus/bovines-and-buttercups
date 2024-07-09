@@ -3,6 +3,7 @@ package net.merchantpug.bovinesandbuttercups.client.renderer.item;
 import com.mojang.blaze3d.platform.Lighting;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
+import net.merchantpug.bovinesandbuttercups.client.BovinesAndButtercupsClient;
 import net.merchantpug.bovinesandbuttercups.client.bovinestate.BovineStatesAssociationRegistry;
 import net.merchantpug.bovinesandbuttercups.client.bovinestate.BovineBlockstateTypes;
 import net.merchantpug.bovinesandbuttercups.registry.BovinesDataComponents;
@@ -23,18 +24,18 @@ import java.util.Optional;
 
 public class CustomMushroomItemRendererHelper {
     public static void render(ItemStack stack, PoseStack poseStack, MultiBufferSource bufferSource, int light, int overlay, ItemDisplayContext transformType) {
-        ModelResourceLocation modelResourceLocation = new ModelResourceLocation(BovinesAndButtercups.asResource("missing_mushroom"), "inventory");
+        ResourceLocation resourceLocation = BovinesAndButtercups.asResource("bovinesandbuttercups/item/missing_mushroom/inventory");
         Level level = Minecraft.getInstance().level;
         if (level == null) return;
 
         if (stack.has(BovinesDataComponents.CUSTOM_MUSHROOM)) {
-            Optional<ResourceLocation> modelLocationWithoutVariant = BovineStatesAssociationRegistry.getItem(stack.get(BovinesDataComponents.CUSTOM_MUSHROOM).holder().unwrapKey().get().location(), BovineBlockstateTypes.MUSHROOM, false);
+            Optional<ResourceLocation> modelLocationWithoutVariant = BovineStatesAssociationRegistry.getItem(stack.get(BovinesDataComponents.CUSTOM_MUSHROOM).holder().unwrapKey().get().location(), BovineBlockstateTypes.MUSHROOM);
             if (modelLocationWithoutVariant.isPresent()) {
-                modelResourceLocation = new ModelResourceLocation(modelLocationWithoutVariant.get(), "inventory");
+                resourceLocation = modelLocationWithoutVariant.get();
             }
         }
 
-        BakedModel mushroomModel = Minecraft.getInstance().getModelManager().getModel(modelResourceLocation);
+        BakedModel mushroomModel = BovinesAndButtercupsClient.getHelper().getModel(resourceLocation);
         ItemRenderer itemRenderer =  Minecraft.getInstance().getItemRenderer();
 
         BakedModel originalModel = itemRenderer.getModel(stack, level, null, 0);

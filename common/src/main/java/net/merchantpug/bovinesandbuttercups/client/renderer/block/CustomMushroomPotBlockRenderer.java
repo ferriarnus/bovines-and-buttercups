@@ -2,8 +2,10 @@ package net.merchantpug.bovinesandbuttercups.client.renderer.block;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
+import net.merchantpug.bovinesandbuttercups.client.BovinesAndButtercupsClient;
 import net.merchantpug.bovinesandbuttercups.client.bovinestate.BovineStatesAssociationRegistry;
 import net.merchantpug.bovinesandbuttercups.client.bovinestate.BovineBlockstateTypes;
+import net.merchantpug.bovinesandbuttercups.client.util.BovineStateModelUtil;
 import net.merchantpug.bovinesandbuttercups.content.block.entity.CustomMushroomPotBlockEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -30,15 +32,17 @@ public class CustomMushroomPotBlockRenderer implements BlockEntityRenderer<Custo
     @Override
     @SuppressWarnings("ConstantConditions")
     public void render(CustomMushroomPotBlockEntity blockEntity, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
-        ModelResourceLocation modelResourceLocation = new ModelResourceLocation(BovinesAndButtercups.asResource("bovinesandbuttercups/potted_missing_mushroom"), "");
+        ResourceLocation resourceLocation = BovinesAndButtercups.asResource("bovinesandbuttercups/potted_missing_mushroom/" + BovineStateModelUtil.acceptedStateProperties(BlockModelShaper.statePropertiesToString(blockEntity.getBlockState().getValues())));
         if (blockEntity.getMushroomType() != null) {
             Optional<ResourceLocation> modelLocationWithoutVariant = BovineStatesAssociationRegistry.getBlock(blockEntity.getMushroomType().holder().unwrapKey().get().location(), BovineBlockstateTypes.POTTED_MUSHROOM);
             if (modelLocationWithoutVariant.isPresent()) {
-                modelResourceLocation = new ModelResourceLocation(modelLocationWithoutVariant.get(), BlockModelShaper.statePropertiesToString(blockEntity.getBlockState().getValues()));
+                resourceLocation = modelLocationWithoutVariant.get();
             }
         }
 
-        BakedModel pottedMushroomModel = Minecraft.getInstance().getModelManager().getModel(modelResourceLocation);
+        BakedModel pottedMushroomModel = BovinesAndButtercupsClient.getHelper().getModel(resourceLocation);
+        if (pottedMushroomModel == null)
+            pottedMushroomModel = BovinesAndButtercupsClient.getHelper().getModel(BovinesAndButtercups.asResource("bovinesandbuttercups/potted_missing_mushroom/" + BovineStateModelUtil.acceptedStateProperties(BlockModelShaper.statePropertiesToString(blockEntity.getBlockState().getValues()))));
 
         blockRenderDispatcher.getModelRenderer().tesselateBlock(blockEntity.getLevel(), pottedMushroomModel, blockEntity.getBlockState(), blockEntity.getBlockPos(), poseStack, bufferSource.getBuffer(RenderType.cutout()), false, RandomSource.create(), blockEntity.getBlockState().getSeed(blockEntity.getBlockPos()), OverlayTexture.NO_OVERLAY);
     }

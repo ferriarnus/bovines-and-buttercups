@@ -2,7 +2,6 @@ package net.merchantpug.bovinesandbuttercups.client.bovinestate;
 
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
-import com.google.common.collect.Tables;
 import com.mojang.datafixers.util.Either;
 import com.mojang.datafixers.util.Pair;
 import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
@@ -16,8 +15,8 @@ import java.util.Optional;
 import java.util.Set;
 
 public class BovineStatesAssociationRegistry {
-    private static final Table<ResourceLocation, StateDefinition<Block, BlockState>, ResourceLocation> BLOCK_MODEL_REGISTRY = Tables.synchronizedTable(HashBasedTable.create());
-    private static final Table<ResourceLocation, Either<Boolean, StateDefinition<Block, BlockState>>, ResourceLocation> ITEM_MODEL_REGISTRY = Tables.synchronizedTable(HashBasedTable.create());
+    private static final Table<ResourceLocation, StateDefinition<Block, BlockState>, ResourceLocation> BLOCK_MODEL_REGISTRY = HashBasedTable.create();
+    private static final Table<ResourceLocation, Either<Boolean, StateDefinition<Block, BlockState>>, ResourceLocation> ITEM_MODEL_REGISTRY = HashBasedTable.create();
     private static final Set<Pair<ResourceLocation, StateDefinition<Block, BlockState>>> WARNED_BLOCK_KEYS = new HashSet<>();
     private static final Set<ResourceLocation> WARNED_ITEM_KEYS = new HashSet<>();
 
@@ -26,7 +25,7 @@ public class BovineStatesAssociationRegistry {
         ITEM_MODEL_REGISTRY.clear();
     }
 
-    public static ResourceLocation registerItem(ResourceLocation key, StateDefinition<Block, BlockState> block, boolean isItem, ResourceLocation modelLocation) {
+    public static void registerItem(ResourceLocation key, StateDefinition<Block, BlockState> block, boolean isItem, ResourceLocation modelLocation) {
         Either<Boolean, StateDefinition<Block, BlockState>> either = null;
         if (isItem)
             either = Either.left(true);
@@ -39,29 +38,31 @@ public class BovineStatesAssociationRegistry {
 
         if (ITEM_MODEL_REGISTRY.contains(key, either)) {
             BovinesAndButtercups.LOG.warn("Attempted to register item model which already contains a key: {}.", key);
-            return ITEM_MODEL_REGISTRY.get(key, either);
+            ITEM_MODEL_REGISTRY.get(key, either);
+            return;
         }
 
-        return ITEM_MODEL_REGISTRY.put(key, either, modelLocation);
+        ITEM_MODEL_REGISTRY.put(key, either, modelLocation);
     }
 
-    public static ResourceLocation registerBlock(ResourceLocation resource, StateDefinition<Block, BlockState> block, ResourceLocation modelLocation) {
+    public static void registerBlock(ResourceLocation resource, StateDefinition<Block, BlockState> block, ResourceLocation modelLocation) {
         if (BLOCK_MODEL_REGISTRY.contains(resource, block)) {
-            return BLOCK_MODEL_REGISTRY.get(resource, block);
+            BLOCK_MODEL_REGISTRY.get(resource, block);
+            return;
         }
-        return BLOCK_MODEL_REGISTRY.put(resource, block, modelLocation);
+        BLOCK_MODEL_REGISTRY.put(resource, block, modelLocation);
     }
 
-    public static Optional<ResourceLocation> getItem(ResourceLocation key, boolean isItem) {
-        return getItem(key, null, isItem);
+    public static Optional<ResourceLocation> getItem(ResourceLocation key) {
+        return getItem(key, null);
     }
 
-    public static Optional<ResourceLocation> getItem(ResourceLocation key, StateDefinition<Block, BlockState> block, boolean isItem) {
-        Either<Boolean, StateDefinition<Block, BlockState>> either = null;
-        if (isItem)
-            either = Either.left(true);
+    public static Optional<ResourceLocation> getItem(ResourceLocation key, StateDefinition<Block, BlockState> block) {
+        Either<Boolean, StateDefinition<Block, BlockState>> either;
         if (block != null)
             either = Either.right(block);
+        else
+            either = Either.left(true);
 
         if (!ITEM_MODEL_REGISTRY.contains(key, either)) {
             if (key != null && !WARNED_ITEM_KEYS.contains(key)) {

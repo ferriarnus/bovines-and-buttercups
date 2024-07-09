@@ -3,7 +3,7 @@ import dev.greenhouseteam.bovinesandbuttercups.gradle.Versions
 
 plugins {
     id("bovinesandbuttercups.loader")
-    id("fabric-loom") version "1.6-SNAPSHOT"
+    id("fabric-loom")
 }
 
 repositories {
@@ -23,7 +23,7 @@ dependencies {
 }
 
 loom {
-    val aw = project(":common").file("src/main/resources/${Properties.MOD_ID}.accesswidener");
+    val aw = file("src/main/resources/${Properties.MOD_ID}.accesswidener");
     if (aw.exists())
         accessWidenerPath.set(aw)
     mixin {

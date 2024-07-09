@@ -19,6 +19,7 @@ import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.resources.model.BakedModel;
+import net.minecraft.client.resources.model.ModelManager;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.InventoryMenu;
@@ -46,34 +47,30 @@ public class MoobloomFlowerLayer<T extends Moobloom, M extends CowModel<T>> exte
         int m = LivingEntityRenderer.getOverlayCoords(entity, 0.0f);
 
         Optional<BlockState> blockState;
-        ModelResourceLocation modelResourceLocation;
+        ResourceLocation resourceLocation;
 
         if (entity.isBaby()) {
-            if (configuration.bud().modelLocation().isPresent()) {
-                modelResourceLocation = new ModelResourceLocation(configuration.bud().modelLocation().get(), "");
-            } else if (configuration.bud().customType().isPresent()) {
-                ResourceLocation modelLocationWithoutVariant = BovineStatesAssociationRegistry.getBlock(entity.level().registryAccess().registry(BovinesRegistryKeys.CUSTOM_FLOWER_TYPE).orElseThrow().getKey(configuration.bud().customType().get().value()), BovineBlockstateTypes.FLOWER).orElseGet(() -> BovinesAndButtercups.asResource("bovinesandbuttercups/missing_flower"));
-                modelResourceLocation = new ModelResourceLocation(modelLocationWithoutVariant, "");
-            } else {
-                modelResourceLocation = new ModelResourceLocation(BovinesAndButtercups.asResource("bovinesandbuttercups/missing_flower"), "");
-            }
+            if (configuration.bud().modelLocation().isPresent())
+                resourceLocation = BovineStatesAssociationRegistry.getBlock(configuration.bud().modelLocation().get(), BovineBlockstateTypes.GENERIC).map(rl -> rl.withPath(s -> s +"/")).orElse(BovinesAndButtercups.asResource("bovinesandbuttercups/missing_flower/"));
+            else if (configuration.bud().customType().isPresent())
+                resourceLocation = BovineStatesAssociationRegistry.getBlock(entity.level().registryAccess().registry(BovinesRegistryKeys.CUSTOM_FLOWER_TYPE).orElseThrow().getKey(configuration.bud().customType().get().value()), BovineBlockstateTypes.FLOWER).map(rl -> rl.withPath(s -> "bovinesandbuttercups/" + s +"/")).orElseGet(() -> BovinesAndButtercups.asResource("bovinesandbuttercups/missing_flower/"));
+            else
+                resourceLocation = BovinesAndButtercups.asResource("bovinesandbuttercups/missing_flower/");
             blockState = configuration.bud().blockState();
-            handleMoobudRender(poseStack, buffer, entity, packedLight, bl, m, blockState, modelResourceLocation);
+            handleMoobudRender(poseStack, buffer, entity, packedLight, bl, m, blockState, resourceLocation);
         } else {
-            if (configuration.flower().modelLocation().isPresent()) {
-                modelResourceLocation = new ModelResourceLocation(configuration.flower().modelLocation().get(), "");
-            } else if (configuration.flower().customType().isPresent()) {
-                ResourceLocation modelLocationWithoutVariant = BovineStatesAssociationRegistry.getBlock(entity.level().registryAccess().registry(BovinesRegistryKeys.CUSTOM_FLOWER_TYPE).orElseThrow().getKey(configuration.bud().customType().get().value()), BovineBlockstateTypes.FLOWER).orElseGet(() -> BovinesAndButtercups.asResource("bovinesandbuttercups/missing_flower"));
-                modelResourceLocation = new ModelResourceLocation(modelLocationWithoutVariant, "");
-            } else {
-                modelResourceLocation = new ModelResourceLocation(BovinesAndButtercups.asResource("bovinesandbuttercups/missing_flower"), "");
-            }
+            if (configuration.flower().modelLocation().isPresent())
+                resourceLocation = BovineStatesAssociationRegistry.getBlock(configuration.bud().modelLocation().get(), BovineBlockstateTypes.GENERIC).map(rl -> rl.withPath(s -> s +"/")).orElse(BovinesAndButtercups.asResource("bovinesandbuttercups/missing_flower/"));
+            else if (configuration.flower().customType().isPresent())
+                resourceLocation = BovineStatesAssociationRegistry.getBlock(entity.level().registryAccess().registry(BovinesRegistryKeys.CUSTOM_FLOWER_TYPE).orElseThrow().getKey(configuration.flower().customType().get().value()), BovineBlockstateTypes.FLOWER).map(rl -> rl.withPath(s -> "bovinesandbuttercups/" + s +"/")).orElseGet(() -> BovinesAndButtercups.asResource("bovinesandbuttercups/missing_flower/"));
+            else
+                resourceLocation = BovinesAndButtercups.asResource("bovinesandbuttercups/missing_flower/");
             blockState = configuration.flower().blockState();
-            handleMoobloomRender(poseStack, buffer, entity, packedLight, bl, m, blockState, modelResourceLocation);
+            handleMoobloomRender(poseStack, buffer, entity, packedLight, bl, m, blockState, resourceLocation);
         }
     }
 
-    private void handleMoobudRender(PoseStack poseStack, MultiBufferSource buffer, T entity, int i, boolean outlineAndInvisible, int overlay, Optional<BlockState> blockState, @Nullable ModelResourceLocation modelResourceLocation) {
+    private void handleMoobudRender(PoseStack poseStack, MultiBufferSource buffer, T entity, int i, boolean outlineAndInvisible, int overlay, Optional<BlockState> blockState, @Nullable ResourceLocation resourceLocation) {
         poseStack.pushPose();
         if (entity.getStandingStillForBeeTicks() > 0) {
             poseStack.translate(0.0f, 11.0f / 16.0f, 0.0f);
@@ -85,7 +82,7 @@ public class MoobloomFlowerLayer<T extends Moobloom, M extends CowModel<T>> exte
         poseStack.scale(-0.75f, -0.75f, 0.75f);
         poseStack.translate(-1.0f, -1.0f, -1.0f);
         poseStack.translate(0.25f, 0.37, -0.25f);
-        this.renderFlowerOrBud(poseStack, buffer, i, outlineAndInvisible, blockRenderer, overlay, blockState, modelResourceLocation);
+        this.renderFlowerOrBud(poseStack, buffer, i, outlineAndInvisible, blockRenderer, overlay, blockState, resourceLocation);
         poseStack.popPose();
 
         poseStack.pushPose();
@@ -94,7 +91,7 @@ public class MoobloomFlowerLayer<T extends Moobloom, M extends CowModel<T>> exte
         poseStack.scale(-0.75f, -0.75f, 0.75f);
         poseStack.translate(-1.0f, -1.0f, -1.0f);
         poseStack.translate(0.25f, 0.37, 0.05f);
-        this.renderFlowerOrBud(poseStack, buffer, i, outlineAndInvisible, blockRenderer, overlay, blockState, modelResourceLocation);
+        this.renderFlowerOrBud(poseStack, buffer, i, outlineAndInvisible, blockRenderer, overlay, blockState, resourceLocation);
         poseStack.popPose();
         poseStack.popPose();
 
@@ -106,11 +103,11 @@ public class MoobloomFlowerLayer<T extends Moobloom, M extends CowModel<T>> exte
         poseStack.scale(-0.75f, -0.75f, 0.75f);
         poseStack.translate(-0.5, -0.5, -0.5);
         poseStack.translate(-0.05, -0.12, 0.15);
-        this.renderFlowerOrBud(poseStack, buffer, i, outlineAndInvisible, blockRenderer, overlay, blockState, modelResourceLocation);
+        this.renderFlowerOrBud(poseStack, buffer, i, outlineAndInvisible, blockRenderer, overlay, blockState, resourceLocation);
         poseStack.popPose();
     }
 
-    private void handleMoobloomRender(PoseStack poseStack, MultiBufferSource buffer, T entity, int i, boolean outlineAndInvisible, int overlay, Optional<BlockState> blockState, @Nullable ModelResourceLocation modelResourceLocation) {
+    private void handleMoobloomRender(PoseStack poseStack, MultiBufferSource buffer, T entity, int i, boolean outlineAndInvisible, int overlay, Optional<BlockState> blockState, @Nullable ResourceLocation resourceLocation) {
         poseStack.pushPose();
         if (entity.getStandingStillForBeeTicks() > 0) {
             poseStack.translate(0.0f, 11.0f / 16.0f, 0.0f);
@@ -122,7 +119,7 @@ public class MoobloomFlowerLayer<T extends Moobloom, M extends CowModel<T>> exte
         poseStack.scale(-0.75f, -0.75f, 0.75f);
         poseStack.translate(-0.5, -0.5, -0.5);
         poseStack.translate(-0.65, -0.18, -0.55);
-        this.renderFlowerOrBud(poseStack, buffer, i, outlineAndInvisible, blockRenderer, overlay, blockState, modelResourceLocation);
+        this.renderFlowerOrBud(poseStack, buffer, i, outlineAndInvisible, blockRenderer, overlay, blockState, resourceLocation);
         poseStack.popPose();
 
         poseStack.pushPose();
@@ -131,7 +128,7 @@ public class MoobloomFlowerLayer<T extends Moobloom, M extends CowModel<T>> exte
         poseStack.scale(-0.75f, -0.75f, 0.75f);
         poseStack.translate(-0.5, -0.5, -0.5);
         poseStack.translate(-0.03, -0.18, -0.85);
-        this.renderFlowerOrBud(poseStack, buffer, i, outlineAndInvisible, blockRenderer, overlay, blockState, modelResourceLocation);
+        this.renderFlowerOrBud(poseStack, buffer, i, outlineAndInvisible, blockRenderer, overlay, blockState, resourceLocation);
         poseStack.popPose();
 
         poseStack.pushPose();
@@ -140,7 +137,7 @@ public class MoobloomFlowerLayer<T extends Moobloom, M extends CowModel<T>> exte
         poseStack.scale(-0.75f, -0.75f, 0.75f);
         poseStack.translate(-0.5, -0.5, -0.5);
         poseStack.translate(0.15, -0.18, -0.2);
-        this.renderFlowerOrBud(poseStack, buffer, i, outlineAndInvisible, blockRenderer, overlay, blockState, modelResourceLocation);
+        this.renderFlowerOrBud(poseStack, buffer, i, outlineAndInvisible, blockRenderer, overlay, blockState, resourceLocation);
         poseStack.popPose();
         poseStack.popPose();
 
@@ -151,13 +148,15 @@ public class MoobloomFlowerLayer<T extends Moobloom, M extends CowModel<T>> exte
         poseStack.scale(-0.75f, -0.75f, 0.75f);
         poseStack.translate(-0.5, -0.5, -0.5);
         poseStack.translate(-0.05, -0.17, 0.15);
-        this.renderFlowerOrBud(poseStack, buffer, i, outlineAndInvisible, blockRenderer, overlay, blockState, modelResourceLocation);
+        this.renderFlowerOrBud(poseStack, buffer, i, outlineAndInvisible, blockRenderer, overlay, blockState, resourceLocation);
         poseStack.popPose();
     }
 
-    private void renderFlowerOrBud(PoseStack poseStack, MultiBufferSource buffer, int light, boolean outlineAndInvisible, BlockRenderDispatcher blockRenderDispatcher, int overlay, Optional<BlockState> flowerState, ModelResourceLocation resourceLocation) {
-        BakedModel flowerModel;
-        flowerModel = flowerState.map(blockRenderDispatcher::getBlockModel).orElseGet(() -> Minecraft.getInstance().getModelManager().getModel(resourceLocation));
+    private void renderFlowerOrBud(PoseStack poseStack, MultiBufferSource buffer, int light, boolean outlineAndInvisible, BlockRenderDispatcher blockRenderDispatcher, int overlay, Optional<BlockState> flowerState, ResourceLocation resourceLocation) {
+        BakedModel flowerModel = flowerState.map(blockRenderDispatcher::getBlockModel).orElseGet(() -> BovinesAndButtercupsClient.getHelper().getModel(resourceLocation));
+
+        if (flowerModel == null)
+            flowerModel = BovinesAndButtercupsClient.getHelper().getModel(BovinesAndButtercups.asResource("bovinesandbuttercups/missing_flower/"));
 
         if (outlineAndInvisible)
             blockRenderDispatcher.getModelRenderer().renderModel(poseStack.last(), buffer.getBuffer(RenderType.outline(InventoryMenu.BLOCK_ATLAS)), null, flowerModel, 0.0f, 0.0f, 0.0f, light, overlay);

@@ -3,7 +3,7 @@ import dev.greenhouseteam.bovinesandbuttercups.gradle.Versions
 
 plugins {
     id("bovinesandbuttercups.common")
-    id("org.spongepowered.gradle.vanilla") version "0.2.1-SNAPSHOT"
+    id("net.neoforged.moddev")
 }
 
 sourceSets {
@@ -14,11 +14,18 @@ sourceSets {
     }
 }
 
-minecraft {
-    version(Versions.INTERNAL_MINECRAFT)
-    val aw = file("src/main/resources/${Properties.MOD_ID}.accesswidener")
-    if (aw.exists())
-        accessWideners(aw)
+neoForge {
+    neoFormVersion = Versions.NEOFORM
+    parchment {
+        minecraftVersion = Versions.INTERNAL_MINECRAFT
+        mappingsVersion = Versions.PARCHMENT
+    }
+    addModdingDependenciesTo(sourceSets["test"])
+
+    val at = file("src/main/resources/${Properties.MOD_ID}.cfg")
+    if (at.exists())
+        accessTransformers.add(at.absolutePath)
+    validateAccessTransformers = true
 }
 
 dependencies {

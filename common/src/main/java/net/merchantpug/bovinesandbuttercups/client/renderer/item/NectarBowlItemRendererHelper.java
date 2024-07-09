@@ -3,7 +3,9 @@ package net.merchantpug.bovinesandbuttercups.client.renderer.item;
 import com.mojang.blaze3d.platform.Lighting;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
+import net.merchantpug.bovinesandbuttercups.client.BovinesAndButtercupsClient;
 import net.merchantpug.bovinesandbuttercups.client.bovinestate.BovineStatesAssociationRegistry;
+import net.merchantpug.bovinesandbuttercups.client.platform.BovinesClientHelper;
 import net.merchantpug.bovinesandbuttercups.content.data.configuration.MoobloomConfiguration;
 import net.merchantpug.bovinesandbuttercups.registry.BovinesDataComponents;
 import net.merchantpug.bovinesandbuttercups.util.QuaternionUtil;
@@ -12,6 +14,7 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.block.model.ItemTransform;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.resources.model.BakedModel;
+import net.minecraft.client.resources.model.ModelManager;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemDisplayContext;
@@ -23,18 +26,18 @@ import java.util.Optional;
 
 public class NectarBowlItemRendererHelper {
     public static void render(ItemStack stack, PoseStack poseStack, MultiBufferSource bufferSource, int light, int overlay, ItemDisplayContext transformType) {
-        ModelResourceLocation modelResourceLocation = new ModelResourceLocation(BovinesAndButtercups.asResource("colored_nectar_bowl"), "inventory");
+        ResourceLocation resourceLocation = BovinesAndButtercups.asResource("bovinesandbuttercups/item/colored_nectar_bowl/inventory");
         Level level = Minecraft.getInstance().level;
         if (level == null) return;
 
         if (stack.has(BovinesDataComponents.MOOBLOOM_TYPE)) {
             Optional<ResourceLocation> modelLocationWithoutVariant = Optional.ofNullable(stack.get(BovinesDataComponents.MOOBLOOM_TYPE)).filter(itemMoobloomType -> itemMoobloomType.cowType().isBound() && itemMoobloomType.cowType().value().configuration() instanceof MoobloomConfiguration).flatMap(itemMoobloomType -> ((MoobloomConfiguration)itemMoobloomType.cowType().value().configuration()).nectarPalette());
             if (modelLocationWithoutVariant.isPresent())
-                modelResourceLocation = new ModelResourceLocation(BovineStatesAssociationRegistry.getItem(modelLocationWithoutVariant.get(), true).orElse(BovinesAndButtercups.asResource("buttercup_nectar_bowl")), "inventory");
+                resourceLocation = BovineStatesAssociationRegistry.getItem(modelLocationWithoutVariant.get()).orElse(BovinesAndButtercups.asResource("bovinesandbuttercups/item/buttercup_nectar_bowl/inventory"));
         } else
-            modelResourceLocation = new ModelResourceLocation(BovinesAndButtercups.asResource("buttercup_nectar_bowl"), "inventory");
+            resourceLocation = BovinesAndButtercups.asResource("bovinesandbuttercups/item/buttercup_nectar_bowl/inventory");
 
-        BakedModel nectarBowlModel = Minecraft.getInstance().getModelManager().getModel(modelResourceLocation);
+        BakedModel nectarBowlModel = BovinesAndButtercupsClient.getHelper().getModel(resourceLocation);
         ItemRenderer itemRenderer =  Minecraft.getInstance().getItemRenderer();
 
         BakedModel originalModel = itemRenderer.getModel(stack, level, null, 0);

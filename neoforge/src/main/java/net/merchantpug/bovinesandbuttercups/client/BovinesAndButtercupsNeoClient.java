@@ -18,9 +18,21 @@ import net.merchantpug.bovinesandbuttercups.client.util.CowTextureReloadListener
 import net.merchantpug.bovinesandbuttercups.registry.BovinesBlockEntityTypes;
 import net.merchantpug.bovinesandbuttercups.registry.BovinesEntityTypes;
 import net.merchantpug.bovinesandbuttercups.registry.BovinesParticleTypes;
+import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.CowModel;
+import net.minecraft.client.renderer.block.model.BlockModel;
+import net.minecraft.client.renderer.block.model.ItemModelGenerator;
+import net.minecraft.client.renderer.texture.MissingTextureAtlasSprite;
+import net.minecraft.client.renderer.texture.TextureAtlas;
+import net.minecraft.client.resources.model.BakedModel;
+import net.minecraft.client.resources.model.BlockModelRotation;
+import net.minecraft.client.resources.model.Material;
+import net.minecraft.client.resources.model.ModelBakery;
 import net.minecraft.client.resources.model.ModelResourceLocation;
+import net.minecraft.client.resources.model.UnbakedModel;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.inventory.InventoryMenu;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -31,8 +43,11 @@ import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.client.event.ModelEvent;
 import net.neoforged.neoforge.client.event.RegisterClientReloadListenersEvent;
 import net.neoforged.neoforge.client.event.RegisterParticleProvidersEvent;
+import net.neoforged.neoforge.client.model.SimpleModelState;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Mod(value = BovinesAndButtercups.MOD_ID, dist = Dist.CLIENT)
 public class BovinesAndButtercupsNeoClient {
@@ -56,8 +71,17 @@ public class BovinesAndButtercupsNeoClient {
 
         @SubscribeEvent
         public static void registerModels(ModelEvent.RegisterAdditional event) {
-            List<ModelResourceLocation> modelsToLoad = BovineStateModelUtil.getModels(Minecraft.getInstance().getResourceManager());
-            modelsToLoad.forEach(event::register);
+            BovineStateModelUtil.getModels(Minecraft.getInstance().getResourceManager(), Util.backgroundExecutor())
+                    .thenAccept(list -> list.forEach(rl -> event.register(ModelResourceLocation.standalone(rl))));
+        }
+
+        @SubscribeEvent
+        public static void bakeModels(ModelEvent.ModifyBakingResult event) {
+            for (Map.Entry<ModelResourceLocation, BakedModel> entry : event.getModels().entrySet()) {
+                UnbakedModel unbaked = BovineStateModelUtil.getUnbakedModel(entry.getKey().id(), rl -> event.getModelBakery().getModel(rl));
+                if (unbaked != null)
+                    event.getModels().put(entry.getKey(), unbaked.bake(event.getModelBakery().new ModelBakerImpl(event.getTextureGetter(), ModelResourceLocation.standalone(entry.getKey().id())), event.getTextureGetter(), BlockModelRotation.X0_Y0));
+            }
         }
 
         @SubscribeEvent
@@ -71,7 +95,7 @@ public class BovinesAndButtercupsNeoClient {
             event.registerBlockEntityRenderer(BovinesBlockEntityTypes.CUSTOM_FLOWER, CustomFlowerRenderer::new);
             event.registerBlockEntityRenderer(BovinesBlockEntityTypes.CUSTOM_MUSHROOM, CustomMushroomRenderer::new);
             event.registerBlockEntityRenderer(BovinesBlockEntityTypes.POTTED_CUSTOM_FLOWER, CustomFlowerPotBlockRenderer::new);
-            event.registerBlockEntityRenderer(BovinesBlockEntityTypes.POTTED_CUSTOM_MUSHROOM, CustomMushroomPotBlockRenderer::new);
+            event.registerBlockEntRityenderer(BovinesBlockEntityTypes.POTTED_CUSTOM_MUSHROOM, CustomMushroomPotBlockRenderer::new);
             event.registerBlockEntityRenderer(BovinesBlockEntityTypes.CUSTOM_MUSHROOM_BLOCK, CustomHugeMushroomBlockRenderer::new);
         }
 
