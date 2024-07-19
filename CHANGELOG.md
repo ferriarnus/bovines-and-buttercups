@@ -19,7 +19,7 @@
 - Configured Cow Types have been renamed to Cow Types, and now go inside the `data/<namespace>/bovinesandbuttercups/cow_type` directory.
 - `back_grass` has been changed to `layers`. Layers are a more powerful system that allows you to overlay textures on top of Mooblooms.
   - Contains two fields. `texture_location` and `texture_modifications`.
-  - Texture Modifications are a new registry that allows you to modify textures in certian ways.
+  - Texture Modifications are a new registry that allows you to modify textures in certain ways.
     - By default it contains:
       - `bovinesandbuttercups:conditioned`, allows you to make a layer appear under a predicate.
       - `bovinesandbuttercups:emmissive`, allows you to make a texture emmissive.
