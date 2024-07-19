@@ -23,8 +23,9 @@ neoForge {
     addModdingDependenciesTo(sourceSets["test"])
 
     val at = file("src/main/resources/${Properties.MOD_ID}.cfg")
-    if (at.exists())
-        accessTransformers.add(at.absolutePath)
+    accessTransformers {
+        from(at)
+    }
     validateAccessTransformers = true
 }
 
