@@ -25,17 +25,7 @@ public class BovinesAttachments {
 
     public static final AttachmentType<CowTypeAttachment> COW_TYPE = AttachmentType
             .builder(() -> new CowTypeAttachment(Holder.direct(null), Optional.empty()))
-            .serialize(new IAttachmentSerializer<>() {
-                @Override
-                public CowTypeAttachment read(IAttachmentHolder holder, Tag tag, HolderLookup.Provider provider) {
-                    return CowTypeAttachment.CODEC.parse(RegistryOps.create(NbtOps.INSTANCE, provider), tag).getOrThrow();
-                }
-
-                @Override
-                public @Nullable Tag write(CowTypeAttachment attachment, HolderLookup.Provider provider) {
-                    return CowTypeAttachment.CODEC.encodeStart(RegistryOps.create(NbtOps.INSTANCE, provider), attachment).getOrThrow();
-                }
-            })
+            .serialize(CowTypeAttachment.CODEC)
             .build();
 
     public static void registerAll(RegistrationCallback<AttachmentType<?>> callback) {

@@ -1,6 +1,8 @@
 package net.merchantpug.bovinesandbuttercups.api.attachment;
 
+import com.mojang.datafixers.util.Either;
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.DataResult;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
 import net.merchantpug.bovinesandbuttercups.api.CowType;
@@ -13,13 +15,19 @@ import net.minecraft.world.entity.LivingEntity;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
+import java.util.function.Function;
 
 public record CowTypeAttachment(Holder<CowType<?>> cowType, Optional<Holder<CowType<?>>> previousCowType) {
     public static final ResourceLocation ID = BovinesAndButtercups.asResource("cow_type");
-    public static final Codec<CowTypeAttachment> CODEC = RecordCodecBuilder.create(inst -> inst.group(
+    public static final Codec<CowTypeAttachment> DIRECT_CODEC = RecordCodecBuilder.create(inst -> inst.group(
             CowType.CODEC.fieldOf("current").forGetter(CowTypeAttachment::cowType),
             CowType.CODEC.optionalFieldOf("previous").forGetter(CowTypeAttachment::previousCowType)
     ).apply(inst, CowTypeAttachment::new));
+    public static final Codec<CowTypeAttachment> CODEC = Codec.either(CowType.CODEC, DIRECT_CODEC).flatComapMap(either -> either.map(current -> new CowTypeAttachment(current, Optional.empty()), Function.identity()), attachment -> {
+        if (attachment.previousCowType().isEmpty())
+            return DataResult.success(Either.left(attachment.cowType()));
+        return DataResult.success(Either.right(attachment));
+    });
 
     @Nullable
     public static <C extends CowTypeConfiguration, T extends CowTypeType<C>> CowType<C> getCowTypeFromEntity(LivingEntity living, T cowType) {
