@@ -28,112 +28,110 @@
     }
   ],
   "nectar_palette": "bovinesandbuttercups:bovinesandbuttercups/item/pink_daisy_nectar_bowl",
-  "offspring_conditions": {
-    "this_conditions": [
-      {
-        "condition": "minecraft:any_of",
-        "terms": [
-          {
-            "condition": "minecraft:all_of",
-            "terms": [
-              {
-                "condition": "minecraft:any_of",
-                "terms": [
-                  {
-                    "block": {
-                      "blocks": "minecraft:lilac",
-                      "state": {
-                        "half": "upper"
-                      }
-                    },
-                    "condition": "bovinesandbuttercups:block_in_radius",
-                    "radius": {
-                      "max_x": 6.0,
-                      "max_y": 4.0,
-                      "max_z": 6.0,
-                      "min_x": -6.0,
-                      "min_y": -2.0,
-                      "min_z": -6.0
+  "offspring_conditions": [
+    {
+      "condition": "minecraft:any_of",
+      "terms": [
+        {
+          "condition": "minecraft:all_of",
+          "terms": [
+            {
+              "condition": "minecraft:any_of",
+              "terms": [
+                {
+                  "block": {
+                    "blocks": "minecraft:lilac",
+                    "state": {
+                      "half": "upper"
                     }
+                  },
+                  "condition": "bovinesandbuttercups:block_in_radius",
+                  "radius": {
+                    "max_x": 6.0,
+                    "max_y": 4.0,
+                    "max_z": 6.0,
+                    "min_x": -6.0,
+                    "min_y": -2.0,
+                    "min_z": -6.0
                   }
-                ]
-              },
-              {
-                "condition": "minecraft:any_of",
-                "terms": [
-                  {
-                    "block": {
-                      "blocks": [
-                        "minecraft:allium",
-                        "minecraft:potted_allium",
-                        "minecraft:pink_tulip",
-                        "minecraft:potted_pink_tulip",
-                        "minecraft:pink_petals"
-                      ]
-                    },
-                    "condition": "bovinesandbuttercups:block_in_radius",
-                    "radius": {
-                      "max_x": 6.0,
-                      "max_y": 4.0,
-                      "max_z": 6.0,
-                      "min_x": -6.0,
-                      "min_y": -2.0,
-                      "min_z": -6.0
-                    }
-                  }
-                ]
-              },
-              {
-                "condition": "minecraft:any_of",
-                "terms": [
-                  {
-                    "block": {
-                      "blocks": [
-                        "minecraft:oak_log",
-                        "minecraft:oak_wood",
-                        "minecraft:oak_sapling",
-                        "minecraft:potted_oak_sapling",
-                        "minecraft:cherry_log",
-                        "minecraft:cherry_wood",
-                        "minecraft:cherry_sapling",
-                        "minecraft:potted_cherry_sapling"
-                      ]
-                    },
-                    "condition": "bovinesandbuttercups:block_in_radius",
-                    "radius": {
-                      "max_x": 6.0,
-                      "max_y": 4.0,
-                      "max_z": 6.0,
-                      "min_x": -6.0,
-                      "min_y": -2.0,
-                      "min_z": -6.0
-                    }
-                  }
-                ]
-              }
-            ]
-          },
-          {
-            "block": {
-              "blocks": [
-                "bovinesandbuttercups:pink_daisy",
-                "bovinesandbuttercups:potted_pink_daisy"
+                }
               ]
             },
-            "condition": "bovinesandbuttercups:block_in_radius",
-            "radius": {
-              "max_x": 6.0,
-              "max_y": 4.0,
-              "max_z": 6.0,
-              "min_x": -6.0,
-              "min_y": -2.0,
-              "min_z": -6.0
+            {
+              "condition": "minecraft:any_of",
+              "terms": [
+                {
+                  "block": {
+                    "blocks": [
+                      "minecraft:allium",
+                      "minecraft:potted_allium",
+                      "minecraft:pink_tulip",
+                      "minecraft:potted_pink_tulip",
+                      "minecraft:pink_petals"
+                    ]
+                  },
+                  "condition": "bovinesandbuttercups:block_in_radius",
+                  "radius": {
+                    "max_x": 6.0,
+                    "max_y": 4.0,
+                    "max_z": 6.0,
+                    "min_x": -6.0,
+                    "min_y": -2.0,
+                    "min_z": -6.0
+                  }
+                }
+              ]
+            },
+            {
+              "condition": "minecraft:any_of",
+              "terms": [
+                {
+                  "block": {
+                    "blocks": [
+                      "minecraft:oak_log",
+                      "minecraft:oak_wood",
+                      "minecraft:oak_sapling",
+                      "minecraft:potted_oak_sapling",
+                      "minecraft:cherry_log",
+                      "minecraft:cherry_wood",
+                      "minecraft:cherry_sapling",
+                      "minecraft:potted_cherry_sapling"
+                    ]
+                  },
+                  "condition": "bovinesandbuttercups:block_in_radius",
+                  "radius": {
+                    "max_x": 6.0,
+                    "max_y": 4.0,
+                    "max_z": 6.0,
+                    "min_x": -6.0,
+                    "min_y": -2.0,
+                    "min_z": -6.0
+                  }
+                }
+              ]
             }
+          ]
+        },
+        {
+          "block": {
+            "blocks": [
+              "bovinesandbuttercups:pink_daisy",
+              "bovinesandbuttercups:potted_pink_daisy"
+            ]
+          },
+          "condition": "bovinesandbuttercups:block_in_radius",
+          "radius": {
+            "max_x": 6.0,
+            "max_y": 4.0,
+            "max_z": 6.0,
+            "min_x": -6.0,
+            "min_y": -2.0,
+            "min_z": -6.0
           }
-        ]
-      }
-    ]
-  },
+        }
+      ]
+    }
+  ],
   "particle": {
     "type": "bovinesandbuttercups:bloom",
     "color": 16631260

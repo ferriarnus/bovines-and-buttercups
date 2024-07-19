@@ -52,105 +52,103 @@
     }
   ],
   "nectar_palette": "bovinesandbuttercups:bovinesandbuttercups/item/snowdrop_nectar_bowl",
-  "offspring_conditions": {
-    "this_conditions": [
-      {
-        "condition": "minecraft:any_of",
-        "terms": [
-          {
-            "condition": "minecraft:all_of",
-            "terms": [
-              {
-                "condition": "minecraft:any_of",
-                "terms": [
-                  {
-                    "block": {
-                      "blocks": [
-                        "minecraft:snow_block",
-                        "minecraft:snow"
-                      ]
-                    },
-                    "condition": "bovinesandbuttercups:block_in_radius",
-                    "radius": {
-                      "max_x": 6.0,
-                      "max_y": 4.0,
-                      "max_z": 6.0,
-                      "min_x": -6.0,
-                      "min_y": -2.0,
-                      "min_z": -6.0
-                    }
+  "offspring_conditions": [
+    {
+      "condition": "minecraft:any_of",
+      "terms": [
+        {
+          "condition": "minecraft:all_of",
+          "terms": [
+            {
+              "condition": "minecraft:any_of",
+              "terms": [
+                {
+                  "block": {
+                    "blocks": [
+                      "minecraft:snow_block",
+                      "minecraft:snow"
+                    ]
+                  },
+                  "condition": "bovinesandbuttercups:block_in_radius",
+                  "radius": {
+                    "max_x": 6.0,
+                    "max_y": 4.0,
+                    "max_z": 6.0,
+                    "min_x": -6.0,
+                    "min_y": -2.0,
+                    "min_z": -6.0
                   }
-                ]
-              },
-              {
-                "condition": "minecraft:any_of",
-                "terms": [
-                  {
-                    "block": {
-                      "blocks": [
-                        "minecraft:fern",
-                        "minecraft:potted_fern"
-                      ]
-                    },
-                    "condition": "bovinesandbuttercups:block_in_radius",
-                    "radius": {
-                      "max_x": 6.0,
-                      "max_y": 4.0,
-                      "max_z": 6.0,
-                      "min_x": -6.0,
-                      "min_y": -2.0,
-                      "min_z": -6.0
-                    }
-                  }
-                ]
-              },
-              {
-                "condition": "minecraft:any_of",
-                "terms": [
-                  {
-                    "block": {
-                      "blocks": [
-                        "minecraft:spruce_log",
-                        "minecraft:spruce_wood",
-                        "minecraft:spruce_sapling",
-                        "minecraft:potted_spruce_sapling"
-                      ]
-                    },
-                    "condition": "bovinesandbuttercups:block_in_radius",
-                    "radius": {
-                      "max_x": 6.0,
-                      "max_y": 4.0,
-                      "max_z": 6.0,
-                      "min_x": -6.0,
-                      "min_y": -2.0,
-                      "min_z": -6.0
-                    }
-                  }
-                ]
-              }
-            ]
-          },
-          {
-            "block": {
-              "blocks": [
-                "bovinesandbuttercups:snowdrop",
-                "bovinesandbuttercups:potted_snowdrop"
+                }
               ]
             },
-            "condition": "bovinesandbuttercups:block_in_radius",
-            "radius": {
-              "max_x": 6.0,
-              "max_y": 4.0,
-              "max_z": 6.0,
-              "min_x": -6.0,
-              "min_y": -2.0,
-              "min_z": -6.0
+            {
+              "condition": "minecraft:any_of",
+              "terms": [
+                {
+                  "block": {
+                    "blocks": [
+                      "minecraft:fern",
+                      "minecraft:potted_fern"
+                    ]
+                  },
+                  "condition": "bovinesandbuttercups:block_in_radius",
+                  "radius": {
+                    "max_x": 6.0,
+                    "max_y": 4.0,
+                    "max_z": 6.0,
+                    "min_x": -6.0,
+                    "min_y": -2.0,
+                    "min_z": -6.0
+                  }
+                }
+              ]
+            },
+            {
+              "condition": "minecraft:any_of",
+              "terms": [
+                {
+                  "block": {
+                    "blocks": [
+                      "minecraft:spruce_log",
+                      "minecraft:spruce_wood",
+                      "minecraft:spruce_sapling",
+                      "minecraft:potted_spruce_sapling"
+                    ]
+                  },
+                  "condition": "bovinesandbuttercups:block_in_radius",
+                  "radius": {
+                    "max_x": 6.0,
+                    "max_y": 4.0,
+                    "max_z": 6.0,
+                    "min_x": -6.0,
+                    "min_y": -2.0,
+                    "min_z": -6.0
+                  }
+                }
+              ]
             }
+          ]
+        },
+        {
+          "block": {
+            "blocks": [
+              "bovinesandbuttercups:snowdrop",
+              "bovinesandbuttercups:potted_snowdrop"
+            ]
+          },
+          "condition": "bovinesandbuttercups:block_in_radius",
+          "radius": {
+            "max_x": 6.0,
+            "max_y": 4.0,
+            "max_z": 6.0,
+            "min_x": -6.0,
+            "min_y": -2.0,
+            "min_z": -6.0
           }
-        ]
-      }
-    ]
-  },
+        }
+      ]
+    }
+  ],
   "particle": {
     "type": "bovinesandbuttercups:bloom",
     "color": 12635883
