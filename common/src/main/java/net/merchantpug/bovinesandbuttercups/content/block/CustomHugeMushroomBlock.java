@@ -54,7 +54,8 @@ public class CustomHugeMushroomBlock extends BaseEntityBlock {
     }
 
     public BlockState updateShape(BlockState state, Direction direction, BlockState state2, LevelAccessor level, BlockPos pos, BlockPos pos2) {
-        ((CustomHugeMushroomBlockEntity)level.getBlockEntity(pos)).updateState();
+        if (level.getBlockEntity(pos) != null)
+            ((CustomHugeMushroomBlockEntity)level.getBlockEntity(pos)).updateState();
         return super.updateShape(state, direction, state2, level, pos, pos2);
     }
 

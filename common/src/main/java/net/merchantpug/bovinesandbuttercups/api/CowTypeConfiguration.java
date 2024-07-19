@@ -5,7 +5,6 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
 import net.merchantpug.bovinesandbuttercups.api.codec.BovinesCodecs;
 import net.merchantpug.bovinesandbuttercups.api.cowtype.CowModelLayer;
-import net.merchantpug.bovinesandbuttercups.api.cowtype.color.TextureModifierFactory;
 import net.merchantpug.bovinesandbuttercups.registry.BovinesRegistries;
 import net.merchantpug.bovinesandbuttercups.registry.BovinesRegistryKeys;
 import net.minecraft.core.Holder;

@@ -12,4 +12,16 @@ public record ItemCustomMushroom(Holder<CustomMushroomType> holder) {
     public static final Codec<ItemCustomMushroom> CODEC =
             CustomMushroomType.CODEC.xmap(ItemCustomMushroom::new, ItemCustomMushroom::holder);
     public static final StreamCodec<RegistryFriendlyByteBuf, ItemCustomMushroom> STREAM_CODEC = ByteBufCodecs.holderRegistry(BovinesRegistryKeys.CUSTOM_MUSHROOM_TYPE).map(ItemCustomMushroom::new, ItemCustomMushroom::holder);
+
+    @Override
+    public boolean equals(Object other) {
+        if (!(other instanceof ItemCustomMushroom otherMushroom))
+            return false;
+        return otherMushroom.holder.equals(holder);
+    }
+
+    @Override
+    public int hashCode() {
+        return holder.hashCode();
+    }
 }

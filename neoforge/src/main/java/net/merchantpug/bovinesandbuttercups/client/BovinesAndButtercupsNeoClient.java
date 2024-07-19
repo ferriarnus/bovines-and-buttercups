@@ -18,21 +18,13 @@ import net.merchantpug.bovinesandbuttercups.client.util.CowTextureReloadListener
 import net.merchantpug.bovinesandbuttercups.registry.BovinesBlockEntityTypes;
 import net.merchantpug.bovinesandbuttercups.registry.BovinesEntityTypes;
 import net.merchantpug.bovinesandbuttercups.registry.BovinesParticleTypes;
-import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.CowModel;
-import net.minecraft.client.renderer.block.model.BlockModel;
-import net.minecraft.client.renderer.block.model.ItemModelGenerator;
-import net.minecraft.client.renderer.texture.MissingTextureAtlasSprite;
-import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.resources.model.BlockModelRotation;
-import net.minecraft.client.resources.model.Material;
-import net.minecraft.client.resources.model.ModelBakery;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.client.resources.model.UnbakedModel;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.inventory.InventoryMenu;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -43,16 +35,14 @@ import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.client.event.ModelEvent;
 import net.neoforged.neoforge.client.event.RegisterClientReloadListenersEvent;
 import net.neoforged.neoforge.client.event.RegisterParticleProvidersEvent;
-import net.neoforged.neoforge.client.model.SimpleModelState;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Mod(value = BovinesAndButtercups.MOD_ID, dist = Dist.CLIENT)
 public class BovinesAndButtercupsNeoClient {
     public BovinesAndButtercupsNeoClient(IEventBus eventBus) {
         BovinesAndButtercupsClient.init(new BovinesClientHelperNeo());
+        BovinesAndButtercupsClient.registerCowTexturePaths();
     }
 
     @EventBusSubscriber(modid = BovinesAndButtercups.MOD_ID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
@@ -60,27 +50,25 @@ public class BovinesAndButtercupsNeoClient {
         @SubscribeEvent
         public static void onClientSetup(FMLClientSetupEvent event) {
             BovineBlockstateTypes.init();
-            BovinesAndButtercupsClient.registerCowTexturePaths();
         }
 
         @SubscribeEvent
         public static void registerClientReloadListeners(RegisterClientReloadListenersEvent event) {
-            BovinesAndButtercupsClient.registerCowTexturePaths();
             event.registerReloadListener(new CowTextureReloadListener());
         }
 
         @SubscribeEvent
-        public static void registerModels(ModelEvent.RegisterAdditional event) {
-            BovineStateModelUtil.getModels(Minecraft.getInstance().getResourceManager(), Util.backgroundExecutor())
-                    .thenAccept(list -> list.forEach(rl -> event.register(ModelResourceLocation.standalone(rl))));
-        }
-
-        @SubscribeEvent
         public static void bakeModels(ModelEvent.ModifyBakingResult event) {
-            for (Map.Entry<ModelResourceLocation, BakedModel> entry : event.getModels().entrySet()) {
-                UnbakedModel unbaked = BovineStateModelUtil.getUnbakedModel(entry.getKey().id(), rl -> event.getModelBakery().getModel(rl));
-                if (unbaked != null)
-                    event.getModels().put(entry.getKey(), unbaked.bake(event.getModelBakery().new ModelBakerImpl(event.getTextureGetter(), ModelResourceLocation.standalone(entry.getKey().id())), event.getTextureGetter(), BlockModelRotation.X0_Y0));
+            List<ResourceLocation> models = BovineStateModelUtil.getModels(Minecraft.getInstance().getResourceManager(), Runnable::run).join();
+
+            for (ResourceLocation entry : models) {
+                UnbakedModel unbaked = BovineStateModelUtil.getUnbakedModel(entry, event.getModelBakery()::getModel);
+                if (unbaked != null) {
+                    unbaked.resolveParents(location -> event.getModelBakery().getModel(location));
+                    ModelResourceLocation modelResource = ModelResourceLocation.standalone(entry);
+                    BakedModel model = unbaked.bake(event.getModelBakery().new ModelBakerImpl((rl, material) -> material.sprite(), modelResource), event.getTextureGetter(), BlockModelRotation.X0_Y0);
+                    event.getModels().put(modelResource, model);
+                }
             }
         }
 

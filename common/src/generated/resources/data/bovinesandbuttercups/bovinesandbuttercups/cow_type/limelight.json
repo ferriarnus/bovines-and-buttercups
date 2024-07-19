@@ -10,12 +10,7 @@
   },
   "layers": [
     {
-      "texture_location": "bovinesandbuttercups:bovinesandbuttercups/moobloom/moobloom_grass_layer",
-      "texture_modifiers": [
-        {
-          "type": "bovinesandbuttercups:grass_tint"
-        }
-      ]
+      "texture_location": "bovinesandbuttercups:bovinesandbuttercups/moobloom/moobloom_moss_layer"
     }
   ],
   "natural_spawns": [],

@@ -2,7 +2,7 @@ package net.merchantpug.bovinesandbuttercups.api.cowtype;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.merchantpug.bovinesandbuttercups.api.cowtype.color.TextureModifierFactory;
+import net.merchantpug.bovinesandbuttercups.api.cowtype.modifier.TextureModifierFactory;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 

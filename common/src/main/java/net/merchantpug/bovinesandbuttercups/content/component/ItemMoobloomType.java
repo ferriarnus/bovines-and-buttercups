@@ -35,4 +35,16 @@ public record ItemMoobloomType(Holder<CowType<?>> cowType) implements TooltipPro
             }
         }
     }
+    @Override
+    public boolean equals(Object other) {
+        if (!(other instanceof ItemMoobloomType otherMoobloomType))
+            return false;
+        return otherMoobloomType.cowType.equals(cowType);
+    }
+
+
+    @Override
+    public int hashCode() {
+        return cowType.hashCode();
+    }
 }

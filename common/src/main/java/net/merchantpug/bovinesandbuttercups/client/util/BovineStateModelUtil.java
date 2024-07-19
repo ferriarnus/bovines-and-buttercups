@@ -140,7 +140,7 @@ public class BovineStateModelUtil {
         if (MODEL_TO_TYPE_MAP.containsKey(modelId)) {
             ResourceLocation typeKey = MODEL_TO_TYPE_MAP.get(modelId);
             MODEL_TO_TYPE_MAP.remove(modelId);
-           if (modelId.getPath().endsWith("/inventory")) {
+            if (modelId.getPath().endsWith("/inventory")) {
                 ResourceLocation itemModelId = modelId.withPath(s -> {
                     String noBovinesHeader = s.substring(21);
                     return noBovinesHeader.substring(0, noBovinesHeader.length() - 10);
@@ -163,23 +163,23 @@ public class BovineStateModelUtil {
                 return definition.getMultiPart();
 
             String variant = getVariant(modelId);
-            if (definition.hasVariant(variant))
-                return definition.getVariant(variant);
+            if (definition.getVariants().containsKey(variant))
+                return definition.getVariants().get(variant);
             else
-                return definition.getVariant("");
+                return definition.getVariants().get("");
         }
         return null;
     }
 
     public static String acceptedStateProperties(String stateProperties) {
-        return stateProperties.replaceAll("=", ".").replaceAll(",", "_");
+        return stateProperties.replaceAll("=", ".").replaceAll(",", "-");
     }
 
     private static String getVariant(ResourceLocation modelId) {
         String path = modelId.getPath();
         if (path.lastIndexOf("/") == path.length() - 1)
             return "";
-        return path.substring(path.lastIndexOf("/") + 1);
+        return path.substring(path.lastIndexOf("/") + 1).replaceAll("\\.", "=").replaceAll("-", ",");
     }
 
 }

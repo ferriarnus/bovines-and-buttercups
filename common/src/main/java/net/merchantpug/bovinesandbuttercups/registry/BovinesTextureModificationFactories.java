@@ -2,7 +2,7 @@ package net.merchantpug.bovinesandbuttercups.registry;
 
 import com.mojang.serialization.MapCodec;
 import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
-import net.merchantpug.bovinesandbuttercups.api.cowtype.color.TextureModifierFactory;
+import net.merchantpug.bovinesandbuttercups.api.cowtype.modifier.TextureModifierFactory;
 import net.merchantpug.bovinesandbuttercups.content.data.modifier.ConditionedModifierFactory;
 import net.merchantpug.bovinesandbuttercups.content.data.modifier.EmissiveTextureModifierFactory;
 import net.merchantpug.bovinesandbuttercups.content.data.modifier.GrassTintTextureModifierFactory;

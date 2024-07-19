@@ -6,7 +6,7 @@ import net.merchantpug.bovinesandbuttercups.api.CowType;
 import net.merchantpug.bovinesandbuttercups.api.CowTypeType;
 import net.merchantpug.bovinesandbuttercups.api.block.CustomFlowerType;
 import net.merchantpug.bovinesandbuttercups.api.block.CustomMushroomType;
-import net.merchantpug.bovinesandbuttercups.api.cowtype.color.TextureModifierFactory;
+import net.merchantpug.bovinesandbuttercups.api.cowtype.modifier.TextureModifierFactory;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 

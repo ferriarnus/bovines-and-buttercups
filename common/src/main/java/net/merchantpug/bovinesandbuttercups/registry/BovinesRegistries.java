@@ -3,7 +3,7 @@ package net.merchantpug.bovinesandbuttercups.registry;
 import com.mojang.serialization.MapCodec;
 import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
 import net.merchantpug.bovinesandbuttercups.api.CowTypeType;
-import net.merchantpug.bovinesandbuttercups.api.cowtype.color.TextureModifierFactory;
+import net.merchantpug.bovinesandbuttercups.api.cowtype.modifier.TextureModifierFactory;
 import net.minecraft.core.Registry;
 
 public class BovinesRegistries {

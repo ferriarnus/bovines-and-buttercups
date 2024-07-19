@@ -138,7 +138,7 @@ public class BovinesCowTypes {
                 new CowTypeConfiguration.Settings(Optional.empty(), List.of(), chargelilyWeighted, Optional.of(ColorParticleOption.create(BovinesParticleTypes.BLOOM, 10876830))),
                 new BlockReference<>(Optional.of(BovinesBlocks.LIMELIGHT.defaultBlockState()), Optional.empty(), Optional.empty()),
                 new BlockReference<>(Optional.empty(), Optional.of(BovinesAndButtercups.asResource("bovinesandbuttercups/limelight_bud")), Optional.empty()),
-                List.of(new CowModelLayer(BovinesAndButtercups.asResource("bovinesandbuttercups/moobloom/moobloom_grass_layer"), List.of(new GrassTintTextureModifierFactory()))),
+                List.of(new CowModelLayer(BovinesAndButtercups.asResource("bovinesandbuttercups/moobloom/moobloom_moss_layer"), List.of())),
                 Optional.of(BovinesAndButtercups.asResource("bovinesandbuttercups/item/limelight_nectar_bowl")),
                 new NectarEffects(List.of(new NectarEffects.Entry(MobEffects.REGENERATION, 2400))),
                 new OffspringConditions(List.of(createCondition(

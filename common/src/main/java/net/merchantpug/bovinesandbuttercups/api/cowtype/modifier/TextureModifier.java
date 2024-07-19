@@ -1,4 +1,4 @@
-package net.merchantpug.bovinesandbuttercups.api.cowtype.color;
+package net.merchantpug.bovinesandbuttercups.api.cowtype.modifier;
 
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;

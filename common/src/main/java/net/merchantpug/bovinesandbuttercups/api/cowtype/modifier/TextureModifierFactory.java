@@ -1,4 +1,4 @@
-package net.merchantpug.bovinesandbuttercups.api.cowtype.color;
+package net.merchantpug.bovinesandbuttercups.api.cowtype.modifier;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
@@ -17,7 +17,7 @@ public abstract class TextureModifierFactory<T extends TextureModifier> {
      * Gets or creates a {@link TextureModifier}.
      * Be careful to not call this on the server, as client only classes may
      * be referenced in the provider.
-     * @return A ColorProvider.
+     * @return A TextureModifier.
      */
     public final T getOrCreateProvider() {
         if (provider == null)
