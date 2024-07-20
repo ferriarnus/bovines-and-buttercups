@@ -69,7 +69,6 @@ public class BovinesDataGen implements DataGeneratorEntrypoint {
         }
 
         @Override
-        @SuppressWarnings("unchecked")
         protected void configure(HolderLookup.Provider registries, Entries entries) {
             BovinesCowTypes.bootstrap(createContext(registries, entries));
         }
