@@ -1,7 +1,7 @@
 import dev.greenhouseteam.bovinesandbuttercups.gradle.Properties
 
 plugins {
-    id("bovinesandbuttercups.common")
+    id("conventions.common")
 }
 
 configurations {

@@ -2,7 +2,7 @@ import dev.greenhouseteam.bovinesandbuttercups.gradle.Properties
 import dev.greenhouseteam.bovinesandbuttercups.gradle.Versions
 
 plugins {
-    id("bovinesandbuttercups.loader")
+    id("conventions.loader")
     id("fabric-loom")
 }
 

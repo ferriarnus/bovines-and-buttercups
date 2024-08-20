@@ -3,7 +3,7 @@ import dev.greenhouseteam.bovinesandbuttercups.gradle.Versions
 import org.apache.tools.ant.filters.LineContains
 
 plugins {
-    id("bovinesandbuttercups.loader")
+    id("conventions.loader")
     id("net.neoforged.moddev")
 }
 

@@ -2,7 +2,7 @@ import dev.greenhouseteam.bovinesandbuttercups.gradle.Properties
 import dev.greenhouseteam.bovinesandbuttercups.gradle.Versions
 
 plugins {
-    id("bovinesandbuttercups.common")
+    id("conventions.common")
     id("net.neoforged.moddev")
 }
 
