@@ -1,15 +1,21 @@
 package net.merchantpug.bovinesandbuttercups;
 
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
+import net.fabricmc.fabric.api.biome.v1.BiomeSelectionContext;
+import net.fabricmc.fabric.api.biome.v1.ModificationPhase;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.fabricmc.fabric.api.networking.v1.EntityTrackingEvents;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import net.fabricmc.fabric.api.registry.CompostingChanceRegistry;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
+import net.merchantpug.bovinesandbuttercups.api.BovinesTags;
 import net.merchantpug.bovinesandbuttercups.api.attachment.CowTypeAttachment;
 import net.merchantpug.bovinesandbuttercups.api.attachment.LockdownAttachment;
 import net.merchantpug.bovinesandbuttercups.client.util.CowTextureReloadListenerFabric;
+import net.merchantpug.bovinesandbuttercups.content.data.configuration.MoobloomConfiguration;
+import net.merchantpug.bovinesandbuttercups.content.data.configuration.MooshroomConfiguration;
 import net.merchantpug.bovinesandbuttercups.content.entity.Moobloom;
 import net.merchantpug.bovinesandbuttercups.network.clientbound.SyncConditionedTextureModifier;
 import net.merchantpug.bovinesandbuttercups.network.clientbound.SyncCowTypeClientboundPacket;
@@ -27,20 +33,32 @@ import net.merchantpug.bovinesandbuttercups.registry.BovinesFabricDynamicRegistr
 import net.merchantpug.bovinesandbuttercups.registry.BovinesItems;
 import net.merchantpug.bovinesandbuttercups.registry.BovinesLootItemConditionTypes;
 import net.merchantpug.bovinesandbuttercups.registry.BovinesParticleTypes;
+import net.merchantpug.bovinesandbuttercups.registry.BovinesRegistries;
+import net.merchantpug.bovinesandbuttercups.registry.BovinesRegistryKeys;
 import net.merchantpug.bovinesandbuttercups.registry.BovinesSoundEvents;
 import net.merchantpug.bovinesandbuttercups.registry.BovinesStructureTypes;
 import net.merchantpug.bovinesandbuttercups.registry.BovinesTextureModificationFactories;
 import net.merchantpug.bovinesandbuttercups.util.CreativeTabHelper;
 import net.minecraft.core.Registry;
+import net.minecraft.core.RegistryAccess;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackType;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.level.biome.Biomes;
+import net.minecraft.world.level.biome.MobSpawnSettings;
+import org.jetbrains.annotations.Nullable;
 
+import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 public class BovinesAndButtercupsFabric implements ModInitializer {
+
+    private static RegistryAccess biomeRegistries;
 
     @Override
     public void onInitialize() {
@@ -61,22 +79,29 @@ public class BovinesAndButtercupsFabric implements ModInitializer {
         registerNetwork();
         registerCreativeTabEntries();
         registerCompostables();
+        registerBiomeModifications();
 
         BovinesFabricDynamicRegistries.init();
 
         FabricDefaultAttributeRegistry.register(BovinesEntityTypes.MOOBLOOM, Moobloom.createAttributes());
+
     }
 
-    public static void registerNetwork() {
+    public static void setBiomeRegistries(@Nullable RegistryAccess registries) {
+        BovinesAndButtercupsFabric.biomeRegistries = registries;
+    }
+
+    private static void registerNetwork() {
         PayloadTypeRegistry.playS2C().register(SyncConditionedTextureModifier.TYPE, SyncConditionedTextureModifier.STREAM_CODEC);
         PayloadTypeRegistry.playS2C().register(SyncCowTypeClientboundPacket.TYPE, SyncCowTypeClientboundPacket.STREAM_CODEC);
         PayloadTypeRegistry.playS2C().register(SyncLockdownEffectsClientboundPacket.TYPE, SyncLockdownEffectsClientboundPacket.STREAM_CODEC);
     }
 
-    public static void registerContents() {
+    private static void registerContents() {
         BovinesBlockEntityTypes.registerAll(Registry::register);
         BovinesBlocks.registerAll(Registry::register);
         BovinesCowTypeTypes.registerAll(Registry::register);
+        BovinesCriteriaTriggers.registerAll(Registry::register);
         BovinesDataComponents.registerAll(Registry::register);
         BovinesEffects.registerAll(Registry::registerForHolder);
         BovinesEntityTypes.registerAll(Registry::register);
@@ -86,7 +111,6 @@ public class BovinesAndButtercupsFabric implements ModInitializer {
         BovinesSoundEvents.registerAll(Registry::register);
         BovinesStructureTypes.registerAll(Registry::register);
         BovinesTextureModificationFactories.registerAll(Registry::register);
-        BovinesCriteriaTriggers.registerAll(Registry::register);
     }
 
     private static void registerCompostables() {
@@ -104,7 +128,7 @@ public class BovinesAndButtercupsFabric implements ModInitializer {
         CompostingChanceRegistry.INSTANCE.add(BovinesItems.CUSTOM_MUSHROOM_BLOCK, 0.85F);
     }
 
-    public static void registerCreativeTabEntries() {
+    private static void registerCreativeTabEntries() {
         ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.NATURAL_BLOCKS).register(entries -> {
             entries.addAfter(Items.SPORE_BLOSSOM, Stream.of(
                     BovinesItems.FREESIA,
@@ -125,5 +149,19 @@ public class BovinesAndButtercupsFabric implements ModInitializer {
         ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.SPAWN_EGGS).register(entries -> {
             entries.accept(BovinesItems.MOOBLOOM_SPAWN_EGG);
         });
+    }
+
+    public static void registerBiomeModifications() {
+        createBiomeModifications(BovinesAndButtercups.asResource("moobloom"),
+                biome -> biomeRegistries.lookupOrThrow(BovinesRegistryKeys.COW_TYPE).listElements().anyMatch(configuredCowType -> configuredCowType.isBound() && configuredCowType.value().type() == BovinesCowTypeTypes.MOOBLOOM_TYPE && configuredCowType.value().configuration() instanceof MoobloomConfiguration moobloomConfiguration && moobloomConfiguration.settings().biomes().stream().anyMatch(wrapper -> wrapper.data().contains(biome.getBiomeRegistryEntry())) && moobloomConfiguration.settings().biomes().stream().anyMatch(wrapper -> wrapper.weight().asInt() > 0)),
+                BovinesEntityTypes.MOOBLOOM, 15, 4, 4);
+        createBiomeModifications(BovinesAndButtercups.asResource("mooshroom"),
+                biome -> biome.getBiomeKey() != Biomes.MUSHROOM_FIELDS && biomeRegistries.lookupOrThrow(BovinesRegistryKeys.COW_TYPE).listElements().anyMatch(configuredCowType -> configuredCowType.isBound() && configuredCowType.value().type() == BovinesCowTypeTypes.MOOSHROOM_TYPE && configuredCowType.value().configuration() instanceof MooshroomConfiguration mooshroomConfiguration && mooshroomConfiguration.settings().biomes().stream().anyMatch(wrapper -> wrapper.data().contains(biome.getBiomeRegistryEntry())) && mooshroomConfiguration.settings().biomes().stream().anyMatch(wrapper -> wrapper.weight().asInt() > 0)),
+                EntityType.MOOSHROOM, 15, 4, 4);
+        BiomeModifications.create(BovinesAndButtercups.asResource("remove_cows")).add(ModificationPhase.REMOVALS, biome -> biome.hasTag(BovinesTags.BiomeTags.PREVENT_COW_SPAWNS), context -> context.getSpawnSettings().removeSpawnsOfEntityType(EntityType.COW));
+    }
+
+    private static void createBiomeModifications(ResourceLocation location, Predicate<BiomeSelectionContext> predicate, EntityType<?> entityType, int weight, int min, int max) {
+        BiomeModifications.create(location).add(ModificationPhase.POST_PROCESSING, predicate, context -> context.getSpawnSettings().addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(entityType, weight, min, max)));
     }
 }

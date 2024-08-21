@@ -10,7 +10,7 @@ plugins {
 neoForge {
     version = Versions.NEOFORGE
     parchment {
-        minecraftVersion = Versions.INTERNAL_MINECRAFT
+        minecraftVersion = Versions.PARCHMENT_MINECRAFT
         mappingsVersion = Versions.PARCHMENT
     }
     addModdingDependenciesTo(sourceSets["test"])

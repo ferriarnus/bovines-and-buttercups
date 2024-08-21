@@ -11,7 +11,7 @@ logoFile="${mod_id}.png"
 logoBlur=false
 updateJSONURL = "https://api.modrinth.com/updates/BDg6nMn3/forge_updates.json"
 authors="${mod_author}"
-credits="${mod_contributors}"
+credits="${neoforge_mod_contributors}"
 description='''
 ${mod_description}
 '''

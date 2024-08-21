@@ -17,7 +17,7 @@ sourceSets {
 neoForge {
     neoFormVersion = Versions.NEOFORM
     parchment {
-        minecraftVersion = Versions.INTERNAL_MINECRAFT
+        minecraftVersion = Versions.PARCHMENT_MINECRAFT
         mappingsVersion = Versions.PARCHMENT
     }
     addModdingDependenciesTo(sourceSets["test"])
