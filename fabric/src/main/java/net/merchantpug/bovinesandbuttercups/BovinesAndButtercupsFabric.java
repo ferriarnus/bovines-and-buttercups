@@ -58,8 +58,6 @@ public class BovinesAndButtercupsFabric implements ModInitializer {
 
     @Override
     public void onInitialize() {
-        BovinesAndButtercups.init(new BovinesPlatformHelperFabric());
-
         EntityTrackingEvents.START_TRACKING.register((entity, world) -> {
             if (entity instanceof LivingEntity living) {
                 if (entity.hasAttached(BovinesAttachments.LOCKDOWN))

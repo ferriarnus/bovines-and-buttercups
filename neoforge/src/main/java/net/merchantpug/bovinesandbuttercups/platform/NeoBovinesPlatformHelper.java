@@ -19,8 +19,6 @@ import java.util.Map;
 
 public class NeoBovinesPlatformHelper implements BovinesPlatformHelper {
 
-    private static final NeoBovinesRegistryHelper REGISTRY = new NeoBovinesRegistryHelper();
-
     @Override
     public BovinesPlatform getPlatform() {
         return BovinesPlatform.NEOFORGE;
@@ -46,10 +44,6 @@ public class NeoBovinesPlatformHelper implements BovinesPlatformHelper {
     @Override
     public Map<Block, Block> getPottedBlockMap() {
         return PottedBlockMapUtil.getPottedContentMap();
-    }
-
-    public BovinesRegistryHelper getRegistryHelper() {
-        return REGISTRY;
     }
 
     @Override

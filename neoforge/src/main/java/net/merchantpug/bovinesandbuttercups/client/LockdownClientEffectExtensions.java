@@ -17,6 +17,10 @@ import java.util.List;
 import java.util.Map;
 
 public class LockdownClientEffectExtensions implements IClientMobEffectExtensions {
+    public static final LockdownClientEffectExtensions INSTANCE = new LockdownClientEffectExtensions();
+
+    protected LockdownClientEffectExtensions() {}
+
     @Override
     public boolean renderInventoryIcon(MobEffectInstance instance, EffectRenderingInventoryScreen<?> screen, GuiGraphics guiGraphics, int x, int y, int blitOffset) {
         List<Map.Entry<Holder<MobEffect>, Integer>> list = Minecraft.getInstance().player.getData(BovinesAttachments.LOCKDOWN).effects().entrySet().stream().toList();

@@ -28,8 +28,6 @@ public interface BovinesPlatformHelper {
 
     Map<Block, Block> getPottedBlockMap();
 
-    BovinesRegistryHelper getRegistryHelper();
-
     LockdownAttachment getLockdownAttachment(LivingEntity entity);
 
     CowTypeAttachment getCowTypeAttachment(LivingEntity entity);

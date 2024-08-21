@@ -22,6 +22,9 @@
         "main": [
             "net.merchantpug.bovinesandbuttercups.BovinesAndButtercupsFabric"
         ],
+        "preLaunch": [
+            "net.merchantpug.bovinesandbuttercups.BovinesAndButtercupsFabricPre"
+        ],
         "client": [
             "net.merchantpug.bovinesandbuttercups.client.BovinesAndButtercupsFabricClient"
         ],

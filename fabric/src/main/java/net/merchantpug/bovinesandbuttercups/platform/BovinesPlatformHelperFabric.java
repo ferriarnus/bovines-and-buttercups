@@ -20,8 +20,6 @@ import java.util.Map;
 
 public class BovinesPlatformHelperFabric implements BovinesPlatformHelper {
 
-    private static final BovinesRegistryHelperFabric REGISTRY = new BovinesRegistryHelperFabric();
-
     @Override
     public BovinesPlatform getPlatform() {
         return BovinesPlatform.FABRIC;
@@ -47,11 +45,6 @@ public class BovinesPlatformHelperFabric implements BovinesPlatformHelper {
     @Override
     public Map<Block, Block> getPottedBlockMap() {
         return FlowerPotBlock.POTTED_BY_CONTENT;
-    }
-
-    @Override
-    public BovinesRegistryHelper getRegistryHelper() {
-        return REGISTRY;
     }
 
     @Override

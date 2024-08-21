@@ -16,10 +16,13 @@ import net.merchantpug.bovinesandbuttercups.client.bovinestate.BovineBlockstateT
 import net.merchantpug.bovinesandbuttercups.client.util.BovineStateModelUtil;
 import net.merchantpug.bovinesandbuttercups.client.util.CowTextureReloadListener;
 import net.merchantpug.bovinesandbuttercups.registry.BovinesBlockEntityTypes;
+import net.merchantpug.bovinesandbuttercups.registry.BovinesEffects;
 import net.merchantpug.bovinesandbuttercups.registry.BovinesEntityTypes;
+import net.merchantpug.bovinesandbuttercups.registry.BovinesItems;
 import net.merchantpug.bovinesandbuttercups.registry.BovinesParticleTypes;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.CowModel;
+import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.resources.model.BlockModelRotation;
 import net.minecraft.client.resources.model.ModelResourceLocation;
@@ -35,12 +38,14 @@ import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.client.event.ModelEvent;
 import net.neoforged.neoforge.client.event.RegisterClientReloadListenersEvent;
 import net.neoforged.neoforge.client.event.RegisterParticleProvidersEvent;
+import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
+import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
 
 import java.util.List;
 
 @Mod(value = BovinesAndButtercups.MOD_ID, dist = Dist.CLIENT)
-public class BovinesAndButtercupsNeoClient {
-    public BovinesAndButtercupsNeoClient(IEventBus eventBus) {
+public class BovinesAndButtercupsNeoForgeClient {
+    public BovinesAndButtercupsNeoForgeClient(IEventBus eventBus) {
         BovinesAndButtercupsClient.init(new BovinesClientHelperNeo());
         BovinesAndButtercupsClient.registerCowTexturePaths();
     }
@@ -55,6 +60,17 @@ public class BovinesAndButtercupsNeoClient {
         @SubscribeEvent
         public static void registerClientReloadListeners(RegisterClientReloadListenersEvent event) {
             event.registerReloadListener(new CowTextureReloadListener());
+        }
+
+        @SubscribeEvent
+        public static void registerClientExtensions(RegisterClientExtensionsEvent event) {
+            event.registerMobEffect(LockdownClientEffectExtensions.INSTANCE, BovinesEffects.LOCKDOWN);
+
+
+            event.registerItem(BovinesBEWLR.ITEM_EXTENSIONS, BovinesItems.CUSTOM_FLOWER);
+            event.registerItem(BovinesBEWLR.ITEM_EXTENSIONS, BovinesItems.CUSTOM_MUSHROOM);
+            event.registerItem(BovinesBEWLR.ITEM_EXTENSIONS, BovinesItems.CUSTOM_MUSHROOM_BLOCK);
+            event.registerItem(BovinesBEWLR.ITEM_EXTENSIONS, BovinesItems.NECTAR_BOWL);
         }
 
         @SubscribeEvent
