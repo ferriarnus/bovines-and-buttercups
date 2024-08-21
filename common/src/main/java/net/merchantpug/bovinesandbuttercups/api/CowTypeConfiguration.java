@@ -18,6 +18,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.random.WeightedEntry;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.biome.Biome;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Optional;
@@ -31,6 +32,14 @@ public interface CowTypeConfiguration {
 
     default List<CowModelLayer> layers() {
         return List.of();
+    }
+
+    /**
+     * @return The settings of the cow type, null if not set.
+     */
+    @Nullable
+    default Settings settings() {
+        return null;
     }
 
     /**

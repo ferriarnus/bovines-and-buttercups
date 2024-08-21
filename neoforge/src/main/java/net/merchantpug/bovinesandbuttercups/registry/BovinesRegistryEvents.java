@@ -20,6 +20,7 @@ public class BovinesRegistryEvents {
     @SubscribeEvent
     public static void registerContent(RegisterEvent event) {
         register(event, BovinesAttachments::registerAll);
+        register(event, BovinesBiomeModifierSerializers::registerAll);
         register(event, BovinesBlockEntityTypes::registerAll);
         register(event, BovinesBlocks::registerAll);
         register(event, BovinesCowTypeTypes::registerAll);

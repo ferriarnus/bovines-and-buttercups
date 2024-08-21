@@ -1,6 +1,7 @@
 package net.merchantpug.bovinesandbuttercups.mixin.fabric;
 
 import com.mojang.datafixers.DataFixer;
+import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
 import net.merchantpug.bovinesandbuttercups.BovinesAndButtercupsFabric;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.server.MinecraftServer;
@@ -30,6 +31,6 @@ public abstract class MinecraftServerMixin {
 
     @Inject(method = "<init>", at = @At("RETURN"), order = 1500)
     private void bovinesandbuttercups$resetRegistryAccess(Thread thread, LevelStorageSource.LevelStorageAccess levelStorageAccess, PackRepository packRepository, WorldStem worldStem, Proxy proxy, DataFixer dataFixer, Services services, ChunkProgressListenerFactory chunkProgressListenerFactory, CallbackInfo ci) {
-        BovinesAndButtercupsFabric.setBiomeRegistries(registryAccess());
+        BovinesAndButtercupsFabric.setBiomeRegistries(null);
     }
 }

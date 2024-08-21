@@ -29,7 +29,6 @@ import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.levelgen.Heightmap;
-import net.minecraft.world.level.levelgen.placement.HeightmapPlacement;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -39,19 +38,17 @@ import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
 import net.neoforged.neoforge.event.entity.RegisterSpawnPlacementsEvent;
 import net.neoforged.neoforge.event.entity.living.MobEffectEvent;
-import net.neoforged.neoforge.event.entity.living.MobSpawnEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.tick.EntityTickEvent;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 
 import java.util.HashMap;
-import java.util.Map;
 import java.util.Optional;
 
 @Mod(BovinesAndButtercups.MOD_ID)
-public class BovinesAndButtercupsNeo {
+public class BovinesAndButtercupsNeoForge {
     
-    public BovinesAndButtercupsNeo(IEventBus eventBus) {
+    public BovinesAndButtercupsNeoForge(IEventBus eventBus) {
         BovinesAndButtercups.init(new NeoBovinesPlatformHelper());
     }
 
