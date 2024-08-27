@@ -8,12 +8,14 @@ import net.fabricmc.fabric.api.datagen.v1.provider.FabricBlockLootTableProvider;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricDynamicRegistryProvider;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
 import net.fabricmc.fabric.api.datagen.v1.provider.SimpleFabricLootTableProvider;
+import net.fabricmc.fabric.api.tag.convention.v2.ConventionalBiomeTags;
 import net.merchantpug.bovinesandbuttercups.api.BovinesTags;
 import net.merchantpug.bovinesandbuttercups.registry.BovinesBlocks;
 import net.merchantpug.bovinesandbuttercups.registry.BovinesCowTypes;
 import net.merchantpug.bovinesandbuttercups.registry.BovinesItems;
 import net.merchantpug.bovinesandbuttercups.registry.BovinesLootTables;
 import net.merchantpug.bovinesandbuttercups.registry.BovinesRegistryKeys;
+import net.merchantpug.bovinesandbuttercups.registry.BovinesStructures;
 import net.minecraft.advancements.critereon.EntityFlagsPredicate;
 import net.minecraft.advancements.critereon.EntityPredicate;
 import net.minecraft.core.Holder;
@@ -23,11 +25,15 @@ import net.minecraft.core.Registry;
 import net.minecraft.core.RegistrySetBuilder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
+import net.minecraft.data.worldgen.features.CaveFeatures;
+import net.minecraft.data.worldgen.features.VegetationFeatures;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
+import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
@@ -54,6 +60,7 @@ public class BovinesDataGen implements DataGeneratorEntrypoint {
         pack.addProvider(EntityLootTableProvider::new);
         pack.addProvider(BiomeTagProvider::new);
         pack.addProvider(BlockTagProvider::new);
+        pack.addProvider(ConfiguredFeatureTagProvider::new);
         pack.addProvider(ItemTagProvider::new);
     }
 
@@ -123,7 +130,6 @@ public class BovinesDataGen implements DataGeneratorEntrypoint {
         }
 
     }
-
 
     private static class ChestLootTableProvider extends SimpleFabricLootTableProvider {
 
@@ -213,8 +219,25 @@ public class BovinesDataGen implements DataGeneratorEntrypoint {
 
         @Override
         protected void addTags(HolderLookup.Provider wrapperLookup) {
-            tag(BovinesTags.BiomeTags.HAS_MOOBLOOM_FLOWER_FOREST)
-                    .add(Biomes.FLOWER_FOREST);
+            ((FabricTagBuilder)tag(BovinesTags.BiomeTags.HAS_RANCH_STRUCTURE_BIRD_OF_PARADISE))
+                    .forceAddTag(ConventionalBiomeTags.IS_SAVANNA);
+            ((FabricTagBuilder)tag(BovinesTags.BiomeTags.HAS_RANCH_STRUCTURE_BUTTERCUP))
+                    .forceAddTag(ConventionalBiomeTags.IS_FLOWER_FOREST);
+            ((FabricTagBuilder)tag(BovinesTags.BiomeTags.HAS_RANCH_STRUCTURE_FREESIA))
+                    .add(Biomes.MANGROVE_SWAMP);
+            ((FabricTagBuilder)tag(BovinesTags.BiomeTags.HAS_RANCH_STRUCTURE_HYACINTH))
+                    .add(Biomes.DARK_FOREST);
+            ((FabricTagBuilder)tag(BovinesTags.BiomeTags.HAS_RANCH_STRUCTURE_LIMELIGHT))
+                    .add(Biomes.LUSH_CAVES);
+            ((FabricTagBuilder)tag(BovinesTags.BiomeTags.HAS_RANCH_STRUCTURE_PINK_DAISY))
+                    .forceAddTag(ConventionalBiomeTags.IS_FLOWER_FOREST);
+            ((FabricTagBuilder)tag(BovinesTags.BiomeTags.HAS_RANCH_STRUCTURE_SNOWDROP))
+                    .add(Biomes.SNOWY_TAIGA);
+            ((FabricTagBuilder)tag(BovinesTags.BiomeTags.HAS_RANCH_STRUCTURE_TROPICAL_BLUE))
+                    .forceAddTag(ConventionalBiomeTags.IS_JUNGLE);
+
+            ((FabricTagBuilder)tag(BovinesTags.BiomeTags.HAS_MOOBLOOM_FLOWER_FOREST))
+                    .forceAddTag(ConventionalBiomeTags.IS_FLOWER_FOREST);
             tag(BovinesTags.BiomeTags.PREVENT_COW_SPAWNS)
                     .addTag(BovinesTags.BiomeTags.HAS_MOOBLOOM_FLOWER_FOREST);
         }
@@ -244,6 +267,23 @@ public class BovinesDataGen implements DataGeneratorEntrypoint {
                     .add(
                             reverseLookup(Blocks.SNOW_BLOCK)
                     );
+        }
+    }
+
+    private static class ConfiguredFeatureTagProvider extends FabricTagProvider<ConfiguredFeature<?, ?>> {
+        public ConfiguredFeatureTagProvider(FabricDataOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
+            super(output, Registries.CONFIGURED_FEATURE, registriesFuture);
+        }
+
+        @Override
+        protected void addTags(HolderLookup.Provider wrapperLookup) {
+            tag(BovinesTags.ConfiguredFeatureTags.RANCH_ALLOWED)
+                    .add(CaveFeatures.GLOW_LICHEN)
+                    .add(VegetationFeatures.SINGLE_PIECE_OF_GRASS)
+                    .add(VegetationFeatures.PATCH_GRASS)
+                    .add(VegetationFeatures.PATCH_GRASS_JUNGLE)
+                    .add(VegetationFeatures.PATCH_TAIGA_GRASS)
+                    .add(VegetationFeatures.PATCH_TALL_GRASS);
         }
     }
 

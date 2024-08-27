@@ -42,10 +42,10 @@ public class RanchStructure extends JigsawStructure {
             Heightmap.Types.CODEC.optionalFieldOf("project_start_to_heightmap").forGetter(RanchStructure::getProjectStartToHeightmap),
             Codec.intRange(1, 128).fieldOf("max_distance_from_center").forGetter(RanchStructure::getMaxDistanceFromCenter),
             Codec.list(PoolAliasBinding.CODEC).optionalFieldOf("pool_aliases", List.of()).forGetter(RanchStructure::getPoolAliases),
-            RegistryCodecs.homogeneousList(Registries.CONFIGURED_FEATURE).optionalFieldOf("allowed_features").forGetter(RanchStructure::getAllowedFeatures),
-            Codec.BOOL.optionalFieldOf("generate_in_fluids", true).forGetter(RanchStructure::isAbleToGenerateInFluids),
             DimensionPadding.CODEC.optionalFieldOf("dimension_padding", DEFAULT_DIMENSION_PADDING).forGetter(RanchStructure::getDimensionPadding),
-            LiquidSettings.CODEC.optionalFieldOf("liquid_settings", DEFAULT_LIQUID_SETTINGS).forGetter(RanchStructure::getLiquidSettings)
+            LiquidSettings.CODEC.optionalFieldOf("liquid_settings", DEFAULT_LIQUID_SETTINGS).forGetter(RanchStructure::getLiquidSettings),
+            RegistryCodecs.homogeneousList(Registries.CONFIGURED_FEATURE).optionalFieldOf("allowed_features").forGetter(RanchStructure::getAllowedFeatures),
+            Codec.BOOL.optionalFieldOf("generate_in_fluids", true).forGetter(RanchStructure::isAbleToGenerateInFluids)
     ).apply(builder, RanchStructure::new)).flatXmap(verifyRange(), verifyRange());
 
     private final Optional<HolderSet<ConfiguredFeature<?, ?>>> allowedFeatures;
@@ -63,7 +63,7 @@ public class RanchStructure extends JigsawStructure {
         };
     }
 
-    public RanchStructure(StructureSettings settings, Holder<StructureTemplatePool> startPool, Optional<ResourceLocation> startJigsawName, int maxDepth, HeightProvider startHeight, boolean usesExpansionHack, Optional<Heightmap.Types> projectStartToHeightmap, int maxDistanceFromCenter, List<PoolAliasBinding> poolAliasBindings, Optional<HolderSet<ConfiguredFeature<?, ?>>> allowedFeatures, boolean generateInFluids, DimensionPadding dimensionPadding, LiquidSettings liquidSettings) {
+    public RanchStructure(StructureSettings settings, Holder<StructureTemplatePool> startPool, Optional<ResourceLocation> startJigsawName, int maxDepth, HeightProvider startHeight, boolean usesExpansionHack, Optional<Heightmap.Types> projectStartToHeightmap, int maxDistanceFromCenter, List<PoolAliasBinding> poolAliasBindings, DimensionPadding dimensionPadding, LiquidSettings liquidSettings, Optional<HolderSet<ConfiguredFeature<?, ?>>> allowedFeatures, boolean generateInFluids) {
         super(settings, startPool, startJigsawName, maxDepth, startHeight, usesExpansionHack, projectStartToHeightmap, maxDistanceFromCenter, poolAliasBindings, dimensionPadding, liquidSettings);
         this.generateInFluids = generateInFluids;
         this.allowedFeatures = allowedFeatures;

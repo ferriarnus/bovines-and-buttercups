@@ -17,6 +17,8 @@
   - A side effect of this means that you can no longer reload the registry through `/reload`.
   - This change has been made to better implement Bovines with vanilla systems.
 - Configured Cow Types have been renamed to Cow Types, and now go inside the `data/<namespace>/bovinesandbuttercups/cow_type` directory.
+- The Buttercup and Pink Daisy spawning biome tag is now `bovinesandbuttercups:has_moobloom/flower_forest`, instead of `bovinesandbuttercups:has_mooblooms`.
+- Swapped Ranch Structure and spawning biome tags to use `c` tags where appropriate.
 - `back_grass` has been changed to `layers`. Layers are a more powerful system that allows you to overlay textures on top of Mooblooms.
   - Contains two fields. `texture_location` and `texture_modifications`.
   - Texture Modifications are a new registry that allows you to modify textures in certain ways.
