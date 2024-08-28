@@ -40,7 +40,7 @@ public record CowTypeAttachment(Holder<CowType<?>> cowType, Optional<Holder<CowT
     @Nullable
     public static <C extends CowTypeConfiguration, T extends CowTypeType<C>> Holder<CowType<C>> getCowTypeHolderFromEntity(LivingEntity living, T cowType) {
         Holder<CowType<?>> type = BovinesAndButtercups.getHelper().getCowTypeAttachment(living).cowType();
-        if (type.isBound() && type.value().type() == cowType) {
+        if (type != null && type.isBound() && type.value().type() == cowType) {
             return (Holder)type;
         }
         return null;
