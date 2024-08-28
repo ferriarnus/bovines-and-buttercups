@@ -8,6 +8,9 @@
 - Fixed offspring particles having an incorrect origin point.
 
 ## Miscellaneous Changes
+- Swapped Buttercup and Pink Daisy Moobloom Ranch structures to have their respective Mooblooms instead of the opposite one.
+  - This was done for slightly more cohesion with these structures.
+  - You can still figure out that the breeding blocks are a thing, just look for the particles.
 - Limelight Moobloom are now bred with Cave Vines (Glow Berry Vines) instead of Moss and Moss Carpets.
 - Pink Daisy Moobloom now have Pink Petals and Cherry Wood as respective options for breeding.
 - Nectar Bowls will now return bowls when used in crafting.
