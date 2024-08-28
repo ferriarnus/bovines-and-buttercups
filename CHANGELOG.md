@@ -2,7 +2,7 @@
 2.0.0 is a total rewrite of the mod, both content-wise and datapacking-wise.
 
 ## Main Features
-- Re-textured every flower and moobloom within the mod to give them a more modern appearance.
+- Re-textured every flower and moobloom within the mod to give them a more modern appearance, as well as making them referential to non holstein cattle.
 
 ## Bugfixes
 - Fixed offspring particles having an incorrect origin point.
