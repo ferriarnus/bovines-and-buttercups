@@ -1,5 +1,6 @@
 package net.merchantpug.bovinesandbuttercups.datagen;
 
+import com.mojang.datafixers.kinds.Const;
 import com.mojang.serialization.Lifecycle;
 import net.fabricmc.fabric.api.datagen.v1.DataGeneratorEntrypoint;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
@@ -144,7 +145,7 @@ public class BovinesDataGen implements DataGeneratorEntrypoint {
         public void generate(BiConsumer<ResourceKey<LootTable>, LootTable.Builder> biConsumer) {
             biConsumer.accept(BovinesLootTables.RANCH, LootTable.lootTable()
                     .withPool(LootPool.lootPool()
-                            .setRolls(ConstantValue.exactly(1.0F))
+                            .setRolls(ConstantValue.exactly(2.0F))
                             .add(LootItem.lootTableItem(Blocks.SHORT_GRASS)
                                     .apply(SetItemCountFunction.setCount(UniformGenerator.between(3.0F, 5.0F)))
                                     .setWeight(2))
@@ -174,9 +175,10 @@ public class BovinesDataGen implements DataGeneratorEntrypoint {
                             .add(LootItem.lootTableItem(Items.COMPOSTER)
                                     .setWeight(1))
                             .add(LootItem.lootTableItem(Items.SMOKER)
-                                    .setWeight(1))
-                            .add(LootItem.lootTableItem(Items.SADDLE)
                                     .setWeight(1)))
+                    .withPool(LootPool.lootPool()
+                            .setRolls(ConstantValue.exactly(1.0F))
+                            .add(LootItem.lootTableItem(Items.SADDLE)))
                     .withPool(LootPool.lootPool()
                             .setRolls(ConstantValue.exactly(1.0F))
                             .add(LootItem.lootTableItem(Items.BOWL)

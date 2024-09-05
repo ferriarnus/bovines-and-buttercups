@@ -83,7 +83,7 @@
           "name": "minecraft:pumpkin_seeds"
         }
       ],
-      "rolls": 1.0
+      "rolls": 2.0
     },
     {
       "bonus_rolls": 1.0,
@@ -115,13 +115,19 @@
         {
           "type": "minecraft:item",
           "name": "minecraft:smoker"
-        },
+        }
+      ],
+      "rolls": 2.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
         {
           "type": "minecraft:item",
           "name": "minecraft:saddle"
         }
       ],
-      "rolls": 2.0
+      "rolls": 1.0
     },
     {
       "bonus_rolls": 0.0,

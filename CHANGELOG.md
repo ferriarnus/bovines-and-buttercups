@@ -11,6 +11,7 @@
 - Fixed offspring particles having an incorrect origin point.
 
 ## Miscellaneous Changes
+- Tweaked Ranch Loot Table to always include a Saddle, and to roll for seeds/crops twice.
 - Swapped Buttercup and Pink Daisy Moobloom Ranch structures to have their respective Mooblooms instead of the opposite one.
   - This was done for slightly more cohesion with these structures.
   - You can still figure out that the breeding blocks are a thing, just look for the particles.
