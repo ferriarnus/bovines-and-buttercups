@@ -227,7 +227,6 @@ public class BovinesDataGen implements DataGeneratorEntrypoint {
             ((FabricTagBuilder)tag(BovinesTags.BiomeTags.HAS_RANCH_STRUCTURE_BUTTERCUP))
                     .forceAddTag(ConventionalBiomeTags.IS_FLOWER_FOREST);
             ((FabricTagBuilder)tag(BovinesTags.BiomeTags.HAS_RANCH_STRUCTURE_CHARGELILY))
-                    .add(Biomes.JAGGED_PEAKS)
                     .add(Biomes.STONY_PEAKS);
             ((FabricTagBuilder)tag(BovinesTags.BiomeTags.HAS_RANCH_STRUCTURE_FREESIA))
                     .add(Biomes.MANGROVE_SWAMP);
