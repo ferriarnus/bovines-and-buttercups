@@ -17,7 +17,7 @@ public class BovinesCodecs {
             Codec.DOUBLE.optionalFieldOf("max_z", 0.0).forGetter(aabb -> aabb.maxZ)
     ).apply(inst, AABB::new));
 
-    public static <T> Codec<WeightedEntry.Wrapper<T>> wrapperCodec(Codec<T> codec, String fieldName) {
+    public static <T> Codec<WeightedEntry.Wrapper<T>> weightedEntryCodec(Codec<T> codec, String fieldName) {
         Codec<WeightedEntry.Wrapper<T>> direct = RecordCodecBuilder.create(inst -> inst.group(
                 codec.fieldOf(fieldName).forGetter(WeightedEntry.Wrapper::data),
                 Weight.CODEC.optionalFieldOf("weight", Weight.of(1)).forGetter(WeightedEntry.Wrapper::weight)

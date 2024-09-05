@@ -49,7 +49,7 @@
     "commands.effect.lockdown.failed": "Kitli etkisi için Kitli etkisi uygulanamıyor",
   
     "tag.bovinesandbuttercups.moobloom_flowers": "Moobloom Çiçekleri",
-    "configured_cow_type.bovinesandbuttercups.missing_moobloom.name": "Bilinmeyen",
+    "cow_type.bovinesandbuttercups.missing_moobloom.name": "Bilinmeyen",
   
     "resourcePack.bovinesandbuttercups.mojang.name": "Mojang Dokuları",
     "resourcePack.bovinesandbuttercups.mojang.description": "Moobloomları orijinal dokularına döndürür.",

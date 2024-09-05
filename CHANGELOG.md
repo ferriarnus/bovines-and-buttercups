@@ -2,7 +2,10 @@
 2.0.0 is a total rewrite of the mod, both content-wise and datapacking-wise.
 
 ## Main Features
+- Added a new Moobloom, the Lingholm Moobloom, a cyan flower themed after non-snowy Taiga biomes.
 - Re-textured every flower and moobloom within the mod to give them a more modern appearance, as well as making them referential to non holstein cattle.
+- Added Chargelily Ranch, to guide players that you may wish to strike a Moobloom with lightning.
+  - Spawns within stony mountainous biomes.
 
 ## Bugfixes
 - Fixed offspring particles having an incorrect origin point.

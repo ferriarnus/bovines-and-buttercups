@@ -25,6 +25,7 @@ public class BovinesBlocks {
     public static final FlowerBlock SNOWDROP = new FlowerBlock(MobEffects.MOVEMENT_SLOWDOWN, 5, BlockBehaviour.Properties.of().noCollission().randomTicks().instabreak().sound(SoundType.GRASS).offsetType(BlockBehaviour.OffsetType.XZ));
     public static final FlowerBlock TROPICAL_BLUE = new FlowerBlock(MobEffects.FIRE_RESISTANCE, 4, BlockBehaviour.Properties.of().noCollission().randomTicks().instabreak().sound(SoundType.GRASS).offsetType(BlockBehaviour.OffsetType.XZ));
     public static final FlowerBlock FREESIA = new FlowerBlock(MobEffects.WATER_BREATHING, 8, BlockBehaviour.Properties.of().noCollission().randomTicks().instabreak().sound(SoundType.GRASS).offsetType(BlockBehaviour.OffsetType.XZ));
+    public static final FlowerBlock LINGHOLM = new FlowerBlock(MobEffects.MOVEMENT_SPEED, 4, BlockBehaviour.Properties.of().noCollission().randomTicks().instabreak().sound(SoundType.GRASS).offsetType(BlockBehaviour.OffsetType.XZ));
 
     public static final FlowerPotBlock POTTED_BUTTERCUP = new FlowerPotBlock(BUTTERCUP, BlockBehaviour.Properties.of().instabreak().noOcclusion());
     public static final FlowerPotBlock POTTED_PINK_DAISY = new FlowerPotBlock(PINK_DAISY, BlockBehaviour.Properties.of().instabreak().noOcclusion());
@@ -35,6 +36,7 @@ public class BovinesBlocks {
     public static final FlowerPotBlock POTTED_SNOWDROP = new FlowerPotBlock(SNOWDROP, BlockBehaviour.Properties.of().instabreak().noOcclusion());
     public static final FlowerPotBlock POTTED_TROPICAL_BLUE = new FlowerPotBlock(TROPICAL_BLUE, BlockBehaviour.Properties.of().instabreak().noOcclusion());
     public static final FlowerPotBlock POTTED_FREESIA = new FlowerPotBlock(FREESIA, BlockBehaviour.Properties.of().instabreak().noOcclusion());
+    public static final FlowerPotBlock POTTED_LINGHOLM = new FlowerPotBlock(LINGHOLM, BlockBehaviour.Properties.of().instabreak().noOcclusion());
 
 
     public static final CustomFlowerBlock CUSTOM_FLOWER = new CustomFlowerBlock(BlockBehaviour.Properties.of().noCollission().instabreak().sound(SoundType.GRASS).offsetType(BlockBehaviour.OffsetType.XZ));
@@ -54,6 +56,7 @@ public class BovinesBlocks {
         callback.register(BuiltInRegistries.BLOCK, BovinesAndButtercups.asResource("snowdrop"), SNOWDROP);
         callback.register(BuiltInRegistries.BLOCK, BovinesAndButtercups.asResource("tropical_blue"), TROPICAL_BLUE);
         callback.register(BuiltInRegistries.BLOCK, BovinesAndButtercups.asResource("freesia"), FREESIA);
+        callback.register(BuiltInRegistries.BLOCK, BovinesAndButtercups.asResource("lingholm"), LINGHOLM);
 
         callback.register(BuiltInRegistries.BLOCK, BovinesAndButtercups.asResource("potted_buttercup"), POTTED_BUTTERCUP);
         callback.register(BuiltInRegistries.BLOCK, BovinesAndButtercups.asResource("potted_pink_daisy"), POTTED_PINK_DAISY);
@@ -64,6 +67,7 @@ public class BovinesBlocks {
         callback.register(BuiltInRegistries.BLOCK, BovinesAndButtercups.asResource("potted_snowdrop"), POTTED_SNOWDROP);
         callback.register(BuiltInRegistries.BLOCK, BovinesAndButtercups.asResource("potted_tropical_blue"), POTTED_TROPICAL_BLUE);
         callback.register(BuiltInRegistries.BLOCK, BovinesAndButtercups.asResource("potted_freesia"), POTTED_FREESIA);
+        callback.register(BuiltInRegistries.BLOCK, BovinesAndButtercups.asResource("potted_lingholm"), POTTED_LINGHOLM);
 
         callback.register(BuiltInRegistries.BLOCK, BovinesAndButtercups.asResource("custom_flower"), CUSTOM_FLOWER);
         callback.register(BuiltInRegistries.BLOCK, BovinesAndButtercups.asResource("potted_custom_flower"), POTTED_CUSTOM_FLOWER);

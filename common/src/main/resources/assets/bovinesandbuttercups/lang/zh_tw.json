@@ -49,14 +49,12 @@
   "commands.effect.lockdown.failed": "無法為其使用封鎖",
 
   "tag.bovinesandbuttercups.moobloom_flowers": "哞花之花",
-  "configured_cow_type.bovinesandbuttercups.missing_moobloom.name": "未知",
+  "cow_type.bovinesandbuttercups.missing_moobloom.name": "未知",
 
   "resourcePack.bovinesandbuttercups.mojang.name": "Mojang 紋理",
   "resourcePack.bovinesandbuttercups.mojang.description": "將哞花恢復為官方材質。",
   "resourcePack.bovinesandbuttercups.noGrass.name": "沒有草",
   "resourcePack.bovinesandbuttercups.noGrass.description": "修剪哞花背上的草和菌絲體。",
   "resourcePack.bovinesandbuttercups.noBuds.name": "沒有花蕾",
-  "resourcePack.bovinesandbuttercups.noBuds.description": "將所有幼牛哞花的花蕾設置為花朵。",
-
-  "bovinesandbuttercups.itemGroup.items": "Bovines and Buttercups"
+  "resourcePack.bovinesandbuttercups.noBuds.description": "將所有幼牛哞花的花蕾設置為花朵。"
 }

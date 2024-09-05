@@ -31,7 +31,7 @@ public record ItemMoobloomType(Holder<CowType<?>> cowType) implements TooltipPro
                 ResourceLocation location = configuration.flower().customType().get().unwrapKey().orElseThrow().location();
                 component.accept(Component.translatable("block." + location.getNamespace() + "." + location.getPath()).withStyle(ChatFormatting.BLUE));
             } else {
-                component.accept(Component.translatable("configured_cow_type." + cowType.unwrapKey().orElseThrow().location().getNamespace() + "." + cowType.unwrapKey().orElseThrow().location().getPath() + ".name").withStyle(ChatFormatting.BLUE));
+                component.accept(Component.translatable("cow_type." + cowType.unwrapKey().orElseThrow().location().getNamespace() + "." + cowType.unwrapKey().orElseThrow().location().getPath() + ".name").withStyle(ChatFormatting.BLUE));
             }
         }
     }

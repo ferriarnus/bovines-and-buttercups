@@ -28,6 +28,7 @@ import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.data.worldgen.features.CaveFeatures;
 import net.minecraft.data.worldgen.features.VegetationFeatures;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.tags.BiomeTags;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.Biomes;
@@ -114,6 +115,7 @@ public class BovinesDataGen implements DataGeneratorEntrypoint {
             this.dropSelf(BovinesBlocks.FREESIA);
             this.dropSelf(BovinesBlocks.HYACINTH);
             this.dropSelf(BovinesBlocks.LIMELIGHT);
+            this.dropSelf(BovinesBlocks.LINGHOLM);
             this.dropSelf(BovinesBlocks.PINK_DAISY);
             this.dropSelf(BovinesBlocks.SNOWDROP);
             this.dropSelf(BovinesBlocks.TROPICAL_BLUE);
@@ -124,6 +126,7 @@ public class BovinesDataGen implements DataGeneratorEntrypoint {
             this.dropOther(BovinesBlocks.POTTED_FREESIA, BovinesBlocks.FREESIA);
             this.dropOther(BovinesBlocks.POTTED_HYACINTH, BovinesBlocks.HYACINTH);
             this.dropOther(BovinesBlocks.POTTED_LIMELIGHT, BovinesBlocks.LIMELIGHT);
+            this.dropOther(BovinesBlocks.POTTED_LINGHOLM, BovinesBlocks.LINGHOLM);
             this.dropOther(BovinesBlocks.POTTED_PINK_DAISY, BovinesBlocks.PINK_DAISY);
             this.dropOther(BovinesBlocks.POTTED_SNOWDROP, BovinesBlocks.SNOWDROP);
             this.dropOther(BovinesBlocks.POTTED_TROPICAL_BLUE, BovinesBlocks.TROPICAL_BLUE);
@@ -223,12 +226,17 @@ public class BovinesDataGen implements DataGeneratorEntrypoint {
                     .forceAddTag(ConventionalBiomeTags.IS_SAVANNA);
             ((FabricTagBuilder)tag(BovinesTags.BiomeTags.HAS_RANCH_STRUCTURE_BUTTERCUP))
                     .forceAddTag(ConventionalBiomeTags.IS_FLOWER_FOREST);
+            ((FabricTagBuilder)tag(BovinesTags.BiomeTags.HAS_RANCH_STRUCTURE_CHARGELILY))
+                    .add(Biomes.JAGGED_PEAKS)
+                    .add(Biomes.STONY_PEAKS);
             ((FabricTagBuilder)tag(BovinesTags.BiomeTags.HAS_RANCH_STRUCTURE_FREESIA))
                     .add(Biomes.MANGROVE_SWAMP);
             ((FabricTagBuilder)tag(BovinesTags.BiomeTags.HAS_RANCH_STRUCTURE_HYACINTH))
                     .add(Biomes.DARK_FOREST);
             ((FabricTagBuilder)tag(BovinesTags.BiomeTags.HAS_RANCH_STRUCTURE_LIMELIGHT))
                     .add(Biomes.LUSH_CAVES);
+            ((FabricTagBuilder)tag(BovinesTags.BiomeTags.HAS_RANCH_STRUCTURE_LINGHOLM))
+                    .add(Biomes.TAIGA);
             ((FabricTagBuilder)tag(BovinesTags.BiomeTags.HAS_RANCH_STRUCTURE_PINK_DAISY))
                     .forceAddTag(ConventionalBiomeTags.IS_FLOWER_FOREST);
             ((FabricTagBuilder)tag(BovinesTags.BiomeTags.HAS_RANCH_STRUCTURE_SNOWDROP))
@@ -259,6 +267,7 @@ public class BovinesDataGen implements DataGeneratorEntrypoint {
                             reverseLookup(BovinesBlocks.FREESIA),
                             reverseLookup(BovinesBlocks.HYACINTH),
                             reverseLookup(BovinesBlocks.LIMELIGHT),
+                            reverseLookup(BovinesBlocks.LINGHOLM),
                             reverseLookup(BovinesBlocks.PINK_DAISY),
                             reverseLookup(BovinesBlocks.SNOWDROP),
                             reverseLookup(BovinesBlocks.TROPICAL_BLUE)
@@ -303,6 +312,7 @@ public class BovinesDataGen implements DataGeneratorEntrypoint {
                             reverseLookup(BovinesItems.FREESIA),
                             reverseLookup(BovinesItems.HYACINTH),
                             reverseLookup(BovinesItems.LIMELIGHT),
+                            reverseLookup(BovinesItems.LINGHOLM),
                             reverseLookup(BovinesItems.PINK_DAISY),
                             reverseLookup(BovinesItems.SNOWDROP),
                             reverseLookup(BovinesItems.TROPICAL_BLUE)
