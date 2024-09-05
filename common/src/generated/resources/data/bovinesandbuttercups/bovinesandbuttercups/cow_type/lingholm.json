@@ -22,7 +22,7 @@
   "nectar_effects": [
     {
       "duration": 2400,
-      "id": "minecraft:regeneration"
+      "id": "minecraft:speed"
     }
   ],
   "nectar_palette": "bovinesandbuttercups:bovinesandbuttercups/item/lingholm_nectar_bowl",

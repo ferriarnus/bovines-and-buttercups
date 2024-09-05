@@ -155,7 +155,7 @@ public class BovinesCowTypes {
                 new BlockReference<>(Optional.empty(), Optional.of(BovinesAndButtercups.asResource("bovinesandbuttercups/lingholm_bud")), Optional.empty()),
                 List.of(new CowModelLayer(BovinesAndButtercups.asResource("bovinesandbuttercups/moobloom/moobloom_grass_layer"), List.of(new GrassTintTextureModifierFactory()))),
                 Optional.of(BovinesAndButtercups.asResource("bovinesandbuttercups/item/lingholm_nectar_bowl")),
-                new NectarEffects(List.of(new NectarEffects.Entry(MobEffects.REGENERATION, 2400))),
+                new NectarEffects(List.of(new NectarEffects.Entry(MobEffects.MOVEMENT_SPEED, 2400))),
                 new OffspringConditions(List.of(createCondition(
                         List.of(
                                 BlockPredicate.Builder.block().of(Blocks.PUMPKIN, Blocks.PUMPKIN_STEM),
