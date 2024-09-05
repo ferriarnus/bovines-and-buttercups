@@ -20,7 +20,7 @@ public record MooshroomConfiguration(Settings settings,
                                      boolean canEatFlowers,
                                      boolean vanillaSpawningHack) implements CowTypeConfiguration {
 
-    public static final MooshroomConfiguration DEFAULT = new MooshroomConfiguration(new Settings(Optional.empty(), List.of(), List.of(), Optional.empty()), new BlockReference<>(Optional.empty(), Optional.empty(), Optional.of(Holder.direct(CustomMushroomType.MISSING))), List.of(new CowModelLayer(BovinesAndButtercups.asResource("bovinesandbuttercups/mooshroom/mooshroom_mycelium_layer"), List.of())), false, false);
+    public static final MooshroomConfiguration DEFAULT = new MooshroomConfiguration(new Settings(Optional.of(BovinesAndButtercups.asResource("bovinesandbuttercups/moobloom/missing_mooshroom")), List.of(), List.of(), Optional.empty()), new BlockReference<>(Optional.empty(), Optional.empty(), Optional.of(Holder.direct(CustomMushroomType.MISSING))), List.of(new CowModelLayer(BovinesAndButtercups.asResource("bovinesandbuttercups/mooshroom/mooshroom_mycelium_layer"), List.of())), false, false);
 
     public static final MapCodec<MooshroomConfiguration> CODEC = RecordCodecBuilder.mapCodec(inst -> inst.group(
             Settings.CODEC.forGetter(MooshroomConfiguration::settings),

@@ -8,6 +8,7 @@ import net.merchantpug.bovinesandbuttercups.api.block.BlockReference;
 import net.merchantpug.bovinesandbuttercups.api.block.CustomFlowerType;
 import net.merchantpug.bovinesandbuttercups.api.cowtype.CowModelLayer;
 import net.merchantpug.bovinesandbuttercups.api.cowtype.OffspringConditions;
+import net.merchantpug.bovinesandbuttercups.client.BovinesAndButtercupsClient;
 import net.merchantpug.bovinesandbuttercups.content.component.NectarEffects;
 import net.merchantpug.bovinesandbuttercups.content.data.modifier.GrassTintTextureModifierFactory;
 import net.minecraft.core.Holder;
@@ -25,7 +26,7 @@ public record MoobloomConfiguration(Settings settings,
                                     NectarEffects nectarEffects,
                                     OffspringConditions offspringConditions) implements CowTypeConfiguration {
 
-    public static final MoobloomConfiguration DEFAULT = new MoobloomConfiguration(new CowTypeConfiguration.Settings(Optional.empty(), List.of(), List.of(), Optional.empty()), new BlockReference<>(Optional.empty(), Optional.empty(), Optional.of(Holder.direct(CustomFlowerType.MISSING))), new BlockReference<>(Optional.empty(), Optional.empty(), Optional.of(Holder.direct(CustomFlowerType.MISSING))), List.of(new CowModelLayer(BovinesAndButtercups.asResource("bovinesandbuttercups/moobloom/moobloom_grass_layer"), List.of(new GrassTintTextureModifierFactory()))), Optional.empty(), NectarEffects.EMPTY, OffspringConditions.EMPTY);
+    public static final MoobloomConfiguration DEFAULT = new MoobloomConfiguration(new CowTypeConfiguration.Settings(Optional.of(BovinesAndButtercups.asResource("bovinesandbuttercups/moobloom/missing_moobloom")), List.of(), List.of(), Optional.empty()), new BlockReference<>(Optional.empty(), Optional.empty(), Optional.of(Holder.direct(CustomFlowerType.MISSING))), new BlockReference<>(Optional.empty(), Optional.empty(), Optional.of(Holder.direct(CustomFlowerType.MISSING))), List.of(new CowModelLayer(BovinesAndButtercups.asResource("bovinesandbuttercups/moobloom/moobloom_grass_layer"), List.of(new GrassTintTextureModifierFactory()))), Optional.empty(), NectarEffects.EMPTY, OffspringConditions.EMPTY);
 
     public static final MapCodec<MoobloomConfiguration> CODEC = RecordCodecBuilder.mapCodec(builder -> builder.group(
             Settings.CODEC.forGetter(MoobloomConfiguration::settings),

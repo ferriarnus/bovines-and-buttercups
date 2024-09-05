@@ -18,6 +18,7 @@ import net.minecraft.world.entity.LivingEntity;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 
 public record NectarEffects(List<NectarEffects.Entry> effects) {
     public static final NectarEffects EMPTY = new NectarEffects(List.of());
@@ -28,8 +29,8 @@ public record NectarEffects(List<NectarEffects.Entry> effects) {
             .apply(ByteBufCodecs.list())
             .map(NectarEffects::new, NectarEffects::effects);
 
-    public NectarEffects withEffectAdded(NectarEffects.Entry $$0) {
-        return new NectarEffects(Util.copyAndAdd(this.effects, $$0));
+    public NectarEffects withEffectAdded(NectarEffects.Entry entry) {
+        return new NectarEffects(Util.copyAndAdd(this.effects, entry));
     }
 
     public void applyEffectInstance(LivingEntity entity) {
@@ -38,6 +39,18 @@ public record NectarEffects(List<NectarEffects.Entry> effects) {
         }
         entity.addEffect(new MobEffectInstance(BovinesEffects.LOCKDOWN, effects.stream().map(Entry::duration).max(Comparator.comparingInt(value -> value)).orElse(0)));
         LockdownAttachment.sync(entity);
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if (!(other instanceof NectarEffects otherEffects))
+            return false;
+        return otherEffects.effects.equals(effects);
+    }
+
+    @Override
+    public int hashCode() {
+        return effects.hashCode();
     }
 
     public record Entry(Holder<MobEffect> effect, int duration) {
@@ -53,5 +66,17 @@ public record NectarEffects(List<NectarEffects.Entry> effects) {
                 NectarEffects.Entry::duration,
                 NectarEffects.Entry::new
         );
+
+        @Override
+        public boolean equals(Object other) {
+            if (!(other instanceof Entry otherEntry))
+                return false;
+            return otherEntry.effect.equals(effect) && otherEntry.duration == duration;
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(effect, duration);
+        }
     }
 }

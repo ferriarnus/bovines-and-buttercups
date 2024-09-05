@@ -9,11 +9,9 @@ import net.fabricmc.fabric.api.networking.v1.EntityTrackingEvents;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import net.fabricmc.fabric.api.registry.CompostingChanceRegistry;
-import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.merchantpug.bovinesandbuttercups.api.BovinesTags;
 import net.merchantpug.bovinesandbuttercups.api.attachment.CowTypeAttachment;
 import net.merchantpug.bovinesandbuttercups.api.attachment.LockdownAttachment;
-import net.merchantpug.bovinesandbuttercups.client.util.CowTextureReloadListenerFabric;
 import net.merchantpug.bovinesandbuttercups.content.entity.Moobloom;
 import net.merchantpug.bovinesandbuttercups.network.clientbound.SyncConditionedTextureModifier;
 import net.merchantpug.bovinesandbuttercups.network.clientbound.SyncCowTypeClientboundPacket;
@@ -38,7 +36,6 @@ import net.merchantpug.bovinesandbuttercups.util.CreativeTabHelper;
 import net.minecraft.core.Registry;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.packs.PackType;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MobCategory;
@@ -65,8 +62,6 @@ public class BovinesAndButtercupsFabric implements ModInitializer {
                     CowTypeAttachment.sync(living);
             }
         });
-        ResourceManagerHelper.get(PackType.CLIENT_RESOURCES)
-                .registerReloadListener(new CowTextureReloadListenerFabric());
 
         registerContents();
         registerNetwork();

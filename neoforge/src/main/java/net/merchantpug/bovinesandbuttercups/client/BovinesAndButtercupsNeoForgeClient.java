@@ -13,8 +13,9 @@ import net.merchantpug.bovinesandbuttercups.client.renderer.block.CustomMushroom
 import net.merchantpug.bovinesandbuttercups.client.renderer.block.CustomMushroomRenderer;
 import net.merchantpug.bovinesandbuttercups.client.renderer.entity.MoobloomRenderer;
 import net.merchantpug.bovinesandbuttercups.client.bovinestate.BovineBlockstateTypes;
+import net.merchantpug.bovinesandbuttercups.client.renderer.entity.layer.CowLayersLayer;
 import net.merchantpug.bovinesandbuttercups.client.util.BovineStateModelUtil;
-import net.merchantpug.bovinesandbuttercups.client.util.CowTextureReloadListener;
+import net.merchantpug.bovinesandbuttercups.client.util.ClearTextureCacheReloadListener;
 import net.merchantpug.bovinesandbuttercups.registry.BovinesBlockEntityTypes;
 import net.merchantpug.bovinesandbuttercups.registry.BovinesEffects;
 import net.merchantpug.bovinesandbuttercups.registry.BovinesEntityTypes;
@@ -22,12 +23,13 @@ import net.merchantpug.bovinesandbuttercups.registry.BovinesItems;
 import net.merchantpug.bovinesandbuttercups.registry.BovinesParticleTypes;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.CowModel;
-import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
+import net.minecraft.client.renderer.entity.MushroomCowRenderer;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.resources.model.BlockModelRotation;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.client.resources.model.UnbakedModel;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.EntityType;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -38,7 +40,6 @@ import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.client.event.ModelEvent;
 import net.neoforged.neoforge.client.event.RegisterClientReloadListenersEvent;
 import net.neoforged.neoforge.client.event.RegisterParticleProvidersEvent;
-import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
 
 import java.util.List;
@@ -47,7 +48,6 @@ import java.util.List;
 public class BovinesAndButtercupsNeoForgeClient {
     public BovinesAndButtercupsNeoForgeClient(IEventBus eventBus) {
         BovinesAndButtercupsClient.init(new BovinesClientHelperNeo());
-        BovinesAndButtercupsClient.registerCowTexturePaths();
     }
 
     @EventBusSubscriber(modid = BovinesAndButtercups.MOD_ID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
@@ -57,9 +57,8 @@ public class BovinesAndButtercupsNeoForgeClient {
             BovineBlockstateTypes.init();
         }
 
-        @SubscribeEvent
         public static void registerClientReloadListeners(RegisterClientReloadListenersEvent event) {
-            event.registerReloadListener(new CowTextureReloadListener());
+            event.registerReloadListener(new ClearTextureCacheReloadListener());
         }
 
         @SubscribeEvent
@@ -101,6 +100,13 @@ public class BovinesAndButtercupsNeoForgeClient {
             event.registerBlockEntityRenderer(BovinesBlockEntityTypes.POTTED_CUSTOM_FLOWER, CustomFlowerPotBlockRenderer::new);
             event.registerBlockEntityRenderer(BovinesBlockEntityTypes.POTTED_CUSTOM_MUSHROOM, CustomMushroomPotBlockRenderer::new);
             event.registerBlockEntityRenderer(BovinesBlockEntityTypes.CUSTOM_MUSHROOM_BLOCK, CustomHugeMushroomBlockRenderer::new);
+        }
+
+        @SubscribeEvent
+        public static void registerRenderLayers(EntityRenderersEvent.AddLayers event) {
+            MushroomCowRenderer mushroomCowRenderer = event.getRenderer(EntityType.MOOSHROOM);
+            // mushroomCowRenderer.addLayer(new MushroomCowDatapackMushroomLayer<>(mushroomCowRenderer, Minecraft.getInstance().getBlockRenderer()));
+            mushroomCowRenderer.addLayer(new CowLayersLayer<>(mushroomCowRenderer));
         }
 
         @SubscribeEvent

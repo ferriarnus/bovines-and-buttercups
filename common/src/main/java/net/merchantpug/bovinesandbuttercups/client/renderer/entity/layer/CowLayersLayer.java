@@ -14,9 +14,9 @@ import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.world.entity.LivingEntity;
 
-public class CowGrassLayer<T extends LivingEntity, M extends EntityModel<T>> extends RenderLayer<T, M> {
+public class CowLayersLayer<T extends LivingEntity, M extends EntityModel<T>> extends RenderLayer<T, M> {
 
-    public CowGrassLayer(RenderLayerParent<T, M> context) {
+    public CowLayersLayer(RenderLayerParent<T, M> context) {
         super(context);
     }
 

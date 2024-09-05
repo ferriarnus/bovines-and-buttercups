@@ -10,7 +10,8 @@
   ],
   "client": [
     "client.EffectRenderingInventoryScreenMixin",
-    "client.GuiMixin"
+    "client.GuiMixin",
+    "client.MushroomCowRendererMixin"
   ],
   "server": [
   ],

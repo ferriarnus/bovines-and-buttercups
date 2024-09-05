@@ -16,7 +16,10 @@
   ],
   "client": [
     "client.EffectRenderingInventoryScreenMixin",
-    "client.GuiGraphicsMixin"
+    "client.GuiGraphicsMixin",
+    "client.LivingEntityRendererMixin",
+    "client.SimpleTextureMixin",
+    "client.SimpleTextureTextureImageAccessor"
   ],
   "server": [
   ],
