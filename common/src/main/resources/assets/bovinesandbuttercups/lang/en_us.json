@@ -52,11 +52,12 @@
   "flower_crown_material.bovinesandbuttercups.tropical_blue": "Tropical Blue Petal",
   "flower_crown_material.bovinesandbuttercups.freesia": "Freesia Petal",
   "flower_crown_material.bovinesandbuttercups.lingholm": "Lingholm Petal",
+  "subtitles.item.armor.bovinesandbuttercups.equip_flower_crown": "Flower Crown rustles",
 
   "entity.bovinesandbuttercups.moobloom": "Moobloom",
-  "subtitles.entity.moobloom.convert": "Moobloom transforms",
-  "subtitles.entity.moobloom.eat": "Moobloom eats",
-  "subtitles.entity.moobloom.milk": "Moobloom gets milked",
+  "subtitles.entity.bovinesandbuttercups.moobloom.convert": "Moobloom transforms",
+  "subtitles.entity.bovinesandbuttercups.moobloom.eat": "Moobloom eats",
+  "subtitles.entity.bovinesandbuttercups.moobloom.milk": "Moobloom gets milked",
 
   "effect.bovinesandbuttercups.lockdown": "Lockdown",
 

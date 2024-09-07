@@ -38,9 +38,9 @@
   "item.bovinesandbuttercups.moobloom_spawn_egg": "哞花 生怪蛋",
 
   "entity.bovinesandbuttercups.moobloom": "哞花",
-  "subtitles.entity.moobloom.convert": "哞花轉變",
-  "subtitles.entity.moobloom.eat": "哞花進食",
-  "subtitles.entity.moobloom.milk": "哞花裝桶",
+  "subtitles.entity.bovinesandbuttercups.moobloom.convert": "哞花轉變",
+  "subtitles.entity.bovinesandbuttercups.moobloom.eat": "哞花進食",
+  "subtitles.entity.bovinesandbuttercups.moobloom.milk": "哞花裝桶",
 
   "effect.bovinesandbuttercups.lockdown": "封鎖",
 

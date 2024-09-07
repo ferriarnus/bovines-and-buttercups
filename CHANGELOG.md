@@ -20,6 +20,7 @@
 - Limelight Moobloom are now bred with Cave Vines (Glow Berry Vines) instead of Moss and Moss Carpets.
 - Pink Daisy Moobloom now have Pink Petals and Cherry Wood as respective options for breeding.
 - Nectar Bowls will now return bowls when used in crafting.
+- Prefixed certain subtitle lang entries with mod id.
 
 ## Datapacking Changes
 - Bovines and Buttercups now utilises datapack/dynamic registries.
