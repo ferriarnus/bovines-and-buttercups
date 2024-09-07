@@ -1,9 +1,10 @@
-package house.greenhouse.bovinesandbuttercups.registry;
+package house.greenhouse.bovinesandbuttercups.api;
 
 import house.greenhouse.bovinesandbuttercups.BovinesAndButtercups;
-import house.greenhouse.bovinesandbuttercups.api.CowTypeType;
 import house.greenhouse.bovinesandbuttercups.content.data.configuration.MoobloomConfiguration;
 import house.greenhouse.bovinesandbuttercups.content.data.configuration.MooshroomConfiguration;
+import house.greenhouse.bovinesandbuttercups.registry.BovinesEntityTypes;
+import house.greenhouse.bovinesandbuttercups.registry.BovinesRegistries;
 import house.greenhouse.bovinesandbuttercups.registry.internal.RegistrationCallback;
 import net.minecraft.world.entity.EntityType;
 

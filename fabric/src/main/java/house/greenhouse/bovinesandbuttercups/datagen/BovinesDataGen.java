@@ -15,7 +15,7 @@ import house.greenhouse.bovinesandbuttercups.api.BovinesTags;
 import house.greenhouse.bovinesandbuttercups.content.data.flowercrown.FlowerCrownPetal;
 import house.greenhouse.bovinesandbuttercups.content.recipe.FlowerCrownRecipe;
 import house.greenhouse.bovinesandbuttercups.registry.BovinesBlocks;
-import house.greenhouse.bovinesandbuttercups.registry.BovinesCowTypes;
+import house.greenhouse.bovinesandbuttercups.api.BovinesCowTypes;
 import house.greenhouse.bovinesandbuttercups.registry.BovinesFlowerCrownPetals;
 import house.greenhouse.bovinesandbuttercups.registry.BovinesItems;
 import house.greenhouse.bovinesandbuttercups.registry.BovinesLootTables;

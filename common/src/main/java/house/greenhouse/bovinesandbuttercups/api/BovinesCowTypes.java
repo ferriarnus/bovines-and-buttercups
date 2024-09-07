@@ -1,9 +1,6 @@
-package house.greenhouse.bovinesandbuttercups.registry;
+package house.greenhouse.bovinesandbuttercups.api;
 
 import house.greenhouse.bovinesandbuttercups.BovinesAndButtercups;
-import house.greenhouse.bovinesandbuttercups.api.BovinesTags;
-import house.greenhouse.bovinesandbuttercups.api.CowType;
-import house.greenhouse.bovinesandbuttercups.api.CowTypeConfiguration;
 import house.greenhouse.bovinesandbuttercups.api.block.BlockReference;
 import house.greenhouse.bovinesandbuttercups.api.cowtype.CowModelLayer;
 import house.greenhouse.bovinesandbuttercups.api.cowtype.OffspringConditions;
@@ -14,6 +11,9 @@ import house.greenhouse.bovinesandbuttercups.content.data.configuration.Moobloom
 import house.greenhouse.bovinesandbuttercups.content.data.configuration.MooshroomConfiguration;
 import house.greenhouse.bovinesandbuttercups.content.predicate.BlockInRadiusCondition;
 import house.greenhouse.bovinesandbuttercups.content.predicate.SnowingCondition;
+import house.greenhouse.bovinesandbuttercups.registry.BovinesBlocks;
+import house.greenhouse.bovinesandbuttercups.registry.BovinesParticleTypes;
+import house.greenhouse.bovinesandbuttercups.registry.BovinesRegistryKeys;
 import house.greenhouse.bovinesandbuttercups.util.ColorConstants;
 import net.minecraft.advancements.critereon.BlockPredicate;
 import net.minecraft.advancements.critereon.StatePropertiesPredicate;

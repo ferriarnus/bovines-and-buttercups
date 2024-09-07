@@ -9,7 +9,7 @@ import house.greenhouse.bovinesandbuttercups.content.component.ItemCustomMushroo
 import house.greenhouse.bovinesandbuttercups.content.component.ItemMoobloomType;
 import house.greenhouse.bovinesandbuttercups.content.data.configuration.MoobloomConfiguration;
 import house.greenhouse.bovinesandbuttercups.content.data.flowercrown.FlowerCrownPetal;
-import house.greenhouse.bovinesandbuttercups.registry.BovinesCowTypes;
+import house.greenhouse.bovinesandbuttercups.api.BovinesCowTypes;
 import house.greenhouse.bovinesandbuttercups.registry.BovinesDataComponents;
 import house.greenhouse.bovinesandbuttercups.registry.BovinesFlowerCrownPetals;
 import house.greenhouse.bovinesandbuttercups.registry.BovinesItems;
