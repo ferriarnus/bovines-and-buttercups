@@ -2,7 +2,7 @@ package house.greenhouse.bovinesandbuttercups.content.recipe;
 
 import com.google.common.collect.Lists;
 import house.greenhouse.bovinesandbuttercups.content.component.FlowerCrown;
-import house.greenhouse.bovinesandbuttercups.content.data.flowercrown.FlowerCrownPetal;
+import house.greenhouse.bovinesandbuttercups.content.data.flowercrown.FlowerCrownMaterial;
 import house.greenhouse.bovinesandbuttercups.registry.BovinesDataComponents;
 import house.greenhouse.bovinesandbuttercups.registry.BovinesItems;
 import house.greenhouse.bovinesandbuttercups.registry.BovinesRecipeSerializers;
@@ -39,7 +39,7 @@ public class FlowerCrownRecipe extends CustomRecipe {
             for (int j = 0; j < input.width(); j++) {
                 Optional<Unit> hasItem = SHAPE.get(j + i * input.width());
                 ItemStack stack = input.getItem(j, i);
-                if (hasItem.isEmpty() && !stack.isEmpty() || hasItem.isPresent() && level.registryAccess().registry(BovinesRegistryKeys.FLOWER_CROWN_PETAL).orElseThrow().stream().noneMatch(petal -> ItemStack.isSameItemSameComponents(petal.ingredient(), stack))) {
+                if (hasItem.isEmpty() && !stack.isEmpty() || hasItem.isPresent() && level.registryAccess().registry(BovinesRegistryKeys.FLOWER_CROWN_MATERIAL).orElseThrow().stream().noneMatch(petal -> ItemStack.isSameItemSameComponents(petal.ingredient(), stack))) {
                     return false;
                 }
                 if (hasItem.isEmpty())
@@ -53,14 +53,14 @@ public class FlowerCrownRecipe extends CustomRecipe {
 
     @Override
     public ItemStack assemble(CraftingInput input, HolderLookup.Provider registries) {
-        List<Holder<FlowerCrownPetal>> list = Lists.newArrayList();
+        List<Holder<FlowerCrownMaterial>> list = Lists.newArrayList();
 
         for (int i = 0; i < input.size(); i++) {
             if (list.size() == 8)
                 break;
             ItemStack inputStack = input.getItem(i);
             if (!inputStack.isEmpty()) {
-                Optional<Holder.Reference<FlowerCrownPetal>> petal = registries.lookupOrThrow(BovinesRegistryKeys.FLOWER_CROWN_PETAL).listElements().filter(flowerCrownPetal -> flowerCrownPetal.isBound() && ItemStack.isSameItemSameComponents(flowerCrownPetal.value().ingredient(), inputStack)).findFirst();
+                Optional<Holder.Reference<FlowerCrownMaterial>> petal = registries.lookupOrThrow(BovinesRegistryKeys.FLOWER_CROWN_MATERIAL).listElements().filter(flowerCrownPetal -> flowerCrownPetal.isBound() && ItemStack.isSameItemSameComponents(flowerCrownPetal.value().ingredient(), inputStack)).findFirst();
                 if (petal.isEmpty()) {
                     return ItemStack.EMPTY;
                 }
@@ -76,7 +76,7 @@ public class FlowerCrownRecipe extends CustomRecipe {
         return ItemStack.EMPTY;
     }
 
-    private static FlowerCrown assembleFlowerCrown(List<Holder<FlowerCrownPetal>> petals) {
+    private static FlowerCrown assembleFlowerCrown(List<Holder<FlowerCrownMaterial>> petals) {
         return new FlowerCrown(petals.get(0), petals.get(1), petals.get(2), petals.get(3), petals.get(4), petals.get(5), petals.get(6), petals.get(7));
     }
 

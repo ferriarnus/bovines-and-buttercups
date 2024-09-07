@@ -15,25 +15,25 @@ import net.minecraft.world.item.ItemStack;
 
 import java.util.List;
 
-public record FlowerCrownPetal(ItemStack ingredient,
-                               ItemTextures itemTextures,
-                               EquippedTextures equippedTextures,
-                               Component description) {
-    public static final Codec<FlowerCrownPetal> DIRECT_CODEC = RecordCodecBuilder.create(inst -> inst.group(
-            ItemStack.STRICT_SINGLE_ITEM_CODEC.fieldOf("ingredient").forGetter(FlowerCrownPetal::ingredient),
-            ItemTextures.CODEC.fieldOf("item_textures").forGetter(FlowerCrownPetal::itemTextures),
-            EquippedTextures.CODEC.fieldOf("equipped_textures").forGetter(FlowerCrownPetal::equippedTextures),
-            ComponentSerialization.CODEC.fieldOf("description").forGetter(FlowerCrownPetal::description)
-    ).apply(inst, FlowerCrownPetal::new));
-    public static final StreamCodec<RegistryFriendlyByteBuf, FlowerCrownPetal> DIRECT_STREAM_CODEC = StreamCodec.composite(
-            ItemStack.STREAM_CODEC, FlowerCrownPetal::ingredient,
-            ItemTextures.STREAM_CODEC, FlowerCrownPetal::itemTextures,
-            EquippedTextures.STREAM_CODEC, FlowerCrownPetal::equippedTextures,
-            ComponentSerialization.STREAM_CODEC, FlowerCrownPetal::description,
-            FlowerCrownPetal::new
+public record FlowerCrownMaterial(ItemStack ingredient,
+                                  ItemTextures itemTextures,
+                                  EquippedTextures equippedTextures,
+                                  Component description) {
+    public static final Codec<FlowerCrownMaterial> DIRECT_CODEC = RecordCodecBuilder.create(inst -> inst.group(
+            ItemStack.STRICT_SINGLE_ITEM_CODEC.fieldOf("ingredient").forGetter(FlowerCrownMaterial::ingredient),
+            ItemTextures.CODEC.fieldOf("item_textures").forGetter(FlowerCrownMaterial::itemTextures),
+            EquippedTextures.CODEC.fieldOf("equipped_textures").forGetter(FlowerCrownMaterial::equippedTextures),
+            ComponentSerialization.CODEC.fieldOf("description").forGetter(FlowerCrownMaterial::description)
+    ).apply(inst, FlowerCrownMaterial::new));
+    public static final StreamCodec<RegistryFriendlyByteBuf, FlowerCrownMaterial> DIRECT_STREAM_CODEC = StreamCodec.composite(
+            ItemStack.STREAM_CODEC, FlowerCrownMaterial::ingredient,
+            ItemTextures.STREAM_CODEC, FlowerCrownMaterial::itemTextures,
+            EquippedTextures.STREAM_CODEC, FlowerCrownMaterial::equippedTextures,
+            ComponentSerialization.STREAM_CODEC, FlowerCrownMaterial::description,
+            FlowerCrownMaterial::new
     );
-    public static final Codec<Holder<FlowerCrownPetal>> CODEC = RegistryFileCodec.create(BovinesRegistryKeys.FLOWER_CROWN_PETAL, DIRECT_CODEC);
-    public static final StreamCodec<RegistryFriendlyByteBuf, Holder<FlowerCrownPetal>> STREAM_CODEC = ByteBufCodecs.holder(BovinesRegistryKeys.FLOWER_CROWN_PETAL, FlowerCrownPetal.DIRECT_STREAM_CODEC);
+    public static final Codec<Holder<FlowerCrownMaterial>> CODEC = RegistryFileCodec.create(BovinesRegistryKeys.FLOWER_CROWN_MATERIAL, DIRECT_CODEC);
+    public static final StreamCodec<RegistryFriendlyByteBuf, Holder<FlowerCrownMaterial>> STREAM_CODEC = ByteBufCodecs.holder(BovinesRegistryKeys.FLOWER_CROWN_MATERIAL, FlowerCrownMaterial.DIRECT_STREAM_CODEC);
 
     public record ItemTextures(ResourceLocation topLeft, ResourceLocation top, ResourceLocation topRight,
                                ResourceLocation centerLeft, ResourceLocation centerRight,

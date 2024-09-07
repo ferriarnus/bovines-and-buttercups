@@ -1,7 +1,7 @@
 package house.greenhouse.bovinesandbuttercups.registry;
 
 import house.greenhouse.bovinesandbuttercups.BovinesAndButtercups;
-import house.greenhouse.bovinesandbuttercups.content.data.flowercrown.FlowerCrownPetal;
+import house.greenhouse.bovinesandbuttercups.content.data.flowercrown.FlowerCrownMaterial;
 import house.greenhouse.bovinesandbuttercups.util.ColorConstants;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.network.chat.Component;
@@ -9,19 +9,19 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ItemLike;
 
-public class BovinesFlowerCrownPetals {
-    public static final ResourceKey<FlowerCrownPetal> BIRD_OF_PARADISE = ResourceKey.create(BovinesRegistryKeys.FLOWER_CROWN_PETAL, BovinesAndButtercups.asResource("bird_of_paradise"));
-    public static final ResourceKey<FlowerCrownPetal> BUTTERCUP = ResourceKey.create(BovinesRegistryKeys.FLOWER_CROWN_PETAL, BovinesAndButtercups.asResource("buttercup"));
-    public static final ResourceKey<FlowerCrownPetal> CHARGELILY = ResourceKey.create(BovinesRegistryKeys.FLOWER_CROWN_PETAL, BovinesAndButtercups.asResource("chargelily"));
-    public static final ResourceKey<FlowerCrownPetal> FREESIA = ResourceKey.create(BovinesRegistryKeys.FLOWER_CROWN_PETAL, BovinesAndButtercups.asResource("freesia"));
-    public static final ResourceKey<FlowerCrownPetal> HYACINTH = ResourceKey.create(BovinesRegistryKeys.FLOWER_CROWN_PETAL, BovinesAndButtercups.asResource("hyacinth"));
-    public static final ResourceKey<FlowerCrownPetal> LIMELIGHT = ResourceKey.create(BovinesRegistryKeys.FLOWER_CROWN_PETAL, BovinesAndButtercups.asResource("limelight"));
-    public static final ResourceKey<FlowerCrownPetal> LINGHOLM = ResourceKey.create(BovinesRegistryKeys.FLOWER_CROWN_PETAL, BovinesAndButtercups.asResource("lingholm"));
-    public static final ResourceKey<FlowerCrownPetal> PINK_DAISY = ResourceKey.create(BovinesRegistryKeys.FLOWER_CROWN_PETAL, BovinesAndButtercups.asResource("pink_daisy"));
-    public static final ResourceKey<FlowerCrownPetal> SNOWDROP = ResourceKey.create(BovinesRegistryKeys.FLOWER_CROWN_PETAL, BovinesAndButtercups.asResource("snowdrop"));
-    public static final ResourceKey<FlowerCrownPetal> TROPICAL_BLUE = ResourceKey.create(BovinesRegistryKeys.FLOWER_CROWN_PETAL, BovinesAndButtercups.asResource("tropical_blue"));
+public class BovinesFlowerCrownMaterials {
+    public static final ResourceKey<FlowerCrownMaterial> BIRD_OF_PARADISE = ResourceKey.create(BovinesRegistryKeys.FLOWER_CROWN_MATERIAL, BovinesAndButtercups.asResource("bird_of_paradise"));
+    public static final ResourceKey<FlowerCrownMaterial> BUTTERCUP = ResourceKey.create(BovinesRegistryKeys.FLOWER_CROWN_MATERIAL, BovinesAndButtercups.asResource("buttercup"));
+    public static final ResourceKey<FlowerCrownMaterial> CHARGELILY = ResourceKey.create(BovinesRegistryKeys.FLOWER_CROWN_MATERIAL, BovinesAndButtercups.asResource("chargelily"));
+    public static final ResourceKey<FlowerCrownMaterial> FREESIA = ResourceKey.create(BovinesRegistryKeys.FLOWER_CROWN_MATERIAL, BovinesAndButtercups.asResource("freesia"));
+    public static final ResourceKey<FlowerCrownMaterial> HYACINTH = ResourceKey.create(BovinesRegistryKeys.FLOWER_CROWN_MATERIAL, BovinesAndButtercups.asResource("hyacinth"));
+    public static final ResourceKey<FlowerCrownMaterial> LIMELIGHT = ResourceKey.create(BovinesRegistryKeys.FLOWER_CROWN_MATERIAL, BovinesAndButtercups.asResource("limelight"));
+    public static final ResourceKey<FlowerCrownMaterial> LINGHOLM = ResourceKey.create(BovinesRegistryKeys.FLOWER_CROWN_MATERIAL, BovinesAndButtercups.asResource("lingholm"));
+    public static final ResourceKey<FlowerCrownMaterial> PINK_DAISY = ResourceKey.create(BovinesRegistryKeys.FLOWER_CROWN_MATERIAL, BovinesAndButtercups.asResource("pink_daisy"));
+    public static final ResourceKey<FlowerCrownMaterial> SNOWDROP = ResourceKey.create(BovinesRegistryKeys.FLOWER_CROWN_MATERIAL, BovinesAndButtercups.asResource("snowdrop"));
+    public static final ResourceKey<FlowerCrownMaterial> TROPICAL_BLUE = ResourceKey.create(BovinesRegistryKeys.FLOWER_CROWN_MATERIAL, BovinesAndButtercups.asResource("tropical_blue"));
 
-    public static void bootstrap(BootstrapContext<FlowerCrownPetal> context) {
+    public static void bootstrap(BootstrapContext<FlowerCrownMaterial> context) {
         context.register(BIRD_OF_PARADISE, createFromKey(BovinesItems.BIRD_OF_PARADISE, BIRD_OF_PARADISE, ColorConstants.BIRD_OF_PARADISE));
         context.register(BUTTERCUP, createFromKey(BovinesItems.BUTTERCUP, BUTTERCUP, ColorConstants.BUTTERCUP));
         context.register(CHARGELILY, createFromKey(BovinesItems.CHARGELILY, CHARGELILY, ColorConstants.CHARGELILY));
@@ -34,9 +34,9 @@ public class BovinesFlowerCrownPetals {
         context.register(TROPICAL_BLUE, createFromKey(BovinesItems.TROPICAL_BLUE, TROPICAL_BLUE, ColorConstants.TROPICAL_BLUE));
     }
 
-    public static FlowerCrownPetal createFromKey(ItemLike item, ResourceKey<FlowerCrownPetal> key, int color) {
-        return new FlowerCrownPetal(new ItemStack(item),
-                new FlowerCrownPetal.ItemTextures(
+    public static FlowerCrownMaterial createFromKey(ItemLike item, ResourceKey<FlowerCrownMaterial> key, int color) {
+        return new FlowerCrownMaterial(new ItemStack(item),
+                new FlowerCrownMaterial.ItemTextures(
                         key.location().withPath(str -> "bovinesandbuttercups/petals/items/top_left_" + str),
                         key.location().withPath(str -> "bovinesandbuttercups/petals/items/top_" + str),
                         key.location().withPath(str -> "bovinesandbuttercups/petals/items/top_right_" + str),
@@ -46,7 +46,7 @@ public class BovinesFlowerCrownPetals {
                         key.location().withPath(str -> "bovinesandbuttercups/petals/items/bottom_" + str),
                         key.location().withPath(str -> "bovinesandbuttercups/petals/items/bottom_right_" + str)
                 ),
-                new FlowerCrownPetal.EquippedTextures(
+                new FlowerCrownMaterial.EquippedTextures(
                         key.location().withPath(str -> "bovinesandbuttercups/petals/models/top_left_" + str),
                         key.location().withPath(str -> "bovinesandbuttercups/petals/models/top_" + str),
                         key.location().withPath(str -> "bovinesandbuttercups/petals/models/top_right_" + str),

@@ -12,11 +12,11 @@ import net.fabricmc.fabric.api.datagen.v1.provider.SimpleFabricLootTableProvider
 import net.fabricmc.fabric.api.tag.convention.v2.ConventionalBiomeTags;
 import house.greenhouse.bovinesandbuttercups.BovinesAndButtercups;
 import house.greenhouse.bovinesandbuttercups.api.BovinesTags;
-import house.greenhouse.bovinesandbuttercups.content.data.flowercrown.FlowerCrownPetal;
+import house.greenhouse.bovinesandbuttercups.content.data.flowercrown.FlowerCrownMaterial;
 import house.greenhouse.bovinesandbuttercups.content.recipe.FlowerCrownRecipe;
 import house.greenhouse.bovinesandbuttercups.registry.BovinesBlocks;
 import house.greenhouse.bovinesandbuttercups.api.BovinesCowTypes;
-import house.greenhouse.bovinesandbuttercups.registry.BovinesFlowerCrownPetals;
+import house.greenhouse.bovinesandbuttercups.registry.BovinesFlowerCrownMaterials;
 import house.greenhouse.bovinesandbuttercups.registry.BovinesItems;
 import house.greenhouse.bovinesandbuttercups.registry.BovinesLootTables;
 import house.greenhouse.bovinesandbuttercups.registry.BovinesRegistryKeys;
@@ -78,7 +78,7 @@ public class BovinesDataGen implements DataGeneratorEntrypoint {
     @Override
     public void buildRegistry(RegistrySetBuilder registryBuilder) {
         registryBuilder.add(BovinesRegistryKeys.COW_TYPE, BovinesCowTypes::bootstrap);
-        registryBuilder.add(BovinesRegistryKeys.FLOWER_CROWN_PETAL, BovinesFlowerCrownPetals::bootstrap);
+        registryBuilder.add(BovinesRegistryKeys.FLOWER_CROWN_MATERIAL, BovinesFlowerCrownMaterials::bootstrap);
     }
 
     private static class DynamicRegistryProvider extends FabricDynamicRegistryProvider {
@@ -90,7 +90,7 @@ public class BovinesDataGen implements DataGeneratorEntrypoint {
         @Override
         protected void configure(HolderLookup.Provider registries, Entries entries) {
             BovinesCowTypes.bootstrap(createContext(registries, entries));
-            BovinesFlowerCrownPetals.bootstrap(createContext(registries, entries));
+            BovinesFlowerCrownMaterials.bootstrap(createContext(registries, entries));
         }
 
         private static <T> BootstrapContext<T> createContext(HolderLookup.Provider registries, Entries entries) {
@@ -345,24 +345,24 @@ public class BovinesDataGen implements DataGeneratorEntrypoint {
         }
     }
 
-    private static class FlowerCrownPetalTagProvider extends FabricTagProvider<FlowerCrownPetal> {
+    private static class FlowerCrownPetalTagProvider extends FabricTagProvider<FlowerCrownMaterial> {
         public FlowerCrownPetalTagProvider(FabricDataOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
-            super(output, BovinesRegistryKeys.FLOWER_CROWN_PETAL, registriesFuture);
+            super(output, BovinesRegistryKeys.FLOWER_CROWN_MATERIAL, registriesFuture);
         }
 
         @Override
         protected void addTags(HolderLookup.Provider wrapperLookup) {
             tag(BovinesTags.FlowerCrownPetalTags.CREATIVE_MENU_ORDER)
-                    .add(BovinesFlowerCrownPetals.FREESIA)
-                    .add(BovinesFlowerCrownPetals.BIRD_OF_PARADISE)
-                    .add(BovinesFlowerCrownPetals.BUTTERCUP)
-                    .add(BovinesFlowerCrownPetals.LIMELIGHT)
-                    .add(BovinesFlowerCrownPetals.LINGHOLM)
-                    .add(BovinesFlowerCrownPetals.CHARGELILY)
-                    .add(BovinesFlowerCrownPetals.TROPICAL_BLUE)
-                    .add(BovinesFlowerCrownPetals.HYACINTH)
-                    .add(BovinesFlowerCrownPetals.PINK_DAISY)
-                    .add(BovinesFlowerCrownPetals.SNOWDROP);
+                    .add(BovinesFlowerCrownMaterials.FREESIA)
+                    .add(BovinesFlowerCrownMaterials.BIRD_OF_PARADISE)
+                    .add(BovinesFlowerCrownMaterials.BUTTERCUP)
+                    .add(BovinesFlowerCrownMaterials.LIMELIGHT)
+                    .add(BovinesFlowerCrownMaterials.LINGHOLM)
+                    .add(BovinesFlowerCrownMaterials.CHARGELILY)
+                    .add(BovinesFlowerCrownMaterials.TROPICAL_BLUE)
+                    .add(BovinesFlowerCrownMaterials.HYACINTH)
+                    .add(BovinesFlowerCrownMaterials.PINK_DAISY)
+                    .add(BovinesFlowerCrownMaterials.SNOWDROP);
         }
     }
 

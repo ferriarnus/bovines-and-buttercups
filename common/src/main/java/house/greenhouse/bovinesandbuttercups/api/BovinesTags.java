@@ -1,7 +1,7 @@
 package house.greenhouse.bovinesandbuttercups.api;
 
 import house.greenhouse.bovinesandbuttercups.BovinesAndButtercups;
-import house.greenhouse.bovinesandbuttercups.content.data.flowercrown.FlowerCrownPetal;
+import house.greenhouse.bovinesandbuttercups.content.data.flowercrown.FlowerCrownMaterial;
 import house.greenhouse.bovinesandbuttercups.registry.BovinesRegistryKeys;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.tags.TagKey;
@@ -49,7 +49,7 @@ public class BovinesTags {
         /**
          * The order in which the flower crowns with each individual petal in the creative menu will appear.
          */
-        public static final TagKey<FlowerCrownPetal> CREATIVE_MENU_ORDER = TagKey.create(BovinesRegistryKeys.FLOWER_CROWN_PETAL, BovinesAndButtercups.asResource("creative_menu_order"));
+        public static final TagKey<FlowerCrownMaterial> CREATIVE_MENU_ORDER = TagKey.create(BovinesRegistryKeys.FLOWER_CROWN_MATERIAL, BovinesAndButtercups.asResource("creative_menu_order"));
     }
 
     public static class ItemTags {

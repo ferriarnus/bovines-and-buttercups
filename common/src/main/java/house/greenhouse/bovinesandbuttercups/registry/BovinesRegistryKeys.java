@@ -7,7 +7,7 @@ import house.greenhouse.bovinesandbuttercups.api.CowTypeType;
 import house.greenhouse.bovinesandbuttercups.api.block.CustomFlowerType;
 import house.greenhouse.bovinesandbuttercups.api.block.CustomMushroomType;
 import house.greenhouse.bovinesandbuttercups.api.cowtype.modifier.TextureModifierFactory;
-import house.greenhouse.bovinesandbuttercups.content.data.flowercrown.FlowerCrownPetal;
+import house.greenhouse.bovinesandbuttercups.content.data.flowercrown.FlowerCrownMaterial;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 
@@ -18,5 +18,5 @@ public class BovinesRegistryKeys {
     public static final ResourceKey<Registry<CowType<?>>> COW_TYPE = ResourceKey.createRegistryKey(BovinesAndButtercups.asResource("cow_type"));
     public static final ResourceKey<Registry<CustomFlowerType>> CUSTOM_FLOWER_TYPE = ResourceKey.createRegistryKey(BovinesAndButtercups.asResource("flower_type"));
     public static final ResourceKey<Registry<CustomMushroomType>> CUSTOM_MUSHROOM_TYPE = ResourceKey.createRegistryKey(BovinesAndButtercups.asResource("mushroom_type"));
-    public static final ResourceKey<Registry<FlowerCrownPetal>> FLOWER_CROWN_PETAL = ResourceKey.createRegistryKey(BovinesAndButtercups.asResource("flower_crown_petal"));
+    public static final ResourceKey<Registry<FlowerCrownMaterial>> FLOWER_CROWN_MATERIAL = ResourceKey.createRegistryKey(BovinesAndButtercups.asResource("flower_crown_material"));
 }
