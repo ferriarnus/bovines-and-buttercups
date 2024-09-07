@@ -138,6 +138,8 @@ public class BovinesAndButtercupsFabric implements ModInitializer {
         ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.SPAWN_EGGS).register(entries -> {
             entries.accept(BovinesItems.MOOBLOOM_SPAWN_EGG);
         });
+        ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.TOOLS_AND_UTILITIES).register(entries ->
+                entries.addAfter(Items.SADDLE, CreativeTabHelper.getFlowerCrownsForCreativeTab(entries.getContext().holders())));
     }
 
     public static void setBiomeRegistries(@Nullable RegistryAccess registries) {

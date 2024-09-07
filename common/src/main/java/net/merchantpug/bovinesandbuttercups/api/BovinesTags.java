@@ -1,6 +1,8 @@
 package net.merchantpug.bovinesandbuttercups.api;
 
 import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
+import net.merchantpug.bovinesandbuttercups.content.data.flowercrown.FlowerCrownPetal;
+import net.merchantpug.bovinesandbuttercups.registry.BovinesRegistryKeys;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
@@ -41,6 +43,13 @@ public class BovinesTags {
          *  Mobs that will equip Flower Crowns by either picking one up or by using a dispenser.
          */
         public static final TagKey<EntityType<?>> WILL_EQUIP_FLOWER_CROWN = TagKey.create(Registries.ENTITY_TYPE, BovinesAndButtercups.asResource("will_equip/flower_crown"));
+    }
+
+    public static class FlowerCrownPetalTags {
+        /**
+         * The order in which the flower crowns with each individual petal in the creative menu will appear.
+         */
+        public static final TagKey<FlowerCrownPetal> CREATIVE_MENU_ORDER = TagKey.create(BovinesRegistryKeys.FLOWER_CROWN_PETAL, BovinesAndButtercups.asResource("creative_menu_order"));
     }
 
     public static class ItemTags {

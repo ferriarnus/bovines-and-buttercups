@@ -12,10 +12,11 @@ import net.fabricmc.fabric.api.datagen.v1.provider.SimpleFabricLootTableProvider
 import net.fabricmc.fabric.api.tag.convention.v2.ConventionalBiomeTags;
 import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
 import net.merchantpug.bovinesandbuttercups.api.BovinesTags;
+import net.merchantpug.bovinesandbuttercups.content.data.flowercrown.FlowerCrownPetal;
 import net.merchantpug.bovinesandbuttercups.content.recipe.FlowerCrownRecipe;
 import net.merchantpug.bovinesandbuttercups.registry.BovinesBlocks;
 import net.merchantpug.bovinesandbuttercups.registry.BovinesCowTypes;
-import net.merchantpug.bovinesandbuttercups.registry.BovinesFlowerCrownMaterials;
+import net.merchantpug.bovinesandbuttercups.registry.BovinesFlowerCrownPetals;
 import net.merchantpug.bovinesandbuttercups.registry.BovinesItems;
 import net.merchantpug.bovinesandbuttercups.registry.BovinesLootTables;
 import net.merchantpug.bovinesandbuttercups.registry.BovinesRegistryKeys;
@@ -28,7 +29,6 @@ import net.minecraft.core.Registry;
 import net.minecraft.core.RegistrySetBuilder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.recipes.RecipeOutput;
-import net.minecraft.data.recipes.ShapelessRecipeBuilder;
 import net.minecraft.data.recipes.SpecialRecipeBuilder;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.data.worldgen.features.CaveFeatures;
@@ -37,9 +37,7 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.level.block.Blocks;
@@ -73,13 +71,14 @@ public class BovinesDataGen implements DataGeneratorEntrypoint {
         pack.addProvider(BlockTagProvider::new);
         pack.addProvider(ConfiguredFeatureTagProvider::new);
         pack.addProvider(EntityTypeTagProvider::new);
+        pack.addProvider(FlowerCrownPetalTagProvider::new);
         pack.addProvider(ItemTagProvider::new);
     }
 
     @Override
     public void buildRegistry(RegistrySetBuilder registryBuilder) {
         registryBuilder.add(BovinesRegistryKeys.COW_TYPE, BovinesCowTypes::bootstrap);
-        registryBuilder.add(BovinesRegistryKeys.FLOWER_CROWN_PETAL, BovinesFlowerCrownMaterials::bootstrap);
+        registryBuilder.add(BovinesRegistryKeys.FLOWER_CROWN_PETAL, BovinesFlowerCrownPetals::bootstrap);
     }
 
     private static class DynamicRegistryProvider extends FabricDynamicRegistryProvider {
@@ -91,7 +90,7 @@ public class BovinesDataGen implements DataGeneratorEntrypoint {
         @Override
         protected void configure(HolderLookup.Provider registries, Entries entries) {
             BovinesCowTypes.bootstrap(createContext(registries, entries));
-            BovinesFlowerCrownMaterials.bootstrap(createContext(registries, entries));
+            BovinesFlowerCrownPetals.bootstrap(createContext(registries, entries));
         }
 
         private static <T> BootstrapContext<T> createContext(HolderLookup.Provider registries, Entries entries) {
@@ -343,6 +342,27 @@ public class BovinesDataGen implements DataGeneratorEntrypoint {
             tag(BovinesTags.EntityTypeTags.WILL_EQUIP_FLOWER_CROWN)
                     .add(reverseLookup(EntityType.PIGLIN))
                     .add(reverseLookup(EntityType.VILLAGER));
+        }
+    }
+
+    private static class FlowerCrownPetalTagProvider extends FabricTagProvider<FlowerCrownPetal> {
+        public FlowerCrownPetalTagProvider(FabricDataOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
+            super(output, BovinesRegistryKeys.FLOWER_CROWN_PETAL, registriesFuture);
+        }
+
+        @Override
+        protected void addTags(HolderLookup.Provider wrapperLookup) {
+            tag(BovinesTags.FlowerCrownPetalTags.CREATIVE_MENU_ORDER)
+                    .add(BovinesFlowerCrownPetals.FREESIA)
+                    .add(BovinesFlowerCrownPetals.BIRD_OF_PARADISE)
+                    .add(BovinesFlowerCrownPetals.BUTTERCUP)
+                    .add(BovinesFlowerCrownPetals.LIMELIGHT)
+                    .add(BovinesFlowerCrownPetals.LINGHOLM)
+                    .add(BovinesFlowerCrownPetals.CHARGELILY)
+                    .add(BovinesFlowerCrownPetals.TROPICAL_BLUE)
+                    .add(BovinesFlowerCrownPetals.HYACINTH)
+                    .add(BovinesFlowerCrownPetals.PINK_DAISY)
+                    .add(BovinesFlowerCrownPetals.SNOWDROP);
         }
     }
 

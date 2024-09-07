@@ -9,7 +9,7 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ItemLike;
 
-public class BovinesFlowerCrownMaterials {
+public class BovinesFlowerCrownPetals {
     public static final ResourceKey<FlowerCrownPetal> BIRD_OF_PARADISE = ResourceKey.create(BovinesRegistryKeys.FLOWER_CROWN_PETAL, BovinesAndButtercups.asResource("bird_of_paradise"));
     public static final ResourceKey<FlowerCrownPetal> BUTTERCUP = ResourceKey.create(BovinesRegistryKeys.FLOWER_CROWN_PETAL, BovinesAndButtercups.asResource("buttercup"));
     public static final ResourceKey<FlowerCrownPetal> CHARGELILY = ResourceKey.create(BovinesRegistryKeys.FLOWER_CROWN_PETAL, BovinesAndButtercups.asResource("chargelily"));
