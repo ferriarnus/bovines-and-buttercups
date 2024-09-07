@@ -19,7 +19,7 @@ import java.util.Optional;
 
 public class NectarBowlItemRenderer {
     public static void render(ItemStack stack, ItemDisplayContext context, PoseStack poseStack, MultiBufferSource bufferSource, int light, int overlay) {
-        ResourceLocation resourceLocation = BovinesAndButtercups.asResource("bovinesandbuttercups/item/colored_nectar_bowl/inventory");
+        ResourceLocation resourceLocation = BovinesAndButtercups.asResource("bovinesandbuttercups/item/buttercup_nectar_bowl/inventory");
         Level level = Minecraft.getInstance().level;
         if (level == null) return;
 
