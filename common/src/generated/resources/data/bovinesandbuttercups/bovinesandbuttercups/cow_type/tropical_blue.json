@@ -19,13 +19,7 @@
     }
   ],
   "natural_spawns": [],
-  "nectar_effects": [
-    {
-      "duration": 9600,
-      "id": "minecraft:fire_resistance"
-    }
-  ],
-  "nectar_palette": "bovinesandbuttercups:bovinesandbuttercups/item/tropical_blue_nectar_bowl",
+  "nectar": "bovinesandbuttercups:tropical_blue",
   "offspring_conditions": [
     {
       "condition": "minecraft:any_of",

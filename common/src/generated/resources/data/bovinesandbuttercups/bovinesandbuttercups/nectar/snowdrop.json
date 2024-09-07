@@ -1,0 +1,9 @@
+{
+  "effects": [
+    {
+      "duration": 7200,
+      "id": "minecraft:mining_fatigue"
+    }
+  ],
+  "model_location": "bovinesandbuttercups:bovinesandbuttercups/item/snowdrop_nectar_bowl"
+}

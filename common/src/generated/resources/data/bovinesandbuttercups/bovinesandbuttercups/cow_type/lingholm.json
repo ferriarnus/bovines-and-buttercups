@@ -19,13 +19,7 @@
     }
   ],
   "natural_spawns": [],
-  "nectar_effects": [
-    {
-      "duration": 2400,
-      "id": "minecraft:speed"
-    }
-  ],
-  "nectar_palette": "bovinesandbuttercups:bovinesandbuttercups/item/lingholm_nectar_bowl",
+  "nectar": "bovinesandbuttercups:lingholm",
   "offspring_conditions": [
     {
       "condition": "minecraft:any_of",

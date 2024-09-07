@@ -1,6 +1,8 @@
 package house.greenhouse.bovinesandbuttercups.datagen;
 
 import com.mojang.serialization.Lifecycle;
+import house.greenhouse.bovinesandbuttercups.content.data.nectar.Nectar;
+import house.greenhouse.bovinesandbuttercups.registry.BovinesNectars;
 import net.fabricmc.fabric.api.datagen.v1.DataGeneratorEntrypoint;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
@@ -58,7 +60,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.BiConsumer;
 
-public class BovinesDataGen implements DataGeneratorEntrypoint {
+public class BovinesDataGenerator implements DataGeneratorEntrypoint {
     @Override
     public void onInitializeDataGenerator(FabricDataGenerator generator) {
         FabricDataGenerator.Pack pack = generator.createPack();
@@ -73,10 +75,12 @@ public class BovinesDataGen implements DataGeneratorEntrypoint {
         pack.addProvider(EntityTypeTagProvider::new);
         pack.addProvider(FlowerCrownPetalTagProvider::new);
         pack.addProvider(ItemTagProvider::new);
+        pack.addProvider(NectarTagProvider::new);
     }
 
     @Override
     public void buildRegistry(RegistrySetBuilder registryBuilder) {
+        registryBuilder.add(BovinesRegistryKeys.NECTAR, BovinesNectars::bootstrap);
         registryBuilder.add(BovinesRegistryKeys.COW_TYPE, BovinesCowTypes::bootstrap);
         registryBuilder.add(BovinesRegistryKeys.FLOWER_CROWN_MATERIAL, BovinesFlowerCrownMaterials::bootstrap);
     }
@@ -89,6 +93,7 @@ public class BovinesDataGen implements DataGeneratorEntrypoint {
 
         @Override
         protected void configure(HolderLookup.Provider registries, Entries entries) {
+            BovinesNectars.bootstrap(createContext(registries, entries));
             BovinesCowTypes.bootstrap(createContext(registries, entries));
             BovinesFlowerCrownMaterials.bootstrap(createContext(registries, entries));
         }
@@ -352,7 +357,7 @@ public class BovinesDataGen implements DataGeneratorEntrypoint {
 
         @Override
         protected void addTags(HolderLookup.Provider wrapperLookup) {
-            tag(BovinesTags.FlowerCrownPetalTags.CREATIVE_MENU_ORDER)
+            tag(BovinesTags.FlowerCrownMaterialTags.CREATIVE_MENU_ORDER)
                     .add(BovinesFlowerCrownMaterials.FREESIA)
                     .add(BovinesFlowerCrownMaterials.BIRD_OF_PARADISE)
                     .add(BovinesFlowerCrownMaterials.BUTTERCUP)
@@ -389,6 +394,27 @@ public class BovinesDataGen implements DataGeneratorEntrypoint {
                             reverseLookup(BovinesItems.SNOWDROP),
                             reverseLookup(BovinesItems.TROPICAL_BLUE)
                     );
+        }
+    }
+
+    private static class NectarTagProvider extends FabricTagProvider<Nectar> {
+        public NectarTagProvider(FabricDataOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
+            super(output, BovinesRegistryKeys.NECTAR, registriesFuture);
+        }
+
+        @Override
+        protected void addTags(HolderLookup.Provider wrapperLookup) {
+            tag(BovinesTags.NectarTags.CREATIVE_MENU_ORDER)
+                    .add(BovinesNectars.FREESIA)
+                    .add(BovinesNectars.BIRD_OF_PARADISE)
+                    .add(BovinesNectars.BUTTERCUP)
+                    .add(BovinesNectars.LIMELIGHT)
+                    .add(BovinesNectars.LINGHOLM)
+                    .add(BovinesNectars.CHARGELILY)
+                    .add(BovinesNectars.TROPICAL_BLUE)
+                    .add(BovinesNectars.HYACINTH)
+                    .add(BovinesNectars.PINK_DAISY)
+                    .add(BovinesNectars.SNOWDROP);
         }
     }
 }

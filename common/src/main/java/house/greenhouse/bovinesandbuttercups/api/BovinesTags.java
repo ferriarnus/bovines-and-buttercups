@@ -2,6 +2,7 @@ package house.greenhouse.bovinesandbuttercups.api;
 
 import house.greenhouse.bovinesandbuttercups.BovinesAndButtercups;
 import house.greenhouse.bovinesandbuttercups.content.data.flowercrown.FlowerCrownMaterial;
+import house.greenhouse.bovinesandbuttercups.content.data.nectar.Nectar;
 import house.greenhouse.bovinesandbuttercups.registry.BovinesRegistryKeys;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.tags.TagKey;
@@ -45,15 +46,22 @@ public class BovinesTags {
         public static final TagKey<EntityType<?>> WILL_EQUIP_FLOWER_CROWN = TagKey.create(Registries.ENTITY_TYPE, BovinesAndButtercups.asResource("will_equip/flower_crown"));
     }
 
-    public static class FlowerCrownPetalTags {
+    public static class FlowerCrownMaterialTags {
         /**
-         * The order in which the flower crowns with each individual petal in the creative menu will appear.
+         * The order in which the flower crowns with each individual material in the creative menu will appear.
          */
         public static final TagKey<FlowerCrownMaterial> CREATIVE_MENU_ORDER = TagKey.create(BovinesRegistryKeys.FLOWER_CROWN_MATERIAL, BovinesAndButtercups.asResource("creative_menu_order"));
     }
 
     public static class ItemTags {
         public static final TagKey<Item> MOOBLOOM_FLOWERS = TagKey.create(Registries.ITEM, BovinesAndButtercups.asResource("moobloom_flowers"));
+    }
+
+    public static class NectarTags {
+        /**
+         * The order in which the nectars in the creative menu will appear.
+         */
+        public static final TagKey<Nectar> CREATIVE_MENU_ORDER = TagKey.create(BovinesRegistryKeys.NECTAR, BovinesAndButtercups.asResource("creative_menu_order"));
     }
 
     public static class StructureTags {

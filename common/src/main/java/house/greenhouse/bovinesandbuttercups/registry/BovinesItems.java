@@ -1,7 +1,7 @@
 package house.greenhouse.bovinesandbuttercups.registry;
 
 import house.greenhouse.bovinesandbuttercups.BovinesAndButtercups;
-import house.greenhouse.bovinesandbuttercups.content.component.NectarEffects;
+import house.greenhouse.bovinesandbuttercups.content.component.ItemNectar;
 import house.greenhouse.bovinesandbuttercups.content.item.CustomFlowerItem;
 import house.greenhouse.bovinesandbuttercups.content.item.CustomHugeMushroomItem;
 import house.greenhouse.bovinesandbuttercups.content.item.CustomMushroomItem;
@@ -19,7 +19,7 @@ import net.minecraft.world.item.component.ItemAttributeModifiers;
 import java.util.List;
 
 public class BovinesItems {
-    public static final NectarBowlItem NECTAR_BOWL = new NectarBowlItem(new Item.Properties().stacksTo(1).component(BovinesDataComponents.NECTAR_EFFECTS, NectarEffects.EMPTY).craftRemainder(Items.BOWL));
+    public static final NectarBowlItem NECTAR_BOWL = new NectarBowlItem(new Item.Properties().stacksTo(1).component(BovinesDataComponents.NECTAR, ItemNectar.EMPTY).craftRemainder(Items.BOWL));
     public static final Item MOOBLOOM_SPAWN_EGG = new SpawnEggItem(BovinesEntityTypes.MOOBLOOM, 0xfad200, 0x437f34, new Item.Properties());
 
     public static final BlockItem BUTTERCUP = new BlockItem(BovinesBlocks.BUTTERCUP, new Item.Properties());

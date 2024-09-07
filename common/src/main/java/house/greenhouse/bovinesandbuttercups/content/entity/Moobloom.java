@@ -7,9 +7,9 @@ import house.greenhouse.bovinesandbuttercups.api.cowtype.OffspringConditions;
 import house.greenhouse.bovinesandbuttercups.content.advancements.criterion.MutationTrigger;
 import house.greenhouse.bovinesandbuttercups.content.block.entity.CustomFlowerBlockEntity;
 import house.greenhouse.bovinesandbuttercups.content.component.ItemCustomFlower;
-import house.greenhouse.bovinesandbuttercups.content.component.ItemMoobloomType;
-import house.greenhouse.bovinesandbuttercups.content.component.NectarEffects;
+import house.greenhouse.bovinesandbuttercups.content.component.ItemNectar;
 import house.greenhouse.bovinesandbuttercups.content.data.configuration.MoobloomConfiguration;
+import house.greenhouse.bovinesandbuttercups.content.data.nectar.NectarEffects;
 import house.greenhouse.bovinesandbuttercups.mixin.EntityAccessor;
 import house.greenhouse.bovinesandbuttercups.platform.BovinesPlatform;
 import house.greenhouse.bovinesandbuttercups.registry.BovinesBlocks;
@@ -318,17 +318,12 @@ public class Moobloom extends Cow implements Shearable {
             } else if (stack.is(Items.BOWL)) {
                 ItemStack stack2;
                 stack2 = new ItemStack(BovinesItems.NECTAR_BOWL);
-                if (!getCowType().value().configuration().nectarEffects().effects().isEmpty()) {
-                    stack2.set(BovinesDataComponents.NECTAR_EFFECTS, getCowType().value().configuration().nectarEffects());
-                } else if (getCowType().value().configuration().flower().blockState().isPresent() && this.getCowType().value().configuration().flower().blockState().get().getBlock() instanceof FlowerBlock) {
-                    ((FlowerBlock)getCowType().value().configuration().flower().blockState().get().getBlock()).getSuspiciousEffects().effects().forEach(effectEntry -> {
-                        stack2.set(BovinesDataComponents.NECTAR_EFFECTS, stack2.getOrDefault(BovinesDataComponents.NECTAR_EFFECTS, new NectarEffects(List.of()).withEffectAdded(new NectarEffects.Entry(effectEntry.effect(), effectEntry.duration()))));
-                    });
+                if (getCowType().value().configuration().nectar().isPresent()) {
+                    stack2.set(BovinesDataComponents.NECTAR, new ItemNectar(getCowType().value().configuration().nectar().get(), Optional.of((Holder<CowType<?>>)(Object)getCowType())));
                 } else {
                     return InteractionResult.PASS;
                 }
 
-                stack2.set(BovinesDataComponents.MOOBLOOM_TYPE, new ItemMoobloomType((Holder)getCowType()));
                 ItemStack stack3 = ItemUtils.createFilledResult(stack, player, stack2, false);
                 player.setItemInHand(hand, stack3);
                 this.playSound(BovinesSoundEvents.MOOBLOOM_MILK, 1.0f, 1.0f);

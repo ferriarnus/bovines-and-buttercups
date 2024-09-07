@@ -29,7 +29,7 @@
             "house.greenhouse.bovinesandbuttercups.client.BovinesAndButtercupsFabricClient"
         ],
         "fabric-datagen": [
-            "house.greenhouse.bovinesandbuttercups.datagen.BovinesDataGen"
+            "house.greenhouse.bovinesandbuttercups.datagen.BovinesDataGenerator"
         ]
     },
     "mixins": [

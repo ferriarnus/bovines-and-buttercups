@@ -1,8 +1,9 @@
 package house.greenhouse.bovinesandbuttercups.content.item;
 
-import house.greenhouse.bovinesandbuttercups.content.component.NectarEffects;
+import house.greenhouse.bovinesandbuttercups.content.component.ItemNectar;
 import house.greenhouse.bovinesandbuttercups.registry.BovinesDataComponents;
 import net.minecraft.advancements.CriteriaTriggers;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
@@ -13,9 +14,12 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ItemUtils;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.List;
 
 public class NectarBowlItem extends Item {
 
@@ -33,8 +37,8 @@ public class NectarBowlItem extends Item {
         if (livingEntity instanceof Player && !player.getAbilities().instabuild)
             itemStack.shrink(1);
 
-        NectarEffects effects = itemStack.getOrDefault(BovinesDataComponents.NECTAR_EFFECTS, NectarEffects.EMPTY);
-        effects.applyEffectInstance(livingEntity);
+        ItemNectar effects = itemStack.getOrDefault(BovinesDataComponents.NECTAR, ItemNectar.EMPTY);
+        effects.nectar().value().effects().applyEffectInstance(livingEntity);
         if (player != null) {
             player.awardStat(Stats.ITEM_USED.get(this));
             if (!player.getAbilities().instabuild) {
@@ -45,6 +49,10 @@ public class NectarBowlItem extends Item {
             return new ItemStack(Items.BOWL);
         }
         return itemStack;
+    }
+
+    @Override
+    public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
     }
 
     @Override

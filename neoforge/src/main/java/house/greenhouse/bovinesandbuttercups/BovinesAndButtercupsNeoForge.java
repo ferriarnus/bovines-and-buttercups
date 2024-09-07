@@ -9,7 +9,7 @@ import house.greenhouse.bovinesandbuttercups.content.entity.Moobloom;
 import house.greenhouse.bovinesandbuttercups.network.clientbound.SyncConditionedTextureModifier;
 import house.greenhouse.bovinesandbuttercups.network.clientbound.SyncCowTypeClientboundPacket;
 import house.greenhouse.bovinesandbuttercups.network.clientbound.SyncLockdownEffectsClientboundPacket;
-import house.greenhouse.bovinesandbuttercups.platform.NeoBovinesPlatformHelper;
+import house.greenhouse.bovinesandbuttercups.platform.BovinesPlatformHelperNeoForge;
 import house.greenhouse.bovinesandbuttercups.registry.BovinesAttachments;
 import house.greenhouse.bovinesandbuttercups.registry.BovinesEffects;
 import house.greenhouse.bovinesandbuttercups.registry.BovinesEntityTypes;
@@ -51,7 +51,7 @@ import java.util.Optional;
 public class BovinesAndButtercupsNeoForge {
     
     public BovinesAndButtercupsNeoForge(IEventBus eventBus) {
-        BovinesAndButtercups.init(new NeoBovinesPlatformHelper());
+        BovinesAndButtercups.init(new BovinesPlatformHelperNeoForge());
     }
 
     @EventBusSubscriber(modid = BovinesAndButtercups.MOD_ID, bus = EventBusSubscriber.Bus.GAME)

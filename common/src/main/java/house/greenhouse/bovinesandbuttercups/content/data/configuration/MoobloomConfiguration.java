@@ -8,10 +8,9 @@ import house.greenhouse.bovinesandbuttercups.api.block.BlockReference;
 import house.greenhouse.bovinesandbuttercups.api.block.CustomFlowerType;
 import house.greenhouse.bovinesandbuttercups.api.cowtype.CowModelLayer;
 import house.greenhouse.bovinesandbuttercups.api.cowtype.OffspringConditions;
-import house.greenhouse.bovinesandbuttercups.content.component.NectarEffects;
 import house.greenhouse.bovinesandbuttercups.content.data.modifier.GrassTintTextureModifierFactory;
+import house.greenhouse.bovinesandbuttercups.content.data.nectar.Nectar;
 import net.minecraft.core.Holder;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 
 import java.util.List;
@@ -21,19 +20,17 @@ public record MoobloomConfiguration(Settings settings,
                                     BlockReference<Holder<CustomFlowerType>> flower,
                                     BlockReference<Holder<CustomFlowerType>> bud,
                                     List<CowModelLayer> layers,
-                                    Optional<ResourceLocation> nectarPalette,
-                                    NectarEffects nectarEffects,
+                                    Optional<Holder<Nectar>> nectar,
                                     OffspringConditions offspringConditions) implements CowTypeConfiguration {
 
-    public static final MoobloomConfiguration DEFAULT = new MoobloomConfiguration(new CowTypeConfiguration.Settings(Optional.of(BovinesAndButtercups.asResource("bovinesandbuttercups/moobloom/missing_moobloom")), List.of(), List.of(), Optional.empty()), new BlockReference<>(Optional.empty(), Optional.empty(), Optional.of(Holder.direct(CustomFlowerType.MISSING))), new BlockReference<>(Optional.empty(), Optional.empty(), Optional.of(Holder.direct(CustomFlowerType.MISSING))), List.of(new CowModelLayer(BovinesAndButtercups.asResource("bovinesandbuttercups/moobloom/moobloom_grass_layer"), List.of(new GrassTintTextureModifierFactory()))), Optional.empty(), NectarEffects.EMPTY, OffspringConditions.EMPTY);
+    public static final MoobloomConfiguration DEFAULT = new MoobloomConfiguration(new CowTypeConfiguration.Settings(Optional.of(BovinesAndButtercups.asResource("bovinesandbuttercups/moobloom/missing_moobloom")), List.of(), List.of(), Optional.empty()), new BlockReference<>(Optional.empty(), Optional.empty(), Optional.of(Holder.direct(CustomFlowerType.MISSING))), new BlockReference<>(Optional.empty(), Optional.empty(), Optional.of(Holder.direct(CustomFlowerType.MISSING))), List.of(new CowModelLayer(BovinesAndButtercups.asResource("bovinesandbuttercups/moobloom/moobloom_grass_layer"), List.of(new GrassTintTextureModifierFactory()))), Optional.empty(), OffspringConditions.EMPTY);
 
     public static final MapCodec<MoobloomConfiguration> CODEC = RecordCodecBuilder.mapCodec(builder -> builder.group(
             Settings.CODEC.forGetter(MoobloomConfiguration::settings),
             BlockReference.createCodec(CustomFlowerType.CODEC, "custom_flower").fieldOf("flower").forGetter(MoobloomConfiguration::flower),
             BlockReference.createCodec(CustomFlowerType.CODEC, "custom_flower").fieldOf("bud").forGetter(MoobloomConfiguration::bud),
             CowModelLayer.CODEC.listOf().optionalFieldOf("layers", List.of()).forGetter(MoobloomConfiguration::layers),
-            ResourceLocation.CODEC.optionalFieldOf("nectar_palette").forGetter(MoobloomConfiguration::nectarPalette),
-            NectarEffects.CODEC.optionalFieldOf("nectar_effects", NectarEffects.EMPTY).forGetter(MoobloomConfiguration::nectarEffects),
+            Nectar.CODEC.optionalFieldOf("nectar").forGetter(MoobloomConfiguration::nectar),
             OffspringConditions.CODEC.optionalFieldOf("offspring_conditions", OffspringConditions.EMPTY).forGetter(MoobloomConfiguration::offspringConditions)
     ).apply(builder, MoobloomConfiguration::new));
 

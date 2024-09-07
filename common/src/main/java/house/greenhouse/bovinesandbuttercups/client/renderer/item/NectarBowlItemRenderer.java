@@ -23,8 +23,8 @@ public class NectarBowlItemRenderer {
         Level level = Minecraft.getInstance().level;
         if (level == null) return;
 
-        if (stack.has(BovinesDataComponents.MOOBLOOM_TYPE)) {
-            Optional<ResourceLocation> modelLocationWithoutVariant = Optional.ofNullable(stack.get(BovinesDataComponents.MOOBLOOM_TYPE)).filter(itemMoobloomType -> itemMoobloomType.cowType().isBound() && itemMoobloomType.cowType().value().configuration() instanceof MoobloomConfiguration).flatMap(itemMoobloomType -> ((MoobloomConfiguration)itemMoobloomType.cowType().value().configuration()).nectarPalette());
+        if (stack.has(BovinesDataComponents.NECTAR)) {
+            Optional<ResourceLocation> modelLocationWithoutVariant = Optional.ofNullable(stack.get(BovinesDataComponents.NECTAR)).map(itemNectar -> itemNectar.nectar().value().modelLocation());
             if (modelLocationWithoutVariant.isPresent())
                 resourceLocation = BovineStatesAssociationRegistry.getItem(modelLocationWithoutVariant.get()).orElse(BovinesAndButtercups.asResource("bovinesandbuttercups/item/buttercup_nectar_bowl/inventory"));
         } else

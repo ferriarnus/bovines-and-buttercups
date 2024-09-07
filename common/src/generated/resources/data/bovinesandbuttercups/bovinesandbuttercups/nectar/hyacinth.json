@@ -1,0 +1,9 @@
+{
+  "effects": [
+    {
+      "duration": 2400,
+      "id": "minecraft:wither"
+    }
+  ],
+  "model_location": "bovinesandbuttercups:bovinesandbuttercups/item/hyacinth_nectar_bowl"
+}

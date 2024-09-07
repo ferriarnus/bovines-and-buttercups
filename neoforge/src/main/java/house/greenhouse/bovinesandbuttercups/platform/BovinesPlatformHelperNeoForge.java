@@ -2,8 +2,6 @@ package house.greenhouse.bovinesandbuttercups.platform;
 
 import house.greenhouse.bovinesandbuttercups.api.attachment.CowTypeAttachment;
 import house.greenhouse.bovinesandbuttercups.api.attachment.LockdownAttachment;
-import house.greenhouse.bovinesandbuttercups.platform.BovinesPlatform;
-import house.greenhouse.bovinesandbuttercups.platform.BovinesPlatformHelper;
 import house.greenhouse.bovinesandbuttercups.registry.BovinesAttachments;
 import house.greenhouse.bovinesandbuttercups.util.PottedBlockMapUtil;
 import net.minecraft.core.Registry;
@@ -19,7 +17,7 @@ import net.neoforged.neoforge.registries.RegistryBuilder;
 
 import java.util.Map;
 
-public class NeoBovinesPlatformHelper implements BovinesPlatformHelper {
+public class BovinesPlatformHelperNeoForge implements BovinesPlatformHelper {
 
     @Override
     public BovinesPlatform getPlatform() {

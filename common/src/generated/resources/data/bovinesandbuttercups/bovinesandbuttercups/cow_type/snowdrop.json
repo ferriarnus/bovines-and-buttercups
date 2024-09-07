@@ -45,13 +45,7 @@
     }
   ],
   "natural_spawns": [],
-  "nectar_effects": [
-    {
-      "duration": 7200,
-      "id": "minecraft:mining_fatigue"
-    }
-  ],
-  "nectar_palette": "bovinesandbuttercups:bovinesandbuttercups/item/snowdrop_nectar_bowl",
+  "nectar": "bovinesandbuttercups:snowdrop",
   "offspring_conditions": [
     {
       "condition": "minecraft:any_of",

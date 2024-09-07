@@ -19,13 +19,7 @@
     }
   ],
   "natural_spawns": [],
-  "nectar_effects": [
-    {
-      "duration": 9600,
-      "id": "minecraft:water_breathing"
-    }
-  ],
-  "nectar_palette": "bovinesandbuttercups:bovinesandbuttercups/item/freesia_nectar_bowl",
+  "nectar": "bovinesandbuttercups:freesia",
   "offspring_conditions": [
     {
       "condition": "minecraft:any_of",

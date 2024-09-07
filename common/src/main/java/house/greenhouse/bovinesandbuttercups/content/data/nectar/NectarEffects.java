@@ -1,4 +1,4 @@
-package house.greenhouse.bovinesandbuttercups.content.component;
+package house.greenhouse.bovinesandbuttercups.content.data.nectar;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -28,10 +28,6 @@ public record NectarEffects(List<NectarEffects.Entry> effects) {
     public static final StreamCodec<RegistryFriendlyByteBuf, NectarEffects> STREAM_CODEC = NectarEffects.Entry.STREAM_CODEC
             .apply(ByteBufCodecs.list())
             .map(NectarEffects::new, NectarEffects::effects);
-
-    public NectarEffects withEffectAdded(NectarEffects.Entry entry) {
-        return new NectarEffects(Util.copyAndAdd(this.effects, entry));
-    }
 
     public void applyEffectInstance(LivingEntity entity) {
         for (Entry entry : effects) {

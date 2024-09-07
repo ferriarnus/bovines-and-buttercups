@@ -19,13 +19,7 @@
     }
   ],
   "natural_spawns": [],
-  "nectar_effects": [
-    {
-      "duration": 1200,
-      "id": "minecraft:haste"
-    }
-  ],
-  "nectar_palette": "bovinesandbuttercups:bovinesandbuttercups/item/chargelily_nectar_bowl",
+  "nectar": "bovinesandbuttercups:chargelily",
   "particle": {
     "type": "bovinesandbuttercups:bloom",
     "color": 4699391

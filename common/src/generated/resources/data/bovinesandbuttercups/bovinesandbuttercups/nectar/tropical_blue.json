@@ -1,0 +1,9 @@
+{
+  "effects": [
+    {
+      "duration": 9600,
+      "id": "minecraft:fire_resistance"
+    }
+  ],
+  "model_location": "bovinesandbuttercups:bovinesandbuttercups/item/tropical_blue_nectar_bowl"
+}
