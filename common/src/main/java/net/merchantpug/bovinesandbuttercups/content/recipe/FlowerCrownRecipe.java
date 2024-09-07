@@ -36,9 +36,6 @@ public class FlowerCrownRecipe extends CustomRecipe {
     public boolean matches(CraftingInput input, Level level) {
         List<ItemStack> list = Lists.newArrayList();
 
-        if (input.width() != 3 || input.height() != 3)
-            return false;
-
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
                 Optional<Unit> hasItem = SHAPE.get(j + i * 3);
