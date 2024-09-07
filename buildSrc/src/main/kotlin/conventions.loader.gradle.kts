@@ -1,4 +1,4 @@
-import dev.greenhouseteam.bovinesandbuttercups.gradle.Properties
+import house.greenhouse.bovinesandbuttercups.gradle.Properties
 
 plugins {
     id("conventions.common")

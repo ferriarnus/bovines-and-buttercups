@@ -1,5 +1,5 @@
-import dev.greenhouseteam.bovinesandbuttercups.gradle.Properties
-import dev.greenhouseteam.bovinesandbuttercups.gradle.Versions
+import house.greenhouse.bovinesandbuttercups.gradle.Properties
+import house.greenhouse.bovinesandbuttercups.gradle.Versions
 
 plugins {
     id("conventions.common")
