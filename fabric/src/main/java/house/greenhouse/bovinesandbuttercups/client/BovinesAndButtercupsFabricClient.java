@@ -12,12 +12,11 @@ import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.fabricmc.fabric.api.resource.IdentifiableResourceReloadListener;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import house.greenhouse.bovinesandbuttercups.BovinesAndButtercups;
-import house.greenhouse.bovinesandbuttercups.client.BovinesAndButtercupsClient;
 import house.greenhouse.bovinesandbuttercups.client.particle.BloomParticle;
 import house.greenhouse.bovinesandbuttercups.client.particle.ModelLocationParticle;
 import house.greenhouse.bovinesandbuttercups.client.particle.ShroomParticle;
 import house.greenhouse.bovinesandbuttercups.client.platform.BovinesClientHelperFabric;
-import house.greenhouse.bovinesandbuttercups.client.registry.BovinesModelLayers;
+import house.greenhouse.bovinesandbuttercups.client.util.BovinesModelLayers;
 import house.greenhouse.bovinesandbuttercups.client.renderer.block.CustomFlowerPotBlockRenderer;
 import house.greenhouse.bovinesandbuttercups.client.renderer.block.CustomFlowerRenderer;
 import house.greenhouse.bovinesandbuttercups.client.renderer.block.CustomHugeMushroomBlockRenderer;
@@ -42,6 +41,7 @@ import house.greenhouse.bovinesandbuttercups.registry.BovinesEntityTypes;
 import house.greenhouse.bovinesandbuttercups.registry.BovinesItems;
 import house.greenhouse.bovinesandbuttercups.registry.BovinesParticleTypes;
 import net.minecraft.client.model.CowModel;
+import net.minecraft.client.model.geom.builders.CubeDeformation;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.resources.ResourceLocation;
@@ -59,7 +59,8 @@ public class BovinesAndButtercupsFabricClient implements ClientModInitializer {
         BovineBlockstateTypes.init();
 
         EntityModelLayerRegistry.registerModelLayer(BovinesModelLayers.MOOBLOOM_MODEL_LAYER, CowModel::createBodyLayer);
-        EntityModelLayerRegistry.registerModelLayer(BovinesModelLayers.FLOWER_CROWN_MODEL_LAYER, FlowerCrownModel::createLayer);
+        EntityModelLayerRegistry.registerModelLayer(BovinesModelLayers.FLOWER_CROWN_MODEL_LAYER, () -> FlowerCrownModel.createLayer(new CubeDeformation(0.5F)));
+        EntityModelLayerRegistry.registerModelLayer(BovinesModelLayers.PIGLIN_FLOWER_CROWN_MODEL_LAYER, () -> FlowerCrownModel.createLayer(new CubeDeformation(1.5F, 0.5F, 0.5F)));
         EntityRendererRegistry.register(BovinesEntityTypes.MOOBLOOM, MoobloomRenderer::new);
 
         ResourceManagerHelper.get(PackType.CLIENT_RESOURCES).registerReloadListener(new IdentifiableResourceReloadListener() {

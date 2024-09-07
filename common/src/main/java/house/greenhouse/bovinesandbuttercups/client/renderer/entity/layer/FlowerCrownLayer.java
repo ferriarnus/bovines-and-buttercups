@@ -3,7 +3,7 @@ package house.greenhouse.bovinesandbuttercups.client.renderer.entity.layer;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import house.greenhouse.bovinesandbuttercups.BovinesAndButtercups;
-import house.greenhouse.bovinesandbuttercups.client.registry.BovinesModelLayers;
+import house.greenhouse.bovinesandbuttercups.client.util.BovinesModelLayers;
 import house.greenhouse.bovinesandbuttercups.client.renderer.entity.model.FlowerCrownModel;
 import house.greenhouse.bovinesandbuttercups.client.util.BovinesAtlases;
 import house.greenhouse.bovinesandbuttercups.content.component.FlowerCrown;
@@ -11,6 +11,7 @@ import house.greenhouse.bovinesandbuttercups.registry.BovinesDataComponents;
 import house.greenhouse.bovinesandbuttercups.registry.BovinesItems;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.HeadedModel;
+import net.minecraft.client.model.PiglinModel;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -36,9 +37,13 @@ public class FlowerCrownLayer<T extends LivingEntity, M extends EntityModel<T> &
 
     public FlowerCrownLayer(RenderLayerParent<T, M> renderer, Function<ModelLayerLocation, ModelPart> baker, ModelManager modelManager) {
         super(renderer);
-        this.xModel = new FlowerCrownModel<>(baker.apply(BovinesModelLayers.FLOWER_CROWN_MODEL_LAYER));
-        this.zModel = new FlowerCrownModel<>(baker.apply(BovinesModelLayers.FLOWER_CROWN_MODEL_LAYER));
+        this.xModel = new FlowerCrownModel<>(baker.apply(getModelLayerLocation()));
+        this.zModel = new FlowerCrownModel<>(baker.apply(getModelLayerLocation()));
         petalsTextureAtlas = modelManager.getAtlas(BovinesAtlases.PETALS_SHEET);
+    }
+
+    private ModelLayerLocation getModelLayerLocation() {
+        return getParentModel() instanceof PiglinModel ? BovinesModelLayers.PIGLIN_FLOWER_CROWN_MODEL_LAYER : BovinesModelLayers.FLOWER_CROWN_MODEL_LAYER;
     }
 
     @Override

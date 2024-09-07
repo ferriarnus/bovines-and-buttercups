@@ -33,10 +33,10 @@ public class FlowerCrownModel<T extends LivingEntity> extends EntityModel<T> imp
         root.render(poseStack, buffer, packedLight, packedOverlay, color);
     }
 
-    public static LayerDefinition createLayer() {
+    public static LayerDefinition createLayer(CubeDeformation deformation) {
         MeshDefinition meshDefinition = new MeshDefinition();
         PartDefinition partDefinition = meshDefinition.getRoot();
-        partDefinition.addOrReplaceChild("head", CubeListBuilder.create().texOffs(0, 0).addBox(-4.0F, -8.0F, -4.0F, 8.0F, 8.0F, 8.0F, new CubeDeformation(0.4F)),
+        partDefinition.addOrReplaceChild("head", CubeListBuilder.create().texOffs(0, 0).addBox(-4.0F, -8.0F, -4.0F, 8.0F, 8.0F, 8.0F, deformation.extend(-0.1F)),
                 PartPose.offset(0.0F, 0.0F, 0.0F));
         return LayerDefinition.create(meshDefinition, 32, 16);
     }
