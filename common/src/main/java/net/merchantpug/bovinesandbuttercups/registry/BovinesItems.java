@@ -1,6 +1,7 @@
 package net.merchantpug.bovinesandbuttercups.registry;
 
 import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
+import net.merchantpug.bovinesandbuttercups.content.component.FlowerCrown;
 import net.merchantpug.bovinesandbuttercups.content.component.NectarEffects;
 import net.merchantpug.bovinesandbuttercups.content.item.CustomFlowerItem;
 import net.merchantpug.bovinesandbuttercups.content.item.CustomHugeMushroomItem;

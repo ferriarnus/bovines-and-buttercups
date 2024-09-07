@@ -1,6 +1,11 @@
 {
     "sources": [
         {
+            "type": "directory",
+            "source": "bovinesandbuttercups/petals/models",
+            "prefix": "bovinesandbuttercups/petals/models/"
+        },
+        {
             "type": "paletted_permutations",
             "textures": [
                 "bovinesandbuttercups:bovinesandbuttercups/petals/models/top_left",

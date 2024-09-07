@@ -2,11 +2,13 @@ package net.merchantpug.bovinesandbuttercups.client.renderer.entity.layer;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
 import net.merchantpug.bovinesandbuttercups.client.registry.BovinesModelLayers;
 import net.merchantpug.bovinesandbuttercups.client.renderer.entity.model.FlowerCrownModel;
 import net.merchantpug.bovinesandbuttercups.client.util.BovinesAtlases;
 import net.merchantpug.bovinesandbuttercups.content.component.FlowerCrown;
 import net.merchantpug.bovinesandbuttercups.registry.BovinesDataComponents;
+import net.merchantpug.bovinesandbuttercups.registry.BovinesItems;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.HeadedModel;
 import net.minecraft.client.model.geom.ModelLayerLocation;
@@ -19,9 +21,11 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.ModelManager;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Function;
 
@@ -40,8 +44,9 @@ public class FlowerCrownLayer<T extends LivingEntity, M extends EntityModel<T> &
     @Override
     public void render(PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, T livingEntity, float limbSwing, float limbSwingAmount, float partialTick, float ageInTicks, float netHeadYaw, float headPitch) {
         ItemStack stack = livingEntity.getItemBySlot(EquipmentSlot.HEAD);
-        if (!stack.has(BovinesDataComponents.FLOWER_CROWN))
+        if (!stack.is(BovinesItems.FLOWER_CROWN))
             return;
+
         FlowerCrown component = stack.get(BovinesDataComponents.FLOWER_CROWN);
 
         getParentModel().copyPropertiesTo(zModel);
@@ -60,9 +65,25 @@ public class FlowerCrownLayer<T extends LivingEntity, M extends EntityModel<T> &
         renderPart(xModel, poseStack, bufferSource, packedLight, 7, component);
     }
 
-    private void renderPart(FlowerCrownModel<T> model, PoseStack poseStack, MultiBufferSource buffer, int packedLight, int index, FlowerCrown crown) {
-        TextureAtlasSprite sprite = this.petalsTextureAtlas.getSprite(crown.getEquippedTexture(index));
+    private void renderPart(FlowerCrownModel<T> model, PoseStack poseStack, MultiBufferSource buffer, int packedLight, int index, @Nullable FlowerCrown crown) {
+        TextureAtlasSprite sprite = this.petalsTextureAtlas.getSprite(getSpriteTexture(index));
+        if (crown != null)
+            sprite = this.petalsTextureAtlas.getSprite(crown.getEquippedTexture(index));
         VertexConsumer consumer = sprite.wrap(buffer.getBuffer(RenderType.armorCutoutNoCull(BovinesAtlases.PETALS_SHEET)));
         model.renderToBuffer(poseStack, consumer, packedLight, OverlayTexture.NO_OVERLAY);
+    }
+
+    private static ResourceLocation getSpriteTexture(int index) {
+        return switch (index) {
+            case 0 -> BovinesAndButtercups.asResource("bovinesandbuttercups/petals/models/center_left");
+            case 1 -> BovinesAndButtercups.asResource("bovinesandbuttercups/petals/models/top_left");
+            case 2 -> BovinesAndButtercups.asResource("bovinesandbuttercups/petals/models/top");
+            case 3 -> BovinesAndButtercups.asResource("bovinesandbuttercups/petals/models/top_right");
+            case 4 -> BovinesAndButtercups.asResource("bovinesandbuttercups/petals/models/center_right");
+            case 5 -> BovinesAndButtercups.asResource("bovinesandbuttercups/petals/models/bottom_right");
+            case 6 -> BovinesAndButtercups.asResource("bovinesandbuttercups/petals/models/bottom");
+            case 7 -> BovinesAndButtercups.asResource("bovinesandbuttercups/petals/models/bottom_left");
+            default -> throw new UnsupportedOperationException("Could not get index outside of range 0-7.");
+        };
     }
 }
