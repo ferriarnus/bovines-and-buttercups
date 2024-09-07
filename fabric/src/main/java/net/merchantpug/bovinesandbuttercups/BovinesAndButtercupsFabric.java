@@ -16,6 +16,7 @@ import net.merchantpug.bovinesandbuttercups.content.entity.Moobloom;
 import net.merchantpug.bovinesandbuttercups.network.clientbound.SyncConditionedTextureModifier;
 import net.merchantpug.bovinesandbuttercups.network.clientbound.SyncCowTypeClientboundPacket;
 import net.merchantpug.bovinesandbuttercups.network.clientbound.SyncLockdownEffectsClientboundPacket;
+import net.merchantpug.bovinesandbuttercups.registry.BovinesArmorMaterials;
 import net.merchantpug.bovinesandbuttercups.registry.BovinesAttachments;
 import net.merchantpug.bovinesandbuttercups.registry.BovinesBlockEntityTypes;
 import net.merchantpug.bovinesandbuttercups.registry.BovinesBlocks;
@@ -81,6 +82,8 @@ public class BovinesAndButtercupsFabric implements ModInitializer {
     }
 
     private static void registerContents() {
+        BovinesSoundEvents.registerHolders(Registry::registerForHolder);
+        BovinesArmorMaterials.registerAll(Registry::registerForHolder);
         BovinesBlockEntityTypes.registerAll(Registry::register);
         BovinesBlocks.registerAll(Registry::register);
         BovinesCowTypeTypes.registerAll(Registry::register);
@@ -118,6 +121,7 @@ public class BovinesAndButtercupsFabric implements ModInitializer {
                     BovinesItems.BIRD_OF_PARADISE,
                     BovinesItems.BUTTERCUP,
                     BovinesItems.LIMELIGHT,
+                    BovinesItems.LINGHOLM,
                     BovinesItems.CHARGELILY,
                     BovinesItems.TROPICAL_BLUE,
                     BovinesItems.HYACINTH,

@@ -1,4 +1,4 @@
-package net.merchantpug.bovinesandbuttercups.client.model;
+package net.merchantpug.bovinesandbuttercups.client.renderer.entity.model;
 
 import net.merchantpug.bovinesandbuttercups.content.entity.Moobloom;
 import net.minecraft.client.model.CowModel;

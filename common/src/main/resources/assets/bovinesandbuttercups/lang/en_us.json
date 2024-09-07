@@ -38,6 +38,20 @@
 
   "item.bovinesandbuttercups.nectar_bowl": "Bowl of Nectar",
   "item.bovinesandbuttercups.moobloom_spawn_egg": "Moobloom Spawn Egg",
+  "item.bovinesandbuttercups.flower_crown": "Flower Crown",
+
+  "item.bovinesandbuttercups.flower_crown.equippable": "Equippable on Head",
+  "item.bovinesandbuttercups.flower_crown.petal_amount": "%s \u00D7%s",
+  "flower_crown_material.bovinesandbuttercups.buttercup": "Buttercup Petal",
+  "flower_crown_material.bovinesandbuttercups.pink_daisy": "Pink Daisy Petal",
+  "flower_crown_material.bovinesandbuttercups.limelight": "Limelight Petal",
+  "flower_crown_material.bovinesandbuttercups.bird_of_paradise": "Bird of Paradise Petal",
+  "flower_crown_material.bovinesandbuttercups.chargelily": "Chargelily Petal",
+  "flower_crown_material.bovinesandbuttercups.hyacinth": "Hyacinth Petal",
+  "flower_crown_material.bovinesandbuttercups.snowdrop": "Snowdrop Petal",
+  "flower_crown_material.bovinesandbuttercups.tropical_blue": "Tropical Blue Petal",
+  "flower_crown_material.bovinesandbuttercups.freesia": "Freesia Petal",
+  "flower_crown_material.bovinesandbuttercups.lingholm": "Lingholm Petal",
 
   "entity.bovinesandbuttercups.moobloom": "Moobloom",
   "subtitles.entity.moobloom.convert": "Moobloom transforms",

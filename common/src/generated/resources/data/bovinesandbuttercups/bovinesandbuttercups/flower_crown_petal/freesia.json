@@ -1,0 +1,29 @@
+{
+  "description": {
+    "color": "#EE3535",
+    "translate": "flower_crown_material.bovinesandbuttercups.freesia"
+  },
+  "equipped_textures": {
+    "bottom": "bovinesandbuttercups:bovinesandbuttercups/petals/models/bottom_freesia",
+    "bottom_left": "bovinesandbuttercups:bovinesandbuttercups/petals/models/bottom_left_freesia",
+    "bottom_right": "bovinesandbuttercups:bovinesandbuttercups/petals/models/bottom_right_freesia",
+    "center_left": "bovinesandbuttercups:bovinesandbuttercups/petals/models/center_left_freesia",
+    "center_right": "bovinesandbuttercups:bovinesandbuttercups/petals/models/center_right_freesia",
+    "top": "bovinesandbuttercups:bovinesandbuttercups/petals/models/top_freesia",
+    "top_left": "bovinesandbuttercups:bovinesandbuttercups/petals/models/top_left_freesia",
+    "top_right": "bovinesandbuttercups:bovinesandbuttercups/petals/models/top_right_freesia"
+  },
+  "ingredient": {
+    "id": "bovinesandbuttercups:freesia"
+  },
+  "item_textures": {
+    "bottom": "bovinesandbuttercups:bovinesandbuttercups/petals/items/bottom_freesia",
+    "bottom_left": "bovinesandbuttercups:bovinesandbuttercups/petals/items/bottom_left_freesia",
+    "bottom_right": "bovinesandbuttercups:bovinesandbuttercups/petals/items/bottom_right_freesia",
+    "center_left": "bovinesandbuttercups:bovinesandbuttercups/petals/items/center_left_freesia",
+    "center_right": "bovinesandbuttercups:bovinesandbuttercups/petals/items/center_right_freesia",
+    "top": "bovinesandbuttercups:bovinesandbuttercups/petals/items/top_freesia",
+    "top_left": "bovinesandbuttercups:bovinesandbuttercups/petals/items/top_left_freesia",
+    "top_right": "bovinesandbuttercups:bovinesandbuttercups/petals/items/top_right_freesia"
+  }
+}

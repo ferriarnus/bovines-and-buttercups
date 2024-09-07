@@ -1,0 +1,29 @@
+{
+  "description": {
+    "color": "#47B4FF",
+    "translate": "flower_crown_material.bovinesandbuttercups.chargelily"
+  },
+  "equipped_textures": {
+    "bottom": "bovinesandbuttercups:bovinesandbuttercups/petals/models/bottom_chargelily",
+    "bottom_left": "bovinesandbuttercups:bovinesandbuttercups/petals/models/bottom_left_chargelily",
+    "bottom_right": "bovinesandbuttercups:bovinesandbuttercups/petals/models/bottom_right_chargelily",
+    "center_left": "bovinesandbuttercups:bovinesandbuttercups/petals/models/center_left_chargelily",
+    "center_right": "bovinesandbuttercups:bovinesandbuttercups/petals/models/center_right_chargelily",
+    "top": "bovinesandbuttercups:bovinesandbuttercups/petals/models/top_chargelily",
+    "top_left": "bovinesandbuttercups:bovinesandbuttercups/petals/models/top_left_chargelily",
+    "top_right": "bovinesandbuttercups:bovinesandbuttercups/petals/models/top_right_chargelily"
+  },
+  "ingredient": {
+    "id": "bovinesandbuttercups:chargelily"
+  },
+  "item_textures": {
+    "bottom": "bovinesandbuttercups:bovinesandbuttercups/petals/items/bottom_chargelily",
+    "bottom_left": "bovinesandbuttercups:bovinesandbuttercups/petals/items/bottom_left_chargelily",
+    "bottom_right": "bovinesandbuttercups:bovinesandbuttercups/petals/items/bottom_right_chargelily",
+    "center_left": "bovinesandbuttercups:bovinesandbuttercups/petals/items/center_left_chargelily",
+    "center_right": "bovinesandbuttercups:bovinesandbuttercups/petals/items/center_right_chargelily",
+    "top": "bovinesandbuttercups:bovinesandbuttercups/petals/items/top_chargelily",
+    "top_left": "bovinesandbuttercups:bovinesandbuttercups/petals/items/top_left_chargelily",
+    "top_right": "bovinesandbuttercups:bovinesandbuttercups/petals/items/top_right_chargelily"
+  }
+}

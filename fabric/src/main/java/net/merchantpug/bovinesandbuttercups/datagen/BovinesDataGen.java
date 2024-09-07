@@ -1,6 +1,5 @@
 package net.merchantpug.bovinesandbuttercups.datagen;
 
-import com.mojang.datafixers.kinds.Const;
 import com.mojang.serialization.Lifecycle;
 import net.fabricmc.fabric.api.datagen.v1.DataGeneratorEntrypoint;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
@@ -13,10 +12,10 @@ import net.fabricmc.fabric.api.tag.convention.v2.ConventionalBiomeTags;
 import net.merchantpug.bovinesandbuttercups.api.BovinesTags;
 import net.merchantpug.bovinesandbuttercups.registry.BovinesBlocks;
 import net.merchantpug.bovinesandbuttercups.registry.BovinesCowTypes;
+import net.merchantpug.bovinesandbuttercups.registry.BovinesFlowerCrownMaterials;
 import net.merchantpug.bovinesandbuttercups.registry.BovinesItems;
 import net.merchantpug.bovinesandbuttercups.registry.BovinesLootTables;
 import net.merchantpug.bovinesandbuttercups.registry.BovinesRegistryKeys;
-import net.merchantpug.bovinesandbuttercups.registry.BovinesStructures;
 import net.minecraft.advancements.critereon.EntityFlagsPredicate;
 import net.minecraft.advancements.critereon.EntityPredicate;
 import net.minecraft.core.Holder;
@@ -29,13 +28,12 @@ import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.data.worldgen.features.CaveFeatures;
 import net.minecraft.data.worldgen.features.VegetationFeatures;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.tags.BiomeTags;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
-import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
@@ -63,12 +61,14 @@ public class BovinesDataGen implements DataGeneratorEntrypoint {
         pack.addProvider(BiomeTagProvider::new);
         pack.addProvider(BlockTagProvider::new);
         pack.addProvider(ConfiguredFeatureTagProvider::new);
+        pack.addProvider(EntityTypeTagProvider::new);
         pack.addProvider(ItemTagProvider::new);
     }
 
     @Override
     public void buildRegistry(RegistrySetBuilder registryBuilder) {
         registryBuilder.add(BovinesRegistryKeys.COW_TYPE, BovinesCowTypes::bootstrap);
+        registryBuilder.add(BovinesRegistryKeys.FLOWER_CROWN_PETAL, BovinesFlowerCrownMaterials::bootstrap);
     }
 
     private static class DynamicRegistryGenerator extends FabricDynamicRegistryProvider {
@@ -80,6 +80,7 @@ public class BovinesDataGen implements DataGeneratorEntrypoint {
         @Override
         protected void configure(HolderLookup.Provider registries, Entries entries) {
             BovinesCowTypes.bootstrap(createContext(registries, entries));
+            BovinesFlowerCrownMaterials.bootstrap(createContext(registries, entries));
         }
 
         private static <T> BootstrapContext<T> createContext(HolderLookup.Provider registries, Entries entries) {
@@ -294,6 +295,19 @@ public class BovinesDataGen implements DataGeneratorEntrypoint {
                     .add(VegetationFeatures.PATCH_GRASS_JUNGLE)
                     .add(VegetationFeatures.PATCH_TAIGA_GRASS)
                     .add(VegetationFeatures.PATCH_TALL_GRASS);
+        }
+    }
+
+    private static class EntityTypeTagProvider extends FabricTagProvider.EntityTypeTagProvider {
+        public EntityTypeTagProvider(FabricDataOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
+            super(output, registriesFuture);
+        }
+
+        @Override
+        protected void addTags(HolderLookup.Provider wrapperLookup) {
+            tag(BovinesTags.EntityTypeTags.WILL_EQUIP_FLOWER_CROWN)
+                    .add(reverseLookup(EntityType.PIGLIN))
+                    .add(reverseLookup(EntityType.VILLAGER));
         }
     }
 

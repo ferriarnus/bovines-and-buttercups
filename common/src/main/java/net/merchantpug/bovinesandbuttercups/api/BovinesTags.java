@@ -3,6 +3,7 @@ package net.merchantpug.bovinesandbuttercups.api;
 import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.tags.TagKey;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
@@ -33,6 +34,13 @@ public class BovinesTags {
 
     public static class ConfiguredFeatureTags {
         public static final TagKey<ConfiguredFeature<?, ?>> RANCH_ALLOWED = TagKey.create(Registries.CONFIGURED_FEATURE, BovinesAndButtercups.asResource("ranch_allowed"));
+    }
+
+    public static class EntityTypeTags {
+        /**
+         *  Mobs that will equip Flower Crowns by either picking one up or by using a dispenser.
+         */
+        public static final TagKey<EntityType<?>> WILL_EQUIP_FLOWER_CROWN = TagKey.create(Registries.ENTITY_TYPE, BovinesAndButtercups.asResource("will_equip/flower_crown"));
     }
 
     public static class ItemTags {

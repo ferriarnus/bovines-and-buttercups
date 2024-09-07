@@ -2,9 +2,11 @@ package net.merchantpug.bovinesandbuttercups.client;
 
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
+import net.fabricmc.fabric.api.client.model.loading.v1.ModelLoadingPlugin;
 import net.fabricmc.fabric.api.client.model.loading.v1.PreparableModelLoadingPlugin;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
+import net.fabricmc.fabric.api.client.rendering.v1.AtlasSourceTypeRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.BuiltinItemRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
@@ -22,9 +24,11 @@ import net.merchantpug.bovinesandbuttercups.client.renderer.block.CustomHugeMush
 import net.merchantpug.bovinesandbuttercups.client.renderer.block.CustomMushroomPotBlockRenderer;
 import net.merchantpug.bovinesandbuttercups.client.renderer.block.CustomMushroomRenderer;
 import net.merchantpug.bovinesandbuttercups.client.renderer.entity.MoobloomRenderer;
+import net.merchantpug.bovinesandbuttercups.client.renderer.entity.model.FlowerCrownModel;
 import net.merchantpug.bovinesandbuttercups.client.renderer.item.CustomFlowerItemRenderer;
 import net.merchantpug.bovinesandbuttercups.client.renderer.item.CustomHugeMushroomItemRenderer;
 import net.merchantpug.bovinesandbuttercups.client.renderer.item.CustomMushroomItemRenderer;
+import net.merchantpug.bovinesandbuttercups.client.renderer.item.FlowerCrownItemRenderer;
 import net.merchantpug.bovinesandbuttercups.client.renderer.item.NectarBowlItemRenderer;
 import net.merchantpug.bovinesandbuttercups.client.bovinestate.BovineBlockstateTypes;
 import net.merchantpug.bovinesandbuttercups.client.util.BovineStateModelUtil;
@@ -55,6 +59,7 @@ public class BovinesAndButtercupsFabricClient implements ClientModInitializer {
         BovineBlockstateTypes.init();
 
         EntityModelLayerRegistry.registerModelLayer(BovinesModelLayers.MOOBLOOM_MODEL_LAYER, CowModel::createBodyLayer);
+        EntityModelLayerRegistry.registerModelLayer(BovinesModelLayers.FLOWER_CROWN_MODEL_LAYER, FlowerCrownModel::createLayer);
         EntityRendererRegistry.register(BovinesEntityTypes.MOOBLOOM, MoobloomRenderer::new);
 
         ResourceManagerHelper.get(PackType.CLIENT_RESOURCES).registerReloadListener(new IdentifiableResourceReloadListener() {
@@ -75,6 +80,7 @@ public class BovinesAndButtercupsFabricClient implements ClientModInitializer {
             context.addModels(data);
             context.resolveModel().register((ctx) -> BovineStateModelUtil.getUnbakedModel(ctx.id(), ctx::getOrLoadModel));
         });
+        ModelLoadingPlugin.register(pluginContext -> pluginContext.addModels(FlowerCrownItemRenderer.BASE));
 
         ClientPlayNetworking.registerGlobalReceiver(SyncConditionedTextureModifier.TYPE, (packet, context) -> packet.handle());
         ClientPlayNetworking.registerGlobalReceiver(SyncCowTypeClientboundPacket.TYPE, (packet, context) -> packet.handle());
@@ -95,10 +101,11 @@ public class BovinesAndButtercupsFabricClient implements ClientModInitializer {
     }
 
     public static void registerItemRenderers() {
-        BuiltinItemRendererRegistry.INSTANCE.register(BovinesItems.CUSTOM_FLOWER, new CustomFlowerItemRenderer());
-        BuiltinItemRendererRegistry.INSTANCE.register(BovinesItems.CUSTOM_MUSHROOM, new CustomMushroomItemRenderer());
-        BuiltinItemRendererRegistry.INSTANCE.register(BovinesItems.CUSTOM_MUSHROOM_BLOCK, new CustomHugeMushroomItemRenderer());
-        BuiltinItemRendererRegistry.INSTANCE.register(BovinesItems.NECTAR_BOWL, new NectarBowlItemRenderer());
+        BuiltinItemRendererRegistry.INSTANCE.register(BovinesItems.CUSTOM_FLOWER, CustomFlowerItemRenderer::render);
+        BuiltinItemRendererRegistry.INSTANCE.register(BovinesItems.CUSTOM_MUSHROOM, CustomMushroomItemRenderer::render);
+        BuiltinItemRendererRegistry.INSTANCE.register(BovinesItems.CUSTOM_MUSHROOM_BLOCK, CustomHugeMushroomItemRenderer::render);
+        BuiltinItemRendererRegistry.INSTANCE.register(BovinesItems.NECTAR_BOWL, NectarBowlItemRenderer::render);
+        BuiltinItemRendererRegistry.INSTANCE.register(BovinesItems.FLOWER_CROWN, FlowerCrownItemRenderer::render);
     }
 
     public static void registerParticleFactories() {

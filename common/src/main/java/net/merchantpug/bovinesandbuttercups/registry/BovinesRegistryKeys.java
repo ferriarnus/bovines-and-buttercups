@@ -7,6 +7,7 @@ import net.merchantpug.bovinesandbuttercups.api.CowTypeType;
 import net.merchantpug.bovinesandbuttercups.api.block.CustomFlowerType;
 import net.merchantpug.bovinesandbuttercups.api.block.CustomMushroomType;
 import net.merchantpug.bovinesandbuttercups.api.cowtype.modifier.TextureModifierFactory;
+import net.merchantpug.bovinesandbuttercups.content.data.flowercrown.FlowerCrownPetal;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 
@@ -17,4 +18,5 @@ public class BovinesRegistryKeys {
     public static final ResourceKey<Registry<CowType<?>>> COW_TYPE = ResourceKey.createRegistryKey(BovinesAndButtercups.asResource("cow_type"));
     public static final ResourceKey<Registry<CustomFlowerType>> CUSTOM_FLOWER_TYPE = ResourceKey.createRegistryKey(BovinesAndButtercups.asResource("flower_type"));
     public static final ResourceKey<Registry<CustomMushroomType>> CUSTOM_MUSHROOM_TYPE = ResourceKey.createRegistryKey(BovinesAndButtercups.asResource("mushroom_type"));
+    public static final ResourceKey<Registry<FlowerCrownPetal>> FLOWER_CROWN_PETAL = ResourceKey.createRegistryKey(BovinesAndButtercups.asResource("flower_crown_petal"));
 }

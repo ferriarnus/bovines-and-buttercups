@@ -5,13 +5,18 @@ import net.merchantpug.bovinesandbuttercups.content.component.NectarEffects;
 import net.merchantpug.bovinesandbuttercups.content.item.CustomFlowerItem;
 import net.merchantpug.bovinesandbuttercups.content.item.CustomHugeMushroomItem;
 import net.merchantpug.bovinesandbuttercups.content.item.CustomMushroomItem;
+import net.merchantpug.bovinesandbuttercups.content.item.FlowerCrownItem;
 import net.merchantpug.bovinesandbuttercups.content.item.NectarBowlItem;
 import net.merchantpug.bovinesandbuttercups.registry.internal.RegistrationCallback;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.SpawnEggItem;
+import net.minecraft.world.item.component.ItemAttributeModifiers;
+
+import java.util.List;
 
 public class BovinesItems {
     public static final NectarBowlItem NECTAR_BOWL = new NectarBowlItem(new Item.Properties().stacksTo(1).component(BovinesDataComponents.NECTAR_EFFECTS, NectarEffects.EMPTY).craftRemainder(Items.BOWL));
@@ -32,6 +37,8 @@ public class BovinesItems {
     public static final CustomMushroomItem CUSTOM_MUSHROOM = new CustomMushroomItem(BovinesBlocks.CUSTOM_MUSHROOM, new Item.Properties());
     public static final CustomHugeMushroomItem CUSTOM_MUSHROOM_BLOCK = new CustomHugeMushroomItem(BovinesBlocks.CUSTOM_MUSHROOM_BLOCK, new Item.Properties());
 
+    public static final Item FLOWER_CROWN = new FlowerCrownItem(new Item.Properties().stacksTo(1).component(DataComponents.ATTRIBUTE_MODIFIERS, new ItemAttributeModifiers(List.of(), false)));
+
     public static void registerAll(RegistrationCallback<Item> callback) {
         callback.register(BuiltInRegistries.ITEM, BovinesAndButtercups.asResource("nectar_bowl"), NECTAR_BOWL);
         callback.register(BuiltInRegistries.ITEM, BovinesAndButtercups.asResource("moobloom_spawn_egg"), MOOBLOOM_SPAWN_EGG);
@@ -50,5 +57,7 @@ public class BovinesItems {
         callback.register(BuiltInRegistries.ITEM, BovinesAndButtercups.asResource("custom_flower"), CUSTOM_FLOWER);
         callback.register(BuiltInRegistries.ITEM, BovinesAndButtercups.asResource("custom_mushroom"), CUSTOM_MUSHROOM);
         callback.register(BuiltInRegistries.ITEM, BovinesAndButtercups.asResource("custom_mushroom_block"), CUSTOM_MUSHROOM_BLOCK);
+
+        callback.register(BuiltInRegistries.ITEM, BovinesAndButtercups.asResource("flower_crown"), FLOWER_CROWN);
     }
 }

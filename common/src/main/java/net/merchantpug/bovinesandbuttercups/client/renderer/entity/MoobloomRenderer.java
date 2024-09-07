@@ -1,7 +1,7 @@
 package net.merchantpug.bovinesandbuttercups.client.renderer.entity;
 
 import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
-import net.merchantpug.bovinesandbuttercups.client.model.MoobloomModel;
+import net.merchantpug.bovinesandbuttercups.client.renderer.entity.model.MoobloomModel;
 import net.merchantpug.bovinesandbuttercups.client.registry.BovinesModelLayers;
 import net.merchantpug.bovinesandbuttercups.client.renderer.entity.layer.MoobloomFlowerLayer;
 import net.merchantpug.bovinesandbuttercups.client.renderer.entity.layer.CowLayersLayer;

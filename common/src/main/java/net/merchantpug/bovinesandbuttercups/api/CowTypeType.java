@@ -18,20 +18,26 @@ public class CowTypeType<C extends CowTypeConfiguration> {
     private final MapCodec<CowType<C>> configuredCodec;
     private final List<EntityType<?>> entityTypes;
     private final ResourceKey<CowType<?>> defaultKey;
+    private final String fallbackTexturePath;
     private final C defaultConfig;
 
     public CowTypeType(MapCodec<C> codec, List<EntityType<?>> entityTypes,
-                       ResourceKey<CowType<?>> defaultKey, C defaultConfig) {
+                       ResourceKey<CowType<?>> defaultKey, String fallbackTexturePath, C defaultConfig) {
         this.configuredCodec = RecordCodecBuilder.mapCodec(inst -> inst.group(
                 codec.forGetter(CowType::configuration)
         ).apply(inst, (ctc) -> new CowType<>(this, ctc)));
         this.entityTypes = entityTypes;
         this.defaultKey = defaultKey;
+        this.fallbackTexturePath = fallbackTexturePath;
         this.defaultConfig = defaultConfig;
     }
 
     public MapCodec<CowType<C>> cowCodec() {
         return configuredCodec;
+    }
+
+    public String fallbackTexturePath() {
+        return fallbackTexturePath;
     }
 
     public boolean isApplicable(Entity entity) {

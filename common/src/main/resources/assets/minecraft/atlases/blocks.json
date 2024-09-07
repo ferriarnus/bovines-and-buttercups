@@ -1,0 +1,35 @@
+{
+    "sources": [
+        {
+            "type": "directory",
+            "source": "bovinesandbuttercups/petals/items",
+            "prefix": "bovinesandbuttercups/petals/items/"
+        },
+        {
+            "type": "paletted_permutations",
+            "textures": [
+                "bovinesandbuttercups:bovinesandbuttercups/petals/items/top_left",
+                "bovinesandbuttercups:bovinesandbuttercups/petals/items/top",
+                "bovinesandbuttercups:bovinesandbuttercups/petals/items/top_right",
+                "bovinesandbuttercups:bovinesandbuttercups/petals/items/center_left",
+                "bovinesandbuttercups:bovinesandbuttercups/petals/items/center_right",
+                "bovinesandbuttercups:bovinesandbuttercups/petals/items/bottom_left",
+                "bovinesandbuttercups:bovinesandbuttercups/petals/items/bottom",
+                "bovinesandbuttercups:bovinesandbuttercups/petals/items/bottom_right"
+            ],
+            "palette_key": "bovinesandbuttercups:bovinesandbuttercups/petals/color_palettes/flower_crown_palette",
+            "permutations": {
+                "bird_of_paradise": "bovinesandbuttercups:bovinesandbuttercups/petals/color_palettes/bird_of_paradise",
+                "buttercup": "bovinesandbuttercups:bovinesandbuttercups/petals/color_palettes/buttercup",
+                "chargelily": "bovinesandbuttercups:bovinesandbuttercups/petals/color_palettes/chargelily",
+                "freesia": "bovinesandbuttercups:bovinesandbuttercups/petals/color_palettes/freesia",
+                "hyacinth": "bovinesandbuttercups:bovinesandbuttercups/petals/color_palettes/hyacinth",
+                "limelight": "bovinesandbuttercups:bovinesandbuttercups/petals/color_palettes/limelight",
+                "lingholm": "bovinesandbuttercups:bovinesandbuttercups/petals/color_palettes/lingholm",
+                "pink_daisy": "bovinesandbuttercups:bovinesandbuttercups/petals/color_palettes/pink_daisy",
+                "snowdrop": "bovinesandbuttercups:bovinesandbuttercups/petals/color_palettes/snowdrop",
+                "tropical_blue": "bovinesandbuttercups:bovinesandbuttercups/petals/color_palettes/tropical_blue"
+            }
+        }
+    ]
+}

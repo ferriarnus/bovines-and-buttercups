@@ -1,13 +1,15 @@
 package net.merchantpug.bovinesandbuttercups.client;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import net.merchantpug.bovinesandbuttercups.client.renderer.item.CustomFlowerItemRendererHelper;
-import net.merchantpug.bovinesandbuttercups.client.renderer.item.CustomHugeMushroomItemRendererHelper;
-import net.merchantpug.bovinesandbuttercups.client.renderer.item.CustomMushroomItemRendererHelper;
-import net.merchantpug.bovinesandbuttercups.client.renderer.item.NectarBowlItemRendererHelper;
+import net.merchantpug.bovinesandbuttercups.client.renderer.item.CustomFlowerItemRenderer;
+import net.merchantpug.bovinesandbuttercups.client.renderer.item.CustomHugeMushroomItemRenderer;
+import net.merchantpug.bovinesandbuttercups.client.renderer.item.CustomMushroomItemRenderer;
+import net.merchantpug.bovinesandbuttercups.client.renderer.item.FlowerCrownItemRenderer;
+import net.merchantpug.bovinesandbuttercups.client.renderer.item.NectarBowlItemRenderer;
 import net.merchantpug.bovinesandbuttercups.content.item.CustomFlowerItem;
 import net.merchantpug.bovinesandbuttercups.content.item.CustomHugeMushroomItem;
 import net.merchantpug.bovinesandbuttercups.content.item.CustomMushroomItem;
+import net.merchantpug.bovinesandbuttercups.content.item.FlowerCrownItem;
 import net.merchantpug.bovinesandbuttercups.content.item.NectarBowlItem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.geom.EntityModelSet;
@@ -31,16 +33,18 @@ public class BovinesBEWLR extends BlockEntityWithoutLevelRenderer {
         super(blockEntityRenderDispatcher, entityModelSet);
     }
 
-    public void renderByItem(ItemStack stack, ItemDisplayContext transformType, PoseStack poseStack, MultiBufferSource bufferSource, int light, int overlay) {
+    public void renderByItem(ItemStack stack, ItemDisplayContext context, PoseStack poseStack, MultiBufferSource bufferSource, int light, int overlay) {
         switch (stack.getItem()) {
             case CustomFlowerItem customFlowerItem ->
-                    CustomFlowerItemRendererHelper.render(stack, poseStack, bufferSource, light, overlay, transformType);
+                    CustomFlowerItemRenderer.render(stack, context, poseStack, bufferSource, light, overlay);
             case CustomMushroomItem customMushroomItem ->
-                    CustomMushroomItemRendererHelper.render(stack, poseStack, bufferSource, light, overlay, transformType);
+                    CustomMushroomItemRenderer.render(stack, context, poseStack, bufferSource, light, overlay);
             case CustomHugeMushroomItem customHugeMushroomItem ->
-                    CustomHugeMushroomItemRendererHelper.render(stack, poseStack, bufferSource, light, overlay, transformType);
+                    CustomHugeMushroomItemRenderer.render(stack, context, poseStack, bufferSource, light, overlay);
             case NectarBowlItem nectarBowlItem ->
-                    NectarBowlItemRendererHelper.render(stack, poseStack, bufferSource, light, overlay, transformType);
+                    NectarBowlItemRenderer.render(stack, context, poseStack, bufferSource, light, overlay);
+            case FlowerCrownItem flowerCrownItem ->
+                    FlowerCrownItemRenderer.render(stack, context, poseStack, bufferSource, light, overlay);
             default -> {
             }
         }

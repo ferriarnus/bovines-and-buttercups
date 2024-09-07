@@ -1,0 +1,29 @@
+{
+  "description": {
+    "color": "#FF7B1A",
+    "translate": "flower_crown_material.bovinesandbuttercups.bird_of_paradise"
+  },
+  "equipped_textures": {
+    "bottom": "bovinesandbuttercups:bovinesandbuttercups/petals/models/bottom_bird_of_paradise",
+    "bottom_left": "bovinesandbuttercups:bovinesandbuttercups/petals/models/bottom_left_bird_of_paradise",
+    "bottom_right": "bovinesandbuttercups:bovinesandbuttercups/petals/models/bottom_right_bird_of_paradise",
+    "center_left": "bovinesandbuttercups:bovinesandbuttercups/petals/models/center_left_bird_of_paradise",
+    "center_right": "bovinesandbuttercups:bovinesandbuttercups/petals/models/center_right_bird_of_paradise",
+    "top": "bovinesandbuttercups:bovinesandbuttercups/petals/models/top_bird_of_paradise",
+    "top_left": "bovinesandbuttercups:bovinesandbuttercups/petals/models/top_left_bird_of_paradise",
+    "top_right": "bovinesandbuttercups:bovinesandbuttercups/petals/models/top_right_bird_of_paradise"
+  },
+  "ingredient": {
+    "id": "bovinesandbuttercups:bird_of_paradise"
+  },
+  "item_textures": {
+    "bottom": "bovinesandbuttercups:bovinesandbuttercups/petals/items/bottom_bird_of_paradise",
+    "bottom_left": "bovinesandbuttercups:bovinesandbuttercups/petals/items/bottom_left_bird_of_paradise",
+    "bottom_right": "bovinesandbuttercups:bovinesandbuttercups/petals/items/bottom_right_bird_of_paradise",
+    "center_left": "bovinesandbuttercups:bovinesandbuttercups/petals/items/center_left_bird_of_paradise",
+    "center_right": "bovinesandbuttercups:bovinesandbuttercups/petals/items/center_right_bird_of_paradise",
+    "top": "bovinesandbuttercups:bovinesandbuttercups/petals/items/top_bird_of_paradise",
+    "top_left": "bovinesandbuttercups:bovinesandbuttercups/petals/items/top_left_bird_of_paradise",
+    "top_right": "bovinesandbuttercups:bovinesandbuttercups/petals/items/top_right_bird_of_paradise"
+  }
+}

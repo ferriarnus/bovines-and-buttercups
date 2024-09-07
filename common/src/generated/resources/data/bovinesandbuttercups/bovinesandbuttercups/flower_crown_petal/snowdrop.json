@@ -1,0 +1,29 @@
+{
+  "description": {
+    "color": "#FCFDFE",
+    "translate": "flower_crown_material.bovinesandbuttercups.snowdrop"
+  },
+  "equipped_textures": {
+    "bottom": "bovinesandbuttercups:bovinesandbuttercups/petals/models/bottom_snowdrop",
+    "bottom_left": "bovinesandbuttercups:bovinesandbuttercups/petals/models/bottom_left_snowdrop",
+    "bottom_right": "bovinesandbuttercups:bovinesandbuttercups/petals/models/bottom_right_snowdrop",
+    "center_left": "bovinesandbuttercups:bovinesandbuttercups/petals/models/center_left_snowdrop",
+    "center_right": "bovinesandbuttercups:bovinesandbuttercups/petals/models/center_right_snowdrop",
+    "top": "bovinesandbuttercups:bovinesandbuttercups/petals/models/top_snowdrop",
+    "top_left": "bovinesandbuttercups:bovinesandbuttercups/petals/models/top_left_snowdrop",
+    "top_right": "bovinesandbuttercups:bovinesandbuttercups/petals/models/top_right_snowdrop"
+  },
+  "ingredient": {
+    "id": "bovinesandbuttercups:snowdrop"
+  },
+  "item_textures": {
+    "bottom": "bovinesandbuttercups:bovinesandbuttercups/petals/items/bottom_snowdrop",
+    "bottom_left": "bovinesandbuttercups:bovinesandbuttercups/petals/items/bottom_left_snowdrop",
+    "bottom_right": "bovinesandbuttercups:bovinesandbuttercups/petals/items/bottom_right_snowdrop",
+    "center_left": "bovinesandbuttercups:bovinesandbuttercups/petals/items/center_left_snowdrop",
+    "center_right": "bovinesandbuttercups:bovinesandbuttercups/petals/items/center_right_snowdrop",
+    "top": "bovinesandbuttercups:bovinesandbuttercups/petals/items/top_snowdrop",
+    "top_left": "bovinesandbuttercups:bovinesandbuttercups/petals/items/top_left_snowdrop",
+    "top_right": "bovinesandbuttercups:bovinesandbuttercups/petals/items/top_right_snowdrop"
+  }
+}

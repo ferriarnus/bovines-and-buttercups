@@ -5,6 +5,7 @@ import net.merchantpug.bovinesandbuttercups.api.CowType;
 import net.merchantpug.bovinesandbuttercups.api.CowTypeConfiguration;
 import net.merchantpug.bovinesandbuttercups.client.platform.BovinesClientHelper;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.resources.model.ModelBakery;
 import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceLocation;
 
@@ -14,9 +15,18 @@ public class BovinesAndButtercupsClient {
     private static final HashSet<ResourceLocation> LOADED_COW_TEXTURES = new HashSet<>();
     private static final HashSet<ResourceLocation> FAILED_COW_TEXTURES = new HashSet<>();
     private static BovinesClientHelper clientHelper;
+    private static ModelBakery modelBakery;
 
     public static void init(BovinesClientHelper helper) {
         clientHelper = helper;
+    }
+
+    public static ModelBakery getModelBakery() {
+        return modelBakery;
+    }
+
+    public static void setModelBakery(ModelBakery modelBakery) {
+        BovinesAndButtercupsClient.modelBakery = modelBakery;
     }
 
     public static void clearCowTextureCache() {

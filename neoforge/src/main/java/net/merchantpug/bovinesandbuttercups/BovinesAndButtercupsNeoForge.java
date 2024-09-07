@@ -26,6 +26,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.SpawnPlacementTypes;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.CreativeModeTabs;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.levelgen.Heightmap;
@@ -43,6 +44,7 @@ import net.neoforged.neoforge.event.tick.EntityTickEvent;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Optional;
 
 @Mod(BovinesAndButtercups.MOD_ID)
@@ -169,30 +171,26 @@ public class BovinesAndButtercupsNeoForge {
                         break;
                     }
                 }
+                if (startItem != null) {
+                    List<Item> items = List.of(
+                            BovinesItems.FREESIA,
+                            BovinesItems.BIRD_OF_PARADISE,
+                            BovinesItems.BUTTERCUP,
+                            BovinesItems.LIMELIGHT,
+                            BovinesItems.LINGHOLM,
+                            BovinesItems.CHARGELILY,
+                            BovinesItems.TROPICAL_BLUE,
+                            BovinesItems.HYACINTH,
+                            BovinesItems.PINK_DAISY,
+                            BovinesItems.SNOWDROP
+                    );
 
-
-                ItemStack freesia = new ItemStack(BovinesItems.FREESIA);
-                ItemStack birdOfParadise = new ItemStack(BovinesItems.BIRD_OF_PARADISE);
-                ItemStack buttercup = new ItemStack(BovinesItems.BUTTERCUP);
-                ItemStack limelight = new ItemStack(BovinesItems.LIMELIGHT);
-                ItemStack chargelily = new ItemStack(BovinesItems.CHARGELILY);
-                ItemStack tropicalBlue = new ItemStack(BovinesItems.TROPICAL_BLUE);
-                ItemStack hyacinth = new ItemStack(BovinesItems.HYACINTH);
-                ItemStack pinkDaisy = new ItemStack(BovinesItems.PINK_DAISY);
-                ItemStack snowdrop = new ItemStack(BovinesItems.SNOWDROP);
-
-                if (startItem == null)
-                    event.accept(freesia, CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
-                else
-                    event.insertAfter(startItem, freesia, CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
-                event.insertAfter(freesia, birdOfParadise, CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
-                event.insertAfter(birdOfParadise, buttercup, CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
-                event.insertAfter(buttercup, limelight, CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
-                event.insertAfter(limelight, chargelily, CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
-                event.insertAfter(chargelily, tropicalBlue, CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
-                event.insertAfter(tropicalBlue, hyacinth, CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
-                event.insertAfter(hyacinth, pinkDaisy, CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
-                event.insertAfter(pinkDaisy, snowdrop, CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+                    for (Item item : items) {
+                        ItemStack stack = new ItemStack(item);
+                        event.insertAfter(startItem, stack, CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+                        startItem = stack;
+                    }
+                }
 
                 CreativeTabHelper.getCustomFlowersForCreativeTab(event.getParameters().holders()).forEach(stack -> event.insertAfter(new ItemStack(BovinesItems.SNOWDROP), stack, CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS));
                 CreativeTabHelper.getCustomMushroomsForCreativeTab(event.getParameters().holders()).forEach(stack -> event.insertAfter(new ItemStack(Items.RED_MUSHROOM), stack, CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS));

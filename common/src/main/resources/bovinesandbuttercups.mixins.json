@@ -10,14 +10,19 @@
     "FarmBlockMixin",
     "JigsawStructureAccessor",
     "MobEffectInstanceMixin",
+    "MobMixin",
     "PlacedFeatureMixin",
     "RegistryDataLoaderMixin",
     "ServerLevelAccessor"
   ],
   "client": [
+    "client.AtlasSetMixin",
     "client.EffectRenderingInventoryScreenMixin",
     "client.GuiGraphicsMixin",
     "client.LivingEntityRendererMixin",
+    "client.ModelBakeryAccessor",
+    "client.ModelManagerMixin",
+    "client.PlayerRendererMixin",
     "client.SimpleTextureMixin",
     "client.SimpleTextureTextureImageAccessor"
   ],
