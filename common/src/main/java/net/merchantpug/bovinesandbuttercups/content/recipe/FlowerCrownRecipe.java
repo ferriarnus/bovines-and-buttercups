@@ -36,9 +36,9 @@ public class FlowerCrownRecipe extends CustomRecipe {
     public boolean matches(CraftingInput input, Level level) {
         List<ItemStack> list = Lists.newArrayList();
 
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 3; j++) {
-                Optional<Unit> hasItem = SHAPE.get(j + i * 3);
+        for (int i = 0; i < input.height(); i++) {
+            for (int j = 0; j < input.width(); j++) {
+                Optional<Unit> hasItem = SHAPE.get(j + i * input.width());
                 ItemStack stack = input.getItem(j, i);
                 if (hasItem.isEmpty() && !stack.isEmpty() || hasItem.isPresent() && level.registryAccess().registry(BovinesRegistryKeys.FLOWER_CROWN_PETAL).orElseThrow().stream().noneMatch(petal -> ItemStack.isSameItemSameComponents(petal.ingredient(), stack))) {
                     return false;
