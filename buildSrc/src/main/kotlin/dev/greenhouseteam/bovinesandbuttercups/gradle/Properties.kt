@@ -7,7 +7,7 @@ object Properties {
     const val MOD_ID = "bovinesandbuttercups"
     const val MOD_AUTHOR = "Greenhouse Team"
     val MOD_CONTRIBUTORS = listOf("MerchantPug", "SpiderKolo", "Omniv")
-    const val DESCRIPTION = "A fresh, new take on the 2020 Mob Vote's Moobloom."
+    const val DESCRIPTION = "A reimagining of Mojang's Moobloom mob."
     const val LICENSE = "MPL-2.0"
 
     const val HOMEPAGE = "https://modrinth.com/project/bovines-and-buttercups"
