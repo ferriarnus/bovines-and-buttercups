@@ -319,7 +319,7 @@ public class Moobloom extends Cow implements Shearable {
                 ItemStack stack2;
                 stack2 = new ItemStack(BovinesItems.NECTAR_BOWL);
                 if (getCowType().value().configuration().nectar().isPresent()) {
-                    stack2.set(BovinesDataComponents.NECTAR, new ItemNectar(getCowType().value().configuration().nectar().get(), Optional.of((Holder<CowType<?>>)(Object)getCowType())));
+                    stack2.set(BovinesDataComponents.NECTAR, new ItemNectar(getCowType().value().configuration().nectar().get()));
                 } else {
                     return InteractionResult.PASS;
                 }

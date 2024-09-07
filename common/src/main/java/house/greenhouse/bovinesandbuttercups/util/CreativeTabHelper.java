@@ -56,7 +56,7 @@ public class CreativeTabHelper {
         HolderSet<Nectar> creativeModeTabOrder = lookup.lookupOrThrow(BovinesRegistryKeys.NECTAR).getOrThrow(BovinesTags.NectarTags.CREATIVE_MENU_ORDER);
         return lookup.lookupOrThrow(BovinesRegistryKeys.COW_TYPE).listElements().filter(cowType -> cowType.isBound() && cowType.value().configuration() instanceof MoobloomConfiguration && ((MoobloomConfiguration) cowType.value().configuration()).nectar().isPresent()).map(cowType -> {
             ItemStack stack = new ItemStack(BovinesItems.NECTAR_BOWL);
-            stack.set(BovinesDataComponents.NECTAR, new ItemNectar(((MoobloomConfiguration) cowType.value().configuration()).nectar().get(), Optional.of(cowType)));
+            stack.set(BovinesDataComponents.NECTAR, new ItemNectar(((MoobloomConfiguration) cowType.value().configuration()).nectar().get()));
             return stack;
         }).sorted(Comparator.comparingInt(value -> {
             int i = creativeModeTabOrder.stream().toList().indexOf(value.get(BovinesDataComponents.NECTAR).nectar());

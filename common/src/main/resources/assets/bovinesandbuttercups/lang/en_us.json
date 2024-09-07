@@ -35,6 +35,7 @@
   "block.bovinesandbuttercups.missing_mushroom_block": "Unknown Mushroom Block",
   "block.bovinesandbuttercups.custom_potted_flower": "Unknown Potted Flower",
   "block.bovinesandbuttercups.custom_potted_mushroom": "Unknown Potted Mushroom",
+  "bovinesandbuttercups.nectarBowl.effect": "Lockdown (%s) (%s)",
 
   "item.bovinesandbuttercups.nectar_bowl": "Nectar Bowl",
   "item.bovinesandbuttercups.moobloom_spawn_egg": "Moobloom Spawn Egg",

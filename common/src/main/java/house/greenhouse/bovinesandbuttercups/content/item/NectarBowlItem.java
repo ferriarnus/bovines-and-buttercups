@@ -53,6 +53,10 @@ public class NectarBowlItem extends Item {
 
     @Override
     public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
+        if (!stack.has(BovinesDataComponents.NECTAR))
+            return;
+        ItemNectar nectar = stack.get(BovinesDataComponents.NECTAR);
+        nectar.addToTooltip(context, tooltipComponents::add, tooltipFlag);
     }
 
     @Override
