@@ -20,16 +20,16 @@
     "environment": "*",
     "entrypoints": {
         "main": [
-            "net.merchantpug.bovinesandbuttercups.BovinesAndButtercupsFabric"
+            "house.greenhouse.bovinesandbuttercups.BovinesAndButtercupsFabric"
         ],
         "preLaunch": [
-            "net.merchantpug.bovinesandbuttercups.BovinesAndButtercupsFabricPre"
+            "house.greenhouse.bovinesandbuttercups.BovinesAndButtercupsFabricPre"
         ],
         "client": [
-            "net.merchantpug.bovinesandbuttercups.client.BovinesAndButtercupsFabricClient"
+            "house.greenhouse.bovinesandbuttercups.client.BovinesAndButtercupsFabricClient"
         ],
         "fabric-datagen": [
-            "net.merchantpug.bovinesandbuttercups.datagen.BovinesDataGen"
+            "house.greenhouse.bovinesandbuttercups.datagen.BovinesDataGen"
         ]
     },
     "mixins": [
