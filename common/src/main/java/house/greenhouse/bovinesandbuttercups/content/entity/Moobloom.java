@@ -11,6 +11,7 @@ import house.greenhouse.bovinesandbuttercups.content.component.ItemMoobloomType;
 import house.greenhouse.bovinesandbuttercups.content.component.NectarEffects;
 import house.greenhouse.bovinesandbuttercups.content.data.configuration.MoobloomConfiguration;
 import house.greenhouse.bovinesandbuttercups.mixin.EntityAccessor;
+import house.greenhouse.bovinesandbuttercups.platform.BovinesPlatform;
 import house.greenhouse.bovinesandbuttercups.registry.BovinesBlocks;
 import house.greenhouse.bovinesandbuttercups.api.BovinesCowTypeTypes;
 import house.greenhouse.bovinesandbuttercups.api.BovinesCowTypes;
@@ -48,12 +49,14 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LightningBolt;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.Pose;
+import net.minecraft.world.entity.Shearable;
 import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.ai.goal.AvoidEntityGoal;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.Bee;
 import net.minecraft.world.entity.animal.Cow;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ItemUtils;
@@ -81,7 +84,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
-public class Moobloom extends Cow {
+public class Moobloom extends Cow implements Shearable {
     private static final EntityDataAccessor<Integer> POLLINATED_RESET_TICKS = SynchedEntityData.defineId(Moobloom.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> STANDING_STILL_FOR_BEE_TICKS = SynchedEntityData.defineId(Moobloom.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Boolean> ALLOW_SHEARING = SynchedEntityData.defineId(Moobloom.class, EntityDataSerializers.BOOLEAN);
@@ -300,11 +303,11 @@ public class Moobloom extends Cow {
 
     @Override
     public InteractionResult mobInteract(Player player, InteractionHand hand) {
-        ItemStack itemStack = player.getItemInHand(hand);
+        ItemStack stack = player.getItemInHand(hand);
         if (!this.isBaby()) {
-            if (itemStack.is(Items.BONE_MEAL)) {
+            if (stack.is(Items.BONE_MEAL)) {
                 if (!player.getAbilities().instabuild) {
-                    itemStack.shrink(1);
+                    stack.shrink(1);
                 }
                 if (!this.level().isClientSide) {
                     ((ServerLevel) this.level()).sendParticles(ParticleTypes.HAPPY_VILLAGER, this.position().x(), this.position().y() + 1.6D, this.position().z(), 8, 0.5, 0.1, 0.4, 0.0);
@@ -312,24 +315,31 @@ public class Moobloom extends Cow {
                 this.spreadFlowers();
                 this.playSound(BovinesSoundEvents.MOOBLOOM_EAT, 1.0f, (random.nextFloat() * 0.4F) + 0.8F);
                 return InteractionResult.sidedSuccess(this.level().isClientSide);
-            } else if (itemStack.is(Items.BOWL)) {
-                ItemStack itemStack2;
-                itemStack2 = new ItemStack(BovinesItems.NECTAR_BOWL);
+            } else if (stack.is(Items.BOWL)) {
+                ItemStack stack2;
+                stack2 = new ItemStack(BovinesItems.NECTAR_BOWL);
                 if (!getCowType().value().configuration().nectarEffects().effects().isEmpty()) {
-                    itemStack2.set(BovinesDataComponents.NECTAR_EFFECTS, getCowType().value().configuration().nectarEffects());
+                    stack2.set(BovinesDataComponents.NECTAR_EFFECTS, getCowType().value().configuration().nectarEffects());
                 } else if (getCowType().value().configuration().flower().blockState().isPresent() && this.getCowType().value().configuration().flower().blockState().get().getBlock() instanceof FlowerBlock) {
                     ((FlowerBlock)getCowType().value().configuration().flower().blockState().get().getBlock()).getSuspiciousEffects().effects().forEach(effectEntry -> {
-                        itemStack2.set(BovinesDataComponents.NECTAR_EFFECTS, itemStack2.getOrDefault(BovinesDataComponents.NECTAR_EFFECTS, new NectarEffects(List.of()).withEffectAdded(new NectarEffects.Entry(effectEntry.effect(), effectEntry.duration()))));
+                        stack2.set(BovinesDataComponents.NECTAR_EFFECTS, stack2.getOrDefault(BovinesDataComponents.NECTAR_EFFECTS, new NectarEffects(List.of()).withEffectAdded(new NectarEffects.Entry(effectEntry.effect(), effectEntry.duration()))));
                     });
                 } else {
                     return InteractionResult.PASS;
                 }
 
-                itemStack2.set(BovinesDataComponents.MOOBLOOM_TYPE, new ItemMoobloomType((Holder)getCowType()));
-                ItemStack itemStack3 = ItemUtils.createFilledResult(itemStack, player, itemStack2, false);
-                player.setItemInHand(hand, itemStack3);
+                stack2.set(BovinesDataComponents.MOOBLOOM_TYPE, new ItemMoobloomType((Holder)getCowType()));
+                ItemStack stack3 = ItemUtils.createFilledResult(stack, player, stack2, false);
+                player.setItemInHand(hand, stack3);
                 this.playSound(BovinesSoundEvents.MOOBLOOM_MILK, 1.0f, 1.0f);
                 return InteractionResult.sidedSuccess(this.level().isClientSide());
+            } else if (BovinesAndButtercups.getHelper().getPlatform() == BovinesPlatform.FABRIC && stack.is(Items.SHEARS) && this.readyForShearing()) {
+                this.shear(SoundSource.PLAYERS);
+                this.gameEvent(GameEvent.SHEAR, player);
+                if (!this.level().isClientSide)
+                    stack.hurtAndBreak(1, player, getSlotForHand(hand));
+
+                return InteractionResult.sidedSuccess(this.level().isClientSide);
             }
         }
         return super.mobInteract(player, hand);
@@ -411,10 +421,6 @@ public class Moobloom extends Cow {
         return moobloom;
     }
 
-    public boolean commonReadyForShearing() {
-        return isAlive() && !isBaby() && entityData.get(ALLOW_SHEARING);
-    }
-
     public Holder<CowType<MoobloomConfiguration>> getCowType() {
         return CowTypeAttachment.getCowTypeHolderFromEntity(this, BovinesCowTypeTypes.MOOBLOOM_TYPE);
     }
@@ -469,9 +475,19 @@ public class Moobloom extends Cow {
         return totalWeight;
     }
 
-    public List<ItemStack> commonShear(SoundSource category) {
+    @Override
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType spawnType, @Nullable SpawnGroupData data) {
+        if (data == null) {
+            data = new MoobloomGroupData();
+        }
+        setCowType(((MoobloomGroupData)data).getSpawnType(blockPosition(), level, level.getRandom()));
+        return super.finalizeSpawn(level, difficulty, spawnType, data);
+    }
+
+    @Override
+    public void shear(SoundSource source) {
         List<ItemStack> stacks = new ArrayList<>();
-        this.level().playSound(null, this, BovinesSoundEvents.MOOBLOOM_SHEAR, category, 1.0f, 1.0f);
+        this.level().playSound(null, this, BovinesSoundEvents.MOOBLOOM_SHEAR, source, 1.0f, 1.0f);
         if (!this.level().isClientSide) {
             ((ServerLevel)this.level()).sendParticles(ParticleTypes.EXPLOSION, this.getX(), this.getY(0.5), this.getZ(), 1, 0.0, 0.0, 0.0, 0.0);
             this.discard();
@@ -500,16 +516,19 @@ public class Moobloom extends Cow {
                 }
             }
         }
-        return stacks;
+
+        for (ItemStack stack : stacks) {
+            // Use spawnAtLocation to allow NeoForge to modify this drop.
+            ItemEntity item = spawnAtLocation(stack, this.getBbHeight());
+            if (item != null) {
+                item.setNoPickUpDelay();
+            }
+        }
     }
 
     @Override
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType spawnType, @Nullable SpawnGroupData data) {
-        if (data == null) {
-            data = new MoobloomGroupData();
-        }
-        setCowType(((MoobloomGroupData)data).getSpawnType(blockPosition(), level, level.getRandom()));
-        return super.finalizeSpawn(level, difficulty, spawnType, data);
+    public boolean readyForShearing() {
+        return isAlive() && !isBaby() && entityData.get(ALLOW_SHEARING);
     }
 
     public class LookAtBeeGoal extends Goal {
