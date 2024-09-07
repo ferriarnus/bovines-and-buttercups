@@ -32,6 +32,7 @@ public class BovinesRegistryEvents {
         register(event, BovinesEntityTypes::registerAll);
         register(event, BovinesLootItemConditionTypes::registerAll);
         register(event, BovinesParticleTypes::registerAll);
+        register(event, BovinesRecipeSerializers::registerAll);
         register(event, BovinesSoundEvents::registerAll);
         register(event, BovinesStructureTypes::registerAll);
         register(event, BovinesTextureModificationFactories::registerAll);

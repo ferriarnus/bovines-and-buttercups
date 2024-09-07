@@ -29,6 +29,7 @@ import net.merchantpug.bovinesandbuttercups.registry.BovinesFabricDynamicRegistr
 import net.merchantpug.bovinesandbuttercups.registry.BovinesItems;
 import net.merchantpug.bovinesandbuttercups.registry.BovinesLootItemConditionTypes;
 import net.merchantpug.bovinesandbuttercups.registry.BovinesParticleTypes;
+import net.merchantpug.bovinesandbuttercups.registry.BovinesRecipeSerializers;
 import net.merchantpug.bovinesandbuttercups.registry.BovinesRegistryKeys;
 import net.merchantpug.bovinesandbuttercups.registry.BovinesSoundEvents;
 import net.merchantpug.bovinesandbuttercups.registry.BovinesStructureTypes;
@@ -94,6 +95,7 @@ public class BovinesAndButtercupsFabric implements ModInitializer {
         BovinesLootItemConditionTypes.registerAll(Registry::register);
         BovinesItems.registerAll(Registry::register);
         BovinesParticleTypes.registerAll(Registry::register);
+        BovinesRecipeSerializers.registerAll(Registry::register);
         BovinesSoundEvents.registerAll(Registry::register);
         BovinesStructureTypes.registerAll(Registry::register);
         BovinesTextureModificationFactories.registerAll(Registry::register);

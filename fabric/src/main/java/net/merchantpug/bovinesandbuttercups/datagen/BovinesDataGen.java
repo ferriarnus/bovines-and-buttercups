@@ -6,10 +6,13 @@ import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricBlockLootTableProvider;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricDynamicRegistryProvider;
+import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
 import net.fabricmc.fabric.api.datagen.v1.provider.SimpleFabricLootTableProvider;
 import net.fabricmc.fabric.api.tag.convention.v2.ConventionalBiomeTags;
+import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
 import net.merchantpug.bovinesandbuttercups.api.BovinesTags;
+import net.merchantpug.bovinesandbuttercups.content.recipe.FlowerCrownRecipe;
 import net.merchantpug.bovinesandbuttercups.registry.BovinesBlocks;
 import net.merchantpug.bovinesandbuttercups.registry.BovinesCowTypes;
 import net.merchantpug.bovinesandbuttercups.registry.BovinesFlowerCrownMaterials;
@@ -24,12 +27,19 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.core.Registry;
 import net.minecraft.core.RegistrySetBuilder;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.data.recipes.RecipeOutput;
+import net.minecraft.data.recipes.ShapelessRecipeBuilder;
+import net.minecraft.data.recipes.SpecialRecipeBuilder;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.data.worldgen.features.CaveFeatures;
 import net.minecraft.data.worldgen.features.VegetationFeatures;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.level.block.Blocks;
@@ -54,7 +64,8 @@ public class BovinesDataGen implements DataGeneratorEntrypoint {
     @Override
     public void onInitializeDataGenerator(FabricDataGenerator generator) {
         FabricDataGenerator.Pack pack = generator.createPack();
-        pack.addProvider(DynamicRegistryGenerator::new);
+        pack.addProvider(DynamicRegistryProvider::new);
+        pack.addProvider(RecipeProvider::new);
         pack.addProvider(BlockLootTableProvider::new);
         pack.addProvider(ChestLootTableProvider::new);
         pack.addProvider(EntityLootTableProvider::new);
@@ -71,9 +82,9 @@ public class BovinesDataGen implements DataGeneratorEntrypoint {
         registryBuilder.add(BovinesRegistryKeys.FLOWER_CROWN_PETAL, BovinesFlowerCrownMaterials::bootstrap);
     }
 
-    private static class DynamicRegistryGenerator extends FabricDynamicRegistryProvider {
+    private static class DynamicRegistryProvider extends FabricDynamicRegistryProvider {
 
-        public DynamicRegistryGenerator(FabricDataOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
+        public DynamicRegistryProvider(FabricDataOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
             super(output, registriesFuture);
         }
 
@@ -100,6 +111,28 @@ public class BovinesDataGen implements DataGeneratorEntrypoint {
         @Override
         public @NotNull String getName() {
             return "Dynamic Registries";
+        }
+    }
+
+    private static class RecipeProvider extends FabricRecipeProvider {
+        public RecipeProvider(FabricDataOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
+            super(output, registriesFuture);
+        }
+
+        @Override
+        public void buildRecipes(RecipeOutput output) {
+            oneToOneConversionRecipe(output, Items.ORANGE_DYE, BovinesBlocks.BIRD_OF_PARADISE, "orange_dye");
+            oneToOneConversionRecipe(output, Items.YELLOW_DYE, BovinesBlocks.BUTTERCUP, "yellow_dye");
+            oneToOneConversionRecipe(output, Items.LIGHT_BLUE_DYE, BovinesBlocks.CHARGELILY, "light_blue_dye");
+            oneToOneConversionRecipe(output, Items.RED_DYE, BovinesBlocks.FREESIA, "red_dye");
+            oneToOneConversionRecipe(output, Items.PURPLE_DYE, BovinesBlocks.HYACINTH, "purple_dye");
+            oneToOneConversionRecipe(output, Items.LIME_DYE, BovinesBlocks.LIMELIGHT, "lime_dye");
+            oneToOneConversionRecipe(output, Items.CYAN_DYE, BovinesBlocks.LINGHOLM, "cyan_dye");
+            oneToOneConversionRecipe(output, Items.PINK_DYE, BovinesBlocks.PINK_DAISY, "pink_dye");
+            oneToOneConversionRecipe(output, Items.WHITE_DYE, BovinesBlocks.SNOWDROP, "white_dye");
+            oneToOneConversionRecipe(output, Items.BLUE_DYE, BovinesBlocks.TROPICAL_BLUE, "blue_dye");
+
+            SpecialRecipeBuilder.special(FlowerCrownRecipe::new).save(output, BovinesAndButtercups.asResource("flower_crown"));
         }
     }
 
@@ -260,6 +293,8 @@ public class BovinesDataGen implements DataGeneratorEntrypoint {
 
         @Override
         protected void addTags(HolderLookup.Provider wrapperLookup) {
+            ((FabricTagBuilder)tag(BlockTags.SMALL_FLOWERS))
+                    .forceAddTag(BovinesTags.BlockTags.MOOBLOOM_FLOWERS);
             tag(BovinesTags.BlockTags.MOOBLOOM_FLOWERS)
                     .add(
                             reverseLookup(BovinesBlocks.BIRD_OF_PARADISE),
@@ -318,6 +353,8 @@ public class BovinesDataGen implements DataGeneratorEntrypoint {
 
         @Override
         protected void addTags(HolderLookup.Provider wrapperLookup) {
+            ((FabricTagBuilder)tag(ItemTags.SMALL_FLOWERS))
+                    .forceAddTag(BovinesTags.ItemTags.MOOBLOOM_FLOWERS);
             tag(BovinesTags.ItemTags.MOOBLOOM_FLOWERS)
                     .add(
                             reverseLookup(BovinesItems.BIRD_OF_PARADISE),

@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "minecraft:blue_dye_from_tropical_blue"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    },
+    "has_tropical_blue": {
+      "conditions": {
+        "items": [
+          {
+            "items": "bovinesandbuttercups:tropical_blue"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_tropical_blue"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "minecraft:blue_dye_from_tropical_blue"
+    ]
+  }
+}
