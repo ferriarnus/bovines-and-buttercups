@@ -5,6 +5,7 @@ import house.greenhouse.bovinesandbuttercups.client.particle.BloomParticle;
 import house.greenhouse.bovinesandbuttercups.client.particle.ModelLocationParticle;
 import house.greenhouse.bovinesandbuttercups.client.particle.ShroomParticle;
 import house.greenhouse.bovinesandbuttercups.client.platform.BovinesClientHelperNeo;
+import house.greenhouse.bovinesandbuttercups.client.renderer.entity.layer.FlowerCrownLayer;
 import house.greenhouse.bovinesandbuttercups.client.util.BovinesModelLayers;
 import house.greenhouse.bovinesandbuttercups.client.renderer.block.CustomFlowerPotBlockRenderer;
 import house.greenhouse.bovinesandbuttercups.client.renderer.block.CustomFlowerRenderer;
@@ -19,6 +20,7 @@ import house.greenhouse.bovinesandbuttercups.client.renderer.item.FlowerCrownIte
 import house.greenhouse.bovinesandbuttercups.client.util.BovineStateModelUtil;
 import house.greenhouse.bovinesandbuttercups.client.util.ClearTextureCacheReloadListener;
 import house.greenhouse.bovinesandbuttercups.mixin.client.ModelBakeryAccessor;
+import house.greenhouse.bovinesandbuttercups.mixin.neoforge.client.EntityRenderersEventAddLayersAccessor;
 import house.greenhouse.bovinesandbuttercups.registry.BovinesBlockEntityTypes;
 import house.greenhouse.bovinesandbuttercups.registry.BovinesEffects;
 import house.greenhouse.bovinesandbuttercups.registry.BovinesEntityTypes;
@@ -26,8 +28,15 @@ import house.greenhouse.bovinesandbuttercups.registry.BovinesItems;
 import house.greenhouse.bovinesandbuttercups.registry.BovinesParticleTypes;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.CowModel;
+import net.minecraft.client.model.HumanoidModel;
+import net.minecraft.client.model.IllagerModel;
+import net.minecraft.client.model.Model;
+import net.minecraft.client.model.VillagerModel;
+import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.builders.CubeDeformation;
+import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.MushroomCowRenderer;
+import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.resources.model.BlockModelRotation;
 import net.minecraft.client.resources.model.ModelResourceLocation;
@@ -121,6 +130,14 @@ public class BovinesAndButtercupsNeoForgeClient {
             MushroomCowRenderer mushroomCowRenderer = event.getRenderer(EntityType.MOOSHROOM);
             // mushroomCowRenderer.addLayer(new MushroomCowDatapackMushroomLayer<>(mushroomCowRenderer, Minecraft.getInstance().getBlockRenderer()));
             mushroomCowRenderer.addLayer(new CowLayersLayer<>(mushroomCowRenderer));
+
+            ((EntityRenderersEventAddLayersAccessor)event).apugli$getRenderers().forEach((entityType, entityRenderer) -> {
+                if (entityRenderer instanceof LivingEntityRenderer<?, ?> livingRenderer) {
+                    Model model = livingRenderer.getModel();
+                    if (model instanceof HumanoidModel<?> || model instanceof IllagerModel<?> || model instanceof VillagerModel<?>)
+                        livingRenderer.addLayer(new FlowerCrownLayer(livingRenderer, modelLayerLocation -> event.getContext().bakeLayer((ModelLayerLocation) modelLayerLocation), event.getContext().getModelManager()));
+                }
+            });
         }
 
         @SubscribeEvent
