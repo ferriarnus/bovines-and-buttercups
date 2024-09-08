@@ -26,7 +26,16 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "bovinesandbuttercups:buttercup"
+          "name": "bovinesandbuttercups:custom_mushroom"
+        }
+      ],
+      "functions": [
+        {
+          "function": "minecraft:copy_components",
+          "include": [
+            "bovinesandbuttercups:custom_mushroom"
+          ],
+          "source": "block_entity"
         }
       ],
       "rolls": 1.0

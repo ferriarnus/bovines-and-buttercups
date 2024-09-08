@@ -11,22 +11,16 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "minecraft:flower_pot"
+          "name": "bovinesandbuttercups:custom_mushroom"
         }
       ],
-      "rolls": 1.0
-    },
-    {
-      "bonus_rolls": 0.0,
-      "conditions": [
+      "functions": [
         {
-          "condition": "minecraft:survives_explosion"
-        }
-      ],
-      "entries": [
-        {
-          "type": "minecraft:item",
-          "name": "bovinesandbuttercups:buttercup"
+          "function": "minecraft:copy_components",
+          "include": [
+            "bovinesandbuttercups:custom_mushroom"
+          ],
+          "source": "block_entity"
         }
       ],
       "rolls": 1.0

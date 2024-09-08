@@ -2,6 +2,7 @@ package house.greenhouse.bovinesandbuttercups.datagen;
 
 import com.mojang.serialization.Lifecycle;
 import house.greenhouse.bovinesandbuttercups.content.data.nectar.Nectar;
+import house.greenhouse.bovinesandbuttercups.registry.BovinesDataComponents;
 import house.greenhouse.bovinesandbuttercups.registry.BovinesNectars;
 import net.fabricmc.fabric.api.datagen.v1.DataGeneratorEntrypoint;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
@@ -42,9 +43,7 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.level.block.Blocks;
@@ -53,10 +52,12 @@ import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
+import net.minecraft.world.level.storage.loot.functions.CopyComponentsFunction;
 import net.minecraft.world.level.storage.loot.functions.EnchantedCountIncreaseFunction;
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
 import net.minecraft.world.level.storage.loot.functions.SmeltItemFunction;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
+import net.minecraft.world.level.storage.loot.predicates.ExplosionCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemEntityPropertyCondition;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
@@ -165,27 +166,82 @@ public class BovinesDataGenerator implements DataGeneratorEntrypoint {
 
         @Override
         public void generate() {
-            this.dropSelf(BovinesBlocks.BIRD_OF_PARADISE);
-            this.dropSelf(BovinesBlocks.BUTTERCUP);
-            this.dropSelf(BovinesBlocks.CHARGELILY);
-            this.dropSelf(BovinesBlocks.FREESIA);
-            this.dropSelf(BovinesBlocks.HYACINTH);
-            this.dropSelf(BovinesBlocks.LIMELIGHT);
-            this.dropSelf(BovinesBlocks.LINGHOLM);
-            this.dropSelf(BovinesBlocks.PINK_DAISY);
-            this.dropSelf(BovinesBlocks.SNOWDROP);
-            this.dropSelf(BovinesBlocks.TROPICAL_BLUE);
+            dropSelf(BovinesBlocks.BIRD_OF_PARADISE);
+            dropSelf(BovinesBlocks.BUTTERCUP);
+            dropSelf(BovinesBlocks.CHARGELILY);
+            dropSelf(BovinesBlocks.FREESIA);
+            dropSelf(BovinesBlocks.HYACINTH);
+            dropSelf(BovinesBlocks.LIMELIGHT);
+            dropSelf(BovinesBlocks.LINGHOLM);
+            dropSelf(BovinesBlocks.PINK_DAISY);
+            dropSelf(BovinesBlocks.SNOWDROP);
+            dropSelf(BovinesBlocks.TROPICAL_BLUE);
 
-            this.dropOther(BovinesBlocks.POTTED_BIRD_OF_PARADISE, BovinesBlocks.BIRD_OF_PARADISE);
-            this.dropOther(BovinesBlocks.POTTED_BUTTERCUP, BovinesBlocks.BUTTERCUP);
-            this.dropOther(BovinesBlocks.POTTED_CHARGELILY, BovinesBlocks.CHARGELILY);
-            this.dropOther(BovinesBlocks.POTTED_FREESIA, BovinesBlocks.FREESIA);
-            this.dropOther(BovinesBlocks.POTTED_HYACINTH, BovinesBlocks.HYACINTH);
-            this.dropOther(BovinesBlocks.POTTED_LIMELIGHT, BovinesBlocks.LIMELIGHT);
-            this.dropOther(BovinesBlocks.POTTED_LINGHOLM, BovinesBlocks.LINGHOLM);
-            this.dropOther(BovinesBlocks.POTTED_PINK_DAISY, BovinesBlocks.PINK_DAISY);
-            this.dropOther(BovinesBlocks.POTTED_SNOWDROP, BovinesBlocks.SNOWDROP);
-            this.dropOther(BovinesBlocks.POTTED_TROPICAL_BLUE, BovinesBlocks.TROPICAL_BLUE);
+            dropPottedContents(BovinesBlocks.POTTED_BIRD_OF_PARADISE);
+            dropPottedContents(BovinesBlocks.POTTED_BUTTERCUP);
+            dropPottedContents(BovinesBlocks.POTTED_CHARGELILY);
+            dropPottedContents(BovinesBlocks.POTTED_FREESIA);
+            dropPottedContents(BovinesBlocks.POTTED_HYACINTH);
+            dropPottedContents(BovinesBlocks.POTTED_LIMELIGHT);
+            dropPottedContents(BovinesBlocks.POTTED_LINGHOLM);
+            dropPottedContents(BovinesBlocks.POTTED_PINK_DAISY);
+            dropPottedContents(BovinesBlocks.POTTED_SNOWDROP);
+            dropPottedContents(BovinesBlocks.POTTED_TROPICAL_BLUE);
+
+            add(BovinesBlocks.CUSTOM_FLOWER,
+                    LootTable.lootTable()
+                            .withPool(LootPool.lootPool()
+                                    .setRolls(ConstantValue.exactly(1.0F))
+                                    .add(LootItem.lootTableItem(BovinesItems.CUSTOM_FLOWER))
+                                    .apply(CopyComponentsFunction.copyComponents(CopyComponentsFunction.Source.BLOCK_ENTITY).include(BovinesDataComponents.CUSTOM_FLOWER))
+                                    .when(ExplosionCondition.survivesExplosion())
+                    )
+            );
+            add(BovinesBlocks.POTTED_CUSTOM_FLOWER,
+                    LootTable.lootTable()
+                            .withPool(LootPool.lootPool()
+                                    .setRolls(ConstantValue.exactly(1.0F))
+                                    .add(LootItem.lootTableItem(Items.FLOWER_POT))
+                                    .when(ExplosionCondition.survivesExplosion())
+                            ).withPool(LootPool.lootPool()
+                                    .setRolls(ConstantValue.exactly(1.0F))
+                                    .add(LootItem.lootTableItem(BovinesItems.CUSTOM_FLOWER))
+                                    .apply(CopyComponentsFunction.copyComponents(CopyComponentsFunction.Source.BLOCK_ENTITY).include(BovinesDataComponents.CUSTOM_FLOWER))
+                                    .when(ExplosionCondition.survivesExplosion())
+                    )
+            );
+
+            add(BovinesBlocks.CUSTOM_MUSHROOM,
+                    LootTable.lootTable()
+                            .withPool(LootPool.lootPool()
+                                    .setRolls(ConstantValue.exactly(1.0F))
+                                    .add(LootItem.lootTableItem(BovinesItems.CUSTOM_MUSHROOM))
+                                    .apply(CopyComponentsFunction.copyComponents(CopyComponentsFunction.Source.BLOCK_ENTITY).include(BovinesDataComponents.CUSTOM_MUSHROOM))
+                                    .when(ExplosionCondition.survivesExplosion())
+                    )
+            );
+            add(BovinesBlocks.CUSTOM_MUSHROOM_BLOCK,
+                    LootTable.lootTable()
+                            .withPool(LootPool.lootPool()
+                                    .setRolls(ConstantValue.exactly(1.0F))
+                                    .add(LootItem.lootTableItem(BovinesItems.CUSTOM_MUSHROOM_BLOCK))
+                                    .apply(CopyComponentsFunction.copyComponents(CopyComponentsFunction.Source.BLOCK_ENTITY).include(BovinesDataComponents.CUSTOM_MUSHROOM))
+                                    .when(ExplosionCondition.survivesExplosion())
+                    )
+            );
+            add(BovinesBlocks.POTTED_CUSTOM_MUSHROOM,
+                    LootTable.lootTable()
+                            .withPool(LootPool.lootPool()
+                                    .setRolls(ConstantValue.exactly(1.0F))
+                                    .add(LootItem.lootTableItem(Items.FLOWER_POT))
+                                    .when(ExplosionCondition.survivesExplosion())
+                            ).withPool(LootPool.lootPool()
+                                    .setRolls(ConstantValue.exactly(1.0F))
+                                    .add(LootItem.lootTableItem(BovinesItems.CUSTOM_MUSHROOM))
+                                    .apply(CopyComponentsFunction.copyComponents(CopyComponentsFunction.Source.BLOCK_ENTITY).include(BovinesDataComponents.CUSTOM_MUSHROOM))
+                                    .when(ExplosionCondition.survivesExplosion())
+                            )
+            );
         }
 
     }
