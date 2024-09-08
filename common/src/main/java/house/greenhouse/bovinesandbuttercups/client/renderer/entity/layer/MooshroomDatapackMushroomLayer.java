@@ -49,14 +49,13 @@ public class MooshroomDatapackMushroomLayer<T extends MushroomCow> extends Rende
 
         int m = LivingEntityRenderer.getOverlayCoords(entity, 0.0f);
 
-        ResourceLocation modelResourceLocation;
-        if (cowType.value().configuration().mushroom().modelLocation().isPresent()) {
+        ResourceLocation modelResourceLocation = null;
+        if (cowType.value().configuration().mushroom().modelLocation().isPresent())
             modelResourceLocation = cowType.value().configuration().mushroom().modelLocation().get().withPath(str -> str + "/");
-        } else if (cowType.value().configuration().mushroom().customType().isPresent()) {
-            modelResourceLocation = BovineStatesAssociationRegistry.getBlock(cowType.value().configuration().mushroom().customType().get().unwrapKey().map(key -> key.location().withPath(path -> path)).orElse(CustomMushroomType.MISSING_KEY.location()), BovineBlockstateTypes.MUSHROOM).orElseGet(() -> BovinesAndButtercups.asResource("bovinesandbuttercups/missing_mushroom")).withPath(str -> str + "/");
-        } else {
-            modelResourceLocation = BovinesAndButtercups.asResource("bovinesandbuttercups/missing_mushroom/");
-        }
+        else if (cowType.value().configuration().mushroom().customType().isPresent())
+            modelResourceLocation = BovineStatesAssociationRegistry.getBlock(cowType.value().configuration().mushroom().customType().get().unwrapKey().orElse(CustomMushroomType.MISSING_KEY).location(), BovineBlockstateTypes.MUSHROOM).orElseGet(() -> BovinesAndButtercups.asResource("bovinesandbuttercups/missing_mushroom")).withPath(str -> str + "/");
+        else if (cowType.value().configuration().mushroom().blockState().isEmpty())
+            return;
 
         handleMooshroomRender(poseStack, buffer, packedLight, bl, m, cowType.value().configuration().mushroom().blockState(), modelResourceLocation);
     }

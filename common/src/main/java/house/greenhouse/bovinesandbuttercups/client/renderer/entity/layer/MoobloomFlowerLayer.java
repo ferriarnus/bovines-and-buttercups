@@ -3,6 +3,7 @@ package house.greenhouse.bovinesandbuttercups.client.renderer.entity.layer;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import house.greenhouse.bovinesandbuttercups.BovinesAndButtercups;
+import house.greenhouse.bovinesandbuttercups.api.block.CustomFlowerType;
 import house.greenhouse.bovinesandbuttercups.client.BovinesAndButtercupsClient;
 import house.greenhouse.bovinesandbuttercups.client.bovinestate.BovineStatesAssociationRegistry;
 import house.greenhouse.bovinesandbuttercups.client.bovinestate.BovineBlockstateTypes;
@@ -45,24 +46,24 @@ public class MoobloomFlowerLayer<T extends Moobloom, M extends CowModel<T>> exte
         int m = LivingEntityRenderer.getOverlayCoords(entity, 0.0f);
 
         Optional<BlockState> blockState;
-        ResourceLocation resourceLocation;
+        ResourceLocation resourceLocation = null;
 
         if (entity.isBaby()) {
             if (configuration.bud().modelLocation().isPresent())
                 resourceLocation = BovineStatesAssociationRegistry.getBlock(configuration.bud().modelLocation().get(), BovineBlockstateTypes.GENERIC).map(rl -> rl.withPath(s -> s +"/")).orElse(BovinesAndButtercups.asResource("bovinesandbuttercups/missing_flower/"));
             else if (configuration.bud().customType().isPresent())
-                resourceLocation = BovineStatesAssociationRegistry.getBlock(entity.level().registryAccess().registry(BovinesRegistryKeys.CUSTOM_FLOWER_TYPE).orElseThrow().getKey(configuration.bud().customType().get().value()), BovineBlockstateTypes.FLOWER).map(rl -> rl.withPath(s -> "bovinesandbuttercups/" + s +"/")).orElseGet(() -> BovinesAndButtercups.asResource("bovinesandbuttercups/missing_flower/"));
-            else
-                resourceLocation = BovinesAndButtercups.asResource("bovinesandbuttercups/missing_flower/");
+                resourceLocation = BovineStatesAssociationRegistry.getBlock(configuration.bud().customType().map(holder -> holder.unwrapKey().orElse(CustomFlowerType.MISSING_KEY).location()).orElse(BovinesAndButtercups.asResource("bovinesandbuttercups/missing_flower")), BovineBlockstateTypes.FLOWER).orElseGet(() -> BovinesAndButtercups.asResource("bovinesandbuttercups/missing_flower")).withPath(s -> s + "/");
+            else if (configuration.flower().blockState().isEmpty())
+                return;
             blockState = configuration.bud().blockState();
             handleMoobudRender(poseStack, buffer, entity, packedLight, bl, m, blockState, resourceLocation);
         } else {
             if (configuration.flower().modelLocation().isPresent())
                 resourceLocation = BovineStatesAssociationRegistry.getBlock(configuration.bud().modelLocation().get(), BovineBlockstateTypes.GENERIC).map(rl -> rl.withPath(s -> s +"/")).orElse(BovinesAndButtercups.asResource("bovinesandbuttercups/missing_flower/"));
             else if (configuration.flower().customType().isPresent())
-                resourceLocation = BovineStatesAssociationRegistry.getBlock(entity.level().registryAccess().registry(BovinesRegistryKeys.CUSTOM_FLOWER_TYPE).orElseThrow().getKey(configuration.flower().customType().get().value()), BovineBlockstateTypes.FLOWER).map(rl -> rl.withPath(s -> "bovinesandbuttercups/" + s +"/")).orElseGet(() -> BovinesAndButtercups.asResource("bovinesandbuttercups/missing_flower/"));
-            else
-                resourceLocation = BovinesAndButtercups.asResource("bovinesandbuttercups/missing_flower/");
+                resourceLocation = BovineStatesAssociationRegistry.getBlock(configuration.flower().customType().map(holder -> holder.unwrapKey().orElse(CustomFlowerType.MISSING_KEY).location()).orElse(BovinesAndButtercups.asResource("bovinesandbuttercups/missing_flower")), BovineBlockstateTypes.FLOWER).orElseGet(() -> BovinesAndButtercups.asResource("bovinesandbuttercups/missing_flower")).withPath(s -> s + "/");
+            else if (configuration.flower().blockState().isEmpty())
+                return;
             blockState = configuration.flower().blockState();
             handleMoobloomRender(poseStack, buffer, entity, packedLight, bl, m, blockState, resourceLocation);
         }
