@@ -34,9 +34,8 @@ public class CustomMushroomRenderer implements BlockEntityRenderer<CustomMushroo
 
         if (blockEntity.getMushroomType() != null) {
             Optional<ResourceLocation> modelLocationWithoutVariant = BovineStatesAssociationRegistry.getBlock(blockEntity.getMushroomType().holder().unwrapKey().get().location(), BovineBlockstateTypes.MUSHROOM);
-            if (modelLocationWithoutVariant.isPresent()) {
+            if (modelLocationWithoutVariant.isPresent())
                 resourceLocation = modelLocationWithoutVariant.get().withPath(s -> s + "/" + BovineStateModelUtil.acceptedStateProperties(BovineStateModelUtil.acceptedStateProperties(BlockModelShaper.statePropertiesToString(blockEntity.getBlockState().getValues()))));
-            }
         }
 
         BakedModel mushroomModel = BovinesAndButtercupsClient.getHelper().getModel(resourceLocation);

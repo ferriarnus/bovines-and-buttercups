@@ -15,6 +15,7 @@
     "ChunkGeneratorMixin",
     "EntityAccessor",
     "FarmBlockMixin",
+    "FlowerPotBlockMixin",
     "JigsawStructureAccessor",
     "MobAccessor",
     "MobEffectInstanceMixin",
@@ -34,7 +35,8 @@
     "client.MushroomCowMushroomLayerMixin",
     "client.PlayerRendererMixin",
     "client.SimpleTextureMixin",
-    "client.SimpleTextureTextureImageAccessor"
+    "client.SimpleTextureTextureImageAccessor",
+    "client.TerrainParticleMixin"
   ],
   "server": [
   ],

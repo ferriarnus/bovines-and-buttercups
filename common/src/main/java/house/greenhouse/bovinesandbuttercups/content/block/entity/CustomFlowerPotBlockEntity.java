@@ -44,7 +44,7 @@ public class CustomFlowerPotBlockEntity extends BlockEntity {
     @Override
     protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
         if (getFlowerType() != null)
-            tag.put("custom_mushroom", CustomFlowerType.CODEC.encodeStart(registries.createSerializationContext(NbtOps.INSTANCE), getFlowerType().holder()).getOrThrow());
+            tag.put("custom_flower", CustomFlowerType.CODEC.encodeStart(registries.createSerializationContext(NbtOps.INSTANCE), getFlowerType().holder()).getOrThrow());
     }
 
     @Override

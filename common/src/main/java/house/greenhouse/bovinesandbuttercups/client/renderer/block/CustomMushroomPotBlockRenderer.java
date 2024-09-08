@@ -31,11 +31,11 @@ public class CustomMushroomPotBlockRenderer implements BlockEntityRenderer<Custo
     @SuppressWarnings("ConstantConditions")
     public void render(CustomMushroomPotBlockEntity blockEntity, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
         ResourceLocation resourceLocation = BovinesAndButtercups.asResource("bovinesandbuttercups/potted_missing_mushroom/" + BovineStateModelUtil.acceptedStateProperties(BlockModelShaper.statePropertiesToString(blockEntity.getBlockState().getValues())));
+
         if (blockEntity.getMushroomType() != null) {
             Optional<ResourceLocation> modelLocationWithoutVariant = BovineStatesAssociationRegistry.getBlock(blockEntity.getMushroomType().holder().unwrapKey().get().location(), BovineBlockstateTypes.POTTED_MUSHROOM);
-            if (modelLocationWithoutVariant.isPresent()) {
-                resourceLocation = modelLocationWithoutVariant.get();
-            }
+            if (modelLocationWithoutVariant.isPresent())
+                resourceLocation = modelLocationWithoutVariant.get().withPath(s -> s + "/" + BovineStateModelUtil.acceptedStateProperties(BovineStateModelUtil.acceptedStateProperties(BlockModelShaper.statePropertiesToString(blockEntity.getBlockState().getValues()))));
         }
 
         BakedModel pottedMushroomModel = BovinesAndButtercupsClient.getHelper().getModel(resourceLocation);

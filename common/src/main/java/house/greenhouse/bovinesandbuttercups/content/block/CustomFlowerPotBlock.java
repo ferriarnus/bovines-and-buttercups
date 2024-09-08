@@ -8,6 +8,7 @@ import house.greenhouse.bovinesandbuttercups.registry.BovinesItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -51,22 +52,17 @@ public class CustomFlowerPotBlock extends BaseEntityBlock {
     }
 
     @Override
-    public ItemInteractionResult useItemOn(ItemStack stack, BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand hand, BlockHitResult hitResult) {
-        ItemStack handStack = player.getItemInHand(hand);
-        boolean isAir = blockState.is(Blocks.AIR);
-        if (isAir) {
-            ItemStack flowerStack = this.getContent(level, blockPos);
-            if (handStack.isEmpty())
-                player.setItemInHand(hand, flowerStack);
-            else if (!player.addItem(flowerStack))
-                player.drop(flowerStack, false);
+    protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult) {
+        ItemStack stack = new ItemStack(BovinesItems.CUSTOM_FLOWER);
+        stack.set(BovinesDataComponents.CUSTOM_FLOWER, ((CustomFlowerPotBlockEntity)level.getBlockEntity(pos)).getFlowerType());
 
-            level.setBlock(blockPos, Blocks.FLOWER_POT.defaultBlockState(), 3);
-            level.gameEvent(player, GameEvent.BLOCK_CHANGE, blockPos);
-            return ItemInteractionResult.sidedSuccess(level.isClientSide);
-        } else {
-            return ItemInteractionResult.CONSUME;
+        if (!player.addItem(stack)) {
+            player.drop(stack, false);
         }
+
+        level.setBlock(pos, Blocks.FLOWER_POT.defaultBlockState(), Block.UPDATE_ALL);
+        level.gameEvent(player, GameEvent.BLOCK_CHANGE, pos);
+        return InteractionResult.sidedSuccess(level.isClientSide);
     }
 
     public ItemStack getCloneItemStack(LevelReader level, BlockPos pos, BlockState state) {

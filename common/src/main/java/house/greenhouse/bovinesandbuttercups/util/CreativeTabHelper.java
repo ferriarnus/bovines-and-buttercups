@@ -38,7 +38,7 @@ public class CreativeTabHelper {
 
     public static List<ItemStack> getCustomMushroomsForCreativeTab(HolderLookup.Provider lookup) {
         return lookup.lookupOrThrow(BovinesRegistryKeys.CUSTOM_MUSHROOM_TYPE).listElements().filter(mushroomType -> mushroomType.isBound() && !mushroomType.value().equals(CustomMushroomType.MISSING)).map(mushroomType -> {
-            ItemStack stack = new ItemStack(BovinesItems.CUSTOM_FLOWER);
+            ItemStack stack = new ItemStack(BovinesItems.CUSTOM_MUSHROOM);
             stack.set(BovinesDataComponents.CUSTOM_MUSHROOM, new ItemCustomMushroom(mushroomType));
             return stack;
         }).toList();
@@ -46,7 +46,7 @@ public class CreativeTabHelper {
 
     public static List<ItemStack> getCustomMushroomBlocksForCreativeTab(HolderLookup.Provider lookup) {
         return lookup.lookupOrThrow(BovinesRegistryKeys.CUSTOM_MUSHROOM_TYPE).listElements().filter(mushroomType -> mushroomType.isBound() && !mushroomType.value().equals(CustomMushroomType.MISSING)).map(mushroomType -> {
-            ItemStack stack = new ItemStack(BovinesItems.CUSTOM_FLOWER);
+            ItemStack stack = new ItemStack(BovinesItems.CUSTOM_MUSHROOM_BLOCK);
             stack.set(BovinesDataComponents.CUSTOM_MUSHROOM, new ItemCustomMushroom(mushroomType));
             return stack;
         }).toList();
