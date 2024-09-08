@@ -9,7 +9,6 @@ import house.greenhouse.bovinesandbuttercups.content.block.entity.CustomFlowerBl
 import house.greenhouse.bovinesandbuttercups.content.component.ItemCustomFlower;
 import house.greenhouse.bovinesandbuttercups.content.component.ItemNectar;
 import house.greenhouse.bovinesandbuttercups.content.data.configuration.MoobloomConfiguration;
-import house.greenhouse.bovinesandbuttercups.content.data.nectar.NectarEffects;
 import house.greenhouse.bovinesandbuttercups.mixin.EntityAccessor;
 import house.greenhouse.bovinesandbuttercups.platform.BovinesPlatform;
 import house.greenhouse.bovinesandbuttercups.registry.BovinesBlocks;
@@ -65,7 +64,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.biome.Biome;
-import net.minecraft.world.level.block.FlowerBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;

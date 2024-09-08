@@ -8,9 +8,12 @@ import house.greenhouse.bovinesandbuttercups.content.item.CustomMushroomItem;
 import house.greenhouse.bovinesandbuttercups.content.item.FlowerCrownItem;
 import house.greenhouse.bovinesandbuttercups.content.item.NectarBowlItem;
 import house.greenhouse.bovinesandbuttercups.registry.internal.RegistrationCallback;
+import house.greenhouse.bovinesandbuttercups.util.BovinesFoods;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.world.food.Foods;
 import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.HoneyBottleItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.SpawnEggItem;
@@ -39,6 +42,8 @@ public class BovinesItems {
 
     public static final Item FLOWER_CROWN = new FlowerCrownItem(new Item.Properties().stacksTo(1).component(DataComponents.ATTRIBUTE_MODIFIERS, new ItemAttributeModifiers(List.of(), false)));
 
+    public static final HoneyBottleItem PERFECTED_HONEY_BOTTLE = new HoneyBottleItem(new Item.Properties().craftRemainder(Items.GLASS_BOTTLE).food(BovinesFoods.PERFECTED_HONEY_BOTTLE).stacksTo(16));
+
     public static void registerAll(RegistrationCallback<Item> callback) {
         callback.register(BuiltInRegistries.ITEM, BovinesAndButtercups.asResource("nectar_bowl"), NECTAR_BOWL);
         callback.register(BuiltInRegistries.ITEM, BovinesAndButtercups.asResource("moobloom_spawn_egg"), MOOBLOOM_SPAWN_EGG);
@@ -59,5 +64,7 @@ public class BovinesItems {
         callback.register(BuiltInRegistries.ITEM, BovinesAndButtercups.asResource("custom_mushroom_block"), CUSTOM_MUSHROOM_BLOCK);
 
         callback.register(BuiltInRegistries.ITEM, BovinesAndButtercups.asResource("flower_crown"), FLOWER_CROWN);
+
+        callback.register(BuiltInRegistries.ITEM, BovinesAndButtercups.asResource("perfected_honey_bottle"), PERFECTED_HONEY_BOTTLE);
     }
 }

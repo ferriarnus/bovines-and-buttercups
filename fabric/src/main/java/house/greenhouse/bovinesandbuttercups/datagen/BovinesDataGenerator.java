@@ -30,7 +30,10 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.core.Registry;
 import net.minecraft.core.RegistrySetBuilder;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.RecipeOutput;
+import net.minecraft.data.recipes.ShapedRecipeBuilder;
+import net.minecraft.data.recipes.ShapelessRecipeBuilder;
 import net.minecraft.data.recipes.SpecialRecipeBuilder;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.data.worldgen.features.CaveFeatures;
@@ -39,7 +42,9 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.level.block.Blocks;
@@ -135,6 +140,18 @@ public class BovinesDataGenerator implements DataGeneratorEntrypoint {
             oneToOneConversionRecipe(output, Items.PINK_DYE, BovinesBlocks.PINK_DAISY, "pink_dye");
             oneToOneConversionRecipe(output, Items.WHITE_DYE, BovinesBlocks.SNOWDROP, "white_dye");
             oneToOneConversionRecipe(output, Items.BLUE_DYE, BovinesBlocks.TROPICAL_BLUE, "blue_dye");
+
+            ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, Items.SUGAR, 3)
+                    .requires(BovinesItems.PERFECTED_HONEY_BOTTLE)
+                    .group("sugar")
+                    .unlockedBy("has_perfected_honey_bottle", has(BovinesItems.PERFECTED_HONEY_BOTTLE))
+                    .save(output, getConversionRecipeName(Items.SUGAR, BovinesItems.PERFECTED_HONEY_BOTTLE));
+            ShapedRecipeBuilder.shaped(RecipeCategory.REDSTONE, Blocks.HONEY_BLOCK, 1)
+                    .define('#', BovinesItems.PERFECTED_HONEY_BOTTLE)
+                    .pattern("##")
+                    .pattern("##")
+                    .unlockedBy(getHasName(BovinesItems.PERFECTED_HONEY_BOTTLE), has(BovinesItems.PERFECTED_HONEY_BOTTLE))
+                    .save(output, BovinesAndButtercups.asResource("honey_block_from_perfected_honey_bottle"));
 
             SpecialRecipeBuilder.special(FlowerCrownRecipe::new).save(output, BovinesAndButtercups.asResource("flower_crown"));
         }

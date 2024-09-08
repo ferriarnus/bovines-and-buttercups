@@ -4,6 +4,7 @@
   "package": "house.greenhouse.bovinesandbuttercups.mixin.neoforge",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
+    "client.EntityRenderersEventAddLayersAccessor"
   ],
   "client": [
     "client.GuiMixin"

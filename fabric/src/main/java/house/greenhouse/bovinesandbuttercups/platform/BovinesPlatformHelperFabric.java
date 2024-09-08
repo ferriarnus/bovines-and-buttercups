@@ -6,8 +6,6 @@ import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.fabricmc.loader.api.FabricLoader;
 import house.greenhouse.bovinesandbuttercups.api.attachment.CowTypeAttachment;
 import house.greenhouse.bovinesandbuttercups.api.attachment.LockdownAttachment;
-import house.greenhouse.bovinesandbuttercups.platform.BovinesPlatform;
-import house.greenhouse.bovinesandbuttercups.platform.BovinesPlatformHelper;
 import house.greenhouse.bovinesandbuttercups.registry.BovinesAttachments;
 import net.minecraft.core.Registry;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
@@ -15,10 +13,15 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.animal.Bee;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.FlowerPotBlock;
+import net.minecraft.world.level.block.entity.BeehiveBlockEntity;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
+import java.util.Optional;
+import java.util.UUID;
 
 public class BovinesPlatformHelperFabric implements BovinesPlatformHelper {
 
@@ -71,6 +74,48 @@ public class BovinesPlatformHelperFabric implements BovinesPlatformHelper {
         }
         if (entity instanceof ServerPlayer player)
             ServerPlayNetworking.send(player, payload);
+    }
+
+    @Override
+    public boolean isPerfected(BeehiveBlockEntity blockEntity) {
+        return blockEntity.getAttachedOrElse(BovinesAttachments.PERFECTED, false);
+    }
+
+    @Override
+    public boolean isPerfected(Entity bee) {
+        return bee.getAttachedOrElse(BovinesAttachments.PERFECTED, false);
+    }
+
+    @Override
+    public void setPerfected(BeehiveBlockEntity blockEntity, boolean value) {
+        if (!value) {
+            blockEntity.removeAttached(BovinesAttachments.PERFECTED);
+            return;
+        }
+        blockEntity.setAttached(BovinesAttachments.PERFECTED, true);
+    }
+
+    @Override
+    public void setPerfected(Entity bee, boolean value) {
+        if (!value) {
+            bee.removeAttached(BovinesAttachments.PERFECTED);
+            return;
+        }
+        bee.setAttached(BovinesAttachments.PERFECTED, true);
+    }
+
+    @Override
+    public Optional<UUID> getPollinatingMoobloom(Bee bee) {
+        return Optional.ofNullable(bee.getAttachedOrElse(BovinesAttachments.POLLINATING_MOOBLOOM, null));
+    }
+
+    @Override
+    public void setPollinatingMoobloom(Bee bee, @Nullable UUID uuid) {
+        if (uuid == null) {
+            bee.removeAttached(BovinesAttachments.POLLINATING_MOOBLOOM);
+            return;
+        }
+        bee.setAttached(BovinesAttachments.POLLINATING_MOOBLOOM, uuid);
     }
 
 }

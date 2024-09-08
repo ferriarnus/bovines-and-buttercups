@@ -9,13 +9,18 @@ import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.animal.Bee;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BeehiveBlockEntity;
 import net.neoforged.fml.ModList;
 import net.neoforged.fml.loading.FMLLoader;
 import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.registries.RegistryBuilder;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
+import java.util.Optional;
+import java.util.UUID;
 
 public class BovinesPlatformHelperNeoForge implements BovinesPlatformHelper {
 
@@ -64,6 +69,48 @@ public class BovinesPlatformHelperNeoForge implements BovinesPlatformHelper {
     @Override
     public void sendTrackingClientboundPacket(CustomPacketPayload payload, Entity entity) {
         PacketDistributor.sendToPlayersTrackingEntity(entity, payload);
+    }
+
+    @Override
+    public boolean isPerfected(BeehiveBlockEntity blockEntity) {
+        return blockEntity.getExistingData(BovinesAttachments.PERFECTED).orElse(false);
+    }
+
+    @Override
+    public boolean isPerfected(Entity bee) {
+        return bee.getExistingData(BovinesAttachments.PERFECTED).orElse(false);
+    }
+
+    @Override
+    public void setPerfected(BeehiveBlockEntity blockEntity, boolean value) {
+        if (!value) {
+            blockEntity.removeData(BovinesAttachments.PERFECTED);
+            return;
+        }
+        blockEntity.setData(BovinesAttachments.PERFECTED, true);
+    }
+
+    @Override
+    public void setPerfected(Entity bee, boolean value) {
+        if (!value) {
+            bee.removeData(BovinesAttachments.PERFECTED);
+            return;
+        }
+        bee.setData(BovinesAttachments.PERFECTED, true);
+    }
+
+    @Override
+    public Optional<UUID> getPollinatingMoobloom(Bee bee) {
+        return bee.getExistingData(BovinesAttachments.POLLINATING_MOOBLOOM);
+    }
+
+    @Override
+    public void setPollinatingMoobloom(Bee bee, @Nullable UUID uuid) {
+        if (uuid == null) {
+            bee.removeData(BovinesAttachments.POLLINATING_MOOBLOOM);
+            return;
+        }
+        bee.setData(BovinesAttachments.POLLINATING_MOOBLOOM, uuid);
     }
 
 }

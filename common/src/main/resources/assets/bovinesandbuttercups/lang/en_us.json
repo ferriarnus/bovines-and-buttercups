@@ -35,11 +35,11 @@
   "block.bovinesandbuttercups.missing_mushroom_block": "Unknown Mushroom Block",
   "block.bovinesandbuttercups.custom_potted_flower": "Unknown Potted Flower",
   "block.bovinesandbuttercups.custom_potted_mushroom": "Unknown Potted Mushroom",
-  "bovinesandbuttercups.nectarBowl.effect": "Lockdown (%s) (%s)",
 
   "item.bovinesandbuttercups.nectar_bowl": "Nectar Bowl",
   "item.bovinesandbuttercups.moobloom_spawn_egg": "Moobloom Spawn Egg",
   "item.bovinesandbuttercups.flower_crown": "Flower Crown",
+  "item.bovinesandbuttercups.perfected_honey_bottle": "Perfected Honey Bottle",
 
   "item.bovinesandbuttercups.flower_crown.equippable": "Equippable on Head",
   "item.bovinesandbuttercups.flower_crown.petal_amount": "%s \u00D7%s",
@@ -61,6 +61,7 @@
   "subtitles.entity.bovinesandbuttercups.moobloom.milk": "Moobloom gets milked",
 
   "effect.bovinesandbuttercups.lockdown": "Lockdown",
+  "bovinesandbuttercups.nectarBowl.effect": "Lockdown (%s) (%s)",
 
   "commands.bovinesandbuttercups.lockdown.success.single": "Applied Lockdown effect for %s to %s",
   "commands.bovinesandbuttercups.lockdown.success.multiple": "Applied Lockdown effect for %s to %s targets",
