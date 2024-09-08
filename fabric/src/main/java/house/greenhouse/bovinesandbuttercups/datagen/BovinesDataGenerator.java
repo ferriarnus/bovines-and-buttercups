@@ -142,16 +142,16 @@ public class BovinesDataGenerator implements DataGeneratorEntrypoint {
             oneToOneConversionRecipe(output, Items.BLUE_DYE, BovinesBlocks.TROPICAL_BLUE, "blue_dye");
 
             ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, Items.SUGAR, 3)
-                    .requires(BovinesItems.PERFECTED_HONEY_BOTTLE)
+                    .requires(BovinesItems.RICH_HONEY_BOTTLE)
                     .group("sugar")
-                    .unlockedBy("has_perfected_honey_bottle", has(BovinesItems.PERFECTED_HONEY_BOTTLE))
-                    .save(output, getConversionRecipeName(Items.SUGAR, BovinesItems.PERFECTED_HONEY_BOTTLE));
+                    .unlockedBy("has_rich_honey_bottle", has(BovinesItems.RICH_HONEY_BOTTLE))
+                    .save(output, getConversionRecipeName(Items.SUGAR, BovinesItems.RICH_HONEY_BOTTLE));
             ShapedRecipeBuilder.shaped(RecipeCategory.REDSTONE, Blocks.HONEY_BLOCK, 1)
-                    .define('#', BovinesItems.PERFECTED_HONEY_BOTTLE)
+                    .define('#', BovinesItems.RICH_HONEY_BOTTLE)
                     .pattern("##")
                     .pattern("##")
-                    .unlockedBy(getHasName(BovinesItems.PERFECTED_HONEY_BOTTLE), has(BovinesItems.PERFECTED_HONEY_BOTTLE))
-                    .save(output, BovinesAndButtercups.asResource("honey_block_from_perfected_honey_bottle"));
+                    .unlockedBy(getHasName(BovinesItems.RICH_HONEY_BOTTLE), has(BovinesItems.RICH_HONEY_BOTTLE))
+                    .save(output, BovinesAndButtercups.asResource("honey_block_from_rich_honey_bottle"));
 
             SpecialRecipeBuilder.special(FlowerCrownRecipe::new).save(output, BovinesAndButtercups.asResource("flower_crown"));
         }

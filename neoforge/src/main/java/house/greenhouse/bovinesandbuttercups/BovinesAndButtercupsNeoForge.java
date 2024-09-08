@@ -202,7 +202,7 @@ public class BovinesAndButtercupsNeoForge {
                 CreativeTabHelper.getCustomMushroomBlocksForCreativeTab(event.getParameters().holders()).reversed().forEach(stack -> event.insertAfter(new ItemStack(Items.RED_MUSHROOM_BLOCK), stack, CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS));
             } else if (event.getTabKey() == CreativeModeTabs.FOOD_AND_DRINKS) {
                 CreativeTabHelper.getNectarBowlsForCreativeTab(event.getParameters().holders()).reversed().forEach(stack -> event.insertAfter(new ItemStack(Items.MILK_BUCKET), stack, CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS));
-                event.insertAfter(new ItemStack(Items.HONEY_BOTTLE), new ItemStack(BovinesItems.PERFECTED_HONEY_BOTTLE), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+                event.insertAfter(new ItemStack(Items.HONEY_BOTTLE), new ItemStack(BovinesItems.RICH_HONEY_BOTTLE), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
             } else if (event.getTabKey() == CreativeModeTabs.SPAWN_EGGS) {
                 event.accept(BovinesItems.MOOBLOOM_SPAWN_EGG);
             } else if (event.getTabKey() == CreativeModeTabs.TOOLS_AND_UTILITIES) {

@@ -41,13 +41,13 @@ public interface BovinesPlatformHelper {
 
     void sendTrackingClientboundPacket(CustomPacketPayload payload, Entity entity);
 
-    boolean isPerfected(BeehiveBlockEntity blockEntity);
+    boolean producesRichHoney(BeehiveBlockEntity blockEntity);
 
-    boolean isPerfected(Entity bee);
+    boolean producesRichHoney(Entity bee);
 
-    void setPerfected(BeehiveBlockEntity blockEntity, boolean value);
+    void setProducesRichHoney(BeehiveBlockEntity blockEntity, boolean value);
 
-    void setPerfected(Entity bee, boolean value);
+    void setProducesRichHoney(Entity bee, boolean value);
 
     Optional<UUID> getPollinatingMoobloom(Bee bee);
 

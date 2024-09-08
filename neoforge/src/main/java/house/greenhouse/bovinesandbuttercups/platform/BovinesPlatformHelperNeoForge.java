@@ -72,31 +72,31 @@ public class BovinesPlatformHelperNeoForge implements BovinesPlatformHelper {
     }
 
     @Override
-    public boolean isPerfected(BeehiveBlockEntity blockEntity) {
-        return blockEntity.getExistingData(BovinesAttachments.PERFECTED).orElse(false);
+    public boolean producesRichHoney(BeehiveBlockEntity blockEntity) {
+        return blockEntity.getExistingData(BovinesAttachments.PRODUCES_RICH_HONEY).orElse(false);
     }
 
     @Override
-    public boolean isPerfected(Entity bee) {
-        return bee.getExistingData(BovinesAttachments.PERFECTED).orElse(false);
+    public boolean producesRichHoney(Entity bee) {
+        return bee.getExistingData(BovinesAttachments.PRODUCES_RICH_HONEY).orElse(false);
     }
 
     @Override
-    public void setPerfected(BeehiveBlockEntity blockEntity, boolean value) {
+    public void setProducesRichHoney(BeehiveBlockEntity blockEntity, boolean value) {
         if (!value) {
-            blockEntity.removeData(BovinesAttachments.PERFECTED);
+            blockEntity.removeData(BovinesAttachments.PRODUCES_RICH_HONEY);
             return;
         }
-        blockEntity.setData(BovinesAttachments.PERFECTED, true);
+        blockEntity.setData(BovinesAttachments.PRODUCES_RICH_HONEY, true);
     }
 
     @Override
-    public void setPerfected(Entity bee, boolean value) {
+    public void setProducesRichHoney(Entity bee, boolean value) {
         if (!value) {
-            bee.removeData(BovinesAttachments.PERFECTED);
+            bee.removeData(BovinesAttachments.PRODUCES_RICH_HONEY);
             return;
         }
-        bee.setData(BovinesAttachments.PERFECTED, true);
+        bee.setData(BovinesAttachments.PRODUCES_RICH_HONEY, true);
     }
 
     @Override

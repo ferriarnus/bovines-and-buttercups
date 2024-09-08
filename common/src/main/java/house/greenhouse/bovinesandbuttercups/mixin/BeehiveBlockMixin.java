@@ -15,21 +15,21 @@ import org.spongepowered.asm.mixin.injection.ModifyArg;
 @Mixin(BeehiveBlock.class)
 public class BeehiveBlockMixin {
     @ModifyArg(method = "useItemOn", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/ItemStack;<init>(Lnet/minecraft/world/level/ItemLike;)V"))
-    private ItemLike bovinesandbuttercups$setToPerfectedHoney(ItemLike original, @Local(argsOnly = true) Level level, @Local(argsOnly = true) BlockPos pos) {
+    private ItemLike bovinesandbuttercups$setToRichHoney(ItemLike original, @Local(argsOnly = true) Level level, @Local(argsOnly = true) BlockPos pos) {
         if (level.getBlockEntity(pos) instanceof BeehiveBlockEntity beehive) {
-            if (BovinesAndButtercups.getHelper().isPerfected(beehive)) {
-                BovinesAndButtercups.getHelper().setPerfected(beehive, false);
-                return BovinesItems.PERFECTED_HONEY_BOTTLE;
+            if (BovinesAndButtercups.getHelper().producesRichHoney(beehive)) {
+                BovinesAndButtercups.getHelper().setProducesRichHoney(beehive, false);
+                return BovinesItems.RICH_HONEY_BOTTLE;
             }
         }
         return original;
     }
 
     @ModifyArg(method = "dropHoneycomb", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/ItemStack;<init>(Lnet/minecraft/world/level/ItemLike;I)V"), index = 1)
-    private static int bovinesandbuttercups$dropMoreHoneycombWhenPerfected(int original, @Local(argsOnly = true) Level level, @Local(argsOnly = true) BlockPos pos) {
+    private static int bovinesandbuttercups$dropMoreHoneycombWhenRich(int original, @Local(argsOnly = true) Level level, @Local(argsOnly = true) BlockPos pos) {
         if (level.getBlockEntity(pos) instanceof BeehiveBlockEntity beehive) {
-            if (BovinesAndButtercups.getHelper().isPerfected(beehive)) {
-                BovinesAndButtercups.getHelper().setPerfected(beehive, false);
+            if (BovinesAndButtercups.getHelper().producesRichHoney(beehive)) {
+                BovinesAndButtercups.getHelper().setProducesRichHoney(beehive, false);
                 return original * 2;
             }
         }

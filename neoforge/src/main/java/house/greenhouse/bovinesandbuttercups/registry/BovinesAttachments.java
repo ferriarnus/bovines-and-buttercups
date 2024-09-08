@@ -25,7 +25,7 @@ public class BovinesAttachments {
             .serialize(CowTypeAttachment.CODEC)
             .build();
 
-    public static final AttachmentType<Boolean> PERFECTED = AttachmentType
+    public static final AttachmentType<Boolean> PRODUCES_RICH_HONEY = AttachmentType
             .builder(() -> false)
             .serialize(Codec.BOOL)
             .build();
@@ -37,7 +37,7 @@ public class BovinesAttachments {
     public static void registerAll(RegistrationCallback<AttachmentType<?>> callback) {
         callback.register(NeoForgeRegistries.ATTACHMENT_TYPES, CowTypeAttachment.ID, COW_TYPE);
         callback.register(NeoForgeRegistries.ATTACHMENT_TYPES, LockdownAttachment.ID, LOCKDOWN);
-        callback.register(NeoForgeRegistries.ATTACHMENT_TYPES, BovinesAndButtercups.asResource("perfected"), PERFECTED);
+        callback.register(NeoForgeRegistries.ATTACHMENT_TYPES, BovinesAndButtercups.asResource("produces_rich_honey"), PRODUCES_RICH_HONEY);
         callback.register(NeoForgeRegistries.ATTACHMENT_TYPES, BovinesAndButtercups.asResource("pollinating_moobloom"), POLLINATING_MOOBLOOM);
     }
 }

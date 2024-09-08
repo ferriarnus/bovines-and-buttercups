@@ -134,7 +134,7 @@ public class PollinateMoobloomGoal extends Bee.BaseBeeGoal {
     public void stop() {
         if (this.hasPollinatedLongEnough()) {
             ((BeeAccessor)bee).bovinesandbuttercups$invokeSetHasNectar(true);
-            BovinesAndButtercups.getHelper().setPerfected(bee, true);
+            BovinesAndButtercups.getHelper().setProducesRichHoney(bee, true);
             moobloom.setPollinatedResetTicks(1800);
             if (!moobloom.level().isClientSide) {
                 ((ServerLevel) moobloom.level()).sendParticles(ParticleTypes.HAPPY_VILLAGER, moobloom.position().x(), moobloom.position().y() + 1.4D, moobloom.position().z(), 8, 0.5, 0.1, 0.4, 0.0);

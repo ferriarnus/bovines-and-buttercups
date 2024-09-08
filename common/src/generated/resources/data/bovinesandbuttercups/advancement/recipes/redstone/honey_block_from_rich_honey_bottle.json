@@ -1,11 +1,11 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_perfected_honey_bottle": {
+    "has_rich_honey_bottle": {
       "conditions": {
         "items": [
           {
-            "items": "bovinesandbuttercups:perfected_honey_bottle"
+            "items": "bovinesandbuttercups:rich_honey_bottle"
           }
         ]
       },
@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "bovinesandbuttercups:honey_block_from_perfected_honey_bottle"
+        "recipe": "bovinesandbuttercups:honey_block_from_rich_honey_bottle"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -21,12 +21,12 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_perfected_honey_bottle"
+      "has_rich_honey_bottle"
     ]
   ],
   "rewards": {
     "recipes": [
-      "bovinesandbuttercups:honey_block_from_perfected_honey_bottle"
+      "bovinesandbuttercups:honey_block_from_rich_honey_bottle"
     ]
   }
 }

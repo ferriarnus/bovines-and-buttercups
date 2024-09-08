@@ -21,9 +21,9 @@ public class BovinesAttachments {
             .persistent(CowTypeAttachment.CODEC)
             .buildAndRegister(CowTypeAttachment.ID);
 
-    public static final AttachmentType<Boolean> PERFECTED = AttachmentRegistry.<Boolean>builder()
+    public static final AttachmentType<Boolean> PRODUCES_RICH_HONEY = AttachmentRegistry.<Boolean>builder()
             .persistent(Codec.BOOL)
-            .buildAndRegister(BovinesAndButtercups.asResource("perfected"));
+            .buildAndRegister(BovinesAndButtercups.asResource("produces_rich_honey"));
     public static final AttachmentType<UUID> POLLINATING_MOOBLOOM = AttachmentRegistry.<UUID>builder()
             .persistent(UUIDUtil.CODEC)
             .buildAndRegister(BovinesAndButtercups.asResource("pollinating_moobloom"));

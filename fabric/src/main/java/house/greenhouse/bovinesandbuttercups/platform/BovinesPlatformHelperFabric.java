@@ -77,31 +77,31 @@ public class BovinesPlatformHelperFabric implements BovinesPlatformHelper {
     }
 
     @Override
-    public boolean isPerfected(BeehiveBlockEntity blockEntity) {
-        return blockEntity.getAttachedOrElse(BovinesAttachments.PERFECTED, false);
+    public boolean producesRichHoney(BeehiveBlockEntity blockEntity) {
+        return blockEntity.getAttachedOrElse(BovinesAttachments.PRODUCES_RICH_HONEY, false);
     }
 
     @Override
-    public boolean isPerfected(Entity bee) {
-        return bee.getAttachedOrElse(BovinesAttachments.PERFECTED, false);
+    public boolean producesRichHoney(Entity bee) {
+        return bee.getAttachedOrElse(BovinesAttachments.PRODUCES_RICH_HONEY, false);
     }
 
     @Override
-    public void setPerfected(BeehiveBlockEntity blockEntity, boolean value) {
+    public void setProducesRichHoney(BeehiveBlockEntity blockEntity, boolean value) {
         if (!value) {
-            blockEntity.removeAttached(BovinesAttachments.PERFECTED);
+            blockEntity.removeAttached(BovinesAttachments.PRODUCES_RICH_HONEY);
             return;
         }
-        blockEntity.setAttached(BovinesAttachments.PERFECTED, true);
+        blockEntity.setAttached(BovinesAttachments.PRODUCES_RICH_HONEY, true);
     }
 
     @Override
-    public void setPerfected(Entity bee, boolean value) {
+    public void setProducesRichHoney(Entity bee, boolean value) {
         if (!value) {
-            bee.removeAttached(BovinesAttachments.PERFECTED);
+            bee.removeAttached(BovinesAttachments.PRODUCES_RICH_HONEY);
             return;
         }
-        bee.setAttached(BovinesAttachments.PERFECTED, true);
+        bee.setAttached(BovinesAttachments.PRODUCES_RICH_HONEY, true);
     }
 
     @Override
