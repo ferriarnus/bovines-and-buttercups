@@ -7,11 +7,11 @@ import house.greenhouse.bovinesandbuttercups.api.block.CustomFlowerType;
 import house.greenhouse.bovinesandbuttercups.client.BovinesAndButtercupsClient;
 import house.greenhouse.bovinesandbuttercups.client.bovinestate.BovineStatesAssociationRegistry;
 import house.greenhouse.bovinesandbuttercups.client.bovinestate.BovineBlockstateTypes;
+import house.greenhouse.bovinesandbuttercups.client.renderer.entity.model.MoobloomModel;
 import house.greenhouse.bovinesandbuttercups.content.data.configuration.MoobloomConfiguration;
 import house.greenhouse.bovinesandbuttercups.content.entity.Moobloom;
-import house.greenhouse.bovinesandbuttercups.registry.BovinesRegistryKeys;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.model.CowModel;
+import net.minecraft.client.animation.AnimationDefinition;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.Sheets;
@@ -24,19 +24,22 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
+import org.joml.Quaternionf;
+import org.joml.Vector3f;
 
 import java.util.Optional;
 
-public class MoobloomFlowerLayer<T extends Moobloom, M extends CowModel<T>> extends RenderLayer<T, M> {
+public class MoobloomFlowerLayer extends RenderLayer<Moobloom, MoobloomModel> {
     private final BlockRenderDispatcher blockRenderer;
+    private static final Vector3f ANIMATION_VECTOR_CACHE = new Vector3f();
 
-    public MoobloomFlowerLayer(RenderLayerParent<T, M> context, BlockRenderDispatcher blockRenderer) {
+    public MoobloomFlowerLayer(RenderLayerParent<Moobloom, MoobloomModel> context, BlockRenderDispatcher blockRenderer) {
         super(context);
         this.blockRenderer = blockRenderer;
     }
 
     @Override
-    public void render(PoseStack poseStack, MultiBufferSource buffer, int packedLight, T entity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
+    public void render(PoseStack poseStack, MultiBufferSource buffer, int packedLight, Moobloom entity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
         boolean bl;
         bl = Minecraft.getInstance().shouldEntityAppearGlowing(entity) && entity.isInvisible();
         if (entity.isInvisible() && !bl) return;
@@ -69,11 +72,8 @@ public class MoobloomFlowerLayer<T extends Moobloom, M extends CowModel<T>> exte
         }
     }
 
-    private void handleMoobudRender(PoseStack poseStack, MultiBufferSource buffer, T entity, int i, boolean outlineAndInvisible, int overlay, Optional<BlockState> blockState, @Nullable ResourceLocation resourceLocation) {
+    private void handleMoobudRender(PoseStack poseStack, MultiBufferSource buffer, Moobloom entity, int i, boolean outlineAndInvisible, int overlay, Optional<BlockState> blockState, @Nullable ResourceLocation resourceLocation) {
         poseStack.pushPose();
-        if (entity.getStandingStillForBeeTicks() > 0) {
-            poseStack.translate(0.0f, 11.0f / 16.0f, 0.0f);
-        }
 
         poseStack.pushPose();
         poseStack.translate(0.2f, 0.35f, 0.5f);
@@ -106,12 +106,12 @@ public class MoobloomFlowerLayer<T extends Moobloom, M extends CowModel<T>> exte
         poseStack.popPose();
     }
 
-    private void handleMoobloomRender(PoseStack poseStack, MultiBufferSource buffer, T entity, int i, boolean outlineAndInvisible, int overlay, Optional<BlockState> blockState, @Nullable ResourceLocation resourceLocation) {
+    private void handleMoobloomRender(PoseStack poseStack, MultiBufferSource buffer, Moobloom entity, int i, boolean outlineAndInvisible, int overlay, Optional<BlockState> blockState, @Nullable ResourceLocation resourceLocation) {
         poseStack.pushPose();
-        if (entity.getStandingStillForBeeTicks() > 0) {
-            poseStack.translate(0.0f, 11.0f / 16.0f, 0.0f);
-        }
 
+        this.getParentModel().getBody().translateAndRotate(poseStack);
+        poseStack.translate(0.0F, -0.12F, 0.33F);
+        poseStack.mulPose(Axis.XN.rotationDegrees(90));
         poseStack.pushPose();
         poseStack.translate(0.2f, -0.35f, 0.5);
         poseStack.mulPose(Axis.YP.rotationDegrees(45.0f));
@@ -149,6 +149,11 @@ public class MoobloomFlowerLayer<T extends Moobloom, M extends CowModel<T>> exte
         poseStack.translate(-0.05, -0.17, 0.15);
         this.renderFlowerOrBud(poseStack, buffer, i, outlineAndInvisible, blockRenderer, overlay, blockState, resourceLocation);
         poseStack.popPose();
+    }
+
+    private static float getElapsedSeconds(AnimationDefinition animationDefinition, long accumulatedTime) {
+        float f = (float)accumulatedTime / 1000.0F;
+        return animationDefinition.looping() ? f % animationDefinition.lengthInSeconds() : f;
     }
 
     private void renderFlowerOrBud(PoseStack poseStack, MultiBufferSource buffer, int light, boolean outlineAndInvisible, BlockRenderDispatcher blockRenderDispatcher, int overlay, Optional<BlockState> flowerState, ResourceLocation resourceLocation) {

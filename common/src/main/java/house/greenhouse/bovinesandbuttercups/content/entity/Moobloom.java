@@ -9,7 +9,6 @@ import house.greenhouse.bovinesandbuttercups.content.block.entity.CustomFlowerBl
 import house.greenhouse.bovinesandbuttercups.content.component.ItemCustomFlower;
 import house.greenhouse.bovinesandbuttercups.content.component.ItemNectar;
 import house.greenhouse.bovinesandbuttercups.content.data.configuration.MoobloomConfiguration;
-import house.greenhouse.bovinesandbuttercups.content.data.configuration.MooshroomConfiguration;
 import house.greenhouse.bovinesandbuttercups.mixin.EntityAccessor;
 import house.greenhouse.bovinesandbuttercups.platform.BovinesPlatform;
 import house.greenhouse.bovinesandbuttercups.registry.BovinesBlocks;
@@ -44,6 +43,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.AgeableMob;
+import net.minecraft.world.entity.AnimationState;
 import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LightningBolt;
@@ -92,6 +92,9 @@ public class Moobloom extends Cow implements Shearable {
     private boolean hasRefreshedDimensionsForLaying;
     @Nullable private UUID lastLightningBoltUUID;
     private final Map<Holder<CowType<?>>, List<Vec3>> particlePositions = new HashMap<>();
+
+    public final AnimationState layDownAnimationState = new AnimationState();
+    public final AnimationState getUpAnimationState = new AnimationState();
 
     public Moobloom(EntityType<? extends Moobloom> entityType, Level level) {
         super(entityType, level);
@@ -233,6 +236,18 @@ public class Moobloom extends Cow implements Shearable {
             setStandingStillForBeeTicks(getStandingStillForBeeTicks() - 1);
 
         super.tick();
+
+        if (level().isClientSide) {
+            if (getStandingStillForBeeTicks() > 0)
+                layDownAnimationState.startIfStopped(this.tickCount);
+            else if (layDownAnimationState.isStarted() && getStandingStillForBeeTicks() == 0) {
+                layDownAnimationState.stop();
+                getUpAnimationState.startIfStopped(this.tickCount);
+            }
+
+            if (getUpAnimationState.isStarted() && getUpAnimationState.getAccumulatedTime() >= 1000)
+                getUpAnimationState.stop();
+        }
 
         if (getPollinatedResetTicks() > 0)
             setPollinatedResetTicks(getPollinatedResetTicks() - 1);

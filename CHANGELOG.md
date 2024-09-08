@@ -14,6 +14,7 @@
 - Fixed data driven cow types always selecting the first type upon being struck by lightning when it should be randomised.
 
 ## Miscellaneous Changes
+- Added animations for Mooblooms laying down and getting up when being pollinated by a bee.
 - Renamed Bowl of Nectar to Nectar Bowl for consistency with vanilla.
 - Tweaked Ranch Loot Table to always include a Saddle, and to roll for seeds/crops twice.
 - Swapped Buttercup and Pink Daisy Moobloom Ranch structures to have their respective Mooblooms instead of the opposite one.

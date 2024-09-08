@@ -15,7 +15,7 @@ public class MoobloomRenderer extends MobRenderer<Moobloom, MoobloomModel> {
     public MoobloomRenderer(EntityRendererProvider.Context context) {
         super(context, new MoobloomModel(context.bakeLayer(BovinesModelLayers.MOOBLOOM_MODEL_LAYER)), 0.7F);
         this.addLayer(new CowLayersLayer<>(this));
-        this.addLayer(new MoobloomFlowerLayer<>(this, context.getBlockRenderDispatcher()));
+        this.addLayer(new MoobloomFlowerLayer(this, context.getBlockRenderDispatcher()));
     }
 
     @Override

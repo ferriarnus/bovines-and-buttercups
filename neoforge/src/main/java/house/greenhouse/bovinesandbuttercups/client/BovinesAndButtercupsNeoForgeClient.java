@@ -7,6 +7,7 @@ import house.greenhouse.bovinesandbuttercups.client.particle.ShroomParticle;
 import house.greenhouse.bovinesandbuttercups.client.platform.BovinesClientHelperNeo;
 import house.greenhouse.bovinesandbuttercups.client.renderer.entity.layer.FlowerCrownLayer;
 import house.greenhouse.bovinesandbuttercups.client.renderer.entity.layer.MooshroomDatapackMushroomLayer;
+import house.greenhouse.bovinesandbuttercups.client.renderer.entity.model.MoobloomModel;
 import house.greenhouse.bovinesandbuttercups.client.util.BovinesModelLayers;
 import house.greenhouse.bovinesandbuttercups.client.renderer.block.CustomFlowerPotBlockRenderer;
 import house.greenhouse.bovinesandbuttercups.client.renderer.block.CustomFlowerRenderer;
@@ -111,7 +112,7 @@ public class BovinesAndButtercupsNeoForgeClient {
 
         @SubscribeEvent
         public static void registerEntityLayers(EntityRenderersEvent.RegisterLayerDefinitions event) {
-            event.registerLayerDefinition(BovinesModelLayers.MOOBLOOM_MODEL_LAYER, CowModel::createBodyLayer);
+            event.registerLayerDefinition(BovinesModelLayers.MOOBLOOM_MODEL_LAYER, MoobloomModel::createBodyLayer);
             event.registerLayerDefinition(BovinesModelLayers.FLOWER_CROWN_MODEL_LAYER, () -> FlowerCrownModel.createLayer(new CubeDeformation(0.5F)));
             event.registerLayerDefinition(BovinesModelLayers.PIGLIN_FLOWER_CROWN_MODEL_LAYER, () -> FlowerCrownModel.createLayer(new CubeDeformation(1.5F, 0.5F, 0.5F)));
         }

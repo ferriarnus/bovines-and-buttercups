@@ -11,6 +11,7 @@
     "BeehiveBlockMixin",
     "BeeMixin",
     "BeePollinateGoalMixin",
+    "BodyRotationControlMixin",
     "ChunkGeneratorMixin",
     "EntityAccessor",
     "FarmBlockMixin",
