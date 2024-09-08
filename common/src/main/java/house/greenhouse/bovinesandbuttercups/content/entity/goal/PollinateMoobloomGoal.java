@@ -54,20 +54,20 @@ public class PollinateMoobloomGoal extends Bee.BaseBeeGoal {
             return false;
         } else if (BovinesAndButtercups.getHelper().getPollinatingMoobloom(bee).isPresent()) {
             Optional<Entity> entity = Optional.ofNullable(((ServerLevel)bee.level()).getEntity(BovinesAndButtercups.getHelper().getPollinatingMoobloom(bee).get()));
-            if (entity.isPresent() && entity.get() instanceof Moobloom flowerCow) {
-                this.moobloom = flowerCow;
-                setFlowerCow();
+            if (entity.isPresent() && entity.get() instanceof Moobloom moobloom) {
+                this.moobloom = moobloom;
+                setMoobloom();
                 return true;
             }
             return false;
         } else if (this.moobloom == null && this.bee.hasSavedFlowerPos()) {
             return false;
         } else {
-            Optional<Moobloom> flowerCow = findMoobloom();
-            if (flowerCow.isPresent()) {
-                this.moobloom = flowerCow.get();
-                BovinesAndButtercups.getHelper().setPollinatingMoobloom(bee, moobloom.getUUID());
-                setFlowerCow();
+            Optional<Moobloom> moobloom = findMoobloom();
+            if (moobloom.isPresent()) {
+                this.moobloom = moobloom.get();
+                BovinesAndButtercups.getHelper().setPollinatingMoobloom(bee, moobloom.get().getUUID());
+                setMoobloom();
                 return true;
             } else {
                 this.remainingCooldownBeforeLocatingNewCow = Mth.nextInt(bee.getRandom(), 20, 60);
@@ -76,10 +76,10 @@ public class PollinateMoobloomGoal extends Bee.BaseBeeGoal {
         }
     }
 
-    private void setFlowerCow() {
+    private void setMoobloom() {
         moobloom.setStandingStillForBeeTicks(MAX_POLLINATING_TICKS);
         moobloom.setBee(bee);
-        bee.setSavedFlowerPos(moobloom.blockPosition());
+        bee.setSavedFlowerPos(null);
         ((MobAccessor)this.bee).bovinesandbuttercups$getNavigation().moveTo(moobloom.position().x(), moobloom.position().y() + moobloom.getBoundingBox().getYsize() * 1.5, moobloom.position().z(), 1.0);
     }
 

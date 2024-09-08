@@ -1,7 +1,9 @@
 package house.greenhouse.bovinesandbuttercups.content.block.entity;
 
 import house.greenhouse.bovinesandbuttercups.api.block.CustomFlowerType;
+import house.greenhouse.bovinesandbuttercups.api.block.CustomMushroomType;
 import house.greenhouse.bovinesandbuttercups.content.component.ItemCustomFlower;
+import house.greenhouse.bovinesandbuttercups.content.component.ItemCustomMushroom;
 import house.greenhouse.bovinesandbuttercups.registry.BovinesBlockEntityTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
@@ -33,12 +35,14 @@ public class CustomFlowerPotBlockEntity extends BlockEntity {
 
     @Override
     protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
-        setFlowerType(new ItemCustomFlower(CustomFlowerType.CODEC.decode(registries.createSerializationContext(NbtOps.INSTANCE), tag.get("custom_flower")).getOrThrow().getFirst()));
+        if (tag.contains("custom_flower"))
+            setFlowerType(new ItemCustomFlower(CustomFlowerType.CODEC.decode(registries.createSerializationContext(NbtOps.INSTANCE), tag.get("custom_flower")).getOrThrow().getFirst()));
     }
 
     @Override
     protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
-        tag.put("custom_flower", CustomFlowerType.CODEC.encodeStart(registries.createSerializationContext(NbtOps.INSTANCE), getFlowerType().holder()).getOrThrow());
+        if (getFlowerType() != null)
+            tag.put("custom_mushroom", CustomFlowerType.CODEC.encodeStart(registries.createSerializationContext(NbtOps.INSTANCE), getFlowerType().holder()).getOrThrow());
     }
 
     @Nullable

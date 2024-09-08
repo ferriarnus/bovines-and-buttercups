@@ -34,12 +34,14 @@ public class CustomFlowerBlockEntity extends BlockEntity {
 
     @Override
     protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
-        setFlowerType(new ItemCustomFlower(CustomFlowerType.CODEC.decode(registries.createSerializationContext(NbtOps.INSTANCE), tag.get("custom_flower")).getOrThrow().getFirst()));
+        if (tag.contains("custom_flower"))
+            setFlowerType(new ItemCustomFlower(CustomFlowerType.CODEC.decode(registries.createSerializationContext(NbtOps.INSTANCE), tag.get("custom_flower")).getOrThrow().getFirst()));
     }
 
     @Override
     protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
-        tag.put("custom_flower", CustomFlowerType.CODEC.encodeStart(registries.createSerializationContext(NbtOps.INSTANCE), getFlowerType().holder()).getOrThrow());
+        if (getFlowerType() != null)
+            tag.put("custom_mushroom", CustomFlowerType.CODEC.encodeStart(registries.createSerializationContext(NbtOps.INSTANCE), getFlowerType().holder()).getOrThrow());
     }
 
     @Nullable

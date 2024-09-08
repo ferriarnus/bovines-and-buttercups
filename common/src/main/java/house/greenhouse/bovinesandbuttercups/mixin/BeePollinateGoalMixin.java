@@ -3,6 +3,8 @@ package house.greenhouse.bovinesandbuttercups.mixin;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import house.greenhouse.bovinesandbuttercups.BovinesAndButtercups;
 import house.greenhouse.bovinesandbuttercups.access.BeeGoalAccess;
+import house.greenhouse.bovinesandbuttercups.content.entity.Moobloom;
+import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import net.minecraft.world.entity.animal.Bee;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -20,7 +22,7 @@ public abstract class BeePollinateGoalMixin {
 
     @Inject(method = "canBeeUse", at = @At(value = "HEAD"), cancellable = true)
     private void bovinesandbuttercups$cancelIfBeeHasMoobloom(CallbackInfoReturnable<Boolean> cir) {
-        if (BovinesAndButtercups.getHelper().getPollinatingMoobloom(bee).isEmpty())
+        if (BovinesAndButtercups.getHelper().getPollinatingMoobloom(bee).isEmpty() || bee.level().getNearestEntity(Moobloom.class, TargetingConditions.forNonCombat().selector(entity -> entity.getLastHurtByMobTimestamp() <= entity.tickCount - 100 && entity.level().getBlockState(entity.blockPosition().above(2)).isAir() && !entity.isBaby() && ((Moobloom)entity).bee == null), null, bee.getX(), bee.getY(), bee.getZ(), bee.getBoundingBox().inflate(6.0F, 4.0, 6.0F)) != null)
             return;
         cir.setReturnValue(false);
     }
