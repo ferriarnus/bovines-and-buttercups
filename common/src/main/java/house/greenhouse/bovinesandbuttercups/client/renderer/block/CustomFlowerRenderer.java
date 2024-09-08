@@ -33,7 +33,7 @@ public class CustomFlowerRenderer implements BlockEntityRenderer<CustomFlowerBlo
         ResourceLocation resourceLocation = BovinesAndButtercups.asResource("bovinesandbuttercups/missing_flower/" + BovineStateModelUtil.acceptedStateProperties(BlockModelShaper.statePropertiesToString(blockEntity.getBlockState().getValues())));
 
         if (blockEntity.getFlowerType() != null && blockEntity.getFlowerType().holder().isBound()) {
-            Optional<ResourceLocation> modelLocationWithoutVariant = BovineStatesAssociationRegistry.getBlock(blockEntity.getFlowerType().holder().unwrapKey().get().location(), BovineBlockstateTypes.POTTED_FLOWER);
+            Optional<ResourceLocation> modelLocationWithoutVariant = BovineStatesAssociationRegistry.getBlock(blockEntity.getFlowerType().holder().unwrapKey().get().location(), BovineBlockstateTypes.FLOWER);
             if (modelLocationWithoutVariant.isPresent()) {
                 resourceLocation = modelLocationWithoutVariant.get();
             }

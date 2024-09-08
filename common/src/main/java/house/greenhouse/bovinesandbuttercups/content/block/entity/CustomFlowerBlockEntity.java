@@ -5,8 +5,10 @@ import house.greenhouse.bovinesandbuttercups.api.block.CustomMushroomType;
 import house.greenhouse.bovinesandbuttercups.content.component.ItemCustomFlower;
 import house.greenhouse.bovinesandbuttercups.content.component.ItemCustomMushroom;
 import house.greenhouse.bovinesandbuttercups.registry.BovinesBlockEntityTypes;
+import house.greenhouse.bovinesandbuttercups.registry.BovinesDataComponents;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.protocol.Packet;
@@ -42,6 +44,16 @@ public class CustomFlowerBlockEntity extends BlockEntity {
     protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
         if (getFlowerType() != null)
             tag.put("custom_mushroom", CustomFlowerType.CODEC.encodeStart(registries.createSerializationContext(NbtOps.INSTANCE), getFlowerType().holder()).getOrThrow());
+    }
+
+    @Override
+    protected void collectImplicitComponents(DataComponentMap.Builder components) {
+        components.set(BovinesDataComponents.CUSTOM_FLOWER, getFlowerType());
+    }
+
+    @Override
+    protected void applyImplicitComponents(BlockEntity.DataComponentInput input) {
+        setFlowerType(input.get(BovinesDataComponents.CUSTOM_FLOWER));
     }
 
     @Nullable

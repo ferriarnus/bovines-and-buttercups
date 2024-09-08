@@ -5,8 +5,10 @@ import house.greenhouse.bovinesandbuttercups.content.block.CustomHugeMushroomBlo
 import house.greenhouse.bovinesandbuttercups.content.component.ItemCustomMushroom;
 import house.greenhouse.bovinesandbuttercups.registry.BovinesBlockEntityTypes;
 import house.greenhouse.bovinesandbuttercups.registry.BovinesBlocks;
+import house.greenhouse.bovinesandbuttercups.registry.BovinesDataComponents;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.protocol.Packet;
@@ -47,6 +49,16 @@ public class CustomHugeMushroomBlockEntity extends BlockEntity {
     protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
         if (getMushroomType() != null)
             tag.put("custom_mushroom", CustomMushroomType.CODEC.encodeStart(registries.createSerializationContext(NbtOps.INSTANCE), getMushroomType().holder()).getOrThrow());
+    }
+
+    @Override
+    protected void collectImplicitComponents(DataComponentMap.Builder components) {
+        components.set(BovinesDataComponents.CUSTOM_MUSHROOM, getMushroomType());
+    }
+
+    @Override
+    protected void applyImplicitComponents(BlockEntity.DataComponentInput input) {
+        setMushroomType(input.get(BovinesDataComponents.CUSTOM_MUSHROOM));
     }
 
     @Nullable

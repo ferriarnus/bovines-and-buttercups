@@ -6,6 +6,7 @@ import house.greenhouse.bovinesandbuttercups.registry.BovinesBlockEntityTypes;
 import house.greenhouse.bovinesandbuttercups.registry.BovinesDataComponents;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.protocol.Packet;
@@ -21,10 +22,6 @@ public class CustomMushroomPotBlockEntity extends BlockEntity {
 
     public CustomMushroomPotBlockEntity(BlockPos worldPosition, BlockState blockState) {
         super(BovinesBlockEntityTypes.POTTED_CUSTOM_MUSHROOM, worldPosition, blockState);
-    }
-
-    protected void applyImplicitComponents(BlockEntity.DataComponentInput input) {
-        customMushroom = input.get(BovinesDataComponents.CUSTOM_MUSHROOM);
     }
 
     @Nullable public ItemCustomMushroom getMushroomType() {
@@ -45,6 +42,16 @@ public class CustomMushroomPotBlockEntity extends BlockEntity {
     protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
         if (getMushroomType() != null)
             tag.put("custom_mushroom", CustomMushroomType.CODEC.encodeStart(registries.createSerializationContext(NbtOps.INSTANCE), getMushroomType().holder()).getOrThrow());
+    }
+
+    @Override
+    protected void collectImplicitComponents(DataComponentMap.Builder components) {
+        components.set(BovinesDataComponents.CUSTOM_MUSHROOM, getMushroomType());
+    }
+
+    @Override
+    protected void applyImplicitComponents(BlockEntity.DataComponentInput input) {
+        setMushroomType(input.get(BovinesDataComponents.CUSTOM_MUSHROOM));
     }
 
     @Nullable
