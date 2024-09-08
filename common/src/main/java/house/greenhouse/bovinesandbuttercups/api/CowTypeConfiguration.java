@@ -15,6 +15,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.HolderSetCodec;
 import net.minecraft.resources.RegistryFixedCodec;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.random.SimpleWeightedRandomList;
 import net.minecraft.util.random.WeightedEntry;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.biome.Biome;
@@ -52,18 +53,18 @@ public interface CowTypeConfiguration {
      *                           Can be Optional.empty() to keep the default thunder behavior.
      */
     record Settings(Optional<ResourceLocation> cowTexture,
-                    List<WeightedEntry.Wrapper<HolderSet<Biome>>> biomes,
-                    List<WeightedEntry.Wrapper<Holder<CowType<?>>>> thunderConverts,
+                    SimpleWeightedRandomList<HolderSet<Biome>> biomes,
+                    SimpleWeightedRandomList<Holder<CowType<?>>> thunderConverts,
                     Optional<ParticleOptions> particle) {
         public static final MapCodec<Settings> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
                 ResourceLocation.CODEC.optionalFieldOf("texture_location").forGetter(Settings::cowTexture),
-                BovinesCodecs.weightedEntryCodec(HolderSetCodec.create(Registries.BIOME, Biome.CODEC, false), "biomes").listOf().fieldOf("natural_spawns").forGetter(Settings::biomes),
-                BovinesCodecs.weightedEntryCodec(RegistryFixedCodec.create(BovinesRegistryKeys.COW_TYPE), "type").listOf().optionalFieldOf("thunder_conversion_types", List.of()).forGetter(Settings::thunderConverts),
+                BovinesCodecs.weightedEntryCodec(HolderSetCodec.create(Registries.BIOME, Biome.CODEC, false), "biomes").optionalFieldOf("natural_spawns", SimpleWeightedRandomList.empty()).forGetter(Settings::biomes),
+                BovinesCodecs.weightedEntryCodec(RegistryFixedCodec.create(BovinesRegistryKeys.COW_TYPE), "type").optionalFieldOf("thunder_conversion_types", SimpleWeightedRandomList.empty()).forGetter(Settings::thunderConverts),
                 ParticleTypes.CODEC.optionalFieldOf("particle").forGetter(Settings::particle)
         ).apply(instance, Settings::new));
 
         public <C extends CowTypeConfiguration, T extends CowTypeType<C>> List<WeightedEntry.Wrapper<Holder<CowType<C>>>> filterThunderConverts(T type) {
-            return (List)thunderConverts.stream().filter(holderWrapper -> {
+            return (List)thunderConverts.unwrap().stream().filter(holderWrapper -> {
                 boolean bl = holderWrapper.data().isBound() && holderWrapper.data().value().type() == type;
                 if (!bl)
                     BovinesAndButtercups.LOG.error("Attempted to add CowType '{}', which does not have CowTypeType '{}' to thunder conversion list.", holderWrapper.data().unwrapKey().map(key -> key.location()).orElse(null), BovinesRegistries.COW_TYPE_TYPE.getKey(type));

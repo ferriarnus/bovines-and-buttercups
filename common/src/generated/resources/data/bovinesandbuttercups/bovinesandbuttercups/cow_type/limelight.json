@@ -13,7 +13,6 @@
       "texture_location": "bovinesandbuttercups:bovinesandbuttercups/moobloom/moobloom_moss_layer"
     }
   ],
-  "natural_spawns": [],
   "nectar": "bovinesandbuttercups:limelight",
   "offspring_conditions": [
     {
@@ -116,6 +115,8 @@
     "color": 9827185
   },
   "thunder_conversion_types": [
-    "bovinesandbuttercups:chargelily"
+    {
+      "type": "bovinesandbuttercups:chargelily"
+    }
   ]
 }

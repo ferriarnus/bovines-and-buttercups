@@ -11,6 +11,7 @@
 
 ## Bugfixes
 - Fixed offspring particles having an incorrect origin point.
+- Fixed data driven cow types always selecting the first type upon being struck by lightning when it should be randomised.
 
 ## Miscellaneous Changes
 - Renamed Bowl of Nectar to Nectar Bowl for consistency with vanilla.
@@ -32,7 +33,7 @@
 - Nectar is now its own separate datapack registry, being found inside the `data/<namespace>/bovinesandbuttercups/nectar` directory.
 - The Buttercup and Pink Daisy spawning biome tag is now `bovinesandbuttercups:has_moobloom/flower_forest`, instead of `bovinesandbuttercups:has_mooblooms`.
 - Swapped Ranch Structure and spawning biome tags to use `c` tags where appropriate.
-- `back_grass` has been changed to `layers`. Layers are a more powerful system that allows you to overlay textures on top of Mooblooms.
+- `back_grass` field has been changed to `layers`. Layers are a more powerful system that allows you to overlay textures on top of Mooblooms.
   - Contains two fields. `texture_location` and `texture_modifications`.
   - Texture Modifications are a new registry that allows you to modify textures in certain ways.
     - By default it contains:
@@ -45,3 +46,5 @@
   - `offspring_conditions` may be a list of predicates that will apply to either parent; or you may specify `this_conditions` and `other_conditions` to specify conditions that must both be met by both parents with this applying to one and other applying to the other.
     - If no conditions are specified, it is automatically considered true.
   - This change has been made to better implement Bovines with vanilla systems.
+- Removed `vanilla_spawning_hack` field. Regular Mooshroom spawn logic will now happen if there are no naturally spawning custom Mooshroom.
+- Added `vanilla_type` field to Mooshroom Types, this will map a vanilla Mooshroom type to a Bovines and Buttercups Mooshroom type.

@@ -19,7 +19,9 @@
     }
   ],
   "natural_spawns": [
-    "#bovinesandbuttercups:has_moobloom/flower_forest"
+    {
+      "biomes": "#bovinesandbuttercups:has_moobloom/flower_forest"
+    }
   ],
   "nectar": "bovinesandbuttercups:pink_daisy",
   "offspring_conditions": [
@@ -131,6 +133,8 @@
     "color": 16494549
   },
   "thunder_conversion_types": [
-    "bovinesandbuttercups:chargelily"
+    {
+      "type": "bovinesandbuttercups:chargelily"
+    }
   ]
 }

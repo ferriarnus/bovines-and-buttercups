@@ -1,11 +1,16 @@
 package house.greenhouse.bovinesandbuttercups.client.renderer.entity.layer;
 
-// TODO: Reimplement Mooshroom code
-/*
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import house.greenhouse.bovinesandbuttercups.BovinesAndButtercups;
+import house.greenhouse.bovinesandbuttercups.api.BovinesCowTypeTypes;
+import house.greenhouse.bovinesandbuttercups.api.CowType;
+import house.greenhouse.bovinesandbuttercups.api.attachment.CowTypeAttachment;
+import house.greenhouse.bovinesandbuttercups.api.block.CustomMushroomType;
+import house.greenhouse.bovinesandbuttercups.client.BovinesAndButtercupsClient;
 import house.greenhouse.bovinesandbuttercups.client.bovinestate.BovineBlockstateTypes;
+import house.greenhouse.bovinesandbuttercups.client.bovinestate.BovineStatesAssociationRegistry;
+import house.greenhouse.bovinesandbuttercups.content.data.configuration.MooshroomConfiguration;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.CowModel;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -16,11 +21,10 @@ import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.resources.model.BakedModel;
-import net.minecraft.client.resources.model.ModelResourceLocation;
+import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.animal.MushroomCow;
 import net.minecraft.world.inventory.InventoryMenu;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 
@@ -37,61 +41,57 @@ public class MooshroomDatapackMushroomLayer<T extends MushroomCow> extends Rende
     @Override
     public void render(PoseStack poseStack, MultiBufferSource buffer, int packedLight, T entity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
         boolean bl = Minecraft.getInstance().shouldEntityAppearGlowing(entity) && entity.isInvisible();
-        if (entity.isInvisible() && !bl
+        Holder<CowType<MooshroomConfiguration>> cowType = CowTypeAttachment.getCowTypeHolderFromEntity(entity, BovinesCowTypeTypes.MOOSHROOM_TYPE);
+        if (cowType == null || entity.isInvisible() && !bl
                 || entity.isBaby()
-                || (BovineRegistryUtil.getConfiguredCowTypeKey(Services.COMPONENT.getMushroomCowTypeFromCow(entity)).equals(BovinesAndButtercups.asResource("red_mushroom"))
-                && Services.COMPONENT.getMushroomCowTypeFromCow(entity).configuration().getMushroom().blockState().isPresent() && Services.COMPONENT.getMushroomCowTypeFromCow(entity).configuration().getMushroom().blockState().get().is(Blocks.RED_MUSHROOM))
-                || (BovineRegistryUtil.getConfiguredCowTypeKey(Services.COMPONENT.getMushroomCowTypeFromCow(entity)).equals(BovinesAndButtercups.asResource("brown_mushroom"))
-                && Services.COMPONENT.getMushroomCowTypeFromCow(entity).configuration().getMushroom().blockState().isPresent() && Services.COMPONENT.getMushroomCowTypeFromCow(entity).configuration().getMushroom().blockState().get().is(Blocks.BROWN_MUSHROOM))) return;
-
-        MushroomCowConfiguration configuration = Services.COMPONENT.getMushroomCowTypeFromCow(entity).configuration();
+                || cowType.value().configuration().mushroom().blockState().isPresent() && cowType.value().configuration().mushroom().blockState().get().equals(cowType.value().configuration().vanillaType().get().getBlockState()))
+            return;
 
         int m = LivingEntityRenderer.getOverlayCoords(entity, 0.0f);
 
-        ModelResourceLocation modelResourceLocation;
-        if (configuration.getMushroom().modelLocation().isPresent()) {
-            modelResourceLocation = new ModelResourceLocation(configuration.getMushroom().modelLocation().get(), "bovinesandbuttercups_");
-        } else if (configuration.getMushroom().getMushroomType().isPresent()) {
-            ResourceLocation modelLocationWithoutVariant = BovineStatesAssociationRegistry.getBlock(BovineRegistryUtil.getMushroomTypeKey(configuration.getMushroom().getMushroomType().get()), BovineBlockstateTypes.MUSHROOM).orElseGet(() -> BovinesAndButtercups.asResource("bovinesandbuttercups/missing_mushroom"));
-            modelResourceLocation = new ModelResourceLocation(modelLocationWithoutVariant, "bovinesandbuttercups_");
+        ResourceLocation modelResourceLocation;
+        if (cowType.value().configuration().mushroom().modelLocation().isPresent()) {
+            modelResourceLocation = cowType.value().configuration().mushroom().modelLocation().get().withPath(str -> str + "/");
+        } else if (cowType.value().configuration().mushroom().customType().isPresent()) {
+            modelResourceLocation = BovineStatesAssociationRegistry.getBlock(cowType.value().configuration().mushroom().customType().get().unwrapKey().map(key -> key.location().withPath(path -> path)).orElse(CustomMushroomType.MISSING_KEY.location()), BovineBlockstateTypes.MUSHROOM).orElseGet(() -> BovinesAndButtercups.asResource("bovinesandbuttercups/missing_mushroom")).withPath(str -> str + "/");
         } else {
-            modelResourceLocation = new ModelResourceLocation(BovinesAndButtercups.asResource("bovinesandbuttercups/missing_mushroom"), "bovinesandbuttercups_");
+            modelResourceLocation = BovinesAndButtercups.asResource("bovinesandbuttercups/missing_mushroom/");
         }
 
-        handleMooshroomRender(poseStack, buffer, packedLight, bl, m, configuration.getMushroom().blockState(), modelResourceLocation);
+        handleMooshroomRender(poseStack, buffer, packedLight, bl, m, cowType.value().configuration().mushroom().blockState(), modelResourceLocation);
     }
 
-    private void handleMooshroomRender(PoseStack poseStack, MultiBufferSource buffer, int i, boolean outlineAndInvisible, int overlay, Optional<BlockState> blockState, @Nullable ModelResourceLocation modelResourceLocation) {
+    private void handleMooshroomRender(PoseStack poseStack, MultiBufferSource buffer, int i, boolean outlineAndInvisible, int overlay, Optional<BlockState> blockState, @Nullable ResourceLocation modelResourceLocation) {
         poseStack.pushPose();
-        poseStack.translate(0.2F, -0.35F, 0.5D);
+        poseStack.translate(0.2F, -0.35F, 0.5F);
         poseStack.mulPose(Axis.YP.rotationDegrees(-48.0F));
         poseStack.scale(-1.0F, -1.0F, 1.0F);
-        poseStack.translate(-0.5D, -0.5D, -0.5D);
+        poseStack.translate(-0.5F, -0.5F, -0.5F);
         this.renderMushroomBlock(poseStack, buffer, i, outlineAndInvisible, blockRenderer, overlay, blockState, modelResourceLocation);
         poseStack.popPose();
 
         poseStack.pushPose();
-        poseStack.translate(0.2F, -0.35F, 0.5D);
+        poseStack.translate(0.2F, -0.35F, 0.5F);
         poseStack.mulPose(Axis.YP.rotationDegrees(42.0F));
-        poseStack.translate(0.1F, 0.0D, -0.6F);
+        poseStack.translate(0.1F, 0.0F, -0.6F);
         poseStack.mulPose(Axis.YP.rotationDegrees(-48.0F));
         poseStack.scale(-1.0F, -1.0F, 1.0F);
-        poseStack.translate(-0.5D, -0.5D, -0.5D);
+        poseStack.translate(-0.5F, -0.5F, -0.5F);
         this.renderMushroomBlock(poseStack, buffer, i, outlineAndInvisible, blockRenderer, overlay, blockState, modelResourceLocation);
         poseStack.popPose();
 
         poseStack.pushPose();
         this.getParentModel().getHead().translateAndRotate(poseStack);
-        poseStack.translate(0.0D, -0.7F, -0.2F);
+        poseStack.translate(0.0F, -0.7F, -0.2F);
         poseStack.mulPose(Axis.YP.rotationDegrees(-78.0F));
         poseStack.scale(-1.0F, -1.0F, 1.0F);
-        poseStack.translate(-0.5D, -0.5D, -0.5D);
+        poseStack.translate(-0.5F, -0.5F, -0.5F);
         this.renderMushroomBlock(poseStack, buffer, i, outlineAndInvisible, blockRenderer, overlay, blockState, modelResourceLocation);
         poseStack.popPose();
     }
 
-    private void renderMushroomBlock(PoseStack poseStack, MultiBufferSource buffer, int light, boolean outlineAndInvisible, BlockRenderDispatcher blockRenderDispatcher, int overlay, Optional<BlockState> mushroomState, ModelResourceLocation resourceLocation) {
-        BakedModel mushroomModel = mushroomState.map(blockRenderDispatcher::getBlockModel).orElseGet(() -> Minecraft.getInstance().getModelManager().getModel(resourceLocation));
+    private void renderMushroomBlock(PoseStack poseStack, MultiBufferSource buffer, int light, boolean outlineAndInvisible, BlockRenderDispatcher blockRenderDispatcher, int overlay, Optional<BlockState> mushroomState, ResourceLocation resourceLocation) {
+        BakedModel mushroomModel = mushroomState.map(blockRenderDispatcher::getBlockModel).orElseGet(() -> BovinesAndButtercupsClient.getHelper().getModel(resourceLocation));
 
         if (outlineAndInvisible) {
             blockRenderDispatcher.getModelRenderer().renderModel(poseStack.last(), buffer.getBuffer(RenderType.outline(InventoryMenu.BLOCK_ATLAS)), null, mushroomModel, 0.0f, 0.0f, 0.0f, light, overlay);
@@ -104,4 +104,3 @@ public class MooshroomDatapackMushroomLayer<T extends MushroomCow> extends Rende
         }
     }
 }
- */

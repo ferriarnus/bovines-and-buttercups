@@ -1,24 +1,32 @@
 package house.greenhouse.bovinesandbuttercups.api.block;
 
+import com.mojang.datafixers.util.Either;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import house.greenhouse.bovinesandbuttercups.BovinesAndButtercups;
+import house.greenhouse.bovinesandbuttercups.api.codec.BovinesCodecs;
+import house.greenhouse.bovinesandbuttercups.registry.BovinesRegistries;
 import house.greenhouse.bovinesandbuttercups.registry.BovinesRegistryKeys;
 import net.minecraft.core.Holder;
 import net.minecraft.core.RegistrySetBuilder;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.RegistryFileCodec;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.random.SimpleWeightedRandomList;
+import net.minecraft.util.random.WeightedEntry;
 import net.minecraft.world.level.levelgen.structure.pools.StructureTemplatePool;
 import org.jetbrains.annotations.ApiStatus;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-public record CustomMushroomType(Optional<Holder<StructureTemplatePool>> hugeMushroomStructurePool,
+public record CustomMushroomType(Optional<SimpleWeightedRandomList<ResourceKey<StructureTemplatePool>>> hugeMushroomStructurePool,
                                  boolean randomlyRotateHugeStructure) {
 
     public static final Codec<CustomMushroomType> DIRECT_CODEC = RecordCodecBuilder.create(builder -> builder.group(
-            StructureTemplatePool.CODEC.optionalFieldOf("huge_structures").forGetter(CustomMushroomType::hugeMushroomStructurePool),
+            BovinesCodecs.weightedEntryCodec(ResourceKey.codec(Registries.TEMPLATE_POOL), "template_pool").optionalFieldOf("huge_structures").forGetter(CustomMushroomType::hugeMushroomStructurePool),
             Codec.BOOL.optionalFieldOf("randomly_rotate_huge_structure", false).forGetter(CustomMushroomType::randomlyRotateHugeStructure)
     ).apply(builder, CustomMushroomType::new));
 

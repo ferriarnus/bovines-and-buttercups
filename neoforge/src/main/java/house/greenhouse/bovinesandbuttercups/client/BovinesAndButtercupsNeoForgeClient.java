@@ -6,6 +6,7 @@ import house.greenhouse.bovinesandbuttercups.client.particle.ModelLocationPartic
 import house.greenhouse.bovinesandbuttercups.client.particle.ShroomParticle;
 import house.greenhouse.bovinesandbuttercups.client.platform.BovinesClientHelperNeo;
 import house.greenhouse.bovinesandbuttercups.client.renderer.entity.layer.FlowerCrownLayer;
+import house.greenhouse.bovinesandbuttercups.client.renderer.entity.layer.MooshroomDatapackMushroomLayer;
 import house.greenhouse.bovinesandbuttercups.client.util.BovinesModelLayers;
 import house.greenhouse.bovinesandbuttercups.client.renderer.block.CustomFlowerPotBlockRenderer;
 import house.greenhouse.bovinesandbuttercups.client.renderer.block.CustomFlowerRenderer;
@@ -130,6 +131,7 @@ public class BovinesAndButtercupsNeoForgeClient {
             MushroomCowRenderer mushroomCowRenderer = event.getRenderer(EntityType.MOOSHROOM);
             // mushroomCowRenderer.addLayer(new MushroomCowDatapackMushroomLayer<>(mushroomCowRenderer, Minecraft.getInstance().getBlockRenderer()));
             mushroomCowRenderer.addLayer(new CowLayersLayer<>(mushroomCowRenderer));
+            mushroomCowRenderer.addLayer(new MooshroomDatapackMushroomLayer<>(mushroomCowRenderer, event.getContext().getBlockRenderDispatcher()));
 
             ((EntityRenderersEventAddLayersAccessor)event).apugli$getRenderers().forEach((entityType, entityRenderer) -> {
                 if (entityRenderer instanceof LivingEntityRenderer<?, ?> livingRenderer) {

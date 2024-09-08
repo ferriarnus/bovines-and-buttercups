@@ -18,7 +18,6 @@
       ]
     }
   ],
-  "natural_spawns": [],
   "nectar": "bovinesandbuttercups:freesia",
   "offspring_conditions": [
     {
@@ -119,6 +118,8 @@
     "color": 15223894
   },
   "thunder_conversion_types": [
-    "bovinesandbuttercups:chargelily"
+    {
+      "type": "bovinesandbuttercups:chargelily"
+    }
   ]
 }

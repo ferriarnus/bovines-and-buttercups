@@ -18,7 +18,6 @@
       ]
     }
   ],
-  "natural_spawns": [],
   "nectar": "bovinesandbuttercups:lingholm",
   "offspring_conditions": [
     {
@@ -119,6 +118,8 @@
     "color": 4182750
   },
   "thunder_conversion_types": [
-    "bovinesandbuttercups:chargelily"
+    {
+      "type": "bovinesandbuttercups:chargelily"
+    }
   ]
 }

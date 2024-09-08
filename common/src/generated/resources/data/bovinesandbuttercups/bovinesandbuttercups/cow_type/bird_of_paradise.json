@@ -18,7 +18,6 @@
       ]
     }
   ],
-  "natural_spawns": [],
   "nectar": "bovinesandbuttercups:bird_of_paradise",
   "offspring_conditions": [
     {
@@ -122,6 +121,8 @@
     "color": 16745018
   },
   "thunder_conversion_types": [
-    "bovinesandbuttercups:chargelily"
+    {
+      "type": "bovinesandbuttercups:chargelily"
+    }
   ]
 }

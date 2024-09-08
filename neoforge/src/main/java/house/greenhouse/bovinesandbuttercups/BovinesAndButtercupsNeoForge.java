@@ -5,8 +5,12 @@ import house.greenhouse.bovinesandbuttercups.api.attachment.CowTypeAttachment;
 import house.greenhouse.bovinesandbuttercups.api.attachment.LockdownAttachment;
 import house.greenhouse.bovinesandbuttercups.content.advancements.criterion.LockEffectTrigger;
 import house.greenhouse.bovinesandbuttercups.content.advancements.criterion.PreventEffectTrigger;
+import house.greenhouse.bovinesandbuttercups.content.data.configuration.MooshroomConfiguration;
 import house.greenhouse.bovinesandbuttercups.content.effect.LockdownEffect;
 import house.greenhouse.bovinesandbuttercups.content.entity.Moobloom;
+import house.greenhouse.bovinesandbuttercups.content.entity.goal.MoveToMoobloomGoal;
+import house.greenhouse.bovinesandbuttercups.content.entity.goal.PollinateMoobloomGoal;
+import house.greenhouse.bovinesandbuttercups.mixin.AnimalAccessor;
 import house.greenhouse.bovinesandbuttercups.network.clientbound.SyncConditionedTextureModifier;
 import house.greenhouse.bovinesandbuttercups.network.clientbound.SyncCowTypeClientboundPacket;
 import house.greenhouse.bovinesandbuttercups.network.clientbound.SyncLockdownEffectsClientboundPacket;
@@ -15,22 +19,33 @@ import house.greenhouse.bovinesandbuttercups.registry.BovinesAttachments;
 import house.greenhouse.bovinesandbuttercups.registry.BovinesEffects;
 import house.greenhouse.bovinesandbuttercups.registry.BovinesEntityTypes;
 import house.greenhouse.bovinesandbuttercups.registry.BovinesItems;
+import house.greenhouse.bovinesandbuttercups.registry.BovinesRegistryKeys;
 import house.greenhouse.bovinesandbuttercups.util.CreativeTabHelper;
+import house.greenhouse.bovinesandbuttercups.util.MooshroomChildTypeUtil;
+import house.greenhouse.bovinesandbuttercups.util.MooshroomSpawnUtil;
 import net.minecraft.Util;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.SpawnPlacementTypes;
+import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.Bee;
+import net.minecraft.world.entity.animal.MushroomCow;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.IEventBus;
@@ -39,7 +54,10 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
+import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
+import net.neoforged.neoforge.event.entity.EntityStruckByLightningEvent;
 import net.neoforged.neoforge.event.entity.RegisterSpawnPlacementsEvent;
+import net.neoforged.neoforge.event.entity.living.BabyEntitySpawnEvent;
 import net.neoforged.neoforge.event.entity.living.MobEffectEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.tick.EntityTickEvent;
@@ -65,6 +83,44 @@ public class BovinesAndButtercupsNeoForge {
                     LockdownAttachment.sync(living);
                 if (living.hasData(BovinesAttachments.COW_TYPE))
                     CowTypeAttachment.sync(living);
+            }
+        }
+
+        @SubscribeEvent
+        public static void onEntityJoinLevel(EntityJoinLevelEvent event) {
+            if (event.getEntity() instanceof Bee bee) {
+                PollinateMoobloomGoal pollinateGoal = new PollinateMoobloomGoal(bee);
+                bee.getGoalSelector().addGoal(3, pollinateGoal);
+                bee.getGoalSelector().addGoal(3, new MoveToMoobloomGoal(bee));
+                ((BeeGoalAccess) bee).bovinesandbuttercups$setPollinateFlowerCowGoal(pollinateGoal);
+            }
+
+            if (event.getEntity().getType() == EntityType.MOOSHROOM) {
+                Level level = event.getLevel();
+                Entity entity = event.getEntity();
+                Optional<CowTypeAttachment> attachment = event.getEntity().getExistingData(BovinesAttachments.COW_TYPE);
+                if (attachment.isEmpty() && !level.isClientSide()) {
+                    if (MooshroomSpawnUtil.getTotalSpawnWeight(event.getLevel(), entity.blockPosition()) > 0) {
+                        CowTypeAttachment.setCowType((MushroomCow) entity, MooshroomSpawnUtil.getMooshroomSpawnTypeDependingOnBiome(level, entity.blockPosition(), level.getRandom()));
+                    } else if (level.registryAccess().registryOrThrow(BovinesRegistryKeys.COW_TYPE).holders().allMatch(cowTypeReference -> cowTypeReference.value().configuration().settings().biomes().isEmpty()) && level.getBiome(entity.blockPosition()).is(Biomes.MUSHROOM_FIELDS)) {
+                        CowTypeAttachment.setCowType((MushroomCow) entity, MooshroomSpawnUtil.getMooshroomTypeFromMushroomType(level, ((MushroomCow) entity).getVariant()));
+                    } else {
+                        CowTypeAttachment.setCowType((MushroomCow) entity, MooshroomSpawnUtil.getMostCommonMooshroomSpawnType(level, ((MushroomCow) entity).getVariant()));
+                    }
+
+                    CowTypeAttachment.sync((MushroomCow) entity);
+                }
+            }
+        }
+
+        @SubscribeEvent
+        public static void onBabyEntitySpawn(BabyEntitySpawnEvent event) {
+            Mob parentA = event.getParentA();
+            Mob parentB = event.getParentB();
+            AgeableMob child = event.getChild();
+
+            if (parentA instanceof MushroomCow parentACow && parentB instanceof MushroomCow parentBCow && child instanceof MushroomCow childCow) {
+                CowTypeAttachment.setCowType(child, MooshroomChildTypeUtil.chooseMooshroomBabyType(parentACow, parentBCow, childCow, event.getCausedByPlayer()));
             }
         }
 
@@ -142,6 +198,41 @@ public class BovinesAndButtercupsNeoForge {
                 event.setResult(MobEffectEvent.Applicable.Result.DO_NOT_APPLY);
             }
         }
+
+        @SubscribeEvent
+        public static void onEntityStruckByLightning(EntityStruckByLightningEvent event) {
+            Entity entity = event.getEntity();
+            if (entity instanceof LivingEntity living && !(entity instanceof Moobloom) && entity.hasData(BovinesAttachments.COW_TYPE)) {
+                CowTypeAttachment attachment = entity.getData(BovinesAttachments.COW_TYPE);
+                if (attachment.previousCowType().isEmpty()) {
+                    if (attachment.cowType().value().configuration().settings().thunderConverts().isEmpty())
+                        return;
+
+                    var compatibleList = attachment.cowType().value().configuration().settings().filterThunderConverts(attachment.cowType().value().type());
+                    int totalWeight = 0;
+
+                    if (compatibleList.size() == 1) {
+                        CowTypeAttachment.setCowType(living, (Holder) compatibleList.getFirst().data(), (Holder) attachment.cowType());
+                        CowTypeAttachment.sync(living);
+                        BovinesAndButtercups.convertedByBovines = true;
+                    } else if (!compatibleList.isEmpty()) {
+                        for (var cct : compatibleList) {
+                            totalWeight -= cct.weight().asInt();
+                            if (totalWeight <= 0) {
+                                CowTypeAttachment.setCowType(living, (Holder) cct.data(), (Holder) attachment.cowType());
+                                CowTypeAttachment.sync(living);
+                                BovinesAndButtercups.convertedByBovines = true;
+                                break;
+                            }
+                        }
+                    }
+                } else {
+                    CowTypeAttachment.setCowType(living, (Holder) attachment.previousCowType().get());
+                    CowTypeAttachment.sync(living);
+                    BovinesAndButtercups.convertedByBovines = true;
+                }
+            }
+        }
     }
 
     @EventBusSubscriber(modid = BovinesAndButtercups.MOD_ID, bus = EventBusSubscriber.Bus.MOD)
@@ -155,8 +246,12 @@ public class BovinesAndButtercupsNeoForge {
         @SubscribeEvent(priority = EventPriority.HIGHEST)
         public static void registerSpawnPlacements(RegisterSpawnPlacementsEvent event) {
             event.register(BovinesEntityTypes.MOOBLOOM, SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Moobloom::canMoobloomSpawn, RegisterSpawnPlacementsEvent.Operation.REPLACE);
-            // TODO: Mooshroom data.
-            // event.register(EntityType.MOOSHROOM, (entityType, levelAccessor, mobSpawnType, blockPos, randomSource) -> (levelAccessor.getBiome(blockPos).is(Biomes.MUSHROOM_FIELDS) && levelAccessor.getBlockState(blockPos.below()).is(BlockTags.MOOSHROOMS_SPAWNABLE_ON) || !levelAccessor.getBiome(blockPos).is(Biomes.MUSHROOM_FIELDS) && levelAccessor.getBlockState(blockPos.below()).is(BlockTags.ANIMALS_SPAWNABLE_ON)) && Animal.isBrightEnoughToSpawn(levelAccessor, blockPos) && (MushroomCowSpawnUtil.getTotalSpawnWeight(levelAccessor, blockPos) > 0 || (MushroomCowSpawnUtil.getTotalSpawnWeight(levelAccessor, blockPos) > 0 || MushroomCowSpawnUtil.getTotalSpawnWeight(levelAccessor, blockPos) == 0 && levelAccessor.getBiome(blockPos).is(Biomes.MUSHROOM_FIELDS) && BovineRegistryUtil.configuredCowTypeStream().anyMatch(configuredCowType -> configuredCowType.configuration() instanceof MushroomCowConfiguration mushroomCowConfiguration && mushroomCowConfiguration.usesVanillaSpawningHack()) && MushroomCow.checkMushroomSpawnRules(entityType, levelAccessor, mobSpawnType, blockPos, randomSource))), SpawnPlacementRegisterEvent.Operation.REPLACE);
+        }
+
+        @SubscribeEvent
+        public static void modifySpawnPlacements(RegisterSpawnPlacementsEvent event) {
+            event.register(EntityType.MOOSHROOM, (entityType, levelAccessor, mobSpawnType, blockPos, randomSource) -> levelAccessor.registryAccess().registryOrThrow(BovinesRegistryKeys.COW_TYPE).stream().filter(cowType -> cowType.configuration() instanceof MooshroomConfiguration).allMatch(cowType -> ((MooshroomConfiguration) cowType.configuration()).settings().biomes().isEmpty()), RegisterSpawnPlacementsEvent.Operation.AND);
+            event.register(EntityType.MOOSHROOM, (entityType, levelAccessor, mobSpawnType, blockPos, randomSource) -> (levelAccessor.getBiome(blockPos).is(Biomes.MUSHROOM_FIELDS) && levelAccessor.getBlockState(blockPos.below()).is(BlockTags.MOOSHROOMS_SPAWNABLE_ON) || !levelAccessor.getBiome(blockPos).is(Biomes.MUSHROOM_FIELDS) && levelAccessor.getBlockState(blockPos.below()).is(BlockTags.ANIMALS_SPAWNABLE_ON)) && AnimalAccessor.bovinesandbuttercups$invokeIsBrightEnoughToSpawn(levelAccessor, blockPos) && MooshroomSpawnUtil.getTotalSpawnWeight(levelAccessor, blockPos) > 0, RegisterSpawnPlacementsEvent.Operation.OR);
         }
 
         @SubscribeEvent

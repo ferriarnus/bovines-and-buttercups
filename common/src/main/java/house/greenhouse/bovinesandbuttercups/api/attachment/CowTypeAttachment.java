@@ -8,10 +8,13 @@ import house.greenhouse.bovinesandbuttercups.BovinesAndButtercups;
 import house.greenhouse.bovinesandbuttercups.api.CowType;
 import house.greenhouse.bovinesandbuttercups.api.CowTypeConfiguration;
 import house.greenhouse.bovinesandbuttercups.api.CowTypeType;
+import house.greenhouse.bovinesandbuttercups.content.data.configuration.MooshroomConfiguration;
 import house.greenhouse.bovinesandbuttercups.network.clientbound.SyncCowTypeClientboundPacket;
 import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.animal.MushroomCow;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
@@ -64,13 +67,19 @@ public record CowTypeAttachment(Holder<CowType<?>> cowType, Optional<Holder<CowT
     }
 
     public static <C extends CowTypeConfiguration> void setCowType(LivingEntity entity, Holder<CowType<C>> cowType) {
-        if (cowType.isBound() && cowType.value().type().isApplicable(entity))
-            BovinesAndButtercups.getHelper().setCowTypeAttachment(entity, new CowTypeAttachment((Holder)cowType, Optional.empty()));
+        setCowType(entity, cowType, Optional.empty());
     }
 
     public static <C extends CowTypeConfiguration> void setCowType(LivingEntity entity, Holder<CowType<C>> cowType, Holder<CowType<C>> previousCowType) {
-        if (cowType.isBound() && cowType.value().type().isApplicable(entity))
-            BovinesAndButtercups.getHelper().setCowTypeAttachment(entity, new CowTypeAttachment((Holder)cowType, Optional.of((Holder)previousCowType)));
+        setCowType(entity, cowType, Optional.of(previousCowType));
+    }
+
+    private static <C extends CowTypeConfiguration> void setCowType(LivingEntity entity, Holder<CowType<C>> cowType, Optional<Holder<CowType<C>>> previousCowType) {
+        if (cowType.isBound() && cowType.value().type().isApplicable(entity)) {
+            BovinesAndButtercups.getHelper().setCowTypeAttachment(entity, new CowTypeAttachment((Holder) cowType, previousCowType.map(cowTypeHolder -> (Holder) cowTypeHolder)));
+            if (entity.getType() == EntityType.MOOSHROOM && cowType.value().configuration() instanceof MooshroomConfiguration mc && mc.vanillaType().isPresent())
+                ((MushroomCow)entity).setVariant(mc.vanillaType().get());
+        }
     }
 
     public static void sync(LivingEntity entity) {

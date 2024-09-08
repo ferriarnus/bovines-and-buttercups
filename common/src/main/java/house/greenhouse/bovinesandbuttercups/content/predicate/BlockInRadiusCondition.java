@@ -2,12 +2,15 @@ package house.greenhouse.bovinesandbuttercups.content.predicate;
 
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import house.greenhouse.bovinesandbuttercups.BovinesAndButtercups;
 import house.greenhouse.bovinesandbuttercups.api.codec.BovinesCodecs;
 import house.greenhouse.bovinesandbuttercups.content.entity.Moobloom;
 import house.greenhouse.bovinesandbuttercups.registry.BovinesLootContextParams;
+import house.greenhouse.bovinesandbuttercups.registry.BovinesRegistries;
 import net.minecraft.advancements.critereon.BlockPredicate;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
@@ -38,6 +41,9 @@ public record BlockInRadiusCondition(BlockPredicate predicate, AABB radius) impl
                 if (child instanceof Moobloom moobloom) {
                     VoxelShape shape = state.getCollisionShape(context.getLevel(), pos);
                     moobloom.addParticlePosition(context.getParam(BovinesLootContextParams.BREEDING_TYPE), shape.isEmpty() || state.isCollisionShapeFullBlock(context.getLevel(), pos) ? pos.getCenter() : shape.bounds().getCenter().add(Vec3.atLowerCornerOf(pos)));
+                } else if (child instanceof LivingEntity living && BovinesRegistries.COW_TYPE_TYPE.stream().anyMatch(cowTypeType -> cowTypeType.isApplicable(child))) {
+                    VoxelShape shape = state.getCollisionShape(context.getLevel(), pos);
+                    BovinesAndButtercups.getHelper().addParticlePosition(living, context.getParam(BovinesLootContextParams.BREEDING_TYPE), shape.isEmpty() || state.isCollisionShapeFullBlock(context.getLevel(), pos) ? pos.getCenter() : shape.bounds().getCenter().add(Vec3.atLowerCornerOf(pos)));
                 }
             }
             return bl;

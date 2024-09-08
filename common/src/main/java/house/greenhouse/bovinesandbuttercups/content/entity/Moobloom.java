@@ -9,6 +9,7 @@ import house.greenhouse.bovinesandbuttercups.content.block.entity.CustomFlowerBl
 import house.greenhouse.bovinesandbuttercups.content.component.ItemCustomFlower;
 import house.greenhouse.bovinesandbuttercups.content.component.ItemNectar;
 import house.greenhouse.bovinesandbuttercups.content.data.configuration.MoobloomConfiguration;
+import house.greenhouse.bovinesandbuttercups.content.data.configuration.MooshroomConfiguration;
 import house.greenhouse.bovinesandbuttercups.mixin.EntityAccessor;
 import house.greenhouse.bovinesandbuttercups.platform.BovinesPlatform;
 import house.greenhouse.bovinesandbuttercups.registry.BovinesBlocks;
@@ -183,7 +184,6 @@ public class Moobloom extends Cow implements Shearable {
                 }
 
                 List<WeightedEntry.Wrapper<Holder<CowType<MoobloomConfiguration>>>> compatibleList = getCowType().value().configuration().settings().filterThunderConverts(BovinesCowTypeTypes.MOOBLOOM_TYPE);
-                int totalWeight = 0;
 
                 if (compatibleList.isEmpty()) {
                     super.thunderHit(level, bolt);
@@ -192,9 +192,10 @@ public class Moobloom extends Cow implements Shearable {
                     setCurrentAndPreviousCowType(compatibleList.getFirst().data());
                     CowTypeAttachment.sync(this);
                 } else {
+                    int totalWeight = level.getRandom().nextInt(compatibleList.stream().map(holderWrapper -> holderWrapper.weight().asInt()).reduce(Integer::sum).orElse(0));
                     for (WeightedEntry.Wrapper<Holder<CowType<MoobloomConfiguration>>> cct : compatibleList) {
                         totalWeight -= cct.weight().asInt();
-                        if (totalWeight <= 0) {
+                        if (totalWeight < 0) {
                             setCurrentAndPreviousCowType(cct.data());
                             CowTypeAttachment.sync(this);
                             break;
@@ -283,7 +284,7 @@ public class Moobloom extends Cow implements Shearable {
             this.level().setBlock(pos, state, 3);
             BlockEntity blockEntity = this.level().getBlockEntity(pos);
             if (blockEntity instanceof CustomFlowerBlockEntity customFlowerBlockEntity) {
-                customFlowerBlockEntity.setCustomFlower(new ItemCustomFlower(getCowType().value().configuration().flower().customType().get()));
+                customFlowerBlockEntity.setFlowerType(new ItemCustomFlower(getCowType().value().configuration().flower().customType().get()));
                 customFlowerBlockEntity.setChanged();
             }
         } else {
@@ -341,9 +342,8 @@ public class Moobloom extends Cow implements Shearable {
     public Holder<CowType<MoobloomConfiguration>> chooseBabyType(ServerLevel level, Moobloom otherParent, Moobloom child) {
         List<Holder<CowType<MoobloomConfiguration>>> eligibleCowTypes = new ArrayList<>();
 
-        for (Holder.Reference<CowType<?>> cowType : level.registryAccess().registry(BovinesRegistryKeys.COW_TYPE).orElseThrow().holders().filter(type -> type.isBound() && type.value().type() == BovinesCowTypeTypes.MOOBLOOM_TYPE).toList()) {
+        for (Holder.Reference<CowType<?>> cowType : level.registryAccess().registry(BovinesRegistryKeys.COW_TYPE).orElseThrow().holders().filter(type -> type.isBound() && type.value().type() == BovinesCowTypeTypes.MOOBLOOM_TYPE && ((MoobloomConfiguration)type.value().configuration()).offspringConditions() != OffspringConditions.EMPTY).toList()) {
             Holder.Reference<CowType<MoobloomConfiguration>> moobloomType = (Holder.Reference) cowType;
-            if (moobloomType.value().configuration().offspringConditions() == OffspringConditions.EMPTY) continue;
             var conditions = moobloomType.value().configuration().offspringConditions();
 
             LootParams.Builder params = new LootParams.Builder(level);
@@ -461,7 +461,7 @@ public class Moobloom extends Cow implements Shearable {
             if (!(cowType.configuration() instanceof MoobloomConfiguration configuration))
                 continue;
 
-            Optional<WeightedEntry.Wrapper<HolderSet<Biome>>> biome = configuration.settings().biomes().stream().filter(holderSetWrapper -> holderSetWrapper.data().contains(level.getBiome(pos))).findFirst();
+            Optional<WeightedEntry.Wrapper<HolderSet<Biome>>> biome = configuration.settings().biomes().unwrap().stream().filter(holderSetWrapper -> holderSetWrapper.data().contains(level.getBiome(pos))).findFirst();
             if (biome.isPresent())
                 totalWeight += biome.get().weight().asInt();
         }
@@ -559,7 +559,7 @@ public class Moobloom extends Cow implements Shearable {
             for (Holder<CowType<?>> cowType : level.registryAccess().registry(BovinesRegistryKeys.COW_TYPE).orElseThrow().holders().filter(cowType -> cowType.isBound() && cowType.value().configuration() instanceof MoobloomConfiguration && cowType.value().configuration() != MoobloomConfiguration.DEFAULT).toList()) {
                 if (!(cowType.value().configuration() instanceof MoobloomConfiguration configuration)) continue;
 
-                int max = configuration.settings().biomes().stream().map(wrapper -> wrapper.weight().asInt()).max(Comparator.comparingInt(value -> value)).orElse(0);
+                int max = configuration.settings().biomes().unwrap().stream().map(wrapper -> wrapper.weight().asInt()).max(Comparator.comparingInt(value -> value)).orElse(0);
                 if (max > largestWeight) {
                     finalCowType = cowType;
                     largestWeight = max;
@@ -576,7 +576,7 @@ public class Moobloom extends Cow implements Shearable {
             for (Holder.Reference<CowType<?>> cowType : level.registryAccess().registry(BovinesRegistryKeys.COW_TYPE).orElseThrow().holders().filter(cowType -> cowType.isBound() && cowType.value().configuration() instanceof MoobloomConfiguration && cowType.value().configuration() != MoobloomConfiguration.DEFAULT).toList()) {
                 if (!(cowType.value().configuration() instanceof MoobloomConfiguration configuration)) continue;
 
-                Optional<WeightedEntry.Wrapper<HolderSet<Biome>>> biome = configuration.settings().biomes().stream().filter(holderSetWrapper -> holderSetWrapper.data().contains(level.getBiome(pos))).findFirst();
+                Optional<WeightedEntry.Wrapper<HolderSet<Biome>>> biome = configuration.settings().biomes().unwrap().stream().filter(holderSetWrapper -> holderSetWrapper.data().contains(level.getBiome(pos))).findFirst();
                 if (biome.isPresent()) {
                     moobloomList.add((Holder) cowType);
                     totalWeight += biome.get().weight().asInt();
@@ -588,7 +588,7 @@ public class Moobloom extends Cow implements Shearable {
             } else if (!moobloomList.isEmpty()) {
                 int r = Mth.nextInt(random, 0, totalWeight - 1);
                 for (Holder<CowType<MoobloomConfiguration>> cowType : moobloomList) {
-                    int max = cowType.value().configuration().settings().biomes().stream().filter(wrapper -> wrapper.data().contains(level.getBiome(pos))).map(wrapper -> wrapper.weight().asInt()).max(Comparator.comparingInt(value -> value)).orElse(0);
+                    int max = cowType.value().configuration().settings().biomes().unwrap().stream().filter(wrapper -> wrapper.data().contains(level.getBiome(pos))).map(wrapper -> wrapper.weight().asInt()).max(Comparator.comparingInt(value -> value)).orElse(0);
                     r -= max;
                     if (r < 0.0)
                         return cowType;

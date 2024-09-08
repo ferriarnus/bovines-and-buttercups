@@ -1,5 +1,7 @@
 package house.greenhouse.bovinesandbuttercups.platform;
 
+import house.greenhouse.bovinesandbuttercups.BovinesAndButtercupsFabric;
+import house.greenhouse.bovinesandbuttercups.api.CowType;
 import net.fabricmc.fabric.api.event.registry.FabricRegistryBuilder;
 import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
@@ -7,6 +9,7 @@ import net.fabricmc.loader.api.FabricLoader;
 import house.greenhouse.bovinesandbuttercups.api.attachment.CowTypeAttachment;
 import house.greenhouse.bovinesandbuttercups.api.attachment.LockdownAttachment;
 import house.greenhouse.bovinesandbuttercups.registry.BovinesAttachments;
+import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceKey;
@@ -17,8 +20,11 @@ import net.minecraft.world.entity.animal.Bee;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.FlowerPotBlock;
 import net.minecraft.world.level.block.entity.BeehiveBlockEntity;
+import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
@@ -116,6 +122,21 @@ public class BovinesPlatformHelperFabric implements BovinesPlatformHelper {
             return;
         }
         bee.setAttached(BovinesAttachments.POLLINATING_MOOBLOOM, uuid);
+    }
+
+    @Override
+    public Map<Holder<CowType<?>>, List<Vec3>> getParticlePositions(LivingEntity entity) {
+        return entity.getAttachedOrElse(BovinesAttachments.BABY_PARTICLE_POSITIONS, Map.of());
+    }
+
+    @Override
+    public void addParticlePosition(LivingEntity entity, Holder<CowType<?>> type, Vec3 pos) {
+        entity.getAttachedOrCreate(BovinesAttachments.BABY_PARTICLE_POSITIONS).computeIfAbsent(type, holder -> new ArrayList<>()).add(pos);
+    }
+
+    @Override
+    public void clearParticlePositions(LivingEntity entity) {
+        entity.removeAttached(BovinesAttachments.BABY_PARTICLE_POSITIONS);
     }
 
 }

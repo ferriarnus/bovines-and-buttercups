@@ -3,7 +3,7 @@
   "can_eat_flowers": false,
   "layers": [
     {
-      "texture_location": "bovinesandbuttercups:bovinesandbuttercups/moobloom/mooshroom_mycelium_layer"
+      "texture_location": "bovinesandbuttercups:bovinesandbuttercups/mooshroom/mooshroom_mycelium_layer"
     }
   ],
   "mushroom": {
@@ -11,14 +11,15 @@
       "Name": "minecraft:red_mushroom"
     }
   },
-  "natural_spawns": [],
   "particle": {
     "type": "bovinesandbuttercups:shroom",
     "color": 11014162
   },
   "texture_location": "minecraft:cow/red_mooshroom",
   "thunder_conversion_types": [
-    "bovinesandbuttercups:brown_mushroom"
+    {
+      "type": "bovinesandbuttercups:brown_mushroom"
+    }
   ],
-  "vanilla_spawning_hack": true
+  "vanilla_type": "red"
 }

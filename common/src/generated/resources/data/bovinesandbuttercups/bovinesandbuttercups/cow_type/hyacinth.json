@@ -18,7 +18,6 @@
       ]
     }
   ],
-  "natural_spawns": [],
   "nectar": "bovinesandbuttercups:hyacinth",
   "offspring_conditions": [
     {
@@ -122,6 +121,8 @@
     "color": 11175665
   },
   "thunder_conversion_types": [
-    "bovinesandbuttercups:chargelily"
+    {
+      "type": "bovinesandbuttercups:chargelily"
+    }
   ]
 }

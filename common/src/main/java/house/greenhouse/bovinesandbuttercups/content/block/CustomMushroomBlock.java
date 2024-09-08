@@ -8,9 +8,11 @@ import house.greenhouse.bovinesandbuttercups.registry.BovinesBlockEntityTypes;
 import house.greenhouse.bovinesandbuttercups.registry.BovinesBlocks;
 import house.greenhouse.bovinesandbuttercups.registry.BovinesDataComponents;
 import house.greenhouse.bovinesandbuttercups.registry.BovinesItems;
+import house.greenhouse.bovinesandbuttercups.registry.BovinesRegistryKeys;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.RandomSource;
@@ -37,6 +39,8 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.Optional;
 
 public class CustomMushroomBlock extends BaseEntityBlock implements BonemealableBlock {
     protected static final VoxelShape SHAPE = Block.box(5.0D, 0.0D, 5.0D, 11.0D, 6.0D, 11.0D);
@@ -131,15 +135,18 @@ public class CustomMushroomBlock extends BaseEntityBlock implements Bonemealable
 
             Holder<CustomMushroomType> customMushroom = mushroomBlockEntity.getMushroomType().holder();
             if (customMushroom.isBound() && customMushroom.value().hugeMushroomStructurePool().isPresent()) {
-                StructurePoolElement structurePoolElement = customMushroom.value().hugeMushroomStructurePool().get().value().getRandomTemplate(level.random);
+                Optional<StructurePoolElement> structurePoolElement = customMushroom.value().hugeMushroomStructurePool().get().getRandomValue(randomSource).filter(key -> level.registryAccess().registryOrThrow(Registries.TEMPLATE_POOL).containsKey(key)).map(key -> level.registryAccess().registryOrThrow(Registries.TEMPLATE_POOL).getHolderOrThrow(key).value().getRandomTemplate(randomSource));
+
+                if (structurePoolElement.isEmpty())
+                    return;
 
                 level.removeBlock(pos, false);
                 Rotation rotation = customMushroom.value().randomlyRotateHugeStructure() ? Rotation.getRandom(level.random) : Rotation.NONE;
-                BlockPos centeredPos = new BlockPos(pos.getX() - structurePoolElement.getSize(structureTemplateManager, rotation).getX() / 2, pos.getY(), pos.getZ() - structurePoolElement.getSize(structureTemplateManager, rotation).getZ() / 2);
-                if (ChunkPos.rangeClosed(new ChunkPos(centeredPos), new ChunkPos(centeredPos.offset(structurePoolElement.getSize(structureTemplateManager, rotation)))).allMatch((chunkPos) -> level.isLoaded(chunkPos.getWorldPosition()))) {
-                    BoundingBox structureBox = structurePoolElement.getBoundingBox(structureTemplateManager, centeredPos, rotation);
+                BlockPos centeredPos = new BlockPos(pos.getX() - structurePoolElement.get().getSize(structureTemplateManager, rotation).getX() / 2, pos.getY(), pos.getZ() - structurePoolElement.get().getSize(structureTemplateManager, rotation).getZ() / 2);
+                if (ChunkPos.rangeClosed(new ChunkPos(centeredPos), new ChunkPos(centeredPos.offset(structurePoolElement.get().getSize(structureTemplateManager, rotation)))).allMatch((chunkPos) -> level.isLoaded(chunkPos.getWorldPosition()))) {
+                    BoundingBox structureBox = structurePoolElement.get().getBoundingBox(structureTemplateManager, centeredPos, rotation);
                     if (level.getBlockStates(AABB.of(structureBox)).allMatch(bs -> bs.isAir() || bs.is(BlockTags.LEAVES))) {
-                        structurePoolElement.place(structureTemplateManager, level, level.structureManager(), level.getChunkSource().getGenerator(), centeredPos, centeredPos, rotation, structureBox, randomSource, LiquidSettings.APPLY_WATERLOGGING, false);
+                        structurePoolElement.get().place(structureTemplateManager, level, level.structureManager(), level.getChunkSource().getGenerator(), centeredPos, centeredPos, rotation, structureBox, randomSource, LiquidSettings.APPLY_WATERLOGGING, false);
                         return;
                     }
                 }

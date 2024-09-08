@@ -11,14 +11,15 @@
       "Name": "minecraft:brown_mushroom"
     }
   },
-  "natural_spawns": [],
   "particle": {
     "type": "bovinesandbuttercups:shroom",
     "color": 9925201
   },
   "texture_location": "minecraft:cow/brown_mooshroom",
   "thunder_conversion_types": [
-    "bovinesandbuttercups:red_mushroom"
+    {
+      "type": "bovinesandbuttercups:red_mushroom"
+    }
   ],
-  "vanilla_spawning_hack": false
+  "vanilla_type": "brown"
 }

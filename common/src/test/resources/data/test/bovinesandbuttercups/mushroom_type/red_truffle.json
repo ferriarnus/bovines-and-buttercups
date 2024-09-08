@@ -1,0 +1,10 @@
+{
+  "name": "Red Truffle",
+  "mushroom_model": "test:truffle/red_truffle",
+  "huge_name": "Red Truffle Block",
+  "huge_structures": [
+    "test:red_truffle_small",
+    "test:red_truffle_medium",
+    "test:red_truffle_large"
+  ]
+}

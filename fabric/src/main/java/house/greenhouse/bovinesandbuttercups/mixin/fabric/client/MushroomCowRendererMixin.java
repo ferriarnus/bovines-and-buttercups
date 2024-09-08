@@ -1,6 +1,7 @@
 package house.greenhouse.bovinesandbuttercups.mixin.fabric.client;
 
 import house.greenhouse.bovinesandbuttercups.client.renderer.entity.layer.CowLayersLayer;
+import house.greenhouse.bovinesandbuttercups.client.renderer.entity.layer.MooshroomDatapackMushroomLayer;
 import net.minecraft.client.model.CowModel;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
@@ -19,7 +20,7 @@ public abstract class MushroomCowRendererMixin extends MobRenderer<MushroomCow, 
 
     @Inject(method = "<init>", at = @At("TAIL"))
     private void bovinesandbuttercups$initRenderLayers(EntityRendererProvider.Context context, CallbackInfo ci) {
-        // this.addLayer(new MushroomCowDatapackMushroomLayer<>(this, context.getBlockRenderDispatcher()));
         this.addLayer(new CowLayersLayer<>(this));
+        this.addLayer(new MooshroomDatapackMushroomLayer<>(this, context.getBlockRenderDispatcher()));
     }
 }

@@ -1,0 +1,23 @@
+{
+  "type": "bovinesandbuttercups:moobloom",
+  "bud": {
+    "model_location": "test:bovinesandbuttercups/fire_flower_bud"
+  },
+  "flower": {
+    "flower_type": "test:fire_flower"
+  },
+  "layers": [
+    {
+      "texture_location": "bovinesandbuttercups:bovinesandbuttercups/moobloom/moobloom_grass_layer",
+      "texture_modifiers": [
+        {
+          "type": "bovinesandbuttercups:grass_tint"
+        }
+      ]
+    }
+  ],
+  "particle": {
+    "type": "bovinesandbuttercups:bloom",
+    "color": 16711680
+  }
+}

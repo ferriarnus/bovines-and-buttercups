@@ -1,0 +1,15 @@
+{
+  "elements": [
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "test:green_truffle_medium",
+        "processors": "minecraft:empty",
+        "projection": "rigid",
+        "override_liquid_settings": "apply_waterlogging"
+      }
+    }
+  ],
+  "fallback": "test:green_truffle_medium"
+}

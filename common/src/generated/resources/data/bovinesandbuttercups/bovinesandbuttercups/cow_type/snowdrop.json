@@ -44,7 +44,6 @@
       ]
     }
   ],
-  "natural_spawns": [],
   "nectar": "bovinesandbuttercups:snowdrop",
   "offspring_conditions": [
     {
@@ -148,6 +147,8 @@
     "color": 15266297
   },
   "thunder_conversion_types": [
-    "bovinesandbuttercups:chargelily"
+    {
+      "type": "bovinesandbuttercups:chargelily"
+    }
   ]
 }

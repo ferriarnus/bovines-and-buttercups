@@ -1,0 +1,82 @@
+{
+  "type": "bovinesandbuttercups:mooshroom",
+  "can_eat_flowers": true,
+  "layers": [
+    {
+      "texture_location": "bovinesandbuttercups:bovinesandbuttercups/mooshroom/mooshroom_mycelium_layer"
+    }
+  ],
+  "mushroom": {
+    "custom_mushroom": "test:blue_truffle"
+  },
+  "particle": {
+    "type": "bovinesandbuttercups:shroom",
+    "color": 255
+  },
+  "texture_location": "test:bovinesandbuttercups/mooshroom/blue_truffle_mooshroom",
+  "thunder_conversion_types": [
+    {
+      "type": "test:red_truffle",
+      "weight": 1
+    },
+    {
+      "type": "test:green_truffle",
+      "weight": 2
+    }
+  ],
+  "offspring_conditions": [
+    {
+      "condition": "minecraft:any_of",
+      "terms": [
+        {
+          "condition": "minecraft:all_of",
+          "terms": [
+            {
+              "condition": "minecraft:any_of",
+              "terms": [
+                {
+                  "block": {
+                    "blocks": [
+                      "minecraft:blue_glazed_terracotta",
+                      "minecraft:light_blue_glazed_terracotta"
+                    ]
+                  },
+                  "condition": "bovinesandbuttercups:block_in_radius",
+                  "radius": {
+                    "max_x": 6.0,
+                    "max_y": 4.0,
+                    "max_z": 6.0,
+                    "min_x": -6.0,
+                    "min_y": -2.0,
+                    "min_z": -6.0
+                  }
+                }
+              ]
+            },
+            {
+              "block": {
+                "blocks": [
+                  "bovinesandbuttercups:custom_mushroom",
+                  "bovinesandbuttercups:custom_mushroom_block",
+                  "bovinesandbuttercups:potted_custom_mushroom"
+                ],
+                "nbt": {
+                  "custom_mushroom": "test:blue_truffle"
+                }
+              },
+              "condition": "bovinesandbuttercups:block_in_radius",
+              "radius": {
+                "max_x": 6.0,
+                "max_y": 4.0,
+                "max_z": 6.0,
+                "min_x": -6.0,
+                "min_y": -2.0,
+                "min_z": -6.0
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
