@@ -70,6 +70,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
@@ -90,6 +91,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 public class Moobloom extends Cow implements Shearable {
+    private static final EntityDataAccessor<Integer> FLOWER_SPREAD_ATTEMPTS = SynchedEntityData.defineId(Moobloom.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> POLLINATED_RESET_TICKS = SynchedEntityData.defineId(Moobloom.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> STANDING_STILL_FOR_BEE_TICKS = SynchedEntityData.defineId(Moobloom.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Boolean> ALLOW_SHEARING = SynchedEntityData.defineId(Moobloom.class, EntityDataSerializers.BOOLEAN);
@@ -98,6 +100,8 @@ public class Moobloom extends Cow implements Shearable {
     @Nullable
     public Bee bee;
     private boolean hasRefreshedDimensionsForLaying;
+    @Nullable
+    private BlockPos previousPos = null;
     @Nullable private UUID lastLightningBoltUUID;
     private final Map<Holder<CowType<?>>, List<Vec3>> particlePositions = new HashMap<>();
 
@@ -113,6 +117,7 @@ public class Moobloom extends Cow implements Shearable {
     @Override
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
         super.defineSynchedData(builder);
+        builder.define(FLOWER_SPREAD_ATTEMPTS, 0);
         builder.define(POLLINATED_RESET_TICKS, 0);
         builder.define(STANDING_STILL_FOR_BEE_TICKS, 0);
         builder.define(ALLOW_SHEARING, true);
@@ -122,14 +127,15 @@ public class Moobloom extends Cow implements Shearable {
 
     @Override
     public void registerGoals() {
-        this.goalSelector.addGoal(2, new Moobloom.LookAtBeeGoal());
-        this.goalSelector.addGoal(3, new AvoidEntityGoal<>(this, Moobloom.class, 2.0F, 1.0F, 1.0F, moobloomEntity -> moobloomEntity instanceof Moobloom && ((Moobloom) moobloomEntity).getStandingStillForBeeTicks() > 0));
+        goalSelector.addGoal(2, new Moobloom.LookAtBeeGoal());
+        goalSelector.addGoal(3, new AvoidEntityGoal<>(this, Moobloom.class, 2.0F, 1.0F, 1.0F, moobloomEntity -> moobloomEntity instanceof Moobloom && ((Moobloom) moobloomEntity).getStandingStillForBeeTicks() > 0));
         super.registerGoals();
     }
 
     @Override
     public void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
+        tag.putInt("flower_spread_attempts", getFlowerSpreadAttempts());
         tag.putInt("pollinated_reset_ticks", getPollinatedResetTicks());
         tag.putBoolean("allow_shearing", shouldAllowShearing());
         tag.putBoolean("has_snow", hasSnow());
@@ -141,6 +147,8 @@ public class Moobloom extends Cow implements Shearable {
     public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
         backwardsCompat(tag);
+        if (tag.contains("flower_spread_attempts", Tag.TAG_INT))
+            setFlowerSpreadAttempts(tag.getInt("flower_spread_attempts"));
         if (tag.contains("pollinated_reset_ticks", Tag.TAG_INT))
             setPollinatedResetTicks(tag.getInt("pollinated_reset_ticks"));
         if (tag.contains("allow_shearing", Tag.TAG_BYTE))
@@ -186,7 +194,7 @@ public class Moobloom extends Cow implements Shearable {
     }
     
     public void setBee(@Nullable Bee value) {
-        this.bee = value;
+        bee = value;
     }
 
     public static boolean canMoobloomSpawn(EntityType<? extends Moobloom> type, LevelAccessor level, MobSpawnType reason, BlockPos pos, RandomSource random) {
@@ -196,7 +204,7 @@ public class Moobloom extends Cow implements Shearable {
     @Override
     public void thunderHit(ServerLevel level, LightningBolt bolt) {
         UUID uuid = bolt.getUUID();
-        if (!uuid.equals(this.lastLightningBoltUUID)) {
+        if (!uuid.equals(lastLightningBoltUUID)) {
             if (getPreviousCowType() == null) {
                 if (getCowType().value().configuration().settings().thunderConverts().isEmpty()) {
                     super.thunderHit(level, bolt);
@@ -249,15 +257,23 @@ public class Moobloom extends Cow implements Shearable {
 
         if (level().isClientSide) {
             if (getStandingStillForBeeTicks() > 0)
-                layDownAnimationState.startIfStopped(this.tickCount);
+                layDownAnimationState.startIfStopped(tickCount);
             else if (layDownAnimationState.isStarted() && getStandingStillForBeeTicks() == 0) {
                 layDownAnimationState.stop();
-                getUpAnimationState.startIfStopped(this.tickCount);
+                getUpAnimationState.startIfStopped(tickCount);
             }
 
             if (getUpAnimationState.isStarted() && getUpAnimationState.getAccumulatedTime() >= 1000)
                 getUpAnimationState.stop();
         } else {
+            if ((previousPos == null || blockPosition().distSqr(previousPos) > 4) && getFlowerSpreadAttempts() > 0) {
+                if (spreadFlowers())
+                    setFlowerSpreadAttempts(getFlowerSpreadAttempts() - 1);
+                previousPos = blockPosition();
+                if (getFlowerSpreadAttempts() <= 0)
+                    previousPos = null;
+            }
+
             if (bee != null && !bee.isAlive()) {
                 setStandingStillForBeeTicks(0);
                 bee = null;
@@ -310,8 +326,8 @@ public class Moobloom extends Cow implements Shearable {
         }
     }
 
-    public void spreadFlowers() {
-        if (this.level().isClientSide) return;
+    public boolean spreadFlowers() {
+        if (level().isClientSide) return true;
 
         BlockState state = null;
         if (getCowType().value().configuration().flower().blockState().isPresent())
@@ -321,38 +337,47 @@ public class Moobloom extends Cow implements Shearable {
 
         if (state == null) {
             BovinesAndButtercups.LOG.warn("Moobloom with type '{}' tried to spread flowers without a valid flower type.", getCowType().getRegisteredName());
-            return;
+            return true;
         }
 
-        int maxTries = 16;
-        int xZScale = 3;
+        int maxTries = 5;
         BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
+
+        boolean hasSetAFlower = false;
+
         for(int i = 0; i < maxTries; ++i) {
-            pos.setWithOffset(this.blockPosition(), random.nextInt(xZScale) - random.nextInt(xZScale), random.nextInt(2) - random.nextInt(2), random.nextInt(xZScale) - random.nextInt(xZScale));
-            if (state.canSurvive(this.level(), pos) && this.level().getBlockState(pos).isAir())
-                setBlockToFlower(state, pos);
+            if (random.nextFloat() > 0.75F)
+                continue;
+            pos.setWithOffset(blockPosition(), random.nextIntBetweenInclusive(-1, 1), 0, random.nextIntBetweenInclusive(-1, 1));
+            if (!level().getBlockState(pos).isAir() || !state.canSurvive(level(), pos))
+                pos.offset(0, 1, 0);
+            if (state.canSurvive(level(), pos) && level().getBlockState(pos).isAir()) {
+                setBlockToFlower(state, pos.immutable());
+                hasSetAFlower = true;
+            }
         }
-        this.gameEvent(GameEvent.BLOCK_PLACE, this);
+        gameEvent(GameEvent.BLOCK_PLACE, this);
+        return hasSetAFlower;
     }
 
     public void setBlockToFlower(BlockState state, BlockPos pos) {
-        if (this.level().isClientSide) return;
-        ((ServerLevel) this.level()).sendParticles(ParticleTypes.HAPPY_VILLAGER, pos.getX() + 0.5D, pos.getY() + 0.3D, pos.getZ() + 0.5D, 4, 0.2, 0.1, 0.2, 0.0);
+        if (level().isClientSide) return;
+        ((ServerLevel) level()).sendParticles(ParticleTypes.HAPPY_VILLAGER, pos.getX() + 0.5D, pos.getY() + 0.3D, pos.getZ() + 0.5D, 4, 0.2, 0.1, 0.2, 0.0);
         if (state.getBlock() == BovinesBlocks.CUSTOM_FLOWER && getCowType().value().configuration().flower().customType().isPresent()) {
-            this.level().setBlock(pos, state, 3);
-            BlockEntity blockEntity = this.level().getBlockEntity(pos);
+            level().setBlock(pos, state, Block.UPDATE_ALL);
+            BlockEntity blockEntity = level().getBlockEntity(pos);
             if (blockEntity instanceof CustomFlowerBlockEntity customFlowerBlockEntity) {
                 customFlowerBlockEntity.setFlowerType(new ItemCustomFlower(getCowType().value().configuration().flower().customType().get()));
                 customFlowerBlockEntity.setChanged();
             }
         } else {
-            this.level().setBlock(pos, state, 3);
+            level().setBlock(pos, state, Block.UPDATE_ALL);
         }
     }
 
     @Override
     public EntityDimensions getDefaultDimensions(Pose pose) {
-        if (this.getStandingStillForBeeTicks() > 0) {
+        if (getStandingStillForBeeTicks() > 0) {
             return super.getDefaultDimensions(pose).scale(1.0F, 0.7F);
         }
         return super.getDefaultDimensions(pose);
@@ -361,17 +386,17 @@ public class Moobloom extends Cow implements Shearable {
     @Override
     public InteractionResult mobInteract(Player player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
-        if (!this.isBaby()) {
-            if (stack.is(Items.BONE_MEAL)) {
+        if (!isBaby()) {
+            if (stack.is(Items.BONE_MEAL) && getFlowerSpreadAttempts() < 8) {
                 if (!player.getAbilities().instabuild) {
                     stack.shrink(1);
                 }
-                if (!this.level().isClientSide) {
-                    ((ServerLevel) this.level()).sendParticles(ParticleTypes.HAPPY_VILLAGER, this.position().x(), this.position().y() + 1.6D, this.position().z(), 8, 0.5, 0.1, 0.4, 0.0);
+                if (!level().isClientSide) {
+                    ((ServerLevel) level()).sendParticles(ParticleTypes.HAPPY_VILLAGER, position().x(), position().y() + 1.6D, position().z(), 8, 0.5, 0.1, 0.4, 0.0);
+                    setFlowerSpreadAttempts(getFlowerSpreadAttempts() + 8);
                 }
-                this.spreadFlowers();
-                this.playSound(BovinesSoundEvents.MOOBLOOM_EAT, 1.0f, (random.nextFloat() * 0.4F) + 0.8F);
-                return InteractionResult.sidedSuccess(this.level().isClientSide);
+                playSound(BovinesSoundEvents.MOOBLOOM_EAT, 1.0f, (random.nextFloat() * 0.4F) + 0.8F);
+                return InteractionResult.sidedSuccess(level().isClientSide);
             } else if (stack.is(Items.BOWL)) {
                 ItemStack stack2;
                 stack2 = new ItemStack(BovinesItems.NECTAR_BOWL);
@@ -383,23 +408,23 @@ public class Moobloom extends Cow implements Shearable {
 
                 ItemStack stack3 = ItemUtils.createFilledResult(stack, player, stack2, false);
                 player.setItemInHand(hand, stack3);
-                this.playSound(BovinesSoundEvents.MOOBLOOM_MILK, 1.0f, 1.0f);
-                return InteractionResult.sidedSuccess(this.level().isClientSide());
-            } else if (BovinesAndButtercups.getHelper().getPlatform() == BovinesPlatform.FABRIC && stack.is(TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath("c", "tools/shear"))) && this.readyForShearing()) {
-                this.shear(SoundSource.PLAYERS);
-                this.gameEvent(GameEvent.SHEAR, player);
-                if (!this.level().isClientSide)
+                playSound(BovinesSoundEvents.MOOBLOOM_MILK, 1.0f, 1.0f);
+                return InteractionResult.sidedSuccess(level().isClientSide());
+            } else if (BovinesAndButtercups.getHelper().getPlatform() == BovinesPlatform.FABRIC && stack.is(TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath("c", "tools/shear"))) && readyForShearing()) {
+                shear(SoundSource.PLAYERS);
+                gameEvent(GameEvent.SHEAR, player);
+                if (!level().isClientSide)
                     stack.hurtAndBreak(1, player, getSlotForHand(hand));
 
-                return InteractionResult.sidedSuccess(this.level().isClientSide);
+                return InteractionResult.sidedSuccess(level().isClientSide);
             }
         }
         if (stack.is(ItemTags.SHOVELS) && !isInSnowyWeather() && hasSnow() && !isSnowLayerPersistent()) {
             removeSnowLayer(SoundSource.PLAYERS);
             gameEvent(GameEvent.ENTITY_INTERACT);
-            if (!this.level().isClientSide)
+            if (!level().isClientSide)
                 stack.hurtAndBreak(1, player, getSlotForHand(hand));
-            return InteractionResult.sidedSuccess(this.level().isClientSide());
+            return InteractionResult.sidedSuccess(level().isClientSide());
         }
         return super.mobInteract(player, hand);
     }
@@ -415,7 +440,7 @@ public class Moobloom extends Cow implements Shearable {
             params.withParameter(LootContextParams.THIS_ENTITY, this);
             params.withParameter(BovinesLootContextParams.PARTNER, otherParent);
             params.withParameter(BovinesLootContextParams.CHILD, child);
-            params.withParameter(LootContextParams.ORIGIN, this.position());
+            params.withParameter(LootContextParams.ORIGIN, position());
             params.withParameter(BovinesLootContextParams.BREEDING_TYPE, cowType);
 
             LootContext thisContext = new LootContext.Builder(params.create(BovinesLootContextParamSets.BREEDING)).create(Optional.empty());
@@ -430,22 +455,22 @@ public class Moobloom extends Cow implements Shearable {
         }
 
         if (!eligibleCowTypes.isEmpty()) {
-            int random = this.getRandom().nextInt(eligibleCowTypes.size());
+            int random = getRandom().nextInt(eligibleCowTypes.size());
             var randomType = eligibleCowTypes.get(random);
 
-            child.createParticles(randomType, this.position());
+            child.createParticles(randomType, position());
 
-            if (this.getLoveCause() != null)
-                MutationTrigger.INSTANCE.trigger(this.getLoveCause(), this, otherParent, child, (Holder) randomType);
+            if (getLoveCause() != null)
+                MutationTrigger.INSTANCE.trigger(getLoveCause(), this, otherParent, child, (Holder) randomType);
             return randomType;
         }
 
         child.particlePositions.clear();
 
-        if (!otherParent.getCowType().equals(this.getCowType()) && this.getRandom().nextBoolean())
+        if (!otherParent.getCowType().equals(getCowType()) && getRandom().nextBoolean())
             return otherParent.getCowType();
 
-        return this.getCowType();
+        return getCowType();
     }
 
     public void addParticlePosition(Holder<CowType<?>> type, Vec3 pos) {
@@ -457,7 +482,7 @@ public class Moobloom extends Cow implements Shearable {
             return;
 
         if (particlePositions.isEmpty() && !level().isClientSide())
-            ((ServerLevel)this.level()).sendParticles(type.value().configuration().settings().particle().get(), getX(), getY(0.5), getZ(), 6, 0.05, 0.05, 0.05, 0.01);
+            ((ServerLevel)level()).sendParticles(type.value().configuration().settings().particle().get(), getX(), getY(0.5), getZ(), 6, 0.05, 0.05, 0.05, 0.01);
 
         for (Vec3 pos : particlePositions.get(type))
             createParticleTrail(pos, parentPos, type.value().configuration().settings().particle().get());
@@ -466,7 +491,7 @@ public class Moobloom extends Cow implements Shearable {
     }
 
     public void createParticleTrail(Vec3 pos, Vec3 parentPos, ParticleOptions options) {
-        double value = (1 - (1 / (pos.distanceTo(this.position()) + 1))) / 4;
+        double value = (1 - (1 / (pos.distanceTo(position()) + 1))) / 4;
 
         for (double d = 0.0; d < 1.0; d += value)
             ((ServerLevel)level()).sendParticles(options, Mth.lerp(d, pos.x(), parentPos.x()), Mth.lerp(d, pos.y(), parentPos.y()), Mth.lerp(d, pos.z(), parentPos.z()), 1, 0.05, 0.05,  0.05, 0.01);
@@ -492,47 +517,55 @@ public class Moobloom extends Cow implements Shearable {
     }
 
     public void setCurrentAndPreviousCowType(Holder<CowType<MoobloomConfiguration>> value) {
-        CowTypeAttachment.setCowType(this, value, this.getCowType());
+        CowTypeAttachment.setCowType(this, value, getCowType());
+    }
+
+    public int getFlowerSpreadAttempts() {
+        return entityData.get(FLOWER_SPREAD_ATTEMPTS);
+    }
+
+    public void setFlowerSpreadAttempts(int value) {
+        entityData.set(FLOWER_SPREAD_ATTEMPTS, value);
     }
 
     public int getPollinatedResetTicks() {
-        return this.entityData.get(POLLINATED_RESET_TICKS);
+        return entityData.get(POLLINATED_RESET_TICKS);
     }
 
     public void setPollinatedResetTicks(int value) {
-        this.entityData.set(POLLINATED_RESET_TICKS, value);
+        entityData.set(POLLINATED_RESET_TICKS, value);
     }
 
     public int getStandingStillForBeeTicks() {
-        return this.entityData.get(STANDING_STILL_FOR_BEE_TICKS);
+        return entityData.get(STANDING_STILL_FOR_BEE_TICKS);
     }
 
     public void setStandingStillForBeeTicks(int value) {
-        this.entityData.set(STANDING_STILL_FOR_BEE_TICKS, value);
+        entityData.set(STANDING_STILL_FOR_BEE_TICKS, value);
     }
 
     public boolean shouldAllowShearing() {
-        return this.entityData.get(ALLOW_SHEARING);
+        return entityData.get(ALLOW_SHEARING);
     }
 
     public void setAllowShearing(boolean value) {
-        this.entityData.set(ALLOW_SHEARING, value);
+        entityData.set(ALLOW_SHEARING, value);
     }
 
     public boolean hasSnow() {
-        return this.entityData.get(HAS_SNOW);
+        return entityData.get(HAS_SNOW);
     }
 
     public void setSnow(boolean value) {
-        this.entityData.set(HAS_SNOW, value);
+        entityData.set(HAS_SNOW, value);
     }
 
     public boolean isSnowLayerPersistent() {
-        return this.entityData.get(SNOW_LAYER_PERSISTENT);
+        return entityData.get(SNOW_LAYER_PERSISTENT);
     }
 
     public void setPersistentSnowLayer(boolean value) {
-        this.entityData.set(SNOW_LAYER_PERSISTENT, value);
+        entityData.set(SNOW_LAYER_PERSISTENT, value);
     }
 
     public static int getTotalSpawnWeight(LevelAccessor level, BlockPos pos) {
@@ -559,8 +592,8 @@ public class Moobloom extends Cow implements Shearable {
     }
 
     public void removeSnowLayer(SoundSource source) {
-        this.level().playSound(null, this, SoundEvents.SNOW_BREAK, source, 1.0F, 1.0F);
-        this.setSnow(false);
+        level().playSound(null, this, SoundEvents.SNOW_BREAK, source, 1.0F, 1.0F);
+        setSnow(false);
         int snowAmount = isBaby() ? 1 : 2;
 
         for (int j = 0; j < snowAmount; j++) {
@@ -582,24 +615,24 @@ public class Moobloom extends Cow implements Shearable {
     @Override
     public void shear(SoundSource source) {
         List<ItemStack> stacks = new ArrayList<>();
-        this.level().playSound(null, this, BovinesSoundEvents.MOOBLOOM_SHEAR, source, 1.0f, 1.0f);
-        if (!this.level().isClientSide) {
-            ((ServerLevel)this.level()).sendParticles(ParticleTypes.EXPLOSION, this.getX(), this.getY(0.5), this.getZ(), 1, 0.0, 0.0, 0.0, 0.0);
-            this.discard();
-            Cow cowEntity = EntityType.COW.create(this.level());
+        level().playSound(null, this, BovinesSoundEvents.MOOBLOOM_SHEAR, source, 1.0f, 1.0f);
+        if (!level().isClientSide) {
+            ((ServerLevel)level()).sendParticles(ParticleTypes.EXPLOSION, getX(), getY(0.5), getZ(), 1, 0.0, 0.0, 0.0, 0.0);
+            discard();
+            Cow cowEntity = EntityType.COW.create(level());
             if (cowEntity != null) {
-                cowEntity.moveTo(this.getX(), this.getY(), this.getZ(), this.getYRot(), this.getXRot());
-                cowEntity.setHealth(this.getHealth());
-                cowEntity.yBodyRot = this.yBodyRot;
-                if (this.hasCustomName()) {
-                    cowEntity.setCustomName(this.getCustomName());
-                    cowEntity.setCustomNameVisible(this.isCustomNameVisible());
+                cowEntity.moveTo(getX(), getY(), getZ(), getYRot(), getXRot());
+                cowEntity.setHealth(getHealth());
+                cowEntity.yBodyRot = yBodyRot;
+                if (hasCustomName()) {
+                    cowEntity.setCustomName(getCustomName());
+                    cowEntity.setCustomNameVisible(isCustomNameVisible());
                 }
-                if (this.isPersistenceRequired()) {
+                if (isPersistenceRequired()) {
                     cowEntity.setPersistenceRequired();
                 }
-                cowEntity.setInvulnerable(this.isInvulnerable());
-                this.level().addFreshEntity(cowEntity);
+                cowEntity.setInvulnerable(isInvulnerable());
+                level().addFreshEntity(cowEntity);
                 for (int i = 0; i < 5; ++i) {
                     if (getCowType().value().configuration().flower().blockState().isPresent()) {
                         stacks.add(new ItemStack(getCowType().value().configuration().flower().blockState().get().getBlock()));
@@ -614,7 +647,7 @@ public class Moobloom extends Cow implements Shearable {
 
         for (ItemStack stack : stacks) {
             // Use spawnAtLocation to allow NeoForge to modify this drop.
-            ItemEntity item = spawnAtLocation(stack, this.getBbHeight());
+            ItemEntity item = spawnAtLocation(stack, getBbHeight());
             if (item != null) {
                 item.setNoPickUpDelay();
             }
@@ -628,7 +661,7 @@ public class Moobloom extends Cow implements Shearable {
 
     public class LookAtBeeGoal extends Goal {
         public LookAtBeeGoal() {
-            this.setFlags(EnumSet.of(Goal.Flag.JUMP, Goal.Flag.MOVE, Goal.Flag.LOOK));
+            setFlags(EnumSet.of(Goal.Flag.JUMP, Goal.Flag.MOVE, Goal.Flag.LOOK));
         }
 
         @Override

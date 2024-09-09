@@ -8,6 +8,8 @@
 - Re-textured every flower and moobloom within the mod to give them a more modern appearance, as well as making them referential to non holstein cattle.
 - Added a Chargelily Ranch to guide players that you may wish to strike a Moobloom with lightning.
   - Spawns within stony mountainous biomes.
+- Reworked interaction when feeding a Moobloom Bone Meal. They will now create a varied flower trail of their flower as they walk instead of an instant area of flowers.
+  - This change was made to be more referential to Minecraft Earth as a source material.
 
 ## Bugfixes
 - Fixed offspring particles having an incorrect origin point.
@@ -29,7 +31,7 @@
 ## Datapacking Changes
 - Bovines and Buttercups now utilises datapack/dynamic registries.
   - A side effect of this means that you can no longer reload the registry through `/reload`.
-  - This change has been made to better implement Bovines with vanilla systems.
+  - This change was made to better implement Bovines with vanilla systems.
 - Configured Cow Types have been renamed to Cow Types, and now go inside the `data/<namespace>/bovinesandbuttercups/cow_type` directory.
 - Nectar is now its own separate datapack registry, being found inside the `data/<namespace>/bovinesandbuttercups/nectar` directory.
 - The Buttercup and Pink Daisy spawning biome tag is now `bovinesandbuttercups:has_moobloom/flower_forest`, instead of `bovinesandbuttercups:has_mooblooms`.
@@ -45,7 +47,7 @@
 - `offspring_conditions` has been rewritten from the ground up to utilise vanilla's predicate system.
   - [More information on this topic can be found here](https://minecraft.wiki/w/Predicate).
   - `offspring_conditions` may be a list of predicates that will apply to either parent; or you may specify `this_conditions` and `other_conditions` to specify conditions that must both be met by both parents with this applying to one and other applying to the other.
-    - If no conditions are specified, it is automatically considered true.
-  - This change has been made to better implement Bovines with vanilla systems.
+    - If no conditions are specified for either field, it is automatically considered true.
+  - This change was made to better implement Bovines with vanilla systems.
 - Removed `vanilla_spawning_hack` field. Regular Mooshroom spawn logic will now happen if there are no naturally spawning custom Mooshroom.
 - Added `vanilla_type` field to Mooshroom Types, this will map a vanilla Mooshroom type to a Bovines and Buttercups Mooshroom type.
