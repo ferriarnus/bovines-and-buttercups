@@ -1,6 +1,7 @@
 package house.greenhouse.bovinesandbuttercups.content.data.modifier;
 
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.DataResult;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import house.greenhouse.bovinesandbuttercups.BovinesAndButtercups;
@@ -10,9 +11,11 @@ import house.greenhouse.bovinesandbuttercups.network.clientbound.SyncConditioned
 import house.greenhouse.bovinesandbuttercups.registry.BovinesLootContextParamSets;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.ProblemReporter;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.LootParams;
+import net.minecraft.world.level.storage.loot.ValidationContext;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 
@@ -26,7 +29,16 @@ import java.util.WeakHashMap;
 public class ConditionedModifierFactory extends TextureModifierFactory<NoOpTextureModifier> {
     public static final MapCodec<ConditionedModifierFactory> CODEC = RecordCodecBuilder.mapCodec(inst -> inst.group(
             ResourceLocation.CODEC.fieldOf("id").forGetter(f -> f.id),
-            LootItemCondition.DIRECT_CODEC.listOf().fieldOf("condition").forGetter(f -> f.condition),
+            LootItemCondition.DIRECT_CODEC.validate(
+                    lootCondition -> {
+                        ProblemReporter.Collector problemreporter$collector = new ProblemReporter.Collector();
+                        ValidationContext validationcontext = new ValidationContext(problemreporter$collector, BovinesLootContextParamSets.ENTITY);
+                        lootCondition.validate(validationcontext);
+                        return problemreporter$collector.getReport()
+                                .map(p_344978_ -> DataResult.<LootItemCondition>error(() -> "Validation error in texture modifier condition: " + p_344978_))
+                                .orElseGet(() -> DataResult.success(lootCondition));
+                    }
+            ).listOf().fieldOf("condition").forGetter(f -> f.condition),
             Codec.intRange(1, Integer.MAX_VALUE).optionalFieldOf("tick_rate", 1).forGetter(f -> f.tickRate)
     ).apply(inst, ConditionedModifierFactory::new));
     private static final WeakHashMap<UUID, Map<ResourceLocation, Boolean>> CONDITION_VALUES = new WeakHashMap<>();
