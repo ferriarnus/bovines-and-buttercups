@@ -10,7 +10,6 @@ import house.greenhouse.bovinesandbuttercups.content.component.ItemCustomFlower;
 import house.greenhouse.bovinesandbuttercups.content.component.ItemNectar;
 import house.greenhouse.bovinesandbuttercups.content.data.configuration.MoobloomConfiguration;
 import house.greenhouse.bovinesandbuttercups.mixin.EntityAccessor;
-import house.greenhouse.bovinesandbuttercups.platform.BovinesPlatform;
 import house.greenhouse.bovinesandbuttercups.registry.BovinesBlocks;
 import house.greenhouse.bovinesandbuttercups.api.BovinesCowTypeTypes;
 import house.greenhouse.bovinesandbuttercups.api.BovinesCowTypes;
@@ -26,7 +25,6 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.HolderSet;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -39,7 +37,6 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.BiomeTags;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
-import net.minecraft.tags.TagKey;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.random.WeightedEntry;
@@ -54,7 +51,6 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LightningBolt;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.Pose;
-import net.minecraft.world.entity.Shearable;
 import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.ai.goal.AvoidEntityGoal;
 import net.minecraft.world.entity.ai.goal.Goal;
@@ -90,7 +86,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
-public class Moobloom extends Cow implements Shearable {
+public class Moobloom extends Cow {
     private static final EntityDataAccessor<Integer> FLOWER_SPREAD_ATTEMPTS = SynchedEntityData.defineId(Moobloom.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> POLLINATED_RESET_TICKS = SynchedEntityData.defineId(Moobloom.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> STANDING_STILL_FOR_BEE_TICKS = SynchedEntityData.defineId(Moobloom.class, EntityDataSerializers.INT);
@@ -410,13 +406,6 @@ public class Moobloom extends Cow implements Shearable {
                 player.setItemInHand(hand, stack3);
                 playSound(BovinesSoundEvents.MOOBLOOM_MILK, 1.0f, 1.0f);
                 return InteractionResult.sidedSuccess(level().isClientSide());
-            } else if (BovinesAndButtercups.getHelper().getPlatform() == BovinesPlatform.FABRIC && stack.is(TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath("c", "tools/shear"))) && readyForShearing()) {
-                shear(SoundSource.PLAYERS);
-                gameEvent(GameEvent.SHEAR, player);
-                if (!level().isClientSide)
-                    stack.hurtAndBreak(1, player, getSlotForHand(hand));
-
-                return InteractionResult.sidedSuccess(level().isClientSide);
             }
         }
         if (stack.is(ItemTags.SHOVELS) && !isInSnowyWeather() && hasSnow() && !isSnowLayerPersistent()) {
@@ -610,53 +599,6 @@ public class Moobloom extends Cow implements Shearable {
                 item.setNoPickUpDelay();
             }
         }
-    }
-
-    @Override
-    public void shear(SoundSource source) {
-        List<ItemStack> stacks = new ArrayList<>();
-        level().playSound(null, this, BovinesSoundEvents.MOOBLOOM_SHEAR, source, 1.0f, 1.0f);
-        if (!level().isClientSide) {
-            ((ServerLevel)level()).sendParticles(ParticleTypes.EXPLOSION, getX(), getY(0.5), getZ(), 1, 0.0, 0.0, 0.0, 0.0);
-            discard();
-            Cow cowEntity = EntityType.COW.create(level());
-            if (cowEntity != null) {
-                cowEntity.moveTo(getX(), getY(), getZ(), getYRot(), getXRot());
-                cowEntity.setHealth(getHealth());
-                cowEntity.yBodyRot = yBodyRot;
-                if (hasCustomName()) {
-                    cowEntity.setCustomName(getCustomName());
-                    cowEntity.setCustomNameVisible(isCustomNameVisible());
-                }
-                if (isPersistenceRequired()) {
-                    cowEntity.setPersistenceRequired();
-                }
-                cowEntity.setInvulnerable(isInvulnerable());
-                level().addFreshEntity(cowEntity);
-                for (int i = 0; i < 5; ++i) {
-                    if (getCowType().value().configuration().flower().blockState().isPresent()) {
-                        stacks.add(new ItemStack(getCowType().value().configuration().flower().blockState().get().getBlock()));
-                    } else if (getCowType().value().configuration().flower().customType().isPresent()) {
-                        ItemStack itemStack = new ItemStack(BovinesItems.CUSTOM_FLOWER);
-                        itemStack.set(BovinesDataComponents.CUSTOM_FLOWER, new ItemCustomFlower(getCowType().value().configuration().flower().customType().get()));
-                        stacks.add(itemStack);
-                    }
-                }
-            }
-        }
-
-        for (ItemStack stack : stacks) {
-            // Use spawnAtLocation to allow NeoForge to modify this drop.
-            ItemEntity item = spawnAtLocation(stack, getBbHeight());
-            if (item != null) {
-                item.setNoPickUpDelay();
-            }
-        }
-    }
-
-    @Override
-    public boolean readyForShearing() {
-        return isAlive() && !isBaby() && entityData.get(ALLOW_SHEARING);
     }
 
     public class LookAtBeeGoal extends Goal {

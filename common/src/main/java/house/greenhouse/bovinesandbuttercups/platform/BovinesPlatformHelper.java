@@ -3,13 +3,16 @@ package house.greenhouse.bovinesandbuttercups.platform;
 import house.greenhouse.bovinesandbuttercups.api.CowType;
 import house.greenhouse.bovinesandbuttercups.api.attachment.CowTypeAttachment;
 import house.greenhouse.bovinesandbuttercups.api.attachment.LockdownAttachment;
+import house.greenhouse.bovinesandbuttercups.content.entity.Moobloom;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.animal.Bee;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BeehiveBlockEntity;
 import net.minecraft.world.phys.Vec3;
@@ -62,4 +65,6 @@ public interface BovinesPlatformHelper {
     void addParticlePosition(LivingEntity entity, Holder<CowType<?>> type, Vec3 pos);
 
     void clearParticlePositions(LivingEntity entity);
+
+    Moobloom createMoobloom(EntityType<Moobloom> entityType, Level level);
 }

@@ -2,6 +2,8 @@ package house.greenhouse.bovinesandbuttercups.platform;
 
 import house.greenhouse.bovinesandbuttercups.BovinesAndButtercupsFabric;
 import house.greenhouse.bovinesandbuttercups.api.CowType;
+import house.greenhouse.bovinesandbuttercups.content.entity.Moobloom;
+import house.greenhouse.bovinesandbuttercups.entity.MoobloomFabric;
 import net.fabricmc.fabric.api.event.registry.FabricRegistryBuilder;
 import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
@@ -15,8 +17,10 @@ import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.animal.Bee;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.FlowerPotBlock;
 import net.minecraft.world.level.block.entity.BeehiveBlockEntity;
@@ -137,6 +141,11 @@ public class BovinesPlatformHelperFabric implements BovinesPlatformHelper {
     @Override
     public void clearParticlePositions(LivingEntity entity) {
         entity.removeAttached(BovinesAttachments.BABY_PARTICLE_POSITIONS);
+    }
+
+    @Override
+    public Moobloom createMoobloom(EntityType<Moobloom> entityType, Level level) {
+        return new MoobloomFabric(entityType, level);
     }
 
 }
