@@ -26,6 +26,7 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.HolderSet;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -33,8 +34,12 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.tags.BiomeTags;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.ItemTags;
+import net.minecraft.tags.TagKey;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.random.WeightedEntry;
@@ -68,6 +73,7 @@ import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
+import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
@@ -87,6 +93,8 @@ public class Moobloom extends Cow implements Shearable {
     private static final EntityDataAccessor<Integer> POLLINATED_RESET_TICKS = SynchedEntityData.defineId(Moobloom.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> STANDING_STILL_FOR_BEE_TICKS = SynchedEntityData.defineId(Moobloom.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Boolean> ALLOW_SHEARING = SynchedEntityData.defineId(Moobloom.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> HAS_SNOW = SynchedEntityData.defineId(Moobloom.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> SNOW_LAYER_PERSISTENT = SynchedEntityData.defineId(Moobloom.class, EntityDataSerializers.BOOLEAN);
     @Nullable
     public Bee bee;
     private boolean hasRefreshedDimensionsForLaying;
@@ -108,6 +116,8 @@ public class Moobloom extends Cow implements Shearable {
         builder.define(POLLINATED_RESET_TICKS, 0);
         builder.define(STANDING_STILL_FOR_BEE_TICKS, 0);
         builder.define(ALLOW_SHEARING, true);
+        builder.define(HAS_SNOW, false);
+        builder.define(SNOW_LAYER_PERSISTENT, false);
     }
 
     @Override
@@ -122,6 +132,9 @@ public class Moobloom extends Cow implements Shearable {
         super.addAdditionalSaveData(tag);
         tag.putInt("pollinated_reset_ticks", getPollinatedResetTicks());
         tag.putBoolean("allow_shearing", shouldAllowShearing());
+        tag.putBoolean("has_snow", hasSnow());
+        if (isSnowLayerPersistent())
+            tag.putBoolean("snow_layer_persistent", true);
     }
 
     @Override
@@ -132,6 +145,10 @@ public class Moobloom extends Cow implements Shearable {
             setPollinatedResetTicks(tag.getInt("pollinated_reset_ticks"));
         if (tag.contains("allow_shearing", Tag.TAG_BYTE))
             setAllowShearing(tag.getBoolean("allow_shearing"));
+        if (tag.contains("has_snow", Tag.TAG_BYTE))
+            setSnow(tag.getBoolean("has_snow"));
+        if (tag.contains("snow_layer_persistent", Tag.TAG_BYTE))
+            setPersistentSnowLayer(tag.getBoolean("snow_layer_persistent"));
     }
 
     public void backwardsCompat(CompoundTag tag) {
@@ -228,13 +245,6 @@ public class Moobloom extends Cow implements Shearable {
 
     @Override
     public void tick() {
-        if (bee != null && !bee.isAlive() && !level().isClientSide()) {
-            setStandingStillForBeeTicks(0);
-            bee = null;
-        }
-        if (getStandingStillForBeeTicks() > 0 && !level().isClientSide())
-            setStandingStillForBeeTicks(getStandingStillForBeeTicks() - 1);
-
         super.tick();
 
         if (level().isClientSide) {
@@ -247,6 +257,18 @@ public class Moobloom extends Cow implements Shearable {
 
             if (getUpAnimationState.isStarted() && getUpAnimationState.getAccumulatedTime() >= 1000)
                 getUpAnimationState.stop();
+        } else {
+            if (bee != null && !bee.isAlive()) {
+                setStandingStillForBeeTicks(0);
+                bee = null;
+            }
+            if (getStandingStillForBeeTicks() > 0 && !level().isClientSide())
+                setStandingStillForBeeTicks(getStandingStillForBeeTicks() - 1);
+
+            if (!hasSnow() && isInSnowyWeather() && !isSnowLayerPersistent() && !level().isClientSide() && random.nextFloat() < 0.4F)
+                setSnow(true);
+            if (hasSnow() && level().getBiome(blockPosition()).is(BiomeTags.SNOW_GOLEM_MELTS) && random.nextFloat() < 0.4F)
+                setSnow(false);
         }
 
         if (getPollinatedResetTicks() > 0)
@@ -264,6 +286,27 @@ public class Moobloom extends Cow implements Shearable {
             refreshDimensions();
             ((EntityAccessor)this).bovinesandbuttercups$setEyeHeight(getDimensions(getPose()).height() * 0.85F);
             hasRefreshedDimensionsForLaying = false;
+        }
+    }
+
+    public boolean isInSnowyWeather() {
+        BlockPos pos = blockPosition();
+        if (isSnowingAt(pos))
+            return true;
+        pos =  BlockPos.containing(blockPosition().getX(), getBoundingBox().maxY, blockPosition().getZ());
+        return isSnowingAt(pos);
+    }
+
+    private boolean isSnowingAt(BlockPos pos) {
+        if (!level().isRaining()) {
+            return false;
+        } else if (!level().canSeeSky(pos)) {
+            return false;
+        } else if (level().getHeightmapPos(Heightmap.Types.MOTION_BLOCKING, pos).getY() > pos.getY()) {
+            return false;
+        } else {
+            Biome biome = level().getBiome(pos).value();
+            return biome.getPrecipitationAt(pos) == Biome.Precipitation.SNOW;
         }
     }
 
@@ -342,7 +385,7 @@ public class Moobloom extends Cow implements Shearable {
                 player.setItemInHand(hand, stack3);
                 this.playSound(BovinesSoundEvents.MOOBLOOM_MILK, 1.0f, 1.0f);
                 return InteractionResult.sidedSuccess(this.level().isClientSide());
-            } else if (BovinesAndButtercups.getHelper().getPlatform() == BovinesPlatform.FABRIC && stack.is(Items.SHEARS) && this.readyForShearing()) {
+            } else if (BovinesAndButtercups.getHelper().getPlatform() == BovinesPlatform.FABRIC && stack.is(TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath("c", "tools/shear"))) && this.readyForShearing()) {
                 this.shear(SoundSource.PLAYERS);
                 this.gameEvent(GameEvent.SHEAR, player);
                 if (!this.level().isClientSide)
@@ -350,6 +393,13 @@ public class Moobloom extends Cow implements Shearable {
 
                 return InteractionResult.sidedSuccess(this.level().isClientSide);
             }
+        }
+        if (stack.is(ItemTags.SHOVELS) && !isInSnowyWeather() && hasSnow() && !isSnowLayerPersistent()) {
+            removeSnowLayer(SoundSource.PLAYERS);
+            gameEvent(GameEvent.ENTITY_INTERACT);
+            if (!this.level().isClientSide)
+                stack.hurtAndBreak(1, player, getSlotForHand(hand));
+            return InteractionResult.sidedSuccess(this.level().isClientSide());
         }
         return super.mobInteract(player, hand);
     }
@@ -469,6 +519,22 @@ public class Moobloom extends Cow implements Shearable {
         this.entityData.set(ALLOW_SHEARING, value);
     }
 
+    public boolean hasSnow() {
+        return this.entityData.get(HAS_SNOW);
+    }
+
+    public void setSnow(boolean value) {
+        this.entityData.set(HAS_SNOW, value);
+    }
+
+    public boolean isSnowLayerPersistent() {
+        return this.entityData.get(SNOW_LAYER_PERSISTENT);
+    }
+
+    public void setPersistentSnowLayer(boolean value) {
+        this.entityData.set(SNOW_LAYER_PERSISTENT, value);
+    }
+
     public static int getTotalSpawnWeight(LevelAccessor level, BlockPos pos) {
         int totalWeight = 0;
 
@@ -490,6 +556,27 @@ public class Moobloom extends Cow implements Shearable {
         }
         setCowType(((MoobloomGroupData)data).getSpawnType(blockPosition(), level, level.getRandom()));
         return super.finalizeSpawn(level, difficulty, spawnType, data);
+    }
+
+    public void removeSnowLayer(SoundSource source) {
+        this.level().playSound(null, this, SoundEvents.SNOW_BREAK, source, 1.0F, 1.0F);
+        this.setSnow(false);
+        int snowAmount = isBaby() ? 1 : 2;
+
+        for (int j = 0; j < snowAmount; j++) {
+            ItemEntity item = spawnAtLocation(Items.SNOWBALL, 1);
+            if (item != null) {
+                item.setDeltaMovement(
+                        item.getDeltaMovement()
+                                .add(
+                                        (random.nextFloat() - random.nextFloat()) * 0.1F,
+                                        random.nextFloat() * 0.05F,
+                                        (random.nextFloat() - random.nextFloat()) * 0.1F
+                                )
+                );
+                item.setNoPickUpDelay();
+            }
+        }
     }
 
     @Override

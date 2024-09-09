@@ -14,6 +14,40 @@
       "texture_modifiers": [
         {
           "type": "bovinesandbuttercups:grass_tint"
+        },
+        {
+          "type": "bovinesandbuttercups:conditioned",
+          "condition": [
+            {
+              "condition": "minecraft:inverted",
+              "term": {
+                "condition": "minecraft:entity_properties",
+                "entity": "this",
+                "predicate": {
+                  "nbt": "{has_snow:1b}"
+                }
+              }
+            }
+          ],
+          "id": "bovinesandbuttercups:moobloom/grass_layer_without_snow"
+        }
+      ]
+    },
+    {
+      "texture_location": "bovinesandbuttercups:bovinesandbuttercups/snow_layer",
+      "texture_modifiers": [
+        {
+          "type": "bovinesandbuttercups:conditioned",
+          "condition": [
+            {
+              "condition": "minecraft:entity_properties",
+              "entity": "this",
+              "predicate": {
+                "nbt": "{has_snow:1b}"
+              }
+            }
+          ],
+          "id": "bovinesandbuttercups:snow_layer_with_snow"
         }
       ]
     }

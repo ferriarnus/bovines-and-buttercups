@@ -21,25 +21,33 @@
             {
               "condition": "minecraft:inverted",
               "term": {
-                "condition": "bovinesandbuttercups:snowing"
+                "condition": "minecraft:entity_properties",
+                "entity": "this",
+                "predicate": {
+                  "nbt": "{has_snow:1b}"
+                }
               }
             }
           ],
-          "id": "bovinesandbuttercups:snowdrop/grass_layer_without_snow"
+          "id": "bovinesandbuttercups:moobloom/grass_layer_without_snow"
         }
       ]
     },
     {
-      "texture_location": "bovinesandbuttercups:bovinesandbuttercups/moobloom/moobloom_snow_layer",
+      "texture_location": "bovinesandbuttercups:bovinesandbuttercups/snow_layer",
       "texture_modifiers": [
         {
           "type": "bovinesandbuttercups:conditioned",
           "condition": [
             {
-              "condition": "bovinesandbuttercups:snowing"
+              "condition": "minecraft:entity_properties",
+              "entity": "this",
+              "predicate": {
+                "nbt": "{has_snow:1b}"
+              }
             }
           ],
-          "id": "bovinesandbuttercups:snowdrop/snow_layer_with_snow"
+          "id": "bovinesandbuttercups:snow_layer_with_snow"
         }
       ]
     }

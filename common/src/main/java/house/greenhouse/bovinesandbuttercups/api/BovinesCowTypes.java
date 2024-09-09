@@ -16,12 +16,15 @@ import house.greenhouse.bovinesandbuttercups.registry.BovinesParticleTypes;
 import house.greenhouse.bovinesandbuttercups.registry.BovinesRegistryKeys;
 import house.greenhouse.bovinesandbuttercups.util.ColorConstants;
 import net.minecraft.advancements.critereon.BlockPredicate;
+import net.minecraft.advancements.critereon.EntityPredicate;
+import net.minecraft.advancements.critereon.NbtPredicate;
 import net.minecraft.advancements.critereon.StatePropertiesPredicate;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderSet;
 import net.minecraft.core.particles.ColorParticleOption;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.random.SimpleWeightedRandomList;
@@ -30,10 +33,12 @@ import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
+import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.predicates.AllOfCondition;
 import net.minecraft.world.level.storage.loot.predicates.AnyOfCondition;
 import net.minecraft.world.level.storage.loot.predicates.InvertedLootItemCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
+import net.minecraft.world.level.storage.loot.predicates.LootItemEntityPropertyCondition;
 
 import java.util.List;
 import java.util.Optional;
@@ -61,12 +66,20 @@ public class BovinesCowTypes {
 
     public static void bootstrap(BootstrapContext<CowType<?>> context) {
         var nectarRegistry = context.lookup(BovinesRegistryKeys.NECTAR);
+        var snowTag = new CompoundTag();
+
+        snowTag.putBoolean("has_snow", true);
+
         // Moobloom Types
         context.register(MoobloomKeys.CHARGELILY, new CowType<>(BovinesCowTypeTypes.MOOBLOOM_TYPE, new MoobloomConfiguration(
                 new CowTypeConfiguration.Settings(Optional.empty(), SimpleWeightedRandomList.empty(), SimpleWeightedRandomList.empty(), Optional.of(ColorParticleOption.create(BovinesParticleTypes.BLOOM, ColorConstants.CHARGELILY))),
                 new BlockReference<>(Optional.of(BovinesBlocks.CHARGELILY.defaultBlockState()), Optional.empty(), Optional.empty()),
                 new BlockReference<>(Optional.empty(), Optional.of(BovinesAndButtercups.asResource("bovinesandbuttercups/chargelily_bud")), Optional.empty()),
-                List.of(new CowModelLayer(BovinesAndButtercups.asResource("bovinesandbuttercups/moobloom/moobloom_grass_layer"), List.of(new GrassTintTextureModifierFactory()))),
+                List.of(new CowModelLayer(BovinesAndButtercups.asResource("bovinesandbuttercups/moobloom/moobloom_grass_layer"), List.of(new GrassTintTextureModifierFactory(),
+                                new ConditionedModifierFactory(BovinesAndButtercups.asResource("moobloom/grass_layer_without_snow"),
+                                        List.of(InvertedLootItemCondition.invert(LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.THIS, EntityPredicate.Builder.entity().nbt(new NbtPredicate(snowTag)))).build()), 1))),
+                        new CowModelLayer(BovinesAndButtercups.asResource("bovinesandbuttercups/snow_layer"), List.of(new ConditionedModifierFactory(BovinesAndButtercups.asResource("snow_layer_with_snow"),
+                                List.of(LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.THIS, EntityPredicate.Builder.entity().nbt(new NbtPredicate(snowTag)).build()).build()),1)))),
                 Optional.of(nectarRegistry.getOrThrow(BovinesNectars.CHARGELILY)),
                 OffspringConditions.EMPTY)));
 
@@ -79,7 +92,11 @@ public class BovinesCowTypes {
                 new CowTypeConfiguration.Settings(Optional.empty(), SimpleWeightedRandomList.empty(), chargelilyWeighted, Optional.of(ColorParticleOption.create(BovinesParticleTypes.BLOOM, ColorConstants.BIRD_OF_PARADISE))),
                 new BlockReference<>(Optional.of(BovinesBlocks.BIRD_OF_PARADISE.defaultBlockState()), Optional.empty(), Optional.empty()),
                 new BlockReference<>(Optional.empty(), Optional.of(BovinesAndButtercups.asResource("bovinesandbuttercups/bird_of_paradise_bud")), Optional.empty()),
-                List.of(new CowModelLayer(BovinesAndButtercups.asResource("bovinesandbuttercups/moobloom/moobloom_grass_layer"), List.of(new GrassTintTextureModifierFactory()))),
+                List.of(new CowModelLayer(BovinesAndButtercups.asResource("bovinesandbuttercups/moobloom/moobloom_grass_layer"), List.of(new GrassTintTextureModifierFactory(),
+                                new ConditionedModifierFactory(BovinesAndButtercups.asResource("moobloom/grass_layer_without_snow"),
+                                        List.of(InvertedLootItemCondition.invert(LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.THIS, EntityPredicate.Builder.entity().nbt(new NbtPredicate(snowTag)))).build()), 1))),
+                        new CowModelLayer(BovinesAndButtercups.asResource("bovinesandbuttercups/snow_layer"), List.of(new ConditionedModifierFactory(BovinesAndButtercups.asResource("snow_layer_with_snow"),
+                                List.of(LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.THIS, EntityPredicate.Builder.entity().nbt(new NbtPredicate(snowTag)).build()).build()),1)))),
                 Optional.of(nectarRegistry.getOrThrow(BovinesNectars.BIRD_OF_PARADISE)),
                 new OffspringConditions(List.of(createCondition(
                         List.of(
@@ -93,7 +110,11 @@ public class BovinesCowTypes {
                 new CowTypeConfiguration.Settings(Optional.empty(), buttercupFlowerForestSet, chargelilyWeighted, Optional.of(ColorParticleOption.create(BovinesParticleTypes.BLOOM, ColorConstants.BUTTERCUP))),
                 new BlockReference<>(Optional.of(BovinesBlocks.BUTTERCUP.defaultBlockState()), Optional.empty(), Optional.empty()),
                 new BlockReference<>(Optional.empty(), Optional.of(BovinesAndButtercups.asResource("bovinesandbuttercups/buttercup_bud")), Optional.empty()),
-                List.of(new CowModelLayer(BovinesAndButtercups.asResource("bovinesandbuttercups/moobloom/moobloom_grass_layer"), List.of(new GrassTintTextureModifierFactory()))),
+                List.of(new CowModelLayer(BovinesAndButtercups.asResource("bovinesandbuttercups/moobloom/moobloom_grass_layer"), List.of(new GrassTintTextureModifierFactory(),
+                                new ConditionedModifierFactory(BovinesAndButtercups.asResource("moobloom/grass_layer_without_snow"),
+                                        List.of(InvertedLootItemCondition.invert(LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.THIS, EntityPredicate.Builder.entity().nbt(new NbtPredicate(snowTag)))).build()), 1))),
+                        new CowModelLayer(BovinesAndButtercups.asResource("bovinesandbuttercups/snow_layer"), List.of(new ConditionedModifierFactory(BovinesAndButtercups.asResource("snow_layer_with_snow"),
+                                List.of(LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.THIS, EntityPredicate.Builder.entity().nbt(new NbtPredicate(snowTag)).build()).build()),1)))),
                 Optional.of(nectarRegistry.getOrThrow(BovinesNectars.BUTTERCUP)),
                 new OffspringConditions(List.of(createCondition(
                         List.of(
@@ -107,7 +128,11 @@ public class BovinesCowTypes {
                 new CowTypeConfiguration.Settings(Optional.empty(), SimpleWeightedRandomList.empty(), chargelilyWeighted, Optional.of(ColorParticleOption.create(BovinesParticleTypes.BLOOM, ColorConstants.FREESIA))),
                 new BlockReference<>(Optional.of(BovinesBlocks.FREESIA.defaultBlockState()), Optional.empty(), Optional.empty()),
                 new BlockReference<>(Optional.empty(), Optional.of(BovinesAndButtercups.asResource("bovinesandbuttercups/freesia_bud")), Optional.empty()),
-                List.of(new CowModelLayer(BovinesAndButtercups.asResource("bovinesandbuttercups/moobloom/moobloom_grass_layer"), List.of(new GrassTintTextureModifierFactory()))),
+                List.of(new CowModelLayer(BovinesAndButtercups.asResource("bovinesandbuttercups/moobloom/moobloom_grass_layer"), List.of(new GrassTintTextureModifierFactory(),
+                                new ConditionedModifierFactory(BovinesAndButtercups.asResource("moobloom/grass_layer_without_snow"),
+                                        List.of(InvertedLootItemCondition.invert(LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.THIS, EntityPredicate.Builder.entity().nbt(new NbtPredicate(snowTag)))).build()), 1))),
+                        new CowModelLayer(BovinesAndButtercups.asResource("bovinesandbuttercups/snow_layer"), List.of(new ConditionedModifierFactory(BovinesAndButtercups.asResource("snow_layer_with_snow"),
+                                List.of(LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.THIS, EntityPredicate.Builder.entity().nbt(new NbtPredicate(snowTag)).build()).build()),1)))),
                 Optional.of(nectarRegistry.getOrThrow(BovinesNectars.FREESIA)),
                 new OffspringConditions(List.of(createCondition(
                         List.of(
@@ -121,7 +146,11 @@ public class BovinesCowTypes {
                 new CowTypeConfiguration.Settings(Optional.empty(), SimpleWeightedRandomList.empty(), chargelilyWeighted, Optional.of(ColorParticleOption.create(BovinesParticleTypes.BLOOM, ColorConstants.HYACINTH))),
                 new BlockReference<>(Optional.of(BovinesBlocks.HYACINTH.defaultBlockState()), Optional.empty(), Optional.empty()),
                 new BlockReference<>(Optional.empty(), Optional.of(BovinesAndButtercups.asResource("bovinesandbuttercups/hyacinth_bud")), Optional.empty()),
-                List.of(new CowModelLayer(BovinesAndButtercups.asResource("bovinesandbuttercups/moobloom/moobloom_grass_layer"), List.of(new GrassTintTextureModifierFactory()))),
+                List.of(new CowModelLayer(BovinesAndButtercups.asResource("bovinesandbuttercups/moobloom/moobloom_grass_layer"), List.of(new GrassTintTextureModifierFactory(),
+                                new ConditionedModifierFactory(BovinesAndButtercups.asResource("moobloom/grass_layer_without_snow"),
+                                        List.of(InvertedLootItemCondition.invert(LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.THIS, EntityPredicate.Builder.entity().nbt(new NbtPredicate(snowTag)))).build()), 1))),
+                        new CowModelLayer(BovinesAndButtercups.asResource("bovinesandbuttercups/snow_layer"), List.of(new ConditionedModifierFactory(BovinesAndButtercups.asResource("snow_layer_with_snow"),
+                                List.of(LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.THIS, EntityPredicate.Builder.entity().nbt(new NbtPredicate(snowTag)).build()).build()),1)))),
                 Optional.of(nectarRegistry.getOrThrow(BovinesNectars.HYACINTH)),
                 new OffspringConditions(List.of(createCondition(
                         List.of(
@@ -135,7 +164,11 @@ public class BovinesCowTypes {
                 new CowTypeConfiguration.Settings(Optional.empty(), SimpleWeightedRandomList.empty(), chargelilyWeighted, Optional.of(ColorParticleOption.create(BovinesParticleTypes.BLOOM, ColorConstants.LIMELIGHT))),
                 new BlockReference<>(Optional.of(BovinesBlocks.LIMELIGHT.defaultBlockState()), Optional.empty(), Optional.empty()),
                 new BlockReference<>(Optional.empty(), Optional.of(BovinesAndButtercups.asResource("bovinesandbuttercups/limelight_bud")), Optional.empty()),
-                List.of(new CowModelLayer(BovinesAndButtercups.asResource("bovinesandbuttercups/moobloom/moobloom_moss_layer"), List.of())),
+                List.of(new CowModelLayer(BovinesAndButtercups.asResource("bovinesandbuttercups/moobloom/moobloom_moss_layer"), List.of(
+                        new ConditionedModifierFactory(BovinesAndButtercups.asResource("moobloom/limelight/moss_layer_without_snow"),
+                                List.of(InvertedLootItemCondition.invert(LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.THIS, EntityPredicate.Builder.entity().nbt(new NbtPredicate(snowTag)))).build()), 1))),
+                        new CowModelLayer(BovinesAndButtercups.asResource("bovinesandbuttercups/snow_layer"), List.of(new ConditionedModifierFactory(BovinesAndButtercups.asResource("snow_layer_with_snow"),
+                                List.of(LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.THIS, EntityPredicate.Builder.entity().nbt(new NbtPredicate(snowTag)).build()).build()),1)))),
                 Optional.of(nectarRegistry.getOrThrow(BovinesNectars.LIMELIGHT)),
                 new OffspringConditions(List.of(createCondition(
                         List.of(
@@ -149,7 +182,11 @@ public class BovinesCowTypes {
                 new CowTypeConfiguration.Settings(Optional.empty(), SimpleWeightedRandomList.empty(), chargelilyWeighted, Optional.of(ColorParticleOption.create(BovinesParticleTypes.BLOOM, ColorConstants.LINGHOLM))),
                 new BlockReference<>(Optional.of(BovinesBlocks.LINGHOLM.defaultBlockState()), Optional.empty(), Optional.empty()),
                 new BlockReference<>(Optional.empty(), Optional.of(BovinesAndButtercups.asResource("bovinesandbuttercups/lingholm_bud")), Optional.empty()),
-                List.of(new CowModelLayer(BovinesAndButtercups.asResource("bovinesandbuttercups/moobloom/moobloom_grass_layer"), List.of(new GrassTintTextureModifierFactory()))),
+                List.of(new CowModelLayer(BovinesAndButtercups.asResource("bovinesandbuttercups/moobloom/moobloom_grass_layer"), List.of(new GrassTintTextureModifierFactory(),
+                                new ConditionedModifierFactory(BovinesAndButtercups.asResource("moobloom/grass_layer_without_snow"),
+                                        List.of(InvertedLootItemCondition.invert(LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.THIS, EntityPredicate.Builder.entity().nbt(new NbtPredicate(snowTag)))).build()), 1))),
+                        new CowModelLayer(BovinesAndButtercups.asResource("bovinesandbuttercups/snow_layer"), List.of(new ConditionedModifierFactory(BovinesAndButtercups.asResource("snow_layer_with_snow"),
+                                List.of(LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.THIS, EntityPredicate.Builder.entity().nbt(new NbtPredicate(snowTag)).build()).build()),1)))),
                 Optional.of(nectarRegistry.getOrThrow(BovinesNectars.LINGHOLM)),
                 new OffspringConditions(List.of(createCondition(
                         List.of(
@@ -163,7 +200,11 @@ public class BovinesCowTypes {
                 new CowTypeConfiguration.Settings(Optional.empty(), pinkDaisyFlowerForestSet, chargelilyWeighted, Optional.of(ColorParticleOption.create(BovinesParticleTypes.BLOOM, ColorConstants.PINK_DAISY))),
                 new BlockReference<>(Optional.of(BovinesBlocks.PINK_DAISY.defaultBlockState()), Optional.empty(), Optional.empty()),
                 new BlockReference<>(Optional.empty(), Optional.of(BovinesAndButtercups.asResource("bovinesandbuttercups/pink_daisy_bud")), Optional.empty()),
-                List.of(new CowModelLayer(BovinesAndButtercups.asResource("bovinesandbuttercups/moobloom/moobloom_grass_layer"), List.of(new GrassTintTextureModifierFactory()))),
+                List.of(new CowModelLayer(BovinesAndButtercups.asResource("bovinesandbuttercups/moobloom/moobloom_grass_layer"), List.of(new GrassTintTextureModifierFactory(),
+                                new ConditionedModifierFactory(BovinesAndButtercups.asResource("moobloom/grass_layer_without_snow"),
+                                        List.of(InvertedLootItemCondition.invert(LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.THIS, EntityPredicate.Builder.entity().nbt(new NbtPredicate(snowTag)))).build()), 1))),
+                        new CowModelLayer(BovinesAndButtercups.asResource("bovinesandbuttercups/snow_layer"), List.of(new ConditionedModifierFactory(BovinesAndButtercups.asResource("snow_layer_with_snow"),
+                                List.of(LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.THIS, EntityPredicate.Builder.entity().nbt(new NbtPredicate(snowTag)).build()).build()),1)))),
                 Optional.of(nectarRegistry.getOrThrow(BovinesNectars.PINK_DAISY)),
                 new OffspringConditions(List.of(createCondition(
                         List.of(
@@ -178,10 +219,11 @@ public class BovinesCowTypes {
                 new CowTypeConfiguration.Settings(Optional.empty(), SimpleWeightedRandomList.empty(), chargelilyWeighted, Optional.of(ColorParticleOption.create(BovinesParticleTypes.BLOOM, ColorConstants.SNOWDROP))),
                 new BlockReference<>(Optional.of(BovinesBlocks.SNOWDROP.defaultBlockState()), Optional.empty(), Optional.empty()),
                 new BlockReference<>(Optional.empty(), Optional.of(BovinesAndButtercups.asResource("bovinesandbuttercups/snowdrop_bud")), Optional.empty()),
-                List.of(new CowModelLayer(BovinesAndButtercups.asResource("bovinesandbuttercups/moobloom/moobloom_grass_layer"), List.of(new GrassTintTextureModifierFactory(), new ConditionedModifierFactory(BovinesAndButtercups.asResource("snowdrop/grass_layer_without_snow"),
-                        List.of(InvertedLootItemCondition.invert(SnowingCondition.snowing()).build()),1))),
-                        new CowModelLayer(BovinesAndButtercups.asResource("bovinesandbuttercups/moobloom/moobloom_snow_layer"), List.of(new ConditionedModifierFactory(BovinesAndButtercups.asResource("snowdrop/snow_layer_with_snow"),
-                                List.of(SnowingCondition.snowing().build()),1)))),
+                List.of(new CowModelLayer(BovinesAndButtercups.asResource("bovinesandbuttercups/moobloom/moobloom_grass_layer"), List.of(new GrassTintTextureModifierFactory(),
+                        new ConditionedModifierFactory(BovinesAndButtercups.asResource("moobloom/grass_layer_without_snow"),
+                                List.of(InvertedLootItemCondition.invert(LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.THIS, EntityPredicate.Builder.entity().nbt(new NbtPredicate(snowTag)))).build()), 1))),
+                        new CowModelLayer(BovinesAndButtercups.asResource("bovinesandbuttercups/snow_layer"), List.of(new ConditionedModifierFactory(BovinesAndButtercups.asResource("snow_layer_with_snow"),
+                                List.of(LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.THIS, EntityPredicate.Builder.entity().nbt(new NbtPredicate(snowTag)).build()).build()),1)))),
                 Optional.of(nectarRegistry.getOrThrow(BovinesNectars.SNOWDROP)),
                 new OffspringConditions(List.of(createCondition(
                         List.of(
@@ -195,7 +237,11 @@ public class BovinesCowTypes {
                 new CowTypeConfiguration.Settings(Optional.empty(), SimpleWeightedRandomList.empty(), chargelilyWeighted, Optional.of(ColorParticleOption.create(BovinesParticleTypes.BLOOM, ColorConstants.TROPICAL_BLUE))),
                 new BlockReference<>(Optional.of(BovinesBlocks.TROPICAL_BLUE.defaultBlockState()), Optional.empty(), Optional.empty()),
                 new BlockReference<>(Optional.empty(), Optional.of(BovinesAndButtercups.asResource("bovinesandbuttercups/tropical_blue_bud")), Optional.empty()),
-                List.of(new CowModelLayer(BovinesAndButtercups.asResource("bovinesandbuttercups/moobloom/moobloom_grass_layer"), List.of(new GrassTintTextureModifierFactory()))),
+                List.of(new CowModelLayer(BovinesAndButtercups.asResource("bovinesandbuttercups/moobloom/moobloom_grass_layer"), List.of(new GrassTintTextureModifierFactory(),
+                                new ConditionedModifierFactory(BovinesAndButtercups.asResource("moobloom/grass_layer_without_snow"),
+                                        List.of(InvertedLootItemCondition.invert(LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.THIS, EntityPredicate.Builder.entity().nbt(new NbtPredicate(snowTag)))).build()), 1))),
+                        new CowModelLayer(BovinesAndButtercups.asResource("bovinesandbuttercups/snow_layer"), List.of(new ConditionedModifierFactory(BovinesAndButtercups.asResource("snow_layer_with_snow"),
+                                List.of(LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.THIS, EntityPredicate.Builder.entity().nbt(new NbtPredicate(snowTag)).build()).build()),1)))),
                 Optional.of(nectarRegistry.getOrThrow(BovinesNectars.TROPICAL_BLUE)),
                 new OffspringConditions(List.of(createCondition(
                         List.of(
@@ -210,7 +256,12 @@ public class BovinesCowTypes {
         context.register(MooshroomKeys.RED_MUSHROOM, new CowType<>(BovinesCowTypeTypes.MOOSHROOM_TYPE, new MooshroomConfiguration(
                 new CowTypeConfiguration.Settings(Optional.of(ResourceLocation.parse("cow/red_mooshroom")), SimpleWeightedRandomList.empty(), SimpleWeightedRandomList.single(context.lookup(BovinesRegistryKeys.COW_TYPE).getOrThrow(MooshroomKeys.BROWN_MUSHROOM)), Optional.of(ColorParticleOption.create(BovinesParticleTypes.SHROOM, ColorConstants.RED_MUSHROOM))),
                 new BlockReference<>(Optional.of(Blocks.RED_MUSHROOM.defaultBlockState()), Optional.empty(), Optional.empty()),
-                List.of(new CowModelLayer(BovinesAndButtercups.asResource("bovinesandbuttercups/mooshroom/mooshroom_mycelium_layer"), List.of())),
+                List.of(new CowModelLayer(BovinesAndButtercups.asResource("bovinesandbuttercups/mooshroom/mooshroom_mycelium_layer"), List.of(
+                        new ConditionedModifierFactory(BovinesAndButtercups.asResource("mooshroom/mycelium_layer_without_snow"),
+                                List.of(InvertedLootItemCondition.invert(LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.THIS, EntityPredicate.Builder.entity().nbt(new NbtPredicate(snowTag)))).build()), 1))),
+                        new CowModelLayer(BovinesAndButtercups.asResource("bovinesandbuttercups/snow_layer"), List.of(new ConditionedModifierFactory(BovinesAndButtercups.asResource("snow_layer_with_snow"),
+                                List.of(LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.THIS, EntityPredicate.Builder.entity().nbt(new NbtPredicate(snowTag)).build()).build()),1)))
+                ),
                 false,
                 Optional.of(MushroomCow.MushroomType.RED),
                 OffspringConditions.EMPTY
@@ -218,7 +269,12 @@ public class BovinesCowTypes {
         context.register(MooshroomKeys.BROWN_MUSHROOM, new CowType<>(BovinesCowTypeTypes.MOOSHROOM_TYPE, new MooshroomConfiguration(
                 new CowTypeConfiguration.Settings(Optional.of(ResourceLocation.parse("cow/brown_mooshroom")), SimpleWeightedRandomList.empty(), SimpleWeightedRandomList.single(context.lookup(BovinesRegistryKeys.COW_TYPE).getOrThrow(MooshroomKeys.RED_MUSHROOM)), Optional.of(ColorParticleOption.create(BovinesParticleTypes.SHROOM, ColorConstants.BROWN_MUSHROOM))),
                 new BlockReference<>(Optional.of(Blocks.BROWN_MUSHROOM.defaultBlockState()), Optional.empty(), Optional.empty()),
-                List.of(new CowModelLayer(BovinesAndButtercups.asResource("bovinesandbuttercups/mooshroom/mooshroom_mycelium_layer"), List.of())),
+                List.of(new CowModelLayer(BovinesAndButtercups.asResource("bovinesandbuttercups/mooshroom/mooshroom_mycelium_layer"), List.of(
+                        new ConditionedModifierFactory(BovinesAndButtercups.asResource("mooshroom/mycelium_layer_without_snow"),
+                                List.of(InvertedLootItemCondition.invert(LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.THIS, EntityPredicate.Builder.entity().nbt(new NbtPredicate(snowTag)))).build()), 1))),
+                        new CowModelLayer(BovinesAndButtercups.asResource("bovinesandbuttercups/snow_layer"), List.of(new ConditionedModifierFactory(BovinesAndButtercups.asResource("snow_layer_with_snow"),
+                                List.of(LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.THIS, EntityPredicate.Builder.entity().nbt(new NbtPredicate(snowTag)).build()).build()),1)))
+                ),
                 true,
                 Optional.of(MushroomCow.MushroomType.BROWN),
                 OffspringConditions.EMPTY
