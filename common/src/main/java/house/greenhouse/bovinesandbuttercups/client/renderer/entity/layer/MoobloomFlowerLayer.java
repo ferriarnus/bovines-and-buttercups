@@ -11,7 +11,6 @@ import house.greenhouse.bovinesandbuttercups.client.renderer.entity.model.Mooblo
 import house.greenhouse.bovinesandbuttercups.content.data.configuration.MoobloomConfiguration;
 import house.greenhouse.bovinesandbuttercups.content.entity.Moobloom;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.animation.AnimationDefinition;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.Sheets;
@@ -24,14 +23,11 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
-import org.joml.Quaternionf;
-import org.joml.Vector3f;
 
 import java.util.Optional;
 
 public class MoobloomFlowerLayer extends RenderLayer<Moobloom, MoobloomModel> {
     private final BlockRenderDispatcher blockRenderer;
-    private static final Vector3f ANIMATION_VECTOR_CACHE = new Vector3f();
 
     public MoobloomFlowerLayer(RenderLayerParent<Moobloom, MoobloomModel> context, BlockRenderDispatcher blockRenderer) {
         super(context);
@@ -59,7 +55,7 @@ public class MoobloomFlowerLayer extends RenderLayer<Moobloom, MoobloomModel> {
             else if (configuration.flower().blockState().isEmpty())
                 return;
             blockState = configuration.bud().blockState();
-            handleMoobudRender(poseStack, buffer, entity, packedLight, bl, m, blockState, resourceLocation);
+            handleMoobudRender(poseStack, buffer, packedLight, bl, m, blockState, resourceLocation);
         } else {
             if (configuration.flower().modelLocation().isPresent())
                 resourceLocation = BovineStatesAssociationRegistry.getBlock(configuration.bud().modelLocation().get(), BovineBlockstateTypes.GENERIC).map(rl -> rl.withPath(s -> s +"/")).orElse(BovinesAndButtercups.asResource("bovinesandbuttercups/missing_flower/"));
@@ -68,11 +64,11 @@ public class MoobloomFlowerLayer extends RenderLayer<Moobloom, MoobloomModel> {
             else if (configuration.flower().blockState().isEmpty())
                 return;
             blockState = configuration.flower().blockState();
-            handleMoobloomRender(poseStack, buffer, entity, packedLight, bl, m, blockState, resourceLocation);
+            handleMoobloomRender(poseStack, buffer, packedLight, bl, m, blockState, resourceLocation);
         }
     }
 
-    private void handleMoobudRender(PoseStack poseStack, MultiBufferSource buffer, Moobloom entity, int i, boolean outlineAndInvisible, int overlay, Optional<BlockState> blockState, @Nullable ResourceLocation resourceLocation) {
+    private void handleMoobudRender(PoseStack poseStack, MultiBufferSource buffer, int i, boolean outlineAndInvisible, int overlay, Optional<BlockState> blockState, @Nullable ResourceLocation resourceLocation) {
         poseStack.pushPose();
 
         poseStack.pushPose();
@@ -106,7 +102,7 @@ public class MoobloomFlowerLayer extends RenderLayer<Moobloom, MoobloomModel> {
         poseStack.popPose();
     }
 
-    private void handleMoobloomRender(PoseStack poseStack, MultiBufferSource buffer, Moobloom entity, int i, boolean outlineAndInvisible, int overlay, Optional<BlockState> blockState, @Nullable ResourceLocation resourceLocation) {
+    private void handleMoobloomRender(PoseStack poseStack, MultiBufferSource buffer, int i, boolean outlineAndInvisible, int overlay, Optional<BlockState> blockState, @Nullable ResourceLocation resourceLocation) {
         poseStack.pushPose();
 
         this.getParentModel().getBody().translateAndRotate(poseStack);
@@ -149,11 +145,6 @@ public class MoobloomFlowerLayer extends RenderLayer<Moobloom, MoobloomModel> {
         poseStack.translate(-0.05, -0.17, 0.15);
         this.renderFlowerOrBud(poseStack, buffer, i, outlineAndInvisible, blockRenderer, overlay, blockState, resourceLocation);
         poseStack.popPose();
-    }
-
-    private static float getElapsedSeconds(AnimationDefinition animationDefinition, long accumulatedTime) {
-        float f = (float)accumulatedTime / 1000.0F;
-        return animationDefinition.looping() ? f % animationDefinition.lengthInSeconds() : f;
     }
 
     private void renderFlowerOrBud(PoseStack poseStack, MultiBufferSource buffer, int light, boolean outlineAndInvisible, BlockRenderDispatcher blockRenderDispatcher, int overlay, Optional<BlockState> flowerState, ResourceLocation resourceLocation) {
