@@ -10,7 +10,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(BeehiveBlockEntity.class)
 public class BeehiveBlockEntityMixin {
-    @Inject(method = "addOccupant", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/entity/BeehiveBlockEntity;storeBee(Lnet/minecraft/world/level/block/entity/BeehiveBlockEntity$Occupant;)V"))
+    @Inject(method = "addOccupant", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;stopRiding()V"))
     private void bovinesandbuttercups$setToProduceRichHoney(Entity occupant, CallbackInfo ci) {
         if (BovinesAndButtercups.getHelper().producesRichHoney(occupant)) {
             BovinesAndButtercups.getHelper().setProducesRichHoney(occupant, false);
