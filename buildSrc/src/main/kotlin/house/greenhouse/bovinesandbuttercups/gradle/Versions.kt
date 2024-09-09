@@ -1,7 +1,7 @@
 package house.greenhouse.bovinesandbuttercups.gradle
 
 object Versions {
-    const val MOD = "2.0.0-alpha.3"
+    const val MOD = "2.0.0-beta.1"
 
     const val MINECRAFT = "1.21.1"
     const val PARCHMENT_MINECRAFT = "1.21"
