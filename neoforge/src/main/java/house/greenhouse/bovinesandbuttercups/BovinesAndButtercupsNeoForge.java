@@ -1,6 +1,7 @@
 package house.greenhouse.bovinesandbuttercups;
 
 import house.greenhouse.bovinesandbuttercups.access.BeeGoalAccess;
+import house.greenhouse.bovinesandbuttercups.access.MooshroomInitializedTypeAccess;
 import house.greenhouse.bovinesandbuttercups.api.attachment.CowTypeAttachment;
 import house.greenhouse.bovinesandbuttercups.api.attachment.LockdownAttachment;
 import house.greenhouse.bovinesandbuttercups.api.cowtype.CowModelLayer;
@@ -96,28 +97,28 @@ public class BovinesAndButtercupsNeoForge {
 
         @SubscribeEvent
         public static void onEntityJoinLevel(EntityJoinLevelEvent event) {
-            if (event.getEntity() instanceof Bee bee) {
+            Level level = event.getLevel();
+            Entity entity = event.getEntity();
+            if (entity instanceof Bee bee) {
                 PollinateMoobloomGoal pollinateGoal = new PollinateMoobloomGoal(bee);
                 bee.getGoalSelector().addGoal(3, pollinateGoal);
                 bee.getGoalSelector().addGoal(3, new MoveToMoobloomGoal(bee));
                 ((BeeGoalAccess) bee).bovinesandbuttercups$setPollinateFlowerCowGoal(pollinateGoal);
             }
 
-            if (event.getEntity().getType() == EntityType.MOOSHROOM) {
-                Level level = event.getLevel();
-                Entity entity = event.getEntity();
+            if (event.getEntity().getType() == EntityType.MOOSHROOM && !level.isClientSide()) {
                 Optional<CowTypeAttachment> attachment = event.getEntity().getExistingData(BovinesAttachments.COW_TYPE);
-                if (attachment.isEmpty() && !level.isClientSide()) {
-                    if (MooshroomSpawnUtil.getTotalSpawnWeight(event.getLevel(), entity.blockPosition()) > 0) {
+                if (attachment.isEmpty()) {
+                    if (((MooshroomInitializedTypeAccess)entity).bovinesandbuttercups$initialType() != null) {
+                        CowTypeAttachment.setCowType((MushroomCow) entity, MooshroomSpawnUtil.getMooshroomTypeFromMushroomType(level, ((MooshroomInitializedTypeAccess)entity).bovinesandbuttercups$initialType()));
+                    } else if (MooshroomSpawnUtil.getTotalSpawnWeight(level, entity.blockPosition()) > 0) {
                         CowTypeAttachment.setCowType((MushroomCow) entity, MooshroomSpawnUtil.getMooshroomSpawnTypeDependingOnBiome(level, entity.blockPosition(), level.getRandom()));
-                    } else if (level.registryAccess().registryOrThrow(BovinesRegistryKeys.COW_TYPE).holders().allMatch(cowTypeReference -> cowTypeReference.value().configuration().settings().biomes().isEmpty()) && level.getBiome(entity.blockPosition()).is(Biomes.MUSHROOM_FIELDS)) {
-                        CowTypeAttachment.setCowType((MushroomCow) entity, MooshroomSpawnUtil.getMooshroomTypeFromMushroomType(level, ((MushroomCow) entity).getVariant()));
                     } else {
-                        CowTypeAttachment.setCowType((MushroomCow) entity, MooshroomSpawnUtil.getMostCommonMooshroomSpawnType(level, ((MushroomCow) entity).getVariant()));
+                        CowTypeAttachment.setCowType((MushroomCow) entity, MooshroomSpawnUtil.getMostCommonMooshroomSpawnType(level, ((MushroomCow)entity).getVariant()));
                     }
-
-                    CowTypeAttachment.sync((MushroomCow) entity);
+                    CowTypeAttachment.sync((MushroomCow)entity);
                 }
+                ((MooshroomInitializedTypeAccess)entity).bovinesandbuttercups$clearInitialType();
             }
         }
 
