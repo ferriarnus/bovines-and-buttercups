@@ -24,14 +24,6 @@
       "weight": 2
     }
   ],
-  "natural_spawns": [
-    {
-      "biomes": [
-        "minecraft:plains"
-      ],
-      "weight": 1
-    }
-  ],
   "offspring_conditions": [
     {
       "condition": "minecraft:any_of",
