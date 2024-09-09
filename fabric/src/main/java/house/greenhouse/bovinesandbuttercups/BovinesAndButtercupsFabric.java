@@ -59,6 +59,12 @@ public class BovinesAndButtercupsFabric implements ModInitializer {
 
     @Override
     public void onInitialize() {
+        registerContents();
+        registerNetwork();
+        registerCreativeTabEntries();
+        registerCompostables();
+        registerBiomeModifications();
+
         EntityTrackingEvents.START_TRACKING.register((entity, world) -> {
             if (entity instanceof LivingEntity living) {
                 if (entity.hasAttached(BovinesAttachments.LOCKDOWN))
@@ -67,13 +73,6 @@ public class BovinesAndButtercupsFabric implements ModInitializer {
                     CowTypeAttachment.sync(living);
             }
         });
-
-        registerContents();
-        registerNetwork();
-        registerCreativeTabEntries();
-        registerCompostables();
-        registerBiomeModifications();
-
         ServerEntityEvents.ENTITY_LOAD.register((entity, level) -> {
             if (entity.getType() != EntityType.MOOSHROOM)
                 return;
@@ -89,6 +88,7 @@ public class BovinesAndButtercupsFabric implements ModInitializer {
                 CowTypeAttachment.sync((MushroomCow)entity);
             }
         });
+
         BovinesFabricDynamicRegistries.init();
 
         FabricDefaultAttributeRegistry.register(BovinesEntityTypes.MOOBLOOM, Moobloom.createAttributes());
