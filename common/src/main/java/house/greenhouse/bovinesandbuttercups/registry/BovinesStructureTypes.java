@@ -1,7 +1,7 @@
 package house.greenhouse.bovinesandbuttercups.registry;
 
 import house.greenhouse.bovinesandbuttercups.BovinesAndButtercups;
-import house.greenhouse.bovinesandbuttercups.content.structure.RanchStructure;
+import house.greenhouse.bovinesandbuttercups.content.worldgen.RanchStructure;
 import house.greenhouse.bovinesandbuttercups.registry.internal.RegistrationCallback;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.level.levelgen.structure.StructureType;

@@ -3,11 +3,16 @@
     {
       "weight": 1,
       "element": {
-        "element_type": "minecraft:single_pool_element",
+        "element_type": "bovinesandbuttercups:offset_pool_element",
         "location": "bovinesandbuttercups:ranch/limelight",
         "processors": "minecraft:empty",
         "projection": "rigid",
-        "override_liquid_settings": "ignore_waterlogging"
+        "override_liquid_settings": "ignore_waterlogging",
+        "offset": [
+          0,
+          -1,
+          0
+        ]
       }
     }
   ],

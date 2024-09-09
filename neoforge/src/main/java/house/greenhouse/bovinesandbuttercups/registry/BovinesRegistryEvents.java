@@ -11,6 +11,7 @@ import house.greenhouse.bovinesandbuttercups.registry.internal.HolderRegistratio
 import house.greenhouse.bovinesandbuttercups.registry.internal.RegistrationCallback;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.world.level.storage.LevelVersion;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.registries.DataPackRegistryEvent;
@@ -36,6 +37,7 @@ public class BovinesRegistryEvents {
         register(event, BovinesParticleTypes::registerAll);
         register(event, BovinesRecipeSerializers::registerAll);
         register(event, BovinesSoundEvents::registerAll);
+        register(event, BovinesStructurePoolElements::registerAll);
         register(event, BovinesStructureTypes::registerAll);
         register(event, BovinesTextureModificationFactories::registerAll);
 

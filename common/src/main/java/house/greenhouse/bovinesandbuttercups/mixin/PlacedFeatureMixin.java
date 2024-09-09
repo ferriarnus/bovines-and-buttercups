@@ -1,7 +1,7 @@
 package house.greenhouse.bovinesandbuttercups.mixin;
 
 import house.greenhouse.bovinesandbuttercups.access.ChunkGeneratorAccess;
-import house.greenhouse.bovinesandbuttercups.content.structure.RanchStructure;
+import house.greenhouse.bovinesandbuttercups.content.worldgen.RanchStructure;
 import house.greenhouse.bovinesandbuttercups.registry.BovinesStructureTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;

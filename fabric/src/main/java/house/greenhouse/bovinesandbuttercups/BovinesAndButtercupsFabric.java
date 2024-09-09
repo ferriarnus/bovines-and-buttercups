@@ -1,5 +1,6 @@
 package house.greenhouse.bovinesandbuttercups;
 
+import house.greenhouse.bovinesandbuttercups.registry.BovinesStructurePoolElements;
 import house.greenhouse.bovinesandbuttercups.util.MooshroomSpawnUtil;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
@@ -115,6 +116,7 @@ public class BovinesAndButtercupsFabric implements ModInitializer {
         BovinesParticleTypes.registerAll(Registry::register);
         BovinesRecipeSerializers.registerAll(Registry::register);
         BovinesSoundEvents.registerAll(Registry::register);
+        BovinesStructurePoolElements.registerAll(Registry::register);
         BovinesStructureTypes.registerAll(Registry::register);
         BovinesTextureModificationFactories.registerAll(Registry::register);
     }

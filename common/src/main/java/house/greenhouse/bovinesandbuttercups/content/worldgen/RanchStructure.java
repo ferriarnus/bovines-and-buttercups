@@ -1,4 +1,4 @@
-package house.greenhouse.bovinesandbuttercups.content.structure;
+package house.greenhouse.bovinesandbuttercups.content.worldgen;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
