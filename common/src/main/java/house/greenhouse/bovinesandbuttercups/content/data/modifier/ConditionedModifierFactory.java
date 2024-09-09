@@ -35,7 +35,7 @@ public class ConditionedModifierFactory extends TextureModifierFactory<NoOpTextu
                         ValidationContext validationcontext = new ValidationContext(problemreporter$collector, BovinesLootContextParamSets.ENTITY);
                         lootCondition.validate(validationcontext);
                         return problemreporter$collector.getReport()
-                                .map(p_344978_ -> DataResult.<LootItemCondition>error(() -> "Validation error in texture modifier condition: " + p_344978_))
+                                .map(err -> DataResult.<LootItemCondition>error(() -> "Validation error in texture modifier condition: " + err))
                                 .orElseGet(() -> DataResult.success(lootCondition));
                     }
             ).listOf().fieldOf("condition").forGetter(f -> f.condition),
