@@ -3,7 +3,6 @@ package house.greenhouse.bovinesandbuttercups.mixin;
 import house.greenhouse.bovinesandbuttercups.access.BeeGoalAccess;
 import house.greenhouse.bovinesandbuttercups.content.entity.goal.MoveToMoobloomGoal;
 import house.greenhouse.bovinesandbuttercups.content.entity.goal.PollinateMoobloomGoal;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.goal.GoalSelector;
 import net.minecraft.world.entity.animal.Animal;
