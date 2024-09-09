@@ -258,8 +258,8 @@ public class BovinesAndButtercupsNeoForge {
 
         @SubscribeEvent
         public static void modifySpawnPlacements(RegisterSpawnPlacementsEvent event) {
-            event.register(EntityType.MOOSHROOM, (entityType, levelAccessor, mobSpawnType, blockPos, randomSource) -> levelAccessor.registryAccess().registryOrThrow(BovinesRegistryKeys.COW_TYPE).stream().filter(cowType -> cowType.configuration() instanceof MooshroomConfiguration).allMatch(cowType -> ((MooshroomConfiguration) cowType.configuration()).settings().biomes().isEmpty()), RegisterSpawnPlacementsEvent.Operation.AND);
-            event.register(EntityType.MOOSHROOM, (entityType, levelAccessor, mobSpawnType, blockPos, randomSource) -> (levelAccessor.getBiome(blockPos).is(Biomes.MUSHROOM_FIELDS) && levelAccessor.getBlockState(blockPos.below()).is(BlockTags.MOOSHROOMS_SPAWNABLE_ON) || !levelAccessor.getBiome(blockPos).is(Biomes.MUSHROOM_FIELDS) && levelAccessor.getBlockState(blockPos.below()).is(BlockTags.ANIMALS_SPAWNABLE_ON)) && AnimalAccessor.bovinesandbuttercups$invokeIsBrightEnoughToSpawn(levelAccessor, blockPos) && MooshroomSpawnUtil.getTotalSpawnWeight(levelAccessor, blockPos) > 0, RegisterSpawnPlacementsEvent.Operation.OR);
+            event.register(EntityType.MOOSHROOM, (entityType, levelAccessor, mobSpawnType, blockPos, randomSource) -> MooshroomSpawnUtil.getTotalSpawnWeight(levelAccessor, blockPos) > 0, RegisterSpawnPlacementsEvent.Operation.AND);
+            event.register(EntityType.MOOSHROOM, (entityType, levelAccessor, mobSpawnType, blockPos, randomSource) -> (!levelAccessor.getBiome(blockPos).is(Biomes.MUSHROOM_FIELDS) && levelAccessor.getBlockState(blockPos.below()).is(BlockTags.ANIMALS_SPAWNABLE_ON)) && AnimalAccessor.bovinesandbuttercups$invokeIsBrightEnoughToSpawn(levelAccessor, blockPos) && MooshroomSpawnUtil.getTotalSpawnWeight(levelAccessor, blockPos) > 0, RegisterSpawnPlacementsEvent.Operation.OR);
         }
 
         @SubscribeEvent

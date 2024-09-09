@@ -52,5 +52,5 @@
   - `offspring_conditions` may be a list of predicates that will apply to either parent; or you may specify `this_conditions` and `other_conditions` to specify conditions that must both be met by both parents with this applying to one and other applying to the other.
     - If no conditions are specified for either field, it is automatically considered true.
   - This change was made to better implement Bovines with vanilla systems.
-- Removed `vanilla_spawning_hack` field. Regular Mooshroom spawn logic will now happen if there are no naturally spawning custom Mooshroom.
+- Removed `vanilla_spawning_hack` field. Red Mushroom Mooshrooms are now datapacked to be a natural spawn in the Mushroom Fields.
 - Added `vanilla_type` field to Mooshroom Types, this will map a vanilla Mooshroom type to a Bovines and Buttercups Mooshroom type.

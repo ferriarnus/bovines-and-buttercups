@@ -358,6 +358,8 @@ public class BovinesDataGenerator implements DataGeneratorEntrypoint {
 
             ((FabricTagBuilder)tag(BovinesTags.BiomeTags.HAS_MOOBLOOM_FLOWER_FOREST))
                     .forceAddTag(ConventionalBiomeTags.IS_FLOWER_FOREST);
+            ((FabricTagBuilder)tag(BovinesTags.BiomeTags.HAS_MOOSHROOM_MUSHROOM))
+                    .add(Biomes.MUSHROOM_FIELDS);
             tag(BovinesTags.BiomeTags.PREVENT_COW_SPAWNS)
                     .addTag(BovinesTags.BiomeTags.HAS_MOOBLOOM_FLOWER_FOREST);
         }

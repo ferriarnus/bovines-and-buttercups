@@ -47,6 +47,11 @@
       "Name": "minecraft:red_mushroom"
     }
   },
+  "natural_spawns": [
+    {
+      "biomes": "#bovinesandbuttercups:has_mooshroom/mushroom"
+    }
+  ],
   "particle": {
     "type": "bovinesandbuttercups:shroom",
     "color": 11014162
