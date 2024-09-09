@@ -11,7 +11,6 @@ import house.greenhouse.bovinesandbuttercups.registry.internal.HolderRegistratio
 import house.greenhouse.bovinesandbuttercups.registry.internal.RegistrationCallback;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.world.level.storage.LevelVersion;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.registries.DataPackRegistryEvent;
