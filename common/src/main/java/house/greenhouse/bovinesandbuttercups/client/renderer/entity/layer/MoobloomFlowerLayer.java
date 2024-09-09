@@ -96,7 +96,7 @@ public class MoobloomFlowerLayer extends RenderLayer<Moobloom, MoobloomModel> {
 
         poseStack.pushPose();
         poseStack.translate(0.0f, 0.625, 0.25f);
-        this.getParentModel().getHead().translateAndRotate(poseStack);
+        this.getParentModel().getCowModel().getHead().translateAndRotate(poseStack);
         poseStack.translate(0.0, -0.7f, -0.2f);
         poseStack.mulPose(Axis.YP.rotationDegrees(45.0f));
         poseStack.scale(-0.75f, -0.75f, 0.75f);
@@ -141,7 +141,7 @@ public class MoobloomFlowerLayer extends RenderLayer<Moobloom, MoobloomModel> {
         poseStack.popPose();
 
         poseStack.pushPose();
-        this.getParentModel().getHead().translateAndRotate(poseStack);
+        this.getParentModel().getCowModel().getHead().translateAndRotate(poseStack);
         poseStack.translate(0.0, -0.7f, -0.2f);
         poseStack.mulPose(Axis.YP.rotationDegrees(45.0f));
         poseStack.scale(-0.75f, -0.75f, 0.75f);
