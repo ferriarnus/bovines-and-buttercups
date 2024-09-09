@@ -42,9 +42,9 @@ public record CowTypeAttachment(Holder<CowType<?>> cowType, Optional<Holder<CowT
 
     @Nullable
     public static <C extends CowTypeConfiguration, T extends CowTypeType<C>> Holder<CowType<C>> getCowTypeHolderFromEntity(LivingEntity living, T cowType) {
-        Holder<CowType<?>> type = BovinesAndButtercups.getHelper().getCowTypeAttachment(living).cowType();
-        if (type != null && type.isBound() && type.value().type() == cowType) {
-            return (Holder)type;
+        CowTypeAttachment attachment = BovinesAndButtercups.getHelper().getCowTypeAttachment(living);
+        if (attachment != null && attachment.cowType.isBound() && attachment.cowType.value().type() == cowType) {
+            return (Holder)attachment.cowType;
         }
         return null;
     }
@@ -59,9 +59,9 @@ public record CowTypeAttachment(Holder<CowType<?>> cowType, Optional<Holder<CowT
 
     @Nullable
     public static <C extends CowTypeConfiguration, T extends CowTypeType<C>> Holder<CowType<C>> getPreviousCowTypeHolderFromEntity(LivingEntity living, T cowType) {
-        Optional<Holder<CowType<?>>> type = BovinesAndButtercups.getHelper().getCowTypeAttachment(living).previousCowType();
-        if (type.isPresent() && type.get().isBound() && type.get().value().type() == cowType) {
-            return (Holder)type.get();
+        CowTypeAttachment attachment = BovinesAndButtercups.getHelper().getCowTypeAttachment(living);
+        if (attachment != null && attachment.previousCowType.isPresent() && attachment.previousCowType.get().isBound() && attachment.previousCowType.get().value().type() == cowType) {
+            return (Holder)attachment.previousCowType.get();
         }
         return null;
     }
