@@ -3,6 +3,8 @@ package house.greenhouse.bovinesandbuttercups;
 import house.greenhouse.bovinesandbuttercups.access.BeeGoalAccess;
 import house.greenhouse.bovinesandbuttercups.api.attachment.CowTypeAttachment;
 import house.greenhouse.bovinesandbuttercups.api.attachment.LockdownAttachment;
+import house.greenhouse.bovinesandbuttercups.api.cowtype.CowModelLayer;
+import house.greenhouse.bovinesandbuttercups.api.cowtype.modifier.TextureModifierFactory;
 import house.greenhouse.bovinesandbuttercups.content.advancements.criterion.LockEffectTrigger;
 import house.greenhouse.bovinesandbuttercups.content.advancements.criterion.PreventEffectTrigger;
 import house.greenhouse.bovinesandbuttercups.content.data.configuration.MooshroomConfiguration;
@@ -81,8 +83,14 @@ public class BovinesAndButtercupsNeoForge {
             if (event.getTarget() instanceof LivingEntity living) {
                 if (living.hasData(BovinesAttachments.LOCKDOWN))
                     LockdownAttachment.sync(living);
-                if (living.hasData(BovinesAttachments.COW_TYPE))
+                if (living.hasData(BovinesAttachments.COW_TYPE)) {
                     CowTypeAttachment.sync(living);
+                    CowTypeAttachment attachment = living.getData(BovinesAttachments.COW_TYPE);
+                    for (CowModelLayer layer : attachment.cowType().value().configuration().layers()) {
+                        for (TextureModifierFactory<?> modifier : layer.textureModifiers())
+                            modifier.init(living);
+                    }
+                }
             }
         }
 

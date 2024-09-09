@@ -25,6 +25,8 @@ public abstract class TextureModifierFactory<T extends TextureModifier> {
         return provider;
     }
 
+    public void init(Entity entity) {}
+
     public void tick(Entity entity) {}
 
     public boolean canDisplay(Entity entity) {

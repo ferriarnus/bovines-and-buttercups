@@ -1,5 +1,7 @@
 package house.greenhouse.bovinesandbuttercups;
 
+import house.greenhouse.bovinesandbuttercups.api.cowtype.CowModelLayer;
+import house.greenhouse.bovinesandbuttercups.api.cowtype.modifier.TextureModifierFactory;
 import house.greenhouse.bovinesandbuttercups.util.MooshroomSpawnUtil;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
@@ -69,8 +71,14 @@ public class BovinesAndButtercupsFabric implements ModInitializer {
             if (entity instanceof LivingEntity living) {
                 if (entity.hasAttached(BovinesAttachments.LOCKDOWN))
                     LockdownAttachment.sync(living);
-                if (entity.hasAttached(BovinesAttachments.COW_TYPE))
+                if (entity.hasAttached(BovinesAttachments.COW_TYPE)) {
                     CowTypeAttachment.sync(living);
+                    CowTypeAttachment attachment = living.getAttached(BovinesAttachments.COW_TYPE);
+                    for (CowModelLayer layer : attachment.cowType().value().configuration().layers()) {
+                        for (TextureModifierFactory<?> modifier : layer.textureModifiers())
+                            modifier.init(living);
+                    }
+                }
             }
         });
         ServerEntityEvents.ENTITY_LOAD.register((entity, level) -> {

@@ -59,6 +59,15 @@ public class ConditionedModifierFactory extends TextureModifierFactory<NoOpTextu
         return CONDITION_VALUES.getOrDefault(entity.getUUID(), new HashMap<>()).getOrDefault(id, false);
     }
 
+    public void init(Entity entity) {
+        LootParams.Builder params = new LootParams.Builder((ServerLevel) entity.level());
+        params.withParameter(LootContextParams.THIS_ENTITY, entity);
+        params.withParameter(LootContextParams.ORIGIN, entity.position());
+        boolean conditionValue = condition.stream().allMatch(condition1 -> condition1.test(new LootContext.Builder(params.create(BovinesLootContextParamSets.ENTITY)).create(Optional.empty())));
+        setConditionValue(entity, conditionValue);
+        BovinesAndButtercups.getHelper().sendTrackingClientboundPacket(new SyncConditionedTextureModifier(entity.getId(), getConditionId(), conditionValue), entity);
+    }
+
     public void tick(Entity entity) {
         if (entity.level().isClientSide() || entity.tickCount % tickRate != 0)
             return;
