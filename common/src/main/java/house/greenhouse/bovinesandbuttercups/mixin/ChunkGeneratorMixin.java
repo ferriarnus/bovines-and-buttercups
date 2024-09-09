@@ -4,10 +4,14 @@ import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
+import com.mojang.datafixers.util.Pair;
 import house.greenhouse.bovinesandbuttercups.access.ChunkGeneratorAccess;
 import house.greenhouse.bovinesandbuttercups.content.worldgen.RanchStructure;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
 import net.minecraft.core.SectionPos;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.chunk.ChunkAccess;
@@ -16,21 +20,33 @@ import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.WorldgenRandom;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
+import net.minecraft.world.level.levelgen.structure.placement.StructurePlacement;
 import net.minecraft.world.phys.AABB;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.function.Supplier;
 
 @Mixin(ChunkGenerator.class)
 public class ChunkGeneratorMixin implements ChunkGeneratorAccess {
     @Unique
     private GenerationStep.Decoration bovinesandbuttercups$step;
+
+    @Inject(method = "getStructureGeneratingAt", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/StructureManager;checkStructurePresence(Lnet/minecraft/world/level/ChunkPos;Lnet/minecraft/world/level/levelgen/structure/Structure;Lnet/minecraft/world/level/levelgen/structure/placement/StructurePlacement;Z)Lnet/minecraft/world/level/levelgen/structure/StructureCheckResult;"), cancellable = true)
+    private static void bovinesandbuttercups$dontLocateRanchesInFluids(Set<Holder<Structure>> structureHoldersSet, LevelReader level, StructureManager structureManager, boolean skipKnownStructures, StructurePlacement placement, ChunkPos chunkPos, CallbackInfoReturnable<Pair<BlockPos, Holder<Structure>>> cir, @Local Holder<Structure> structure) {
+        if (structure.isBound() && structure.value() instanceof RanchStructure ranch) {
+            BlockPos pos = new BlockPos(chunkPos.getMinBlockX(), ranch.getCurrentlyGeneratingHeight(), chunkPos.getMinBlockZ());
+            if (!ranch.isAbleToGenerateInFluids() && !level.getFluidState(pos).isEmpty())
+                cir.setReturnValue(null);
+        }
+    }
 
     @WrapWithCondition(method = "applyBiomeDecoration", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/levelgen/WorldgenRandom;setFeatureSeed(JII)V", ordinal = 0))
     private boolean bovinesandbuttercups$dontSetFeatureSeedWhenFluidFilledRanch(WorldgenRandom instance, long decorationSeed, int index, int decorationStep, WorldGenLevel level, ChunkAccess chunk, StructureManager structureManager, @Local SectionPos sectionPos, @Local Structure structure) {
