@@ -2,6 +2,7 @@ package house.greenhouse.bovinesandbuttercups.network.clientbound;
 
 import house.greenhouse.bovinesandbuttercups.BovinesAndButtercups;
 import house.greenhouse.bovinesandbuttercups.api.CowType;
+import house.greenhouse.bovinesandbuttercups.api.attachment.CowTypeAttachment;
 import house.greenhouse.bovinesandbuttercups.content.data.modifier.ConditionedModifierFactory;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.Holder;
@@ -32,10 +33,10 @@ public record SyncConditionedTextureModifier(int entityId, ResourceLocation cond
             Entity entity = Minecraft.getInstance().level.getEntity(entityId);
             if (!(entity instanceof LivingEntity living))
                 return;
-            Holder<CowType<?>> cowType = BovinesAndButtercups.getHelper().getCowTypeAttachment(living).cowType();
-            if (!cowType.isBound())
+            CowTypeAttachment cowType = BovinesAndButtercups.getHelper().getCowTypeAttachment(living);
+            if (cowType == null || !cowType.cowType().isBound())
                 return;
-            cowType.value().configuration().layers().stream().flatMap(cowModelLayer -> cowModelLayer.textureModifiers().stream()).filter(textureModifierFactory -> {
+            cowType.cowType().value().configuration().layers().stream().flatMap(cowModelLayer -> cowModelLayer.textureModifiers().stream()).filter(textureModifierFactory -> {
                 if (textureModifierFactory instanceof ConditionedModifierFactory conditioned)
                     return conditioned.getConditionId().equals(conditionId);
                 return false;
