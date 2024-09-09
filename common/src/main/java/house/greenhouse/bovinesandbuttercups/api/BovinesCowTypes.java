@@ -9,7 +9,6 @@ import house.greenhouse.bovinesandbuttercups.content.data.modifier.GrassTintText
 import house.greenhouse.bovinesandbuttercups.content.data.configuration.MoobloomConfiguration;
 import house.greenhouse.bovinesandbuttercups.content.data.configuration.MooshroomConfiguration;
 import house.greenhouse.bovinesandbuttercups.content.predicate.BlockInRadiusCondition;
-import house.greenhouse.bovinesandbuttercups.content.predicate.SnowingCondition;
 import house.greenhouse.bovinesandbuttercups.registry.BovinesBlocks;
 import house.greenhouse.bovinesandbuttercups.registry.BovinesNectars;
 import house.greenhouse.bovinesandbuttercups.registry.BovinesParticleTypes;
