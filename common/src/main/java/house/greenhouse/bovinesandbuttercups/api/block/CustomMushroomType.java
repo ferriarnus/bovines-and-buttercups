@@ -49,9 +49,4 @@ public record CustomMushroomType(Optional<SimpleWeightedRandomList<ResourceKey<S
     public int hashCode() {
         return Objects.hash(this.hugeMushroomStructurePool);
     }
-
-    @ApiStatus.Internal
-    public static RegistrySetBuilder.RegistryBootstrap<CustomMushroomType> bootstrap() {
-        return bootstapContext -> bootstapContext.register(ResourceKey.create(BovinesRegistryKeys.CUSTOM_MUSHROOM_TYPE, BovinesAndButtercups.asResource("missing")), CustomMushroomType.MISSING);
-    }
 }

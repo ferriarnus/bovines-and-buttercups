@@ -54,3 +54,57 @@
   - This change was made to better implement Bovines with vanilla systems.
 - Removed `vanilla_spawning_hack` field. Red Mushroom Mooshrooms are now datapacked to be a natural spawn in the Mushroom Fields.
 - Added `vanilla_type` field to Mooshroom Types, this will map a vanilla Mooshroom type to a Bovines and Buttercups Mooshroom type.
+- Removed `dye_craft_result` field from Custom Flowers. This has been replaced with using your loader's `components` custom ingredient type and a regular recipe.
+- Custom Mushroom Types now use template pools for `huge_structures` field.
+
+#### Example Custom Flower Dye Recipes
+<details>
+<summary>Fabric</summary>
+```json
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "group": "red_dye",
+  "ingredients": [
+    {
+      "fabric:type": "fabric:components",
+      "base": {
+        "item": "bovinesandbuttercups:custom_flower"
+      },
+      "components": {
+        "bovinesandbuttercups:custom_flower": "test:fire_flower"
+      }
+    }
+  ],
+  "result": {
+    "id": "minecraft:red_dye",
+    "count": 1
+  }
+}
+```
+</details>
+<details>
+<summary>NeoForge</summary>
+```json
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "group": "red_dye",
+  "ingredients": [
+    {
+      "type": "neoforge:components",
+      "items": [
+        "bovinesandbuttercups:custom_flower"
+      ],
+      "components": {
+        "bovinesandbuttercups:custom_flower": "test:fire_flower"
+      }
+    }
+  ],
+  "result": {
+    "id": "minecraft:red_dye",
+    "count": 1
+  }
+}
+```
+</details>

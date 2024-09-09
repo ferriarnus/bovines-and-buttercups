@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "group": "red_dye",
+  "ingredients": [
+    {
+      "fabric:type": "fabric:components",
+      "base": {
+        "item": "bovinesandbuttercups:custom_flower"
+      },
+      "type": "neoforge:components",
+      "items": [
+        "bovinesandbuttercups:custom_flower"
+      ],
+      "components": {
+        "bovinesandbuttercups:custom_flower": "test:fire_flower"
+      }
+    }
+  ],
+  "result": {
+    "id": "minecraft:red_dye",
+    "count": 1
+  }
+}
