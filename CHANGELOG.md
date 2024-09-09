@@ -6,14 +6,16 @@
 - Added a new cosmetic item, the Flower Crown. This is an item you may wear on your head and can craft from any combination of Moobloom flowers.
   - New Flower Crown Materials can be made through the `bovinesandbuttercups:flower_crown_material` datapack registry.
 - Re-textured every flower and moobloom within the mod to give them a more modern appearance, as well as making them referential to non holstein cattle.
-- Added a Chargelily Ranch to guide players that you may wish to strike a Moobloom with lightning.
-  - Spawns within stony mountainous biomes.
 - Reworked interaction when feeding a Moobloom Bone Meal. They will now create a varied flower trail of their flower as they walk instead of an instant area of flowers.
   - This change was made to be more referential to Minecraft Earth as a source material.
+- Added a Chargelily Ranch to guide players that you may wish to strike a Moobloom with lightning.
+  - Spawns within non snowy stony mountainous biomes.
 
 ## Bugfixes
 - Fixed offspring particles having an incorrect origin point.
 - Fixed data driven cow types always selecting the first type upon being struck by lightning when it should be randomised.
+- Fixed an escape path within the Buttercup Ranch.
+- Fixed Limelight Ranches only not being found when they generate in water.
 
 ## Miscellaneous Changes
 - Added animations for Mooblooms laying down and getting up when being pollinated by a bee.
@@ -23,6 +25,7 @@
   - This was done for slightly more cohesion with these structures.
   - You can still figure out that the breeding blocks are a thing, just look for the particles.
 - Limelight Moobloom are now bred with Cave Vines (Glow Berry Vines) instead of Moss and Moss Carpets.
+- Limelight Ranches will now spawn between y 20 and y 40 rather than y 0.
 - Pink Daisy Moobloom now have Pink Petals and Cherry Wood as respective options for breeding.
 - Nectar Bowls will now return bowls when used in crafting.
 - Nectar Bowls no longer store the effects and the Moobloom it was obtained from, instead storing a nectar object containing the effects and model.
