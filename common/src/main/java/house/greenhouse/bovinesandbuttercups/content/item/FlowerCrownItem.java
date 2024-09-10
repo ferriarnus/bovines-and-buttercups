@@ -21,7 +21,6 @@ public class FlowerCrownItem extends ArmorItem {
 
     @Override
     public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
-        tooltipComponents.add(Component.translatable("item.bovinesandbuttercups.flower_crown.equippable").withStyle(ChatFormatting.GRAY));
         if (stack.has(BovinesDataComponents.FLOWER_CROWN))
             stack.get(BovinesDataComponents.FLOWER_CROWN).addToTooltip(context, tooltipComponents::add, tooltipFlag);
     }
