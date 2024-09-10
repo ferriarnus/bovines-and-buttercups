@@ -1,9 +1,11 @@
 import house.greenhouse.bovinesandbuttercups.gradle.Properties
 import house.greenhouse.bovinesandbuttercups.gradle.Versions
+import org.gradle.jvm.tasks.Jar
 
 plugins {
     id("conventions.loader")
     id("fabric-loom")
+    id("me.modmuss50.mod-publish-plugin")
 }
 
 repositories {
@@ -67,5 +69,37 @@ loom {
             vmArg("-Dfabric-api.datagen.modid=${Properties.MOD_ID}")
             runDir("build/datagen")
         }
+    }
+}
+
+
+publishMods {
+    file.set(tasks.named<Jar>("remapJar").get().archiveFile)
+    modLoaders.add("fabric")
+    changelog = rootProject.file("CHANGELOG.md").readText()
+    version = "${Versions.MOD}+${Versions.MINECRAFT}-fabric"
+    type = STABLE
+
+    curseforge {
+        projectId = Properties.CURSEFORGE_PROJECT_ID
+        accessToken = providers.environmentVariable("CURSEFORGE_TOKEN")
+
+        minecraftVersions.add(Versions.MINECRAFT)
+        javaVersions.add(JavaVersion.VERSION_21)
+
+        clientRequired = true
+        serverRequired = true
+    }
+
+    modrinth {
+        projectId = Properties.MODRINTH_PROJECT_ID
+        accessToken = providers.environmentVariable("MODRINTH_TOKEN")
+
+        minecraftVersions.add(Versions.MINECRAFT)
+    }
+
+    github {
+        accessToken = providers.environmentVariable("GITHUB_TOKEN")
+        parent(project(":common").tasks.named("publishGithub"))
     }
 }

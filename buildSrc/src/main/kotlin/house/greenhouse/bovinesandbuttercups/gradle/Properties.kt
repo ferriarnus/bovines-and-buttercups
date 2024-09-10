@@ -14,6 +14,6 @@ object Properties {
     const val CURSEFORGE_PROJECT_ID = "818440"
     const val CURSEFORGE_PAGE = "https://www.curseforge.com/minecraft/mc-mods/bovines-and-buttercups"
     const val MODRINTH_PROJECT_ID = "BDg6nMn3"
-    const val GITHUB_REPO = "https://github.com/GreenhouseTeam/bovines-and-buttercups"
-    const val ISSUE_TRACKER = "https://github.com/GreenhouseTeam/bovines-and-buttercups/issues"
+    const val GITHUB_REPO = "GreenhouseModding/bovines-and-buttercups"
+    const val GITHUB_COMMITISH = "1.21"
 }
