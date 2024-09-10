@@ -37,24 +37,24 @@ public class BovinesFlowerCrownMaterials {
     public static FlowerCrownMaterial createFromKey(ItemLike item, ResourceKey<FlowerCrownMaterial> key, int color) {
         return new FlowerCrownMaterial(new ItemStack(item),
                 new FlowerCrownMaterial.ItemTextures(
-                        key.location().withPath(str -> "bovinesandbuttercups/petals/items/top_left_" + str),
-                        key.location().withPath(str -> "bovinesandbuttercups/petals/items/top_" + str),
-                        key.location().withPath(str -> "bovinesandbuttercups/petals/items/top_right_" + str),
-                        key.location().withPath(str -> "bovinesandbuttercups/petals/items/center_left_" + str),
-                        key.location().withPath(str -> "bovinesandbuttercups/petals/items/center_right_" + str),
-                        key.location().withPath(str -> "bovinesandbuttercups/petals/items/bottom_left_" + str),
-                        key.location().withPath(str -> "bovinesandbuttercups/petals/items/bottom_" + str),
-                        key.location().withPath(str -> "bovinesandbuttercups/petals/items/bottom_right_" + str)
+                        key.location().withPath(str -> "bovinesandbuttercups/flower_crown/items/top_left_" + str),
+                        key.location().withPath(str -> "bovinesandbuttercups/flower_crown/items/top_" + str),
+                        key.location().withPath(str -> "bovinesandbuttercups/flower_crown/items/top_right_" + str),
+                        key.location().withPath(str -> "bovinesandbuttercups/flower_crown/items/center_left_" + str),
+                        key.location().withPath(str -> "bovinesandbuttercups/flower_crown/items/center_right_" + str),
+                        key.location().withPath(str -> "bovinesandbuttercups/flower_crown/items/bottom_left_" + str),
+                        key.location().withPath(str -> "bovinesandbuttercups/flower_crown/items/bottom_" + str),
+                        key.location().withPath(str -> "bovinesandbuttercups/flower_crown/items/bottom_right_" + str)
                 ),
                 new FlowerCrownMaterial.EquippedTextures(
-                        key.location().withPath(str -> "bovinesandbuttercups/petals/models/top_left_" + str),
-                        key.location().withPath(str -> "bovinesandbuttercups/petals/models/top_" + str),
-                        key.location().withPath(str -> "bovinesandbuttercups/petals/models/top_right_" + str),
-                        key.location().withPath(str -> "bovinesandbuttercups/petals/models/center_left_" + str),
-                        key.location().withPath(str -> "bovinesandbuttercups/petals/models/center_right_" + str),
-                        key.location().withPath(str -> "bovinesandbuttercups/petals/models/bottom_left_" + str),
-                        key.location().withPath(str -> "bovinesandbuttercups/petals/models/bottom_" + str),
-                        key.location().withPath(str -> "bovinesandbuttercups/petals/models/bottom_right_" + str)
+                        key.location().withPath(str -> "bovinesandbuttercups/flower_crown/models/top_left_" + str),
+                        key.location().withPath(str -> "bovinesandbuttercups/flower_crown/models/top_" + str),
+                        key.location().withPath(str -> "bovinesandbuttercups/flower_crown/models/top_right_" + str),
+                        key.location().withPath(str -> "bovinesandbuttercups/flower_crown/models/center_left_" + str),
+                        key.location().withPath(str -> "bovinesandbuttercups/flower_crown/models/center_right_" + str),
+                        key.location().withPath(str -> "bovinesandbuttercups/flower_crown/models/bottom_left_" + str),
+                        key.location().withPath(str -> "bovinesandbuttercups/flower_crown/models/bottom_" + str),
+                        key.location().withPath(str -> "bovinesandbuttercups/flower_crown/models/bottom_right_" + str)
                 ),
                 Component.translatable(key.location().toLanguageKey("flower_crown_material")).withColor(color));
     }

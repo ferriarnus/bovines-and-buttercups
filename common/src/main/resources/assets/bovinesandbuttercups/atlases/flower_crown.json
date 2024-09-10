@@ -2,20 +2,20 @@
     "sources": [
         {
             "type": "directory",
-            "source": "bovinesandbuttercups/flower_crown/items",
-            "prefix": "bovinesandbuttercups/flower_crown/items/"
+            "source": "bovinesandbuttercups/flower_crown/models",
+            "prefix": "bovinesandbuttercups/flower_crown/models/"
         },
         {
             "type": "paletted_permutations",
             "textures": [
-                "bovinesandbuttercups:bovinesandbuttercups/flower_crown/items/top_left",
-                "bovinesandbuttercups:bovinesandbuttercups/flower_crown/items/top",
-                "bovinesandbuttercups:bovinesandbuttercups/flower_crown/items/top_right",
-                "bovinesandbuttercups:bovinesandbuttercups/flower_crown/items/center_left",
-                "bovinesandbuttercups:bovinesandbuttercups/flower_crown/items/center_right",
-                "bovinesandbuttercups:bovinesandbuttercups/flower_crown/items/bottom_left",
-                "bovinesandbuttercups:bovinesandbuttercups/flower_crown/items/bottom",
-                "bovinesandbuttercups:bovinesandbuttercups/flower_crown/items/bottom_right"
+                "bovinesandbuttercups:bovinesandbuttercups/flower_crown/models/top_left",
+                "bovinesandbuttercups:bovinesandbuttercups/flower_crown/models/top",
+                "bovinesandbuttercups:bovinesandbuttercups/flower_crown/models/top_right",
+                "bovinesandbuttercups:bovinesandbuttercups/flower_crown/models/center_left",
+                "bovinesandbuttercups:bovinesandbuttercups/flower_crown/models/center_right",
+                "bovinesandbuttercups:bovinesandbuttercups/flower_crown/models/bottom_left",
+                "bovinesandbuttercups:bovinesandbuttercups/flower_crown/models/bottom",
+                "bovinesandbuttercups:bovinesandbuttercups/flower_crown/models/bottom_right"
             ],
             "palette_key": "bovinesandbuttercups:bovinesandbuttercups/flower_crown/color_palettes/flower_crown_palette",
             "permutations": {

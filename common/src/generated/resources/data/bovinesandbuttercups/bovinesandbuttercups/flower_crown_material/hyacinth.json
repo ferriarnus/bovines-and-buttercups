@@ -4,26 +4,26 @@
     "translate": "flower_crown_material.bovinesandbuttercups.hyacinth"
   },
   "equipped_textures": {
-    "bottom": "bovinesandbuttercups:bovinesandbuttercups/petals/models/bottom_hyacinth",
-    "bottom_left": "bovinesandbuttercups:bovinesandbuttercups/petals/models/bottom_left_hyacinth",
-    "bottom_right": "bovinesandbuttercups:bovinesandbuttercups/petals/models/bottom_right_hyacinth",
-    "center_left": "bovinesandbuttercups:bovinesandbuttercups/petals/models/center_left_hyacinth",
-    "center_right": "bovinesandbuttercups:bovinesandbuttercups/petals/models/center_right_hyacinth",
-    "top": "bovinesandbuttercups:bovinesandbuttercups/petals/models/top_hyacinth",
-    "top_left": "bovinesandbuttercups:bovinesandbuttercups/petals/models/top_left_hyacinth",
-    "top_right": "bovinesandbuttercups:bovinesandbuttercups/petals/models/top_right_hyacinth"
+    "bottom": "bovinesandbuttercups:bovinesandbuttercups/flower_crown/models/bottom_hyacinth",
+    "bottom_left": "bovinesandbuttercups:bovinesandbuttercups/flower_crown/models/bottom_left_hyacinth",
+    "bottom_right": "bovinesandbuttercups:bovinesandbuttercups/flower_crown/models/bottom_right_hyacinth",
+    "center_left": "bovinesandbuttercups:bovinesandbuttercups/flower_crown/models/center_left_hyacinth",
+    "center_right": "bovinesandbuttercups:bovinesandbuttercups/flower_crown/models/center_right_hyacinth",
+    "top": "bovinesandbuttercups:bovinesandbuttercups/flower_crown/models/top_hyacinth",
+    "top_left": "bovinesandbuttercups:bovinesandbuttercups/flower_crown/models/top_left_hyacinth",
+    "top_right": "bovinesandbuttercups:bovinesandbuttercups/flower_crown/models/top_right_hyacinth"
   },
   "ingredient": {
     "id": "bovinesandbuttercups:hyacinth"
   },
   "item_textures": {
-    "bottom": "bovinesandbuttercups:bovinesandbuttercups/petals/items/bottom_hyacinth",
-    "bottom_left": "bovinesandbuttercups:bovinesandbuttercups/petals/items/bottom_left_hyacinth",
-    "bottom_right": "bovinesandbuttercups:bovinesandbuttercups/petals/items/bottom_right_hyacinth",
-    "center_left": "bovinesandbuttercups:bovinesandbuttercups/petals/items/center_left_hyacinth",
-    "center_right": "bovinesandbuttercups:bovinesandbuttercups/petals/items/center_right_hyacinth",
-    "top": "bovinesandbuttercups:bovinesandbuttercups/petals/items/top_hyacinth",
-    "top_left": "bovinesandbuttercups:bovinesandbuttercups/petals/items/top_left_hyacinth",
-    "top_right": "bovinesandbuttercups:bovinesandbuttercups/petals/items/top_right_hyacinth"
+    "bottom": "bovinesandbuttercups:bovinesandbuttercups/flower_crown/items/bottom_hyacinth",
+    "bottom_left": "bovinesandbuttercups:bovinesandbuttercups/flower_crown/items/bottom_left_hyacinth",
+    "bottom_right": "bovinesandbuttercups:bovinesandbuttercups/flower_crown/items/bottom_right_hyacinth",
+    "center_left": "bovinesandbuttercups:bovinesandbuttercups/flower_crown/items/center_left_hyacinth",
+    "center_right": "bovinesandbuttercups:bovinesandbuttercups/flower_crown/items/center_right_hyacinth",
+    "top": "bovinesandbuttercups:bovinesandbuttercups/flower_crown/items/top_hyacinth",
+    "top_left": "bovinesandbuttercups:bovinesandbuttercups/flower_crown/items/top_left_hyacinth",
+    "top_right": "bovinesandbuttercups:bovinesandbuttercups/flower_crown/items/top_right_hyacinth"
   }
 }

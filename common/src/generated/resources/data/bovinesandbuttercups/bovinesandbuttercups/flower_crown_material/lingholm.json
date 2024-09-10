@@ -4,26 +4,26 @@
     "translate": "flower_crown_material.bovinesandbuttercups.lingholm"
   },
   "equipped_textures": {
-    "bottom": "bovinesandbuttercups:bovinesandbuttercups/petals/models/bottom_lingholm",
-    "bottom_left": "bovinesandbuttercups:bovinesandbuttercups/petals/models/bottom_left_lingholm",
-    "bottom_right": "bovinesandbuttercups:bovinesandbuttercups/petals/models/bottom_right_lingholm",
-    "center_left": "bovinesandbuttercups:bovinesandbuttercups/petals/models/center_left_lingholm",
-    "center_right": "bovinesandbuttercups:bovinesandbuttercups/petals/models/center_right_lingholm",
-    "top": "bovinesandbuttercups:bovinesandbuttercups/petals/models/top_lingholm",
-    "top_left": "bovinesandbuttercups:bovinesandbuttercups/petals/models/top_left_lingholm",
-    "top_right": "bovinesandbuttercups:bovinesandbuttercups/petals/models/top_right_lingholm"
+    "bottom": "bovinesandbuttercups:bovinesandbuttercups/flower_crown/models/bottom_lingholm",
+    "bottom_left": "bovinesandbuttercups:bovinesandbuttercups/flower_crown/models/bottom_left_lingholm",
+    "bottom_right": "bovinesandbuttercups:bovinesandbuttercups/flower_crown/models/bottom_right_lingholm",
+    "center_left": "bovinesandbuttercups:bovinesandbuttercups/flower_crown/models/center_left_lingholm",
+    "center_right": "bovinesandbuttercups:bovinesandbuttercups/flower_crown/models/center_right_lingholm",
+    "top": "bovinesandbuttercups:bovinesandbuttercups/flower_crown/models/top_lingholm",
+    "top_left": "bovinesandbuttercups:bovinesandbuttercups/flower_crown/models/top_left_lingholm",
+    "top_right": "bovinesandbuttercups:bovinesandbuttercups/flower_crown/models/top_right_lingholm"
   },
   "ingredient": {
     "id": "bovinesandbuttercups:lingholm"
   },
   "item_textures": {
-    "bottom": "bovinesandbuttercups:bovinesandbuttercups/petals/items/bottom_lingholm",
-    "bottom_left": "bovinesandbuttercups:bovinesandbuttercups/petals/items/bottom_left_lingholm",
-    "bottom_right": "bovinesandbuttercups:bovinesandbuttercups/petals/items/bottom_right_lingholm",
-    "center_left": "bovinesandbuttercups:bovinesandbuttercups/petals/items/center_left_lingholm",
-    "center_right": "bovinesandbuttercups:bovinesandbuttercups/petals/items/center_right_lingholm",
-    "top": "bovinesandbuttercups:bovinesandbuttercups/petals/items/top_lingholm",
-    "top_left": "bovinesandbuttercups:bovinesandbuttercups/petals/items/top_left_lingholm",
-    "top_right": "bovinesandbuttercups:bovinesandbuttercups/petals/items/top_right_lingholm"
+    "bottom": "bovinesandbuttercups:bovinesandbuttercups/flower_crown/items/bottom_lingholm",
+    "bottom_left": "bovinesandbuttercups:bovinesandbuttercups/flower_crown/items/bottom_left_lingholm",
+    "bottom_right": "bovinesandbuttercups:bovinesandbuttercups/flower_crown/items/bottom_right_lingholm",
+    "center_left": "bovinesandbuttercups:bovinesandbuttercups/flower_crown/items/center_left_lingholm",
+    "center_right": "bovinesandbuttercups:bovinesandbuttercups/flower_crown/items/center_right_lingholm",
+    "top": "bovinesandbuttercups:bovinesandbuttercups/flower_crown/items/top_lingholm",
+    "top_left": "bovinesandbuttercups:bovinesandbuttercups/flower_crown/items/top_left_lingholm",
+    "top_right": "bovinesandbuttercups:bovinesandbuttercups/flower_crown/items/top_right_lingholm"
   }
 }

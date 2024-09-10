@@ -4,26 +4,26 @@
     "translate": "flower_crown_material.bovinesandbuttercups.pink_daisy"
   },
   "equipped_textures": {
-    "bottom": "bovinesandbuttercups:bovinesandbuttercups/petals/models/bottom_pink_daisy",
-    "bottom_left": "bovinesandbuttercups:bovinesandbuttercups/petals/models/bottom_left_pink_daisy",
-    "bottom_right": "bovinesandbuttercups:bovinesandbuttercups/petals/models/bottom_right_pink_daisy",
-    "center_left": "bovinesandbuttercups:bovinesandbuttercups/petals/models/center_left_pink_daisy",
-    "center_right": "bovinesandbuttercups:bovinesandbuttercups/petals/models/center_right_pink_daisy",
-    "top": "bovinesandbuttercups:bovinesandbuttercups/petals/models/top_pink_daisy",
-    "top_left": "bovinesandbuttercups:bovinesandbuttercups/petals/models/top_left_pink_daisy",
-    "top_right": "bovinesandbuttercups:bovinesandbuttercups/petals/models/top_right_pink_daisy"
+    "bottom": "bovinesandbuttercups:bovinesandbuttercups/flower_crown/models/bottom_pink_daisy",
+    "bottom_left": "bovinesandbuttercups:bovinesandbuttercups/flower_crown/models/bottom_left_pink_daisy",
+    "bottom_right": "bovinesandbuttercups:bovinesandbuttercups/flower_crown/models/bottom_right_pink_daisy",
+    "center_left": "bovinesandbuttercups:bovinesandbuttercups/flower_crown/models/center_left_pink_daisy",
+    "center_right": "bovinesandbuttercups:bovinesandbuttercups/flower_crown/models/center_right_pink_daisy",
+    "top": "bovinesandbuttercups:bovinesandbuttercups/flower_crown/models/top_pink_daisy",
+    "top_left": "bovinesandbuttercups:bovinesandbuttercups/flower_crown/models/top_left_pink_daisy",
+    "top_right": "bovinesandbuttercups:bovinesandbuttercups/flower_crown/models/top_right_pink_daisy"
   },
   "ingredient": {
     "id": "bovinesandbuttercups:pink_daisy"
   },
   "item_textures": {
-    "bottom": "bovinesandbuttercups:bovinesandbuttercups/petals/items/bottom_pink_daisy",
-    "bottom_left": "bovinesandbuttercups:bovinesandbuttercups/petals/items/bottom_left_pink_daisy",
-    "bottom_right": "bovinesandbuttercups:bovinesandbuttercups/petals/items/bottom_right_pink_daisy",
-    "center_left": "bovinesandbuttercups:bovinesandbuttercups/petals/items/center_left_pink_daisy",
-    "center_right": "bovinesandbuttercups:bovinesandbuttercups/petals/items/center_right_pink_daisy",
-    "top": "bovinesandbuttercups:bovinesandbuttercups/petals/items/top_pink_daisy",
-    "top_left": "bovinesandbuttercups:bovinesandbuttercups/petals/items/top_left_pink_daisy",
-    "top_right": "bovinesandbuttercups:bovinesandbuttercups/petals/items/top_right_pink_daisy"
+    "bottom": "bovinesandbuttercups:bovinesandbuttercups/flower_crown/items/bottom_pink_daisy",
+    "bottom_left": "bovinesandbuttercups:bovinesandbuttercups/flower_crown/items/bottom_left_pink_daisy",
+    "bottom_right": "bovinesandbuttercups:bovinesandbuttercups/flower_crown/items/bottom_right_pink_daisy",
+    "center_left": "bovinesandbuttercups:bovinesandbuttercups/flower_crown/items/center_left_pink_daisy",
+    "center_right": "bovinesandbuttercups:bovinesandbuttercups/flower_crown/items/center_right_pink_daisy",
+    "top": "bovinesandbuttercups:bovinesandbuttercups/flower_crown/items/top_pink_daisy",
+    "top_left": "bovinesandbuttercups:bovinesandbuttercups/flower_crown/items/top_left_pink_daisy",
+    "top_right": "bovinesandbuttercups:bovinesandbuttercups/flower_crown/items/top_right_pink_daisy"
   }
 }

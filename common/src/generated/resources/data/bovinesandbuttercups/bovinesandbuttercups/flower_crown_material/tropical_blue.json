@@ -4,26 +4,26 @@
     "translate": "flower_crown_material.bovinesandbuttercups.tropical_blue"
   },
   "equipped_textures": {
-    "bottom": "bovinesandbuttercups:bovinesandbuttercups/petals/models/bottom_tropical_blue",
-    "bottom_left": "bovinesandbuttercups:bovinesandbuttercups/petals/models/bottom_left_tropical_blue",
-    "bottom_right": "bovinesandbuttercups:bovinesandbuttercups/petals/models/bottom_right_tropical_blue",
-    "center_left": "bovinesandbuttercups:bovinesandbuttercups/petals/models/center_left_tropical_blue",
-    "center_right": "bovinesandbuttercups:bovinesandbuttercups/petals/models/center_right_tropical_blue",
-    "top": "bovinesandbuttercups:bovinesandbuttercups/petals/models/top_tropical_blue",
-    "top_left": "bovinesandbuttercups:bovinesandbuttercups/petals/models/top_left_tropical_blue",
-    "top_right": "bovinesandbuttercups:bovinesandbuttercups/petals/models/top_right_tropical_blue"
+    "bottom": "bovinesandbuttercups:bovinesandbuttercups/flower_crown/models/bottom_tropical_blue",
+    "bottom_left": "bovinesandbuttercups:bovinesandbuttercups/flower_crown/models/bottom_left_tropical_blue",
+    "bottom_right": "bovinesandbuttercups:bovinesandbuttercups/flower_crown/models/bottom_right_tropical_blue",
+    "center_left": "bovinesandbuttercups:bovinesandbuttercups/flower_crown/models/center_left_tropical_blue",
+    "center_right": "bovinesandbuttercups:bovinesandbuttercups/flower_crown/models/center_right_tropical_blue",
+    "top": "bovinesandbuttercups:bovinesandbuttercups/flower_crown/models/top_tropical_blue",
+    "top_left": "bovinesandbuttercups:bovinesandbuttercups/flower_crown/models/top_left_tropical_blue",
+    "top_right": "bovinesandbuttercups:bovinesandbuttercups/flower_crown/models/top_right_tropical_blue"
   },
   "ingredient": {
     "id": "bovinesandbuttercups:tropical_blue"
   },
   "item_textures": {
-    "bottom": "bovinesandbuttercups:bovinesandbuttercups/petals/items/bottom_tropical_blue",
-    "bottom_left": "bovinesandbuttercups:bovinesandbuttercups/petals/items/bottom_left_tropical_blue",
-    "bottom_right": "bovinesandbuttercups:bovinesandbuttercups/petals/items/bottom_right_tropical_blue",
-    "center_left": "bovinesandbuttercups:bovinesandbuttercups/petals/items/center_left_tropical_blue",
-    "center_right": "bovinesandbuttercups:bovinesandbuttercups/petals/items/center_right_tropical_blue",
-    "top": "bovinesandbuttercups:bovinesandbuttercups/petals/items/top_tropical_blue",
-    "top_left": "bovinesandbuttercups:bovinesandbuttercups/petals/items/top_left_tropical_blue",
-    "top_right": "bovinesandbuttercups:bovinesandbuttercups/petals/items/top_right_tropical_blue"
+    "bottom": "bovinesandbuttercups:bovinesandbuttercups/flower_crown/items/bottom_tropical_blue",
+    "bottom_left": "bovinesandbuttercups:bovinesandbuttercups/flower_crown/items/bottom_left_tropical_blue",
+    "bottom_right": "bovinesandbuttercups:bovinesandbuttercups/flower_crown/items/bottom_right_tropical_blue",
+    "center_left": "bovinesandbuttercups:bovinesandbuttercups/flower_crown/items/center_left_tropical_blue",
+    "center_right": "bovinesandbuttercups:bovinesandbuttercups/flower_crown/items/center_right_tropical_blue",
+    "top": "bovinesandbuttercups:bovinesandbuttercups/flower_crown/items/top_tropical_blue",
+    "top_left": "bovinesandbuttercups:bovinesandbuttercups/flower_crown/items/top_left_tropical_blue",
+    "top_right": "bovinesandbuttercups:bovinesandbuttercups/flower_crown/items/top_right_tropical_blue"
   }
 }

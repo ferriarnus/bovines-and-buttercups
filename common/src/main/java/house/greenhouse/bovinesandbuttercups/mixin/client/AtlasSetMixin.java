@@ -16,7 +16,7 @@ public class AtlasSetMixin {
     @ModifyVariable(method = "<init>", at = @At("HEAD"), argsOnly = true)
     private static Map<ResourceLocation, ResourceLocation> bovinesandbuttercups$registerPetalsAtlas(Map<ResourceLocation, ResourceLocation> atlasMap) {
         var map = new HashMap<>(atlasMap);
-        map.put(BovinesAtlases.PETALS_SHEET, BovinesAtlases.PETALS);
+        map.put(BovinesAtlases.FLOWER_CROWN_SHEET, BovinesAtlases.FLOWER_CROWN);
         return ImmutableMap.copyOf(map);
     }
 }

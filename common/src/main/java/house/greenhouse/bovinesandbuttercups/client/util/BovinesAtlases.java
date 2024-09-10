@@ -4,6 +4,6 @@ import house.greenhouse.bovinesandbuttercups.BovinesAndButtercups;
 import net.minecraft.resources.ResourceLocation;
 
 public class BovinesAtlases {
-    public static final ResourceLocation PETALS_SHEET = BovinesAndButtercups.asResource("textures/atlas/petals.png");
-    public static final ResourceLocation PETALS = BovinesAndButtercups.asResource("petals");
+    public static final ResourceLocation FLOWER_CROWN_SHEET = BovinesAndButtercups.asResource("textures/atlas/flower_crown.png");
+    public static final ResourceLocation FLOWER_CROWN = BovinesAndButtercups.asResource("flower_crown");
 }

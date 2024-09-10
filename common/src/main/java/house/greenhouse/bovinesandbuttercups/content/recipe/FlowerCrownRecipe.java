@@ -76,8 +76,8 @@ public class FlowerCrownRecipe extends CustomRecipe {
         return ItemStack.EMPTY;
     }
 
-    private static FlowerCrown assembleFlowerCrown(List<Holder<FlowerCrownMaterial>> petals) {
-        return new FlowerCrown(petals.get(0), petals.get(1), petals.get(2), petals.get(3), petals.get(4), petals.get(5), petals.get(6), petals.get(7));
+    private static FlowerCrown assembleFlowerCrown(List<Holder<FlowerCrownMaterial>> materials) {
+        return new FlowerCrown(materials.get(0), materials.get(1), materials.get(2), materials.get(3), materials.get(4), materials.get(5), materials.get(6), materials.get(7));
     }
 
     @Override

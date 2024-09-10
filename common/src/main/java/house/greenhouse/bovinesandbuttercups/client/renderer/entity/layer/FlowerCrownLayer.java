@@ -32,14 +32,12 @@ import java.util.function.Function;
 
 public class FlowerCrownLayer<T extends LivingEntity, M extends EntityModel<T> & HeadedModel> extends RenderLayer<T, M> {
     private final TextureAtlas petalsTextureAtlas;
-    private final FlowerCrownModel<T> xModel;
-    private final FlowerCrownModel<T> zModel;
+    private final FlowerCrownModel<T> model;
 
     public FlowerCrownLayer(RenderLayerParent<T, M> renderer, Function<ModelLayerLocation, ModelPart> baker, ModelManager modelManager) {
         super(renderer);
-        this.xModel = new FlowerCrownModel<>(baker.apply(getModelLayerLocation()));
-        this.zModel = new FlowerCrownModel<>(baker.apply(getModelLayerLocation()));
-        petalsTextureAtlas = modelManager.getAtlas(BovinesAtlases.PETALS_SHEET);
+        this.model = new FlowerCrownModel<>(baker.apply(getModelLayerLocation()));
+        petalsTextureAtlas = modelManager.getAtlas(BovinesAtlases.FLOWER_CROWN_SHEET);
     }
 
     private ModelLayerLocation getModelLayerLocation() {
@@ -54,40 +52,38 @@ public class FlowerCrownLayer<T extends LivingEntity, M extends EntityModel<T> &
 
         FlowerCrown component = stack.get(BovinesDataComponents.FLOWER_CROWN);
 
-        getParentModel().copyPropertiesTo(zModel);
-        getParentModel().copyPropertiesTo(xModel);
-        zModel.getHead().copyFrom(getParentModel().getHead());
-        xModel.getHead().copyFrom(getParentModel().getHead());
+        getParentModel().copyPropertiesTo(model);
+        model.getHead().copyFrom(getParentModel().getHead());
 
-        renderPart(zModel, poseStack, bufferSource, packedLight, 0, component);
-        renderPart(zModel, poseStack, bufferSource, packedLight, 1, component);
-        renderPart(zModel, poseStack, bufferSource, packedLight, 2, component);
-        renderPart(zModel, poseStack, bufferSource, packedLight, 3, component);
+        renderPart(model, poseStack, bufferSource, packedLight, 0, component);
+        renderPart(model, poseStack, bufferSource, packedLight, 1, component);
+        renderPart(model, poseStack, bufferSource, packedLight, 2, component);
+        renderPart(model, poseStack, bufferSource, packedLight, 3, component);
 
-        renderPart(xModel, poseStack, bufferSource, packedLight, 4, component);
-        renderPart(xModel, poseStack, bufferSource, packedLight, 5, component);
-        renderPart(xModel, poseStack, bufferSource, packedLight, 6, component);
-        renderPart(xModel, poseStack, bufferSource, packedLight, 7, component);
+        renderPart(model, poseStack, bufferSource, packedLight, 4, component);
+        renderPart(model, poseStack, bufferSource, packedLight, 5, component);
+        renderPart(model, poseStack, bufferSource, packedLight, 6, component);
+        renderPart(model, poseStack, bufferSource, packedLight, 7, component);
     }
 
     private void renderPart(FlowerCrownModel<T> model, PoseStack poseStack, MultiBufferSource buffer, int packedLight, int index, @Nullable FlowerCrown crown) {
         TextureAtlasSprite sprite = this.petalsTextureAtlas.getSprite(getSpriteTexture(index));
         if (crown != null)
             sprite = this.petalsTextureAtlas.getSprite(crown.getEquippedTexture(index));
-        VertexConsumer consumer = sprite.wrap(buffer.getBuffer(RenderType.armorCutoutNoCull(BovinesAtlases.PETALS_SHEET)));
+        VertexConsumer consumer = sprite.wrap(buffer.getBuffer(RenderType.armorCutoutNoCull(BovinesAtlases.FLOWER_CROWN_SHEET)));
         model.renderToBuffer(poseStack, consumer, packedLight, OverlayTexture.NO_OVERLAY);
     }
 
     private static ResourceLocation getSpriteTexture(int index) {
         return switch (index) {
-            case 0 -> BovinesAndButtercups.asResource("bovinesandbuttercups/petals/models/center_left");
-            case 1 -> BovinesAndButtercups.asResource("bovinesandbuttercups/petals/models/top_left");
-            case 2 -> BovinesAndButtercups.asResource("bovinesandbuttercups/petals/models/top");
-            case 3 -> BovinesAndButtercups.asResource("bovinesandbuttercups/petals/models/top_right");
-            case 4 -> BovinesAndButtercups.asResource("bovinesandbuttercups/petals/models/center_right");
-            case 5 -> BovinesAndButtercups.asResource("bovinesandbuttercups/petals/models/bottom_right");
-            case 6 -> BovinesAndButtercups.asResource("bovinesandbuttercups/petals/models/bottom");
-            case 7 -> BovinesAndButtercups.asResource("bovinesandbuttercups/petals/models/bottom_left");
+            case 0 -> BovinesAndButtercups.asResource("bovinesandbuttercups/flower_crown/models/center_left");
+            case 1 -> BovinesAndButtercups.asResource("bovinesandbuttercups/flower_crown/models/top_left");
+            case 2 -> BovinesAndButtercups.asResource("bovinesandbuttercups/flower_crown/models/top");
+            case 3 -> BovinesAndButtercups.asResource("bovinesandbuttercups/flower_crown/models/top_right");
+            case 4 -> BovinesAndButtercups.asResource("bovinesandbuttercups/flower_crown/models/center_right");
+            case 5 -> BovinesAndButtercups.asResource("bovinesandbuttercups/flower_crown/models/bottom_right");
+            case 6 -> BovinesAndButtercups.asResource("bovinesandbuttercups/flower_crown/models/bottom");
+            case 7 -> BovinesAndButtercups.asResource("bovinesandbuttercups/flower_crown/models/bottom_left");
             default -> throw new UnsupportedOperationException("Could not get index outside of range 0-7.");
         };
     }

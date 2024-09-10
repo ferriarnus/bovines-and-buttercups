@@ -4,26 +4,26 @@
     "translate": "flower_crown_material.bovinesandbuttercups.buttercup"
   },
   "equipped_textures": {
-    "bottom": "bovinesandbuttercups:bovinesandbuttercups/petals/models/bottom_buttercup",
-    "bottom_left": "bovinesandbuttercups:bovinesandbuttercups/petals/models/bottom_left_buttercup",
-    "bottom_right": "bovinesandbuttercups:bovinesandbuttercups/petals/models/bottom_right_buttercup",
-    "center_left": "bovinesandbuttercups:bovinesandbuttercups/petals/models/center_left_buttercup",
-    "center_right": "bovinesandbuttercups:bovinesandbuttercups/petals/models/center_right_buttercup",
-    "top": "bovinesandbuttercups:bovinesandbuttercups/petals/models/top_buttercup",
-    "top_left": "bovinesandbuttercups:bovinesandbuttercups/petals/models/top_left_buttercup",
-    "top_right": "bovinesandbuttercups:bovinesandbuttercups/petals/models/top_right_buttercup"
+    "bottom": "bovinesandbuttercups:bovinesandbuttercups/flower_crown/models/bottom_buttercup",
+    "bottom_left": "bovinesandbuttercups:bovinesandbuttercups/flower_crown/models/bottom_left_buttercup",
+    "bottom_right": "bovinesandbuttercups:bovinesandbuttercups/flower_crown/models/bottom_right_buttercup",
+    "center_left": "bovinesandbuttercups:bovinesandbuttercups/flower_crown/models/center_left_buttercup",
+    "center_right": "bovinesandbuttercups:bovinesandbuttercups/flower_crown/models/center_right_buttercup",
+    "top": "bovinesandbuttercups:bovinesandbuttercups/flower_crown/models/top_buttercup",
+    "top_left": "bovinesandbuttercups:bovinesandbuttercups/flower_crown/models/top_left_buttercup",
+    "top_right": "bovinesandbuttercups:bovinesandbuttercups/flower_crown/models/top_right_buttercup"
   },
   "ingredient": {
     "id": "bovinesandbuttercups:buttercup"
   },
   "item_textures": {
-    "bottom": "bovinesandbuttercups:bovinesandbuttercups/petals/items/bottom_buttercup",
-    "bottom_left": "bovinesandbuttercups:bovinesandbuttercups/petals/items/bottom_left_buttercup",
-    "bottom_right": "bovinesandbuttercups:bovinesandbuttercups/petals/items/bottom_right_buttercup",
-    "center_left": "bovinesandbuttercups:bovinesandbuttercups/petals/items/center_left_buttercup",
-    "center_right": "bovinesandbuttercups:bovinesandbuttercups/petals/items/center_right_buttercup",
-    "top": "bovinesandbuttercups:bovinesandbuttercups/petals/items/top_buttercup",
-    "top_left": "bovinesandbuttercups:bovinesandbuttercups/petals/items/top_left_buttercup",
-    "top_right": "bovinesandbuttercups:bovinesandbuttercups/petals/items/top_right_buttercup"
+    "bottom": "bovinesandbuttercups:bovinesandbuttercups/flower_crown/items/bottom_buttercup",
+    "bottom_left": "bovinesandbuttercups:bovinesandbuttercups/flower_crown/items/bottom_left_buttercup",
+    "bottom_right": "bovinesandbuttercups:bovinesandbuttercups/flower_crown/items/bottom_right_buttercup",
+    "center_left": "bovinesandbuttercups:bovinesandbuttercups/flower_crown/items/center_left_buttercup",
+    "center_right": "bovinesandbuttercups:bovinesandbuttercups/flower_crown/items/center_right_buttercup",
+    "top": "bovinesandbuttercups:bovinesandbuttercups/flower_crown/items/top_buttercup",
+    "top_left": "bovinesandbuttercups:bovinesandbuttercups/flower_crown/items/top_left_buttercup",
+    "top_right": "bovinesandbuttercups:bovinesandbuttercups/flower_crown/items/top_right_buttercup"
   }
 }
