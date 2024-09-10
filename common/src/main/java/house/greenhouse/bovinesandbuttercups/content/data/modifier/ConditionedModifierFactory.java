@@ -77,7 +77,8 @@ public class ConditionedModifierFactory extends TextureModifierFactory<NoOpTextu
         LootParams.Builder params = new LootParams.Builder((ServerLevel) entity.level());
         params.withParameter(LootContextParams.THIS_ENTITY, entity);
         params.withParameter(LootContextParams.ORIGIN, entity.position());
-        boolean conditionValue = condition.stream().allMatch(condition1 -> condition1.test(new LootContext.Builder(params.create(BovinesLootContextParamSets.ENTITY)).create(Optional.empty())));
+        LootContext context = new LootContext.Builder(params.create(BovinesLootContextParamSets.ENTITY)).create(Optional.empty());
+        boolean conditionValue = condition.stream().allMatch(condition1 -> condition1.test(context));
         setConditionValue(entity, conditionValue);
         if (entity instanceof LivingEntity living && BovinesAndButtercups.getHelper().getCowTypeAttachment(living) != null)
             // This guarantees that the cow type will be synced to the client before running this modifier's sync code.
@@ -87,16 +88,18 @@ public class ConditionedModifierFactory extends TextureModifierFactory<NoOpTextu
     }
 
     public void tick(Entity entity) {
-        if (entity.level().isClientSide() || entity.tickCount % tickRate != 0)
+        if (entity.level().isClientSide() || entity.tickCount % tickRate == 0)
             return;
         LootParams.Builder params = new LootParams.Builder((ServerLevel) entity.level());
         params.withParameter(LootContextParams.THIS_ENTITY, entity);
         params.withParameter(LootContextParams.ORIGIN, entity.position());
-        boolean conditionValue = condition.stream().allMatch(condition1 -> condition1.test(new LootContext.Builder(params.create(BovinesLootContextParamSets.ENTITY)).create(Optional.empty())));
+        LootContext context = new LootContext.Builder(params.create(BovinesLootContextParamSets.ENTITY)).create(Optional.empty());
+        boolean conditionValue = condition.stream().allMatch(condition1 -> condition1.test(context));
         boolean oldConditionValue = canDisplay(entity);
-        setConditionValue(entity, conditionValue);
-        if (conditionValue != oldConditionValue)
+        if (conditionValue != oldConditionValue) {
+            setConditionValue(entity, conditionValue);
             BovinesAndButtercups.getHelper().sendTrackingClientboundPacket(entity, new SyncConditionedTextureModifier(entity.getId(), getConditionId(), conditionValue));
+        }
     }
 
     @Override
