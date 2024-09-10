@@ -137,6 +137,7 @@ public class BovinesAndButtercupsNeoForgeClient {
             mushroomCowRenderer.addLayer(new CowLayersLayer<>(mushroomCowRenderer));
             mushroomCowRenderer.addLayer(new MooshroomDatapackMushroomLayer<>(mushroomCowRenderer, event.getContext().getBlockRenderDispatcher()));
 
+            // TODO: Check if player renderers are a part of the renderers map.
             List<LivingEntityRenderer<?, ?>> renderers = new ArrayList<>();
 
             for (PlayerSkin.Model skin : event.getSkins()) {
