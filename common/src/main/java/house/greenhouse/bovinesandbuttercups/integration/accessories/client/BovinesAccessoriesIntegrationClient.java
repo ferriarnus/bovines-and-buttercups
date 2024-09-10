@@ -1,0 +1,13 @@
+package house.greenhouse.bovinesandbuttercups.integration.accessories.client;
+
+import house.greenhouse.bovinesandbuttercups.BovinesAndButtercups;
+import house.greenhouse.bovinesandbuttercups.registry.BovinesItems;
+import io.wispforest.accessories.api.client.AccessoriesRendererRegistry;
+
+public class BovinesAccessoriesIntegrationClient {
+    public static void init() {
+        if (!BovinesAndButtercups.getHelper().isModLoaded("accessories"))
+            return;
+        AccessoriesRendererRegistry.registerRenderer(BovinesItems.FLOWER_CROWN, FlowerCrownAccessoryRenderer::new);
+    }
+}

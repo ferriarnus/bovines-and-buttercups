@@ -4,10 +4,9 @@ import house.greenhouse.bovinesandbuttercups.BovinesAndButtercups;
 import house.greenhouse.bovinesandbuttercups.client.particle.BloomParticle;
 import house.greenhouse.bovinesandbuttercups.client.particle.ModelLocationParticle;
 import house.greenhouse.bovinesandbuttercups.client.particle.ShroomParticle;
-import house.greenhouse.bovinesandbuttercups.client.platform.BovinesClientHelperNeo;
+import house.greenhouse.bovinesandbuttercups.client.platform.BovinesClientHelperNeoForge;
 import house.greenhouse.bovinesandbuttercups.client.renderer.entity.layer.FlowerCrownLayer;
 import house.greenhouse.bovinesandbuttercups.client.renderer.entity.layer.MooshroomDatapackMushroomLayer;
-import house.greenhouse.bovinesandbuttercups.client.renderer.entity.model.MoobloomModel;
 import house.greenhouse.bovinesandbuttercups.client.util.BovinesModelLayers;
 import house.greenhouse.bovinesandbuttercups.client.renderer.block.CustomFlowerPotBlockRenderer;
 import house.greenhouse.bovinesandbuttercups.client.renderer.block.CustomFlowerRenderer;
@@ -21,6 +20,7 @@ import house.greenhouse.bovinesandbuttercups.client.renderer.entity.model.Flower
 import house.greenhouse.bovinesandbuttercups.client.renderer.item.FlowerCrownItemRenderer;
 import house.greenhouse.bovinesandbuttercups.client.util.BovineStateModelUtil;
 import house.greenhouse.bovinesandbuttercups.client.util.ClearTextureCacheReloadListener;
+import house.greenhouse.bovinesandbuttercups.integration.accessories.client.BovinesAccessoriesIntegrationClient;
 import house.greenhouse.bovinesandbuttercups.mixin.client.ModelBakeryAccessor;
 import house.greenhouse.bovinesandbuttercups.mixin.neoforge.client.EntityRenderersEventAddLayersAccessor;
 import house.greenhouse.bovinesandbuttercups.registry.BovinesBlockEntityTypes;
@@ -33,18 +33,20 @@ import net.minecraft.client.model.CowModel;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.IllagerModel;
 import net.minecraft.client.model.Model;
+import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.model.VillagerModel;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.builders.CubeDeformation;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.MushroomCowRenderer;
-import net.minecraft.client.renderer.entity.RenderLayerParent;
+import net.minecraft.client.resources.PlayerSkin;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.resources.model.BlockModelRotation;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.client.resources.model.UnbakedModel;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -57,18 +59,20 @@ import net.neoforged.neoforge.client.event.RegisterClientReloadListenersEvent;
 import net.neoforged.neoforge.client.event.RegisterParticleProvidersEvent;
 import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Mod(value = BovinesAndButtercups.MOD_ID, dist = Dist.CLIENT)
 public class BovinesAndButtercupsNeoForgeClient {
     public BovinesAndButtercupsNeoForgeClient(IEventBus eventBus) {
-        BovinesAndButtercupsClient.init(new BovinesClientHelperNeo());
+        BovinesAndButtercupsClient.init(new BovinesClientHelperNeoForge());
     }
 
     @EventBusSubscriber(modid = BovinesAndButtercups.MOD_ID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
     public static class ModEvents {
         @SubscribeEvent
         public static void onClientSetup(FMLClientSetupEvent event) {
+            BovinesAccessoriesIntegrationClient.init();
             BovineBlockstateTypes.init();
         }
 
@@ -130,12 +134,20 @@ public class BovinesAndButtercupsNeoForgeClient {
         @SubscribeEvent
         public static void registerRenderLayers(EntityRenderersEvent.AddLayers event) {
             MushroomCowRenderer mushroomCowRenderer = event.getRenderer(EntityType.MOOSHROOM);
-            // mushroomCowRenderer.addLayer(new MushroomCowDatapackMushroomLayer<>(mushroomCowRenderer, Minecraft.getInstance().getBlockRenderer()));
             mushroomCowRenderer.addLayer(new CowLayersLayer<>(mushroomCowRenderer));
             mushroomCowRenderer.addLayer(new MooshroomDatapackMushroomLayer<>(mushroomCowRenderer, event.getContext().getBlockRenderDispatcher()));
 
-            ((EntityRenderersEventAddLayersAccessor)event).apugli$getRenderers().forEach((entityType, entityRenderer) -> {
-                if (entityRenderer instanceof LivingEntityRenderer<?, ?> livingRenderer) {
+            List<LivingEntityRenderer<?, ?>> renderers = new ArrayList<>();
+
+            for (PlayerSkin.Model skin : event.getSkins()) {
+                if (event.getSkin(skin) instanceof LivingEntityRenderer<?, ?> livingRenderer) {
+                    livingRenderer.addLayer(new FlowerCrownLayer(livingRenderer, modelLayerLocation -> event.getContext().bakeLayer((ModelLayerLocation) modelLayerLocation), event.getContext().getModelManager()));
+                    renderers.add(livingRenderer);
+                }
+            }
+
+            ((EntityRenderersEventAddLayersAccessor)event).bovinesandbuttercups$getRenderers().forEach((entityType, entityRenderer) -> {
+                if (entityRenderer instanceof LivingEntityRenderer<?, ?> livingRenderer && !renderers.contains(livingRenderer)) {
                     Model model = livingRenderer.getModel();
                     if (model instanceof HumanoidModel<?> || model instanceof IllagerModel<?> || model instanceof VillagerModel<?>)
                         livingRenderer.addLayer(new FlowerCrownLayer(livingRenderer, modelLayerLocation -> event.getContext().bakeLayer((ModelLayerLocation) modelLayerLocation), event.getContext().getModelManager()));

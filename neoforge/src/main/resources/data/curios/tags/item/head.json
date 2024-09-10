@@ -1,0 +1,13 @@
+{
+  "replace": false,
+  "values": [
+    "bovinesandbuttercups:flower_crown"
+  ],
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "curios"
+    }
+  ]
+}
+

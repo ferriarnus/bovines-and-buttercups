@@ -1,4 +1,4 @@
-package house.greenhouse.bovinesandbuttercups.mixin.client;
+package house.greenhouse.bovinesandbuttercups.mixin.fabric.client;
 
 import house.greenhouse.bovinesandbuttercups.client.renderer.entity.layer.FlowerCrownLayer;
 import net.minecraft.client.model.PlayerModel;

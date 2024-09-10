@@ -3,6 +3,8 @@ package house.greenhouse.bovinesandbuttercups.client.renderer.entity.layer;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import house.greenhouse.bovinesandbuttercups.BovinesAndButtercups;
+import house.greenhouse.bovinesandbuttercups.client.BovinesAndButtercupsClient;
+import house.greenhouse.bovinesandbuttercups.client.platform.BovinesClientHelper;
 import house.greenhouse.bovinesandbuttercups.client.util.BovinesModelLayers;
 import house.greenhouse.bovinesandbuttercups.client.renderer.entity.model.FlowerCrownModel;
 import house.greenhouse.bovinesandbuttercups.client.util.BovinesAtlases;
@@ -46,10 +48,9 @@ public class FlowerCrownLayer<T extends LivingEntity, M extends EntityModel<T> &
 
     @Override
     public void render(PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, T livingEntity, float limbSwing, float limbSwingAmount, float partialTick, float ageInTicks, float netHeadYaw, float headPitch) {
-        ItemStack stack = livingEntity.getItemBySlot(EquipmentSlot.HEAD);
-        if (!stack.is(BovinesItems.FLOWER_CROWN))
+        ItemStack stack = BovinesAndButtercupsClient.getHelper().getEquippedFlowerCrownForRendering(livingEntity);
+        if (stack.isEmpty())
             return;
-
         FlowerCrown component = stack.get(BovinesDataComponents.FLOWER_CROWN);
 
         getParentModel().copyPropertiesTo(model);

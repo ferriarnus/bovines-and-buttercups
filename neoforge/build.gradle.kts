@@ -51,6 +51,25 @@ neoForge {
     }
 }
 
+repositories {
+    maven("https://maven.wispforest.io/releases")
+    maven("https://maven.su5ed.dev/releases")
+    maven("https://maven.fabricmc.net")
+    maven("https://maven.shedaniel.me/")
+    maven {
+        name = "OctoStudios"
+        url = uri("https://maven.octo-studios.com/releases")
+    }
+}
+
+dependencies {
+    compileOnly("io.wispforest:accessories-neoforge:${Versions.ACCESSORIES}")
+    // runtimeOnly("io.wispforest:accessories-neoforge:${Versions.ACCESSORIES}")
+
+    compileOnly("top.theillusivec4.curios:curios-neoforge:${Versions.CURIOS}")
+    // runtimeOnly("top.theillusivec4.curios:curios-neoforge:${Versions.CURIOS}")
+}
+
 tasks {
     named<ProcessResources>("processResources").configure {
         filesMatching("*.mixins.json") {
@@ -75,6 +94,9 @@ publishMods {
 
         clientRequired = true
         serverRequired = true
+
+        optional("accessories")
+        optional("curios-continuation")
     }
 
     modrinth {
@@ -82,6 +104,9 @@ publishMods {
         accessToken = providers.environmentVariable("MODRINTH_TOKEN")
 
         minecraftVersions.add(Versions.MINECRAFT)
+
+        optional("accessories")
+        optional("curios-continuation")
     }
 
     github {

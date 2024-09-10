@@ -34,7 +34,6 @@
     "client.ModelBakeryAccessor",
     "client.ModelManagerMixin",
     "client.MushroomCowMushroomLayerMixin",
-    "client.PlayerRendererMixin",
     "client.SimpleTextureMixin",
     "client.SimpleTextureTextureImageAccessor",
     "client.TerrainParticleMixin"

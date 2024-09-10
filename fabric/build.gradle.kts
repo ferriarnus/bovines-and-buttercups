@@ -9,9 +9,17 @@ plugins {
 }
 
 repositories {
+    maven("https://maven.wispforest.io/releases")
+    maven("https://maven.su5ed.dev/releases")
+    maven("https://maven.fabricmc.net")
+    maven("https://maven.shedaniel.me/")
     maven {
         name = "TerraformersMC"
         url = uri("https://maven.terraformersmc.com/")
+    }
+    maven {
+        name = "Ladysnake Libs"
+        url = uri("https://maven.ladysnake.org/releases")
     }
     maven {
         name = "ParchmentMC"
@@ -29,6 +37,13 @@ dependencies {
     modImplementation("net.fabricmc:fabric-loader:${Versions.FABRIC_LOADER}")
     modImplementation("net.fabricmc.fabric-api:fabric-api:${Versions.FABRIC_API}")
     modLocalRuntime("com.terraformersmc:modmenu:${Versions.MOD_MENU}")
+
+    // Equipment Mods
+    modCompileOnly("io.wispforest:accessories-fabric:${Versions.ACCESSORIES}")
+    // modLocalRuntime("io.wispforest:accessories-fabric:${Versions.ACCESSORIES}")
+
+    modCompileOnly("dev.emi:trinkets:${Versions.TRINKETS}")
+    // modLocalRuntime("dev.emi:trinkets:${Versions.TRINKETS}")
 }
 
 loom {
@@ -89,6 +104,9 @@ publishMods {
 
         clientRequired = true
         serverRequired = true
+
+        optional("accessories")
+        optional("trinkets")
     }
 
     modrinth {
@@ -96,6 +114,9 @@ publishMods {
         accessToken = providers.environmentVariable("MODRINTH_TOKEN")
 
         minecraftVersions.add(Versions.MINECRAFT)
+
+        optional("accessories")
+        optional("trinkets")
     }
 
     github {

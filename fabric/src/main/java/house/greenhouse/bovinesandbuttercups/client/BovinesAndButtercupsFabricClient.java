@@ -1,6 +1,7 @@
 package house.greenhouse.bovinesandbuttercups.client;
 
 import house.greenhouse.bovinesandbuttercups.client.renderer.entity.model.MoobloomModel;
+import house.greenhouse.bovinesandbuttercups.integration.accessories.client.BovinesAccessoriesIntegrationClient;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.model.loading.v1.ModelLoadingPlugin;
@@ -57,6 +58,7 @@ public class BovinesAndButtercupsFabricClient implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
         BovinesAndButtercupsClient.init(new BovinesClientHelperFabric());
+        BovinesAccessoriesIntegrationClient.init();
         BovineBlockstateTypes.init();
 
         EntityModelLayerRegistry.registerModelLayer(BovinesModelLayers.MOOBLOOM_MODEL_LAYER, CowModel::createBodyLayer);

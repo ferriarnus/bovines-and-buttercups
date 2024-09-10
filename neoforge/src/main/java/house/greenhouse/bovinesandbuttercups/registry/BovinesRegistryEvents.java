@@ -40,12 +40,10 @@ public class BovinesRegistryEvents {
         register(event, BovinesTextureModificationFactories::registerAll);
 
         if (event.getRegistryKey() == Registries.ARMOR_MATERIAL) {
+            registerHolders(BovinesSoundEvents::registerHolders);
             registerHolders(BovinesArmorMaterials::registerAll);
             BovinesItems.registerAll(Registry::register);
         }
-
-        if (event.getRegistryKey() == Registries.SOUND_EVENT)
-            registerHolders(BovinesSoundEvents::registerHolders);
 
         if (event.getRegistryKey() == Registries.MOB_EFFECT)
             registerHolders(BovinesEffects::registerAll);

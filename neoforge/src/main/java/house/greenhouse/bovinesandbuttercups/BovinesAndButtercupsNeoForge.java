@@ -12,6 +12,8 @@ import house.greenhouse.bovinesandbuttercups.content.effect.LockdownEffect;
 import house.greenhouse.bovinesandbuttercups.content.entity.Moobloom;
 import house.greenhouse.bovinesandbuttercups.content.entity.goal.MoveToMoobloomGoal;
 import house.greenhouse.bovinesandbuttercups.content.entity.goal.PollinateMoobloomGoal;
+import house.greenhouse.bovinesandbuttercups.integration.accessories.BovinesAccessoriesEvents;
+import house.greenhouse.bovinesandbuttercups.integration.curios.BovinesCuriosEvents;
 import house.greenhouse.bovinesandbuttercups.mixin.AnimalAccessor;
 import house.greenhouse.bovinesandbuttercups.network.clientbound.SyncConditionedTextureModifier;
 import house.greenhouse.bovinesandbuttercups.network.clientbound.SyncCowTypeClientboundPacket;
@@ -72,6 +74,8 @@ public class BovinesAndButtercupsNeoForge {
     
     public BovinesAndButtercupsNeoForge(IEventBus eventBus) {
         BovinesAndButtercups.init(new BovinesPlatformHelperNeoForge());
+        BovinesAccessoriesEvents.init();
+        BovinesCuriosEvents.init();
     }
 
     @EventBusSubscriber(modid = BovinesAndButtercups.MOD_ID, bus = EventBusSubscriber.Bus.GAME)

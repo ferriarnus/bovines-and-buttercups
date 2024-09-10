@@ -29,10 +29,16 @@ neoForge {
     validateAccessTransformers = true
 }
 
+repositories {
+    maven("https://maven.wispforest.io/releases")
+}
+
 dependencies {
     compileOnly("io.github.llamalad7:mixinextras-common:${Versions.MIXIN_EXTRAS}")
     annotationProcessor("io.github.llamalad7:mixinextras-common:${Versions.MIXIN_EXTRAS}")
     compileOnly("net.fabricmc:sponge-mixin:${Versions.FABRIC_MIXIN}")
+
+    compileOnly("io.wispforest:accessories-common:${Versions.ACCESSORIES}-mojmap")
 }
 
 configurations {

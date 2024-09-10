@@ -3,6 +3,8 @@ package house.greenhouse.bovinesandbuttercups;
 import house.greenhouse.bovinesandbuttercups.access.MooshroomInitializedTypeAccess;
 import house.greenhouse.bovinesandbuttercups.api.cowtype.CowModelLayer;
 import house.greenhouse.bovinesandbuttercups.api.cowtype.modifier.TextureModifierFactory;
+import house.greenhouse.bovinesandbuttercups.integration.accessories.BovinesAccessoriesEvents;
+import house.greenhouse.bovinesandbuttercups.integration.trinkets.BovinesTrinketsEvents;
 import house.greenhouse.bovinesandbuttercups.util.MooshroomSpawnUtil;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
@@ -102,6 +104,9 @@ public class BovinesAndButtercupsFabric implements ModInitializer {
         BovinesFabricDynamicRegistries.init();
 
         FabricDefaultAttributeRegistry.register(BovinesEntityTypes.MOOBLOOM, Moobloom.createAttributes());
+
+        BovinesAccessoriesEvents.init();
+        BovinesTrinketsEvents.init();
     }
 
     private static void registerNetwork() {
