@@ -78,12 +78,14 @@ public class BovinesPlatformHelperFabric implements BovinesPlatformHelper {
     }
 
     @Override
-    public void sendTrackingClientboundPacket(CustomPacketPayload payload, Entity entity) {
-        for (ServerPlayer other : PlayerLookup.tracking(entity)) {
-            ServerPlayNetworking.send(other, payload);
-        }
+    public void sendTrackingClientboundPacket(Entity entity, CustomPacketPayload... payloads) {
+        for (ServerPlayer other : PlayerLookup.tracking(entity))
+            for (CustomPacketPayload pl : payloads)
+                ServerPlayNetworking.send(other, pl);
+
         if (entity instanceof ServerPlayer player)
-            ServerPlayNetworking.send(player, payload);
+            for (CustomPacketPayload pl : payloads)
+                ServerPlayNetworking.send(player, pl);
     }
 
     @Override

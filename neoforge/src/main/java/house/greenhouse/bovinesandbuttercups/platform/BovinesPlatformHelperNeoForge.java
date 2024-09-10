@@ -26,6 +26,7 @@ import net.neoforged.neoforge.registries.RegistryBuilder;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -76,8 +77,10 @@ public class BovinesPlatformHelperNeoForge implements BovinesPlatformHelper {
     }
 
     @Override
-    public void sendTrackingClientboundPacket(CustomPacketPayload payload, Entity entity) {
-        PacketDistributor.sendToPlayersTrackingEntity(entity, payload);
+    public void sendTrackingClientboundPacket(Entity entity, CustomPacketPayload... payloads) {
+        List<CustomPacketPayload> extraPayloads = new ArrayList<>(Arrays.asList(payloads));
+        extraPayloads.removeFirst();
+        PacketDistributor.sendToPlayersTrackingEntity(entity, payloads[0], extraPayloads.toArray(CustomPacketPayload[]::new));
     }
 
     @Override

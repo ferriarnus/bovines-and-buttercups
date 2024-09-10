@@ -43,6 +43,6 @@ public record LockdownAttachment(Map<Holder<MobEffect>, Integer> effects) {
     public static void sync(LivingEntity entity) {
         if (entity.level().isClientSide())
             return;
-        BovinesAndButtercups.getHelper().sendTrackingClientboundPacket(new SyncLockdownEffectsClientboundPacket(entity.getId(), BovinesAndButtercups.getHelper().getLockdownAttachment(entity)), entity);
+        BovinesAndButtercups.getHelper().sendTrackingClientboundPacket(entity, new SyncLockdownEffectsClientboundPacket(entity.getId(), BovinesAndButtercups.getHelper().getLockdownAttachment(entity)));
     }
 }

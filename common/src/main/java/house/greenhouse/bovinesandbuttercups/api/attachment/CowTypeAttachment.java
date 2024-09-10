@@ -85,6 +85,6 @@ public record CowTypeAttachment(Holder<CowType<?>> cowType, Optional<Holder<CowT
     public static void sync(LivingEntity entity) {
         if (entity.level().isClientSide())
             return;
-        BovinesAndButtercups.getHelper().sendTrackingClientboundPacket(new SyncCowTypeClientboundPacket(entity.getId(), BovinesAndButtercups.getHelper().getCowTypeAttachment(entity)), entity);
+        BovinesAndButtercups.getHelper().sendTrackingClientboundPacket(entity, new SyncCowTypeClientboundPacket(entity.getId(), BovinesAndButtercups.getHelper().getCowTypeAttachment(entity)));
     }
 }

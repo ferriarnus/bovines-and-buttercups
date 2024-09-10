@@ -46,7 +46,7 @@ public interface BovinesPlatformHelper {
 
     void setCowTypeAttachment(LivingEntity entity, CowTypeAttachment attachment);
 
-    void sendTrackingClientboundPacket(CustomPacketPayload payload, Entity entity);
+    void sendTrackingClientboundPacket(Entity entity, CustomPacketPayload... payloads);
 
     boolean producesRichHoney(BeehiveBlockEntity blockEntity);
 
