@@ -16,8 +16,6 @@ import java.util.List;
 import java.util.Random;
 
 public class FlowerCrownEmiRecipe extends EmiPatternCraftingRecipe {
-
-
     public FlowerCrownEmiRecipe(ResourceLocation id) {
         super(createInput(), EmiStack.of(BovinesItems.FLOWER_CROWN), id);
     }
