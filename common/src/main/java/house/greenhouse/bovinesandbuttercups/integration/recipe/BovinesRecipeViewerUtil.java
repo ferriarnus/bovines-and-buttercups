@@ -64,7 +64,7 @@ public class BovinesRecipeViewerUtil {
 
         if (materials.size() == 1) {
             if (materials.getFirst().equals(MONOCOLOR)) {
-                centerLeft =  registry.getHolder(random.nextInt(registry.size())).orElseThrow();
+                centerLeft = registry.getHolder(random.nextInt(registry.size())).orElseThrow();
                 topLeft = centerLeft;
                 top = centerLeft;
                 topRight = centerLeft;
@@ -73,7 +73,7 @@ public class BovinesRecipeViewerUtil {
                 bottom = centerLeft;
                 bottomLeft = centerLeft;
             } else if (materials.getFirst().equals(RANDOM_TWO)) {
-                centerLeft =  registry.getHolder(random.nextInt(registry.size())).orElseThrow();
+                centerLeft = registry.getHolder(random.nextInt(registry.size())).orElseThrow();
                 topLeft = registry.getHolder(random.nextInt(registry.size())).orElseThrow();
                 top = centerLeft;
                 topRight = topLeft;
@@ -82,7 +82,7 @@ public class BovinesRecipeViewerUtil {
                 bottom = centerLeft;
                 bottomLeft = topLeft;
             } else if (materials.getFirst().equals(RANDOM_FOUR)) {
-                centerLeft =  registry.getHolder(random.nextInt(registry.size())).orElseThrow();
+                centerLeft = registry.getHolder(random.nextInt(registry.size())).orElseThrow();
                 topLeft = registry.getHolder(random.nextInt(registry.size())).orElseThrow();
                 top = registry.getHolder(random.nextInt(registry.size())).orElseThrow();
                 topRight = registry.getHolder(random.nextInt(registry.size())).orElseThrow();

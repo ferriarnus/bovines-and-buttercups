@@ -44,11 +44,10 @@ dependencies {
 
     // Recipe Viewer Mods
     modCompileOnly("mezz.jei:jei-${Versions.MINECRAFT}-fabric-api:${Versions.JEI}")
-    // at runtime, use the full JEI jar for Fabric
     // modLocalRuntime("mezz.jei:jei-${Versions.MINECRAFT}-fabric:${Versions.JEI}")
 
     modCompileOnly("dev.emi:emi-fabric:${Versions.EMI}:api")
-    modLocalRuntime("dev.emi:emi-fabric:${Versions.EMI}")
+    // modLocalRuntime("dev.emi:emi-fabric:${Versions.EMI}")
 
     // Equipment Mods
     modCompileOnly("io.wispforest:accessories-fabric:${Versions.ACCESSORIES}")
@@ -121,6 +120,7 @@ publishMods {
 
         requires("fabric-api")
         optional("jei")
+        optional("roughly-enough-items")
         optional("emi")
         optional("accessories")
         optional("trinkets")
@@ -134,6 +134,7 @@ publishMods {
 
         requires("fabric-api")
         optional("jei")
+        optional("rei")
         optional("emi")
         optional("accessories")
         optional("trinkets")
