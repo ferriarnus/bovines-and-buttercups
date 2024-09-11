@@ -111,6 +111,7 @@ publishMods {
         clientRequired = true
         serverRequired = true
 
+        optional("jei")
         optional("emi")
         optional("accessories")
         optional("curios-continuation")
@@ -122,6 +123,7 @@ publishMods {
 
         minecraftVersions.add(Versions.MINECRAFT)
 
+        optional("jei")
         optional("emi")
         optional("accessories")
         optional("curios-continuation")

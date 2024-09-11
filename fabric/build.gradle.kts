@@ -120,6 +120,7 @@ publishMods {
         serverRequired = true
 
         requires("fabric-api")
+        optional("jei")
         optional("emi")
         optional("accessories")
         optional("trinkets")
@@ -132,6 +133,7 @@ publishMods {
         minecraftVersions.add(Versions.MINECRAFT)
 
         requires("fabric-api")
+        optional("jei")
         optional("emi")
         optional("accessories")
         optional("trinkets")
