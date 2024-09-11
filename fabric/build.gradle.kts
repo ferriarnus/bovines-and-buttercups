@@ -9,6 +9,10 @@ plugins {
 }
 
 repositories {
+    maven {
+        name = "Jared's maven"
+        url = uri("https://maven.blamejared.com/")
+    }
     maven("https://maven.wispforest.io/releases")
     maven("https://maven.su5ed.dev/releases")
     maven("https://maven.fabricmc.net")
@@ -38,12 +42,22 @@ dependencies {
     modImplementation("net.fabricmc.fabric-api:fabric-api:${Versions.FABRIC_API}")
     modLocalRuntime("com.terraformersmc:modmenu:${Versions.MOD_MENU}")
 
+    // Recipe Viewer Mods
+    modCompileOnly("mezz.jei:jei-${Versions.MINECRAFT}-fabric-api:${Versions.JEI}")
+    // at runtime, use the full JEI jar for Fabric
+    // modLocalRuntime("mezz.jei:jei-${Versions.MINECRAFT}-fabric:${Versions.JEI}")
+
+    modCompileOnly("dev.emi:emi-fabric:${Versions.EMI}:api")
+    modLocalRuntime("dev.emi:emi-fabric:${Versions.EMI}")
+
     // Equipment Mods
     modCompileOnly("io.wispforest:accessories-fabric:${Versions.ACCESSORIES}")
     // modLocalRuntime("io.wispforest:accessories-fabric:${Versions.ACCESSORIES}")
 
     modCompileOnly("dev.emi:trinkets:${Versions.TRINKETS}")
     // modLocalRuntime("dev.emi:trinkets:${Versions.TRINKETS}")
+
+
 }
 
 loom {
@@ -105,6 +119,8 @@ publishMods {
         clientRequired = true
         serverRequired = true
 
+        requires("fabric-api")
+        optional("emi")
         optional("accessories")
         optional("trinkets")
     }
@@ -115,6 +131,8 @@ publishMods {
 
         minecraftVersions.add(Versions.MINECRAFT)
 
+        requires("fabric-api")
+        optional("emi")
         optional("accessories")
         optional("trinkets")
     }

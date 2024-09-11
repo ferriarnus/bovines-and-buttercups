@@ -30,6 +30,9 @@
         ],
         "fabric-datagen": [
             "house.greenhouse.bovinesandbuttercups.datagen.BovinesDataGenerator"
+        ],
+        "emi": [
+            "house.greenhouse.bovinesandbuttercups.integration.emi.BovinesEmiPlugin"
         ]
     },
     "mixins": [

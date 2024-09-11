@@ -12,6 +12,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.component.TooltipProvider;
 
@@ -76,6 +77,13 @@ public record FlowerCrown(Holder<FlowerCrownMaterial> topLeft, Holder<FlowerCrow
     @Override
     public int hashCode() {
         return Objects.hash(topLeft, top, topRight, centerLeft, centerRight, bottomLeft, bottom, bottomRight);
+    }
+
+    public ItemStack getMaterialForRecipeViewer(int i) {
+        var stacks = Stream.of(topLeft, top, topRight, centerLeft, centerRight, bottomLeft, bottom, bottomRight).map(holder -> holder.value().ingredient()).toList();
+        if (stacks.size() < i)
+            return ItemStack.EMPTY;
+        return stacks.get(i);
     }
 
     public ResourceLocation getEquippedTexture(int i) {

@@ -28,6 +28,8 @@ object Versions {
 
     // Integrations (Common)
     const val ACCESSORIES = "1.0.0-beta.33+1.21"
+    const val JEI = "19.17.0.193"
+    const val EMI = "1.1.13+1.21.1"
 
     // Integrations (Fabric)
     const val TRINKETS = "3.10.0"

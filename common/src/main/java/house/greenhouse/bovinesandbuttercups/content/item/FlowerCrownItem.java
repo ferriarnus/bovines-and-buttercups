@@ -1,8 +1,15 @@
 package house.greenhouse.bovinesandbuttercups.content.item;
 
+import house.greenhouse.bovinesandbuttercups.content.component.FlowerCrown;
+import house.greenhouse.bovinesandbuttercups.content.data.flowercrown.FlowerCrownMaterial;
 import house.greenhouse.bovinesandbuttercups.registry.BovinesArmorMaterials;
 import house.greenhouse.bovinesandbuttercups.registry.BovinesDataComponents;
+import house.greenhouse.bovinesandbuttercups.registry.BovinesFlowerCrownMaterials;
+import house.greenhouse.bovinesandbuttercups.registry.BovinesItems;
+import house.greenhouse.bovinesandbuttercups.registry.BovinesRegistryKeys;
 import net.minecraft.ChatFormatting;
+import net.minecraft.core.HolderGetter;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.Item;
@@ -28,5 +35,12 @@ public class FlowerCrownItem extends ArmorItem {
     @Override
     public ItemAttributeModifiers getDefaultAttributeModifiers() {
         return EMPTY_NO_TOOLTIP;
+    }
+
+    public static ItemStack createRainbowCrown(HolderLookup.Provider lookup) {
+        HolderLookup.RegistryLookup<FlowerCrownMaterial> registry = lookup.lookupOrThrow(BovinesRegistryKeys.FLOWER_CROWN_MATERIAL);
+        ItemStack rainbowCrown = new ItemStack(BovinesItems.FLOWER_CROWN);
+        rainbowCrown.set(BovinesDataComponents.FLOWER_CROWN, new FlowerCrown(registry.getOrThrow(BovinesFlowerCrownMaterials.BIRD_OF_PARADISE), registry.getOrThrow(BovinesFlowerCrownMaterials.BUTTERCUP), registry.getOrThrow(BovinesFlowerCrownMaterials.LIMELIGHT), registry.getOrThrow(BovinesFlowerCrownMaterials.FREESIA), registry.getOrThrow(BovinesFlowerCrownMaterials.CHARGELILY), registry.getOrThrow(BovinesFlowerCrownMaterials.PINK_DAISY), registry.getOrThrow(BovinesFlowerCrownMaterials.HYACINTH), registry.getOrThrow(BovinesFlowerCrownMaterials.TROPICAL_BLUE)));
+        return rainbowCrown;
     }
 }

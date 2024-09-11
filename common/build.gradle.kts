@@ -30,6 +30,14 @@ neoForge {
 }
 
 repositories {
+    maven {
+        name = "TerraformersMC"
+        url = uri("https://maven.terraformersmc.com/")
+    }
+    maven {
+        name = "Jared's maven"
+        url = uri("https://maven.blamejared.com/")
+    }
     maven("https://maven.wispforest.io/releases")
 }
 
@@ -39,6 +47,8 @@ dependencies {
     compileOnly("net.fabricmc:sponge-mixin:${Versions.FABRIC_MIXIN}")
 
     compileOnly("io.wispforest:accessories-common:${Versions.ACCESSORIES}-mojmap")
+    compileOnly("mezz.jei:jei-${Versions.MINECRAFT}-common-api:${Versions.JEI}")
+    compileOnly("dev.emi:emi-xplat-mojmap:${Versions.EMI}:api")
 }
 
 configurations {

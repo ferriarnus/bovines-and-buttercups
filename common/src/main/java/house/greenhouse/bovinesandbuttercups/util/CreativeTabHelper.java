@@ -11,6 +11,7 @@ import house.greenhouse.bovinesandbuttercups.content.data.configuration.Moobloom
 import house.greenhouse.bovinesandbuttercups.content.data.flowercrown.FlowerCrownMaterial;
 import house.greenhouse.bovinesandbuttercups.api.BovinesCowTypes;
 import house.greenhouse.bovinesandbuttercups.content.data.nectar.Nectar;
+import house.greenhouse.bovinesandbuttercups.content.item.FlowerCrownItem;
 import house.greenhouse.bovinesandbuttercups.registry.BovinesDataComponents;
 import house.greenhouse.bovinesandbuttercups.registry.BovinesFlowerCrownMaterials;
 import house.greenhouse.bovinesandbuttercups.registry.BovinesItems;
@@ -80,9 +81,7 @@ public class CreativeTabHelper {
             return stack;
         }).collect(Collectors.toCollection(ArrayList::new));
 
-        ItemStack rainbowCrown = new ItemStack(BovinesItems.FLOWER_CROWN);
-        rainbowCrown.set(BovinesDataComponents.FLOWER_CROWN, new FlowerCrown(registry.getOrThrow(BovinesFlowerCrownMaterials.BIRD_OF_PARADISE), registry.getOrThrow(BovinesFlowerCrownMaterials.BUTTERCUP), registry.getOrThrow(BovinesFlowerCrownMaterials.LIMELIGHT), registry.getOrThrow(BovinesFlowerCrownMaterials.FREESIA), registry.getOrThrow(BovinesFlowerCrownMaterials.CHARGELILY), registry.getOrThrow(BovinesFlowerCrownMaterials.PINK_DAISY), registry.getOrThrow(BovinesFlowerCrownMaterials.HYACINTH), registry.getOrThrow(BovinesFlowerCrownMaterials.TROPICAL_BLUE)));
-        stacks.add(rainbowCrown);
+        stacks.add(FlowerCrownItem.createRainbowCrown(lookup));
 
         return stacks;
     }

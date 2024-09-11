@@ -52,6 +52,14 @@ neoForge {
 }
 
 repositories {
+    maven {
+        name = "Jared's maven"
+        url = uri("https://maven.blamejared.com/")
+    }
+    maven {
+        name = "TerraformersMC"
+        url = uri("https://maven.terraformersmc.com/")
+    }
     maven("https://maven.wispforest.io/releases")
     maven("https://maven.su5ed.dev/releases")
     maven("https://maven.fabricmc.net")
@@ -63,6 +71,14 @@ repositories {
 }
 
 dependencies {
+    // Recipe Viewer Mods
+    compileOnly("mezz.jei:jei-${Versions.MINECRAFT}-neoforge-api:${Versions.JEI}")
+    // runtimeOnly("mezz.jei:jei-${mc_version}-neoforge:${jei_version}")
+
+    compileOnly("dev.emi:emi-neoforge:${Versions.EMI}:api")
+    runtimeOnly("dev.emi:emi-neoforge:${Versions.EMI}")
+
+    // Equipment Mods
     compileOnly("io.wispforest:accessories-neoforge:${Versions.ACCESSORIES}")
     // runtimeOnly("io.wispforest:accessories-neoforge:${Versions.ACCESSORIES}")
 
@@ -95,6 +111,7 @@ publishMods {
         clientRequired = true
         serverRequired = true
 
+        optional("emi")
         optional("accessories")
         optional("curios-continuation")
     }
@@ -105,6 +122,7 @@ publishMods {
 
         minecraftVersions.add(Versions.MINECRAFT)
 
+        optional("emi")
         optional("accessories")
         optional("curios-continuation")
     }
