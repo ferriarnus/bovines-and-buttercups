@@ -18,6 +18,9 @@
 - Fixed Limelight Ranches only not being found when they generate in water.
 
 ## Miscellaneous Changes
+- Removed REI compat.
+  - It was way too much of a hassle to set up REI compatibility with the Flower Crown item.
+  - If you wish to PR it, be my guest, but I give up.
 - Added animations for Mooblooms laying down and getting up when being pollinated by a bee.
 - Renamed Bowl of Nectar to Nectar Bowl for consistency with vanilla.
 - Tweaked Ranch Loot Table to always include a Saddle, and to roll for seeds/crops twice.
