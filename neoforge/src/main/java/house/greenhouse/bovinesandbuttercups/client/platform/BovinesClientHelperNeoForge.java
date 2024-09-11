@@ -2,6 +2,7 @@ package house.greenhouse.bovinesandbuttercups.client.platform;
 
 import house.greenhouse.bovinesandbuttercups.registry.BovinesDataComponents;
 import io.wispforest.accessories.api.AccessoriesCapability;
+import io.wispforest.accessories.api.EquipmentChecking;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.resources.model.ModelResourceLocation;
@@ -23,9 +24,12 @@ public class BovinesClientHelperNeoForge implements BovinesClientHelper {
         if (ModList.get().isLoaded("accessories")) {
             var accessoriesCapability = AccessoriesCapability.getOptionally(entity);
             if (accessoriesCapability.isPresent()) {
-                var flowerCrowns = accessoriesCapability.get().getEquipped(stack -> stack.has(BovinesDataComponents.FLOWER_CROWN));
-                if (!flowerCrowns.isEmpty())
-                    return flowerCrowns.getFirst().stack();
+                var flowerCrown = accessoriesCapability.get().getFirstEquipped(stack -> stack.has(BovinesDataComponents.FLOWER_CROWN), EquipmentChecking.COSMETICALLY_OVERRIDABLE);
+                if (flowerCrown != null) {
+                    var container = accessoriesCapability.get().getContainer(flowerCrown.reference().type());
+                    if (container != null && container.shouldRender(flowerCrown.reference().slot()))
+                        return flowerCrown.stack();
+                }
             }
         }
 
@@ -33,7 +37,7 @@ public class BovinesClientHelperNeoForge implements BovinesClientHelper {
             var curiosInventory = CuriosApi.getCuriosInventory(entity);
             if (curiosInventory.isPresent()) {
                 var flowerCrown = curiosInventory.get().findFirstCurio(stack -> stack.has(BovinesDataComponents.FLOWER_CROWN));
-                if (flowerCrown.isPresent())
+                if (flowerCrown.isPresent() && flowerCrown.get().slotContext().visible())
                     return flowerCrown.get().stack();
             }
         }

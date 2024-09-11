@@ -8,6 +8,6 @@ public class BovinesAccessoriesIntegrationClient {
     public static void init() {
         if (!BovinesAndButtercups.getHelper().isModLoaded("accessories"))
             return;
-        AccessoriesRendererRegistry.registerRenderer(BovinesItems.FLOWER_CROWN, FlowerCrownAccessoryRenderer::new);
+        AccessoriesRendererRegistry.registerNoRenderer(BovinesItems.FLOWER_CROWN);
     }
 }

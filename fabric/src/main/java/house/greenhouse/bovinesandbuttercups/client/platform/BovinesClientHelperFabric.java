@@ -3,6 +3,7 @@ package house.greenhouse.bovinesandbuttercups.client.platform;
 import dev.emi.trinkets.api.TrinketsApi;
 import house.greenhouse.bovinesandbuttercups.registry.BovinesDataComponents;
 import io.wispforest.accessories.api.AccessoriesCapability;
+import io.wispforest.accessories.api.EquipmentChecking;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.model.BakedModel;
@@ -19,13 +20,15 @@ public class BovinesClientHelperFabric implements BovinesClientHelper {
 
     @Override
     public ItemStack getEquippedFlowerCrownForRendering(LivingEntity entity) {
-
         if (FabricLoader.getInstance().isModLoaded("accessories")) {
             var accessoriesCapability = AccessoriesCapability.getOptionally(entity);
             if (accessoriesCapability.isPresent()) {
-                var flowerCrowns = accessoriesCapability.get().getEquipped(stack -> stack.has(BovinesDataComponents.FLOWER_CROWN));
-                if (!flowerCrowns.isEmpty())
-                    return flowerCrowns.getFirst().stack();
+                var flowerCrown = accessoriesCapability.get().getFirstEquipped(stack -> stack.has(BovinesDataComponents.FLOWER_CROWN), EquipmentChecking.COSMETICALLY_OVERRIDABLE);
+                if (flowerCrown != null) {
+                    var container = accessoriesCapability.get().getContainer(flowerCrown.reference().type());
+                    if (container != null && container.shouldRender(flowerCrown.reference().slot()))
+                        return flowerCrown.stack();
+                }
             }
         }
 
