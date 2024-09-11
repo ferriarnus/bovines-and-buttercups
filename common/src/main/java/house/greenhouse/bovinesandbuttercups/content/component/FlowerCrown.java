@@ -79,6 +79,10 @@ public record FlowerCrown(Holder<FlowerCrownMaterial> topLeft, Holder<FlowerCrow
         return Objects.hash(topLeft, top, topRight, centerLeft, centerRight, bottomLeft, bottom, bottomRight);
     }
 
+    public List<Holder<FlowerCrownMaterial>> getMaterialsInOrder() {
+        return List.of(topLeft, top, topRight, centerLeft, centerRight, bottomLeft, bottom, bottomRight);
+    }
+
     public ItemStack getMaterialForRecipeViewer(int i) {
         var stacks = Stream.of(topLeft, top, topRight, centerLeft, centerRight, bottomLeft, bottom, bottomRight).map(holder -> holder.value().ingredient()).toList();
         if (stacks.size() < i)

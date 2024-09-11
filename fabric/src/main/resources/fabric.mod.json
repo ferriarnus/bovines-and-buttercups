@@ -31,6 +31,9 @@
         "fabric-datagen": [
             "house.greenhouse.bovinesandbuttercups.datagen.BovinesDataGenerator"
         ],
+        "jei_mod_plugin": [
+            "house.greenhouse.bovinesandbuttercups.integration.jei.BovinesJeiPlugin"
+        ],
         "emi": [
             "house.greenhouse.bovinesandbuttercups.integration.emi.BovinesEmiPlugin"
         ]
