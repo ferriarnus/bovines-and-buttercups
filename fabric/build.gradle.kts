@@ -47,7 +47,7 @@ dependencies {
     // modLocalRuntime("mezz.jei:jei-${Versions.MINECRAFT}-fabric:${Versions.JEI}")
 
     modCompileOnly("dev.emi:emi-fabric:${Versions.EMI}:api")
-    // modLocalRuntime("dev.emi:emi-fabric:${Versions.EMI}")
+    modLocalRuntime("dev.emi:emi-fabric:${Versions.EMI}")
 
     // Equipment Mods
     modCompileOnly("io.wispforest:accessories-fabric:${Versions.ACCESSORIES}")
