@@ -4,7 +4,7 @@
     "breed_new_moobloom": {
       "conditions": {
         "cow_type_type": "bovinesandbuttercups:moobloom",
-        "different_from_parents": false
+        "different_from_parents": true
       },
       "trigger": "bovinesandbuttercups:breed_cow_with_type"
     }
