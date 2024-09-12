@@ -70,7 +70,9 @@ public class CreativeTabHelper {
     public static List<ItemStack> getFlowerCrownsForCreativeTab(HolderLookup.Provider lookup) {
         HolderLookup.RegistryLookup<FlowerCrownMaterial> registry = lookup.lookupOrThrow(BovinesRegistryKeys.FLOWER_CROWN_MATERIAL);
         HolderSet<FlowerCrownMaterial> creativeModeTabOrder = registry.getOrThrow(BovinesTags.FlowerCrownMaterialTags.CREATIVE_MENU_ORDER);
-        List<ItemStack> stacks = registry.listElements().filter(Holder.Reference::isBound).sorted(Comparator.comparingInt(value -> {
+        List<ItemStack> stacks = new ArrayList<>();
+        stacks.add(FlowerCrownItem.createRainbowCrown(lookup));
+        stacks.addAll(registry.listElements().filter(Holder.Reference::isBound).sorted(Comparator.comparingInt(value -> {
             int i = creativeModeTabOrder.stream().toList().indexOf(value);
             if (i == -1)
                 return Integer.MAX_VALUE;
@@ -79,9 +81,7 @@ public class CreativeTabHelper {
             ItemStack stack = new ItemStack(BovinesItems.FLOWER_CROWN);
             stack.set(BovinesDataComponents.FLOWER_CROWN, new FlowerCrown(petal, petal, petal, petal, petal, petal, petal, petal));
             return stack;
-        }).collect(Collectors.toCollection(ArrayList::new));
-
-        stacks.add(FlowerCrownItem.createRainbowCrown(lookup));
+        }).toList());
 
         return stacks;
     }
