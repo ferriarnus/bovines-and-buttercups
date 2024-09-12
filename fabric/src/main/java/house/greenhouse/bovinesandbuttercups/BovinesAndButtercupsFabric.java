@@ -42,6 +42,7 @@ import house.greenhouse.bovinesandbuttercups.registry.BovinesSoundEvents;
 import house.greenhouse.bovinesandbuttercups.registry.BovinesStructureTypes;
 import house.greenhouse.bovinesandbuttercups.registry.BovinesTextureModificationFactories;
 import house.greenhouse.bovinesandbuttercups.util.CreativeTabHelper;
+import net.fabricmc.fabric.api.registry.LandPathNodeTypesRegistry;
 import net.minecraft.core.Registry;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.ResourceLocation;
@@ -54,6 +55,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.level.biome.MobSpawnSettings;
+import net.minecraft.world.level.pathfinder.PathType;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Predicate;
@@ -104,6 +106,7 @@ public class BovinesAndButtercupsFabric implements ModInitializer {
         BovinesFabricDynamicRegistries.init();
 
         FabricDefaultAttributeRegistry.register(BovinesEntityTypes.MOOBLOOM, Moobloom.createAttributes());
+        LandPathNodeTypesRegistry.register(BovinesBlocks.RICH_HONEY_BLOCK, PathType.STICKY_HONEY, null);
 
         BovinesAccessoriesEvents.init();
         BovinesTrinketsEvents.init();
