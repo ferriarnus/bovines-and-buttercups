@@ -5,6 +5,7 @@ import house.greenhouse.bovinesandbuttercups.api.BovinesCowTypeTypes;
 import house.greenhouse.bovinesandbuttercups.api.CowType;
 import house.greenhouse.bovinesandbuttercups.api.attachment.CowTypeAttachment;
 import house.greenhouse.bovinesandbuttercups.api.cowtype.OffspringConditions;
+import house.greenhouse.bovinesandbuttercups.content.advancements.criterion.BreedCowWithTypeTrigger;
 import house.greenhouse.bovinesandbuttercups.content.advancements.criterion.MutationTrigger;
 import house.greenhouse.bovinesandbuttercups.content.data.configuration.MooshroomConfiguration;
 import house.greenhouse.bovinesandbuttercups.registry.BovinesLootContextParamSets;
@@ -60,6 +61,7 @@ public class MooshroomChildTypeUtil {
 
             if (parent.getLoveCause() != null)
                 MutationTrigger.INSTANCE.trigger(parent.getLoveCause(), parent, other, child, (Holder) randomType);
+            BreedCowWithTypeTrigger.INSTANCE.trigger(parent.getLoveCause(), parent, other, child, (Holder) randomType);
             return randomType;
         }
 
@@ -70,9 +72,12 @@ public class MooshroomChildTypeUtil {
         if (parentType == null || otherType == null)
             return null;
 
-        if (!otherType.equals(parentType) && parent.getRandom().nextBoolean())
+        if (!otherType.equals(parentType) && parent.getRandom().nextBoolean()) {
+            BreedCowWithTypeTrigger.INSTANCE.trigger(parent.getLoveCause(), parent, other, child, (Holder<CowType<?>>)(Holder<?>)otherType);
             return otherType;
+        }
 
+        BreedCowWithTypeTrigger.INSTANCE.trigger(parent.getLoveCause(), parent, other, child, (Holder<CowType<?>>)(Holder<?>)parentType);
         return parentType;
     }
 

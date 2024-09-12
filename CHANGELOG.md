@@ -17,6 +17,9 @@
   - Balanced Diet. Added consuming Rich Honey Bottles to the requirements.
   - Two by Two. Added breeding Mooblooms to the requirements.
   - Sticky Situation. Allowed Rich Honey Blocks to trigger the advancement.
+- Added new advancements.
+  - Full Bloom - Breed every Moobloom that can be bred for.
+  - Moo-tiful - Obtain a Flower Crown.
 
 ## Bugfixes
 - Fixed offspring particles having an incorrect origin point.
@@ -28,6 +31,7 @@
 - Removed REI compat.
   - It was way too much of a hassle to set up REI compatibility with the Flower Crown item.
   - If you wish to PR support, be my guest, but I give up.
+- Renamed Milky Way advancement to Dear Dairy and updated its description.
 - Added animations for Mooblooms laying down and getting up when being pollinated by a bee.
 - Renamed Bowl of Nectar to Nectar Bowl for consistency with vanilla.
 - Tweaked Ranch Loot Table to always include a Saddle, and to roll for seeds/crops twice.

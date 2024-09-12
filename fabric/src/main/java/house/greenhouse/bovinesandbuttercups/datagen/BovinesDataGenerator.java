@@ -2,12 +2,24 @@ package house.greenhouse.bovinesandbuttercups.datagen;
 
 import com.mojang.serialization.Lifecycle;
 import house.greenhouse.bovinesandbuttercups.api.BovinesConventionalTags;
+import house.greenhouse.bovinesandbuttercups.api.BovinesCowTypeTypes;
+import house.greenhouse.bovinesandbuttercups.api.CowType;
+import house.greenhouse.bovinesandbuttercups.api.CowTypeType;
+import house.greenhouse.bovinesandbuttercups.content.advancements.criterion.BreedCowWithTypeTrigger;
+import house.greenhouse.bovinesandbuttercups.content.advancements.criterion.LockEffectTrigger;
+import house.greenhouse.bovinesandbuttercups.content.advancements.criterion.MutationTrigger;
+import house.greenhouse.bovinesandbuttercups.content.advancements.criterion.PreventEffectTrigger;
+import house.greenhouse.bovinesandbuttercups.content.component.ItemNectar;
 import house.greenhouse.bovinesandbuttercups.content.data.nectar.Nectar;
+import house.greenhouse.bovinesandbuttercups.content.item.FlowerCrownItem;
+import house.greenhouse.bovinesandbuttercups.registry.BovinesCriteriaTriggers;
 import house.greenhouse.bovinesandbuttercups.registry.BovinesDataComponents;
 import house.greenhouse.bovinesandbuttercups.registry.BovinesNectars;
+import house.greenhouse.bovinesandbuttercups.registry.BovinesRegistries;
 import net.fabricmc.fabric.api.datagen.v1.DataGeneratorEntrypoint;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
+import net.fabricmc.fabric.api.datagen.v1.provider.FabricAdvancementProvider;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricBlockLootTableProvider;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricDynamicRegistryProvider;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
@@ -25,26 +37,37 @@ import house.greenhouse.bovinesandbuttercups.registry.BovinesItems;
 import house.greenhouse.bovinesandbuttercups.registry.BovinesLootTables;
 import house.greenhouse.bovinesandbuttercups.registry.BovinesRegistryKeys;
 import net.fabricmc.fabric.api.tag.convention.v2.ConventionalItemTags;
+import net.minecraft.advancements.Advancement;
+import net.minecraft.advancements.AdvancementHolder;
+import net.minecraft.advancements.AdvancementRequirements;
+import net.minecraft.advancements.AdvancementType;
+import net.minecraft.advancements.Criterion;
+import net.minecraft.advancements.DisplayInfo;
 import net.minecraft.advancements.critereon.EntityFlagsPredicate;
 import net.minecraft.advancements.critereon.EntityPredicate;
+import net.minecraft.advancements.critereon.InventoryChangeTrigger;
+import net.minecraft.advancements.critereon.ItemPredicate;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.HolderSet;
 import net.minecraft.core.Registry;
 import net.minecraft.core.RegistrySetBuilder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.RecipeOutput;
-import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.data.recipes.ShapelessRecipeBuilder;
 import net.minecraft.data.recipes.SpecialRecipeBuilder;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.data.worldgen.features.CaveFeatures;
 import net.minecraft.data.worldgen.features.VegetationFeatures;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.Biomes;
@@ -65,14 +88,18 @@ import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 
 public class BovinesDataGenerator implements DataGeneratorEntrypoint {
     @Override
     public void onInitializeDataGenerator(FabricDataGenerator generator) {
         FabricDataGenerator.Pack pack = generator.createPack();
         pack.addProvider(DynamicRegistryProvider::new);
+        pack.addProvider(AdvancementProvider::new);
         pack.addProvider(RecipeProvider::new);
         pack.addProvider(BlockLootTableProvider::new);
         pack.addProvider(ChestLootTableProvider::new);
@@ -123,6 +150,118 @@ public class BovinesDataGenerator implements DataGeneratorEntrypoint {
         @Override
         public @NotNull String getName() {
             return "Dynamic Registries";
+        }
+    }
+
+    private static class AdvancementProvider extends FabricAdvancementProvider {
+
+        protected AdvancementProvider(FabricDataOutput output, CompletableFuture<HolderLookup.Provider> registryLookup) {
+            super(output, registryLookup);
+        }
+
+        @Override
+        @SuppressWarnings("removal")
+        public void generateAdvancement(HolderLookup.Provider lookup, Consumer<AdvancementHolder> consumer) {
+            ItemStack lockEffectStack = new ItemStack(BovinesItems.NECTAR_BOWL);
+            lockEffectStack.set(BovinesDataComponents.NECTAR, new ItemNectar(lookup.asGetterLookup().lookupOrThrow(BovinesRegistryKeys.NECTAR).getOrThrow(BovinesNectars.BUTTERCUP)));
+            ItemStack preventEffectStack = new ItemStack(BovinesItems.NECTAR_BOWL);
+            lockEffectStack.set(BovinesDataComponents.NECTAR, new ItemNectar(lookup.asGetterLookup().lookupOrThrow(BovinesRegistryKeys.NECTAR).getOrThrow(BovinesNectars.FREESIA)));
+            consumer.accept(Advancement.Builder.advancement()
+                    .display(new DisplayInfo(
+                            lockEffectStack,
+                            Component.translatable("advancements.husbandry.bovinesandbuttercups.lock_an_effect.title"),
+                            Component.translatable("advancements.husbandry.bovinesandbuttercups.lock_an_effect.description"),
+                            Optional.empty(),
+                            AdvancementType.TASK,
+                            true,
+                            true,
+                            false)
+                    )
+                    .parent(ResourceLocation.withDefaultNamespace("husbandry/prevent_an_effect"))
+                    .requirements(AdvancementRequirements.allOf(List.of("lock_effect")))
+                    .addCriterion("lock_effect", LockEffectTrigger.INSTANCE.createCriterion(new LockEffectTrigger.TriggerInstance(Optional.empty(), Optional.empty())))
+                    .build(BovinesAndButtercups.asResource("lock_an_effect")));
+            consumer.accept(Advancement.Builder.advancement()
+                    .display(new DisplayInfo(
+                            preventEffectStack,
+                            Component.translatable("advancements.husbandry.bovinesandbuttercups.prevent_an_effect.description"),
+                            Component.translatable("advancements.husbandry.bovinesandbuttercups.prevent_an_effect.description"),
+                            Optional.empty(),
+                            AdvancementType.TASK,
+                            true,
+                            true,
+                            true)
+                    )
+                    .parent(ResourceLocation.withDefaultNamespace("husbandry/root"))
+                    .requirements(AdvancementRequirements.allOf(List.of("prevent_effect")))
+                    .addCriterion("prevent_effect", PreventEffectTrigger.INSTANCE.createCriterion(new PreventEffectTrigger.TriggerInstance(Optional.empty(), Optional.empty())))
+                    .build(BovinesAndButtercups.asResource("prevent_an_effect")));
+            consumer.accept(Advancement.Builder.advancement()
+                    .display(new DisplayInfo(
+                            new ItemStack(BovinesItems.PINK_DAISY),
+                            Component.translatable("advancements.husbandry.bovinesandbuttercups.mutate_a_moobloom.title"),
+                            Component.translatable("advancements.husbandry.bovinesandbuttercups.mutate_a_moobloom.description"),
+                            Optional.empty(),
+                            AdvancementType.TASK,
+                            true,
+                            true,
+                            true)
+                    )
+                    .parent(ResourceLocation.withDefaultNamespace("husbandry/breed_an_animal"))
+                    .requirements(AdvancementRequirements.allOf(List.of("mutate_moobloom")))
+                    .addCriterion("mutate_moobloom", MutationTrigger.INSTANCE.createCriterion(new MutationTrigger.TriggerInstance((Optional<Holder<CowTypeType<?>>>)(Optional<?>)lookup.lookupOrThrow(BovinesRegistryKeys.COW_TYPE_TYPE).get(ResourceKey.create(BovinesRegistryKeys.COW_TYPE_TYPE, BovinesAndButtercups.asResource("moobloom"))), HolderSet.direct(), Optional.empty(), Optional.empty(), Optional.empty())))
+                    .build(BovinesAndButtercups.asResource("mutate_a_moobloom")));
+
+            HolderLookup.RegistryLookup<CowType<?>> cowTypeRegistry = lookup.lookupOrThrow(BovinesRegistryKeys.COW_TYPE);
+
+            consumer.accept(Advancement.Builder.advancement()
+                    .display(new DisplayInfo(
+                            new ItemStack(BovinesItems.LIMELIGHT),
+                            Component.translatable("advancements.husbandry.bovinesandbuttercups.breed_all_mooblooms.description"),
+                            Component.translatable("advancements.husbandry.bovinesandbuttercups.breed_all_mooblooms.description"),
+                            Optional.empty(),
+                            AdvancementType.CHALLENGE,
+                            true,
+                            true,
+                            false)
+                    )
+                    .parent(BovinesAndButtercups.asResource("mutate_a_moobloom"))
+                    .requirements(AdvancementRequirements.allOf(List.of(
+                            "bovinesandbuttercups:bird_of_paradise",
+                            "bovinesandbuttercups:buttercup",
+                            "bovinesandbuttercups:freesia",
+                            "bovinesandbuttercups:hyacinth",
+                            "bovinesandbuttercups:limelight",
+                            "bovinesandbuttercups:lingholm",
+                            "bovinesandbuttercups:pink_daisy",
+                            "bovinesandbuttercups:snowdrop",
+                            "bovinesandbuttercups:tropical_blue"
+                    )))
+                    .addCriterion("bovinesandbuttercups:bird_of_paradise", BreedCowWithTypeTrigger.INSTANCE.createCriterion(new BreedCowWithTypeTrigger.TriggerInstance((Optional<Holder<CowTypeType<?>>>)(Optional<?>)lookup.lookupOrThrow(BovinesRegistryKeys.COW_TYPE_TYPE).get(ResourceKey.create(BovinesRegistryKeys.COW_TYPE_TYPE, BovinesAndButtercups.asResource("moobloom"))), HolderSet.direct(cowTypeRegistry.getOrThrow(BovinesCowTypes.MoobloomKeys.BIRD_OF_PARADISE)), Optional.empty(), Optional.empty(), Optional.empty())))
+                    .addCriterion("bovinesandbuttercups:buttercup", BreedCowWithTypeTrigger.INSTANCE.createCriterion(new BreedCowWithTypeTrigger.TriggerInstance((Optional<Holder<CowTypeType<?>>>)(Optional<?>)lookup.lookupOrThrow(BovinesRegistryKeys.COW_TYPE_TYPE).get(ResourceKey.create(BovinesRegistryKeys.COW_TYPE_TYPE, BovinesAndButtercups.asResource("moobloom"))), HolderSet.direct(cowTypeRegistry.getOrThrow(BovinesCowTypes.MoobloomKeys.BUTTERCUP)), Optional.empty(), Optional.empty(), Optional.empty())))
+                    .addCriterion("bovinesandbuttercups:freesia", BreedCowWithTypeTrigger.INSTANCE.createCriterion(new BreedCowWithTypeTrigger.TriggerInstance((Optional<Holder<CowTypeType<?>>>)(Optional<?>)lookup.lookupOrThrow(BovinesRegistryKeys.COW_TYPE_TYPE).get(ResourceKey.create(BovinesRegistryKeys.COW_TYPE_TYPE, BovinesAndButtercups.asResource("moobloom"))), HolderSet.direct(cowTypeRegistry.getOrThrow(BovinesCowTypes.MoobloomKeys.FREESIA)), Optional.empty(), Optional.empty(), Optional.empty())))
+                    .addCriterion("bovinesandbuttercups:hyacinth", BreedCowWithTypeTrigger.INSTANCE.createCriterion(new BreedCowWithTypeTrigger.TriggerInstance((Optional<Holder<CowTypeType<?>>>)(Optional<?>)lookup.lookupOrThrow(BovinesRegistryKeys.COW_TYPE_TYPE).get(ResourceKey.create(BovinesRegistryKeys.COW_TYPE_TYPE, BovinesAndButtercups.asResource("moobloom"))), HolderSet.direct(cowTypeRegistry.getOrThrow(BovinesCowTypes.MoobloomKeys.HYACINTH)), Optional.empty(), Optional.empty(), Optional.empty())))
+                    .addCriterion("bovinesandbuttercups:limelight", BreedCowWithTypeTrigger.INSTANCE.createCriterion(new BreedCowWithTypeTrigger.TriggerInstance((Optional<Holder<CowTypeType<?>>>)(Optional<?>)lookup.lookupOrThrow(BovinesRegistryKeys.COW_TYPE_TYPE).get(ResourceKey.create(BovinesRegistryKeys.COW_TYPE_TYPE, BovinesAndButtercups.asResource("moobloom"))), HolderSet.direct(cowTypeRegistry.getOrThrow(BovinesCowTypes.MoobloomKeys.LIMELIGHT)), Optional.empty(), Optional.empty(), Optional.empty())))
+                    .addCriterion("bovinesandbuttercups:lingholm", BreedCowWithTypeTrigger.INSTANCE.createCriterion(new BreedCowWithTypeTrigger.TriggerInstance((Optional<Holder<CowTypeType<?>>>)(Optional<?>)lookup.lookupOrThrow(BovinesRegistryKeys.COW_TYPE_TYPE).get(ResourceKey.create(BovinesRegistryKeys.COW_TYPE_TYPE, BovinesAndButtercups.asResource("moobloom"))), HolderSet.direct(cowTypeRegistry.getOrThrow(BovinesCowTypes.MoobloomKeys.LINGHOLM)), Optional.empty(), Optional.empty(), Optional.empty())))
+                    .addCriterion("bovinesandbuttercups:pink_daisy", BreedCowWithTypeTrigger.INSTANCE.createCriterion(new BreedCowWithTypeTrigger.TriggerInstance((Optional<Holder<CowTypeType<?>>>)(Optional<?>)lookup.lookupOrThrow(BovinesRegistryKeys.COW_TYPE_TYPE).get(ResourceKey.create(BovinesRegistryKeys.COW_TYPE_TYPE, BovinesAndButtercups.asResource("moobloom"))), HolderSet.direct(cowTypeRegistry.getOrThrow(BovinesCowTypes.MoobloomKeys.PINK_DAISY)), Optional.empty(), Optional.empty(), Optional.empty())))
+                    .addCriterion("bovinesandbuttercups:snowdrop", BreedCowWithTypeTrigger.INSTANCE.createCriterion(new BreedCowWithTypeTrigger.TriggerInstance((Optional<Holder<CowTypeType<?>>>)(Optional<?>)lookup.lookupOrThrow(BovinesRegistryKeys.COW_TYPE_TYPE).get(ResourceKey.create(BovinesRegistryKeys.COW_TYPE_TYPE, BovinesAndButtercups.asResource("moobloom"))), HolderSet.direct(cowTypeRegistry.getOrThrow(BovinesCowTypes.MoobloomKeys.SNOWDROP)), Optional.empty(), Optional.empty(), Optional.empty())))
+                    .addCriterion("bovinesandbuttercups:tropical_blue", BreedCowWithTypeTrigger.INSTANCE.createCriterion(new BreedCowWithTypeTrigger.TriggerInstance((Optional<Holder<CowTypeType<?>>>)(Optional<?>)lookup.lookupOrThrow(BovinesRegistryKeys.COW_TYPE_TYPE).get(ResourceKey.create(BovinesRegistryKeys.COW_TYPE_TYPE, BovinesAndButtercups.asResource("moobloom"))), HolderSet.direct(cowTypeRegistry.getOrThrow(BovinesCowTypes.MoobloomKeys.TROPICAL_BLUE)), Optional.empty(), Optional.empty(), Optional.empty())))
+                    .build(BovinesAndButtercups.asResource("breed_all_mooblooms")));
+            consumer.accept(Advancement.Builder.advancement()
+                    .display(new DisplayInfo(
+                            FlowerCrownItem.createRainbowCrown(lookup),
+                            Component.translatable("advancements.husbandry.bovinesandbuttercups.craft_flower_crown.description"),
+                            Component.translatable("advancements.husbandry.bovinesandbuttercups.craft_flower_crown.description"),
+                            Optional.empty(),
+                            AdvancementType.TASK,
+                            true,
+                            true,
+                            true)
+                    )
+                    .parent(ResourceLocation.withDefaultNamespace("husbandry/root"))
+                    .requirements(AdvancementRequirements.allOf(List.of("get_flower_crown")))
+                    .addCriterion("get_flower_crown", InventoryChangeTrigger.TriggerInstance.hasItems(ItemPredicate.Builder.item().of(BovinesItems.FLOWER_CROWN)))
+                    .build(BovinesAndButtercups.asResource("flower_crown")));
         }
     }
 
@@ -338,7 +477,7 @@ public class BovinesDataGenerator implements DataGeneratorEntrypoint {
         }
 
         @Override
-        protected void addTags(HolderLookup.Provider wrapperLookup) {
+        protected void addTags(HolderLookup.Provider lookup) {
             ((FabricTagBuilder)tag(BovinesTags.BiomeTags.HAS_RANCH_STRUCTURE_BIRD_OF_PARADISE))
                     .forceAddTag(ConventionalBiomeTags.IS_SAVANNA);
             ((FabricTagBuilder)tag(BovinesTags.BiomeTags.HAS_RANCH_STRUCTURE_BUTTERCUP))
@@ -375,7 +514,7 @@ public class BovinesDataGenerator implements DataGeneratorEntrypoint {
         }
 
         @Override
-        protected void addTags(HolderLookup.Provider wrapperLookup) {
+        protected void addTags(HolderLookup.Provider lookup) {
             ((FabricTagBuilder)tag(BlockTags.SMALL_FLOWERS))
                     .forceAddTag(BovinesTags.BlockTags.MOOBLOOM_FLOWERS);
             tag(BovinesTags.BlockTags.MOOBLOOM_FLOWERS)
@@ -405,7 +544,7 @@ public class BovinesDataGenerator implements DataGeneratorEntrypoint {
         }
 
         @Override
-        protected void addTags(HolderLookup.Provider wrapperLookup) {
+        protected void addTags(HolderLookup.Provider lookup) {
             tag(BovinesTags.ConfiguredFeatureTags.RANCH_ALLOWED)
                     .add(CaveFeatures.GLOW_LICHEN)
                     .add(VegetationFeatures.SINGLE_PIECE_OF_GRASS)
@@ -422,7 +561,7 @@ public class BovinesDataGenerator implements DataGeneratorEntrypoint {
         }
 
         @Override
-        protected void addTags(HolderLookup.Provider wrapperLookup) {
+        protected void addTags(HolderLookup.Provider lookup) {
             tag(BovinesTags.EntityTypeTags.WILL_EQUIP_FLOWER_CROWN)
                     .add(reverseLookup(EntityType.PIGLIN))
                     .add(reverseLookup(EntityType.VILLAGER));
@@ -435,7 +574,7 @@ public class BovinesDataGenerator implements DataGeneratorEntrypoint {
         }
 
         @Override
-        protected void addTags(HolderLookup.Provider wrapperLookup) {
+        protected void addTags(HolderLookup.Provider lookup) {
             tag(BovinesTags.FlowerCrownMaterialTags.CREATIVE_MENU_ORDER)
                     .add(BovinesFlowerCrownMaterials.FREESIA)
                     .add(BovinesFlowerCrownMaterials.BIRD_OF_PARADISE)
@@ -456,7 +595,7 @@ public class BovinesDataGenerator implements DataGeneratorEntrypoint {
         }
 
         @Override
-        protected void addTags(HolderLookup.Provider wrapperLookup) {
+        protected void addTags(HolderLookup.Provider lookup) {
             ((FabricTagBuilder)tag(ItemTags.SMALL_FLOWERS))
                     .forceAddTag(BovinesTags.ItemTags.MOOBLOOM_FLOWERS);
             tag(BovinesTags.ItemTags.MOOBLOOM_FLOWERS)
@@ -487,7 +626,7 @@ public class BovinesDataGenerator implements DataGeneratorEntrypoint {
         }
 
         @Override
-        protected void addTags(HolderLookup.Provider wrapperLookup) {
+        protected void addTags(HolderLookup.Provider lookup) {
             tag(BovinesTags.NectarTags.CREATIVE_MENU_ORDER)
                     .add(BovinesNectars.FREESIA)
                     .add(BovinesNectars.BIRD_OF_PARADISE)

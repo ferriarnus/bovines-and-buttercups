@@ -1,0 +1,30 @@
+{
+  "parent": "minecraft:husbandry/breed_an_animal",
+  "criteria": {
+    "mutate_moobloom": {
+      "conditions": {
+        "cow_type_type": "bovinesandbuttercups:moobloom"
+      },
+      "trigger": "bovinesandbuttercups:mutation"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.husbandry.bovinesandbuttercups.mutate_a_moobloom.description"
+    },
+    "hidden": true,
+    "icon": {
+      "count": 1,
+      "id": "bovinesandbuttercups:limelight"
+    },
+    "title": {
+      "translate": "advancements.husbandry.bovinesandbuttercups.mutate_a_moobloom.title"
+    }
+  },
+  "requirements": [
+    [
+      "mutate_moobloom"
+    ]
+  ],
+  "sends_telemetry_event": true
+}
