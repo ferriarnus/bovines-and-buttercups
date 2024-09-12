@@ -184,7 +184,7 @@ public class BovinesDataGenerator implements DataGeneratorEntrypoint {
             consumer.accept(Advancement.Builder.advancement()
                     .display(new DisplayInfo(
                             preventEffectStack,
-                            Component.translatable("advancements.husbandry.bovinesandbuttercups.prevent_an_effect.description"),
+                            Component.translatable("advancements.husbandry.bovinesandbuttercups.prevent_an_effect.title"),
                             Component.translatable("advancements.husbandry.bovinesandbuttercups.prevent_an_effect.description"),
                             Optional.empty(),
                             AdvancementType.TASK,
@@ -217,7 +217,7 @@ public class BovinesDataGenerator implements DataGeneratorEntrypoint {
             consumer.accept(Advancement.Builder.advancement()
                     .display(new DisplayInfo(
                             new ItemStack(BovinesItems.LIMELIGHT),
-                            Component.translatable("advancements.husbandry.bovinesandbuttercups.breed_all_mooblooms.description"),
+                            Component.translatable("advancements.husbandry.bovinesandbuttercups.breed_all_mooblooms.title"),
                             Component.translatable("advancements.husbandry.bovinesandbuttercups.breed_all_mooblooms.description"),
                             Optional.empty(),
                             AdvancementType.CHALLENGE,
@@ -250,7 +250,7 @@ public class BovinesDataGenerator implements DataGeneratorEntrypoint {
             consumer.accept(Advancement.Builder.advancement()
                     .display(new DisplayInfo(
                             FlowerCrownItem.createRainbowCrown(lookup),
-                            Component.translatable("advancements.husbandry.bovinesandbuttercups.craft_flower_crown.description"),
+                            Component.translatable("advancements.husbandry.bovinesandbuttercups.craft_flower_crown.title"),
                             Component.translatable("advancements.husbandry.bovinesandbuttercups.craft_flower_crown.description"),
                             Optional.empty(),
                             AdvancementType.TASK,

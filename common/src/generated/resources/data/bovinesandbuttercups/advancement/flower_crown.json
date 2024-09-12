@@ -34,7 +34,7 @@
       "id": "bovinesandbuttercups:flower_crown"
     },
     "title": {
-      "translate": "advancements.husbandry.bovinesandbuttercups.craft_flower_crown.description"
+      "translate": "advancements.husbandry.bovinesandbuttercups.craft_flower_crown.title"
     }
   },
   "requirements": [
