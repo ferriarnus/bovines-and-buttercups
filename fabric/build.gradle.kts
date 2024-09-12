@@ -124,6 +124,7 @@ publishMods {
         optional("emi")
         optional("accessories")
         optional("trinkets")
+        optional("loading-screen-tips")
     }
 
     modrinth {
@@ -138,6 +139,7 @@ publishMods {
         optional("emi")
         optional("accessories")
         optional("trinkets")
+        optional("loadingscreentips")
     }
 
     github {

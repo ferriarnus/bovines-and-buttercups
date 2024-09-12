@@ -1,0 +1,10 @@
+{
+  "replace": false,
+  "tips": [
+    "text.bovinesandbuttercups.tip.beef",
+    "text.bovinesandbuttercups.tip.breed_moobloom",
+    "text.bovinesandbuttercups.tip.chargelily_moobloom",
+    "text.bovinesandbuttercups.tip.moobloom_variants",
+    "text.bovinesandbuttercups.tip.nectar_bowl"
+  ]
+}
