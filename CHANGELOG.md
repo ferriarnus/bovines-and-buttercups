@@ -6,14 +6,17 @@
 - Added a new cosmetic item, the Flower Crown. This is an item you may wear on your head and can craft from any combination of Moobloom flowers.
   - New Flower Crown Materials can be made through the `bovinesandbuttercups:flower_crown_material` datapack registry.
 - Re-textured every flower and moobloom within the mod to give them a more modern appearance, as well as making them referential to non holstein cattle.
+- Reworked bee interaction! Mooblooms when pollinated will now provide the hive the ability to create Rich Honey or provide more Honeycomb instead of what it was before.
+- Added Rich Honey Bottles, a new Honey Bottle that gives more saturation when compared to the Honey Bottle and a little duration of Absorption.
+- Added Rich Honey Blocks, a new Honey Block that is counted separately by pistons, and is useful for storing Rich Honey Bottles.
 - Reworked interaction when feeding a Moobloom Bone Meal. They will now create a varied flower trail of their flower as they walk instead of an instant area of flowers.
   - This change was made to be more referential to Minecraft Earth as a source material.
 - Added a Chargelily Ranch to guide players that you may wish to strike a Moobloom with lightning.
   - Spawns within non snowy stony mountainous biomes.
-- Modified certain vanilla advancements if there are no datapack changes to each respective advancement.
-  - The modified advancements are:
-    - Two by Two. Added breeding Mooblooms to the requirement.
-    - 
+- Modified certain vanilla advancements if there are no datapack changes to these respective advancements.
+  - Balanced Diet. Added consuming Rich Honey Bottles to the requirements.
+  - Two by Two. Added breeding Mooblooms to the requirements.
+  - Sticky Situation. Allowed Rich Honey Blocks to trigger the advancement.
 
 ## Bugfixes
 - Fixed offspring particles having an incorrect origin point.
