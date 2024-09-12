@@ -75,7 +75,8 @@ public class BovinesRecipeViewerUtil {
             } else if (materials.getFirst().equals(RANDOM_TWO)) {
                 centerLeft = registry.getHolder(random.nextInt(registry.size())).orElseThrow();
                 Holder<FlowerCrownMaterial> finalCenterLeft = centerLeft;
-                topLeft = registry.holders().filter(reference -> !reference.is(finalCenterLeft)).toList().get(random.nextInt(registry.size()));
+                List<Holder.Reference<FlowerCrownMaterial>> topLeftMaterials = registry.holders().filter(reference -> !reference.is(finalCenterLeft)).toList();
+                topLeft = topLeftMaterials.get(random.nextInt(topLeftMaterials.size()));
                 top = centerLeft;
                 topRight = topLeft;
                 centerRight = centerLeft;
@@ -85,11 +86,14 @@ public class BovinesRecipeViewerUtil {
             } else if (materials.getFirst().equals(RANDOM_FOUR)) {
                 centerLeft = registry.getHolder(random.nextInt(registry.size())).orElseThrow();
                 Holder<FlowerCrownMaterial> finalCenterLeft = centerLeft;
-                topLeft = registry.holders().filter(reference -> !reference.is(finalCenterLeft)).toList().get(random.nextInt(registry.size()));
+                List<Holder.Reference<FlowerCrownMaterial>> topLeftMaterials = registry.holders().filter(reference -> !reference.is(finalCenterLeft)).toList();
+                topLeft = topLeftMaterials.get(random.nextInt(topLeftMaterials.size()));
                 Holder<FlowerCrownMaterial> finalTopLeft = topLeft;
-                top = registry.holders().filter(reference -> !reference.is(finalCenterLeft) && !reference.is(finalTopLeft)).toList().get(random.nextInt(registry.size()));
+                List<Holder.Reference<FlowerCrownMaterial>> topMaterials = registry.holders().filter(reference -> !reference.is(finalCenterLeft) && !reference.is(finalTopLeft)).toList();
+                top = topMaterials.get(random.nextInt(topMaterials.size()));
                 Holder<FlowerCrownMaterial> finalTop = top;
-                topRight = registry.holders().filter(reference -> !reference.is(finalCenterLeft) && !reference.is(finalTopLeft) && !reference.is(finalTop)).toList().get(random.nextInt(registry.size()));
+                List<Holder.Reference<FlowerCrownMaterial>> topRightMaterials = registry.holders().filter(reference -> !reference.is(finalCenterLeft) && !reference.is(finalTopLeft) && !reference.is(finalTop)).toList();
+                topRight = topRightMaterials.get(random.nextInt(topRightMaterials.size()));
                 centerRight = centerLeft;
                 bottomRight = topLeft;
                 bottom = top;
