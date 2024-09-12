@@ -1,5 +1,6 @@
 package house.greenhouse.bovinesandbuttercups.mixin.fabric.client;
 
+import com.llamalad7.mixinextras.sugar.Local;
 import house.greenhouse.bovinesandbuttercups.BovinesAndButtercups;
 import house.greenhouse.bovinesandbuttercups.api.attachment.LockdownAttachment;
 import house.greenhouse.bovinesandbuttercups.content.effect.LockdownEffect;
@@ -12,6 +13,7 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.MobEffectTextureManager;
 import net.minecraft.core.Holder;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -20,11 +22,9 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
-import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -32,18 +32,19 @@ import java.util.Map;
 public class GuiMixin {
     @Shadow @Final private Minecraft minecraft;
 
-    @Inject(method = "renderEffects", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;blitSprite(Lnet/minecraft/resources/ResourceLocation;IIII)V", shift = At.Shift.AFTER), locals = LocalCapture.CAPTURE_FAILHARD)
-    private void bovinesandbuttercups$overlayLockdownBorder(GuiGraphics graphics, DeltaTracker deltaTracker, CallbackInfo ci, Collection collection, int width, int height, MobEffectTextureManager mobEffectTextureManager, List list, Iterator var8, MobEffectInstance mobEffectInstance, Holder<MobEffect> effect, int i, int j, float f) {
-        if (minecraft.player == null || !minecraft.player.hasEffect(BovinesEffects.LOCKDOWN)) return;
+    @ModifyArg(method = "renderEffects", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;blitSprite(Lnet/minecraft/resources/ResourceLocation;IIII)V"))
+    private ResourceLocation bovinesandbuttercups$overlayLockdownBorder(ResourceLocation original, @Local(ordinal = 2) int width, @Local(ordinal = 3) int height, @Local Holder<MobEffect> effect) {
+        if (minecraft.player == null || !minecraft.player.hasEffect(BovinesEffects.LOCKDOWN))
+            return original;
 
         LockdownAttachment attachment = minecraft.player.getAttached(BovinesAttachments.LOCKDOWN);
-        if (!(effect.value() instanceof LockdownEffect) && attachment != null && attachment.effects().entrySet().stream().anyMatch(instance -> instance.getKey() == effect)) {
-            graphics.blitSprite(BovinesAndButtercups.asResource("hud/lockdown_frame"), width, height, 24, 24);
-        }
+        if (!(effect.value() instanceof LockdownEffect) && attachment != null && attachment.effects().keySet().stream().anyMatch(instance -> instance.is(effect)))
+            return BovinesAndButtercups.asResource("hud/effect_background_lockdown");
+        return original;
     }
 
-    @Inject(method = "renderEffects", at = @At(value = "INVOKE", target = "Ljava/util/List;add(Ljava/lang/Object;)Z"), locals = LocalCapture.CAPTURE_FAILHARD)
-    private void bovinesandbuttercups$renderLockdownStatusEffectOverlay(GuiGraphics graphics, DeltaTracker deltaTracker, CallbackInfo ci, Collection collection, int i, int j, MobEffectTextureManager mobEffectTextureManager, List<Runnable> list, Iterator var8, MobEffectInstance mobEffectInstance, Holder<MobEffect> holder, int k, int l, float g, TextureAtlasSprite textureAtlasSprite, int n, int o, float h) {
+    @Inject(method = "renderEffects", at = @At(value = "INVOKE", target = "Ljava/util/List;add(Ljava/lang/Object;)Z"))
+    private void bovinesandbuttercups$renderLockdownStatusEffectOverlay(GuiGraphics graphics, DeltaTracker deltaTracker, CallbackInfo ci, @Local MobEffectTextureManager mobEffectTextureManager, @Local List<Runnable> list, @Local MobEffectInstance mobEffectInstance, @Local Holder<MobEffect> holder, @Local(ordinal = 0) float g, @Local(ordinal = 4) int n, @Local(ordinal = 5) int o) {
         if (!holder.isBound() || !(holder.value() instanceof LockdownEffect)) return;
 
         LockdownAttachment attachment = minecraft.player.getAttached(BovinesAttachments.LOCKDOWN);

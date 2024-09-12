@@ -1,7 +1,7 @@
 {
   "parent": "minecraft:husbandry/breed_an_animal",
   "criteria": {
-    "mutate_moobloom": {
+    "breed_new_moobloom": {
       "conditions": {
         "cow_type_type": "bovinesandbuttercups:moobloom"
       },
@@ -10,7 +10,7 @@
   },
   "display": {
     "description": {
-      "translate": "advancements.husbandry.bovinesandbuttercups.mutate_a_moobloom.description"
+      "translate": "advancements.husbandry.bovinesandbuttercups.husbandry.breed_new_moobloom.description"
     },
     "hidden": true,
     "icon": {
@@ -18,12 +18,12 @@
       "id": "bovinesandbuttercups:pink_daisy"
     },
     "title": {
-      "translate": "advancements.husbandry.bovinesandbuttercups.mutate_a_moobloom.title"
+      "translate": "advancements.husbandry.bovinesandbuttercups.husbandry.breed_new_moobloom.title"
     }
   },
   "requirements": [
     [
-      "mutate_moobloom"
+      "breed_new_moobloom"
     ]
   ],
   "sends_telemetry_event": true

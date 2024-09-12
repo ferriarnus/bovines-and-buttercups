@@ -1,5 +1,5 @@
 {
-  "parent": "bovinesandbuttercups:mutate_a_moobloom",
+  "parent": "bovinesandbuttercups:husbandry/breed_new_moobloom",
   "criteria": {
     "bovinesandbuttercups:bird_of_paradise": {
       "conditions": {
@@ -67,7 +67,7 @@
   },
   "display": {
     "description": {
-      "translate": "advancements.husbandry.bovinesandbuttercups.breed_all_mooblooms.description"
+      "translate": "advancements.husbandry.bovinesandbuttercups.husbandry.breed_all_mooblooms.description"
     },
     "frame": "challenge",
     "icon": {
@@ -75,7 +75,7 @@
       "id": "bovinesandbuttercups:limelight"
     },
     "title": {
-      "translate": "advancements.husbandry.bovinesandbuttercups.breed_all_mooblooms.title"
+      "translate": "advancements.husbandry.bovinesandbuttercups.husbandry.breed_all_mooblooms.title"
     }
   },
   "requirements": [

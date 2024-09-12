@@ -1,5 +1,5 @@
 {
-  "parent": "minecraft:husbandry/prevent_an_effect",
+  "parent": "bovinesandbuttercups:husbandry/prevent_effect",
   "criteria": {
     "lock_effect": {
       "trigger": "bovinesandbuttercups:lock_effect"
@@ -7,7 +7,7 @@
   },
   "display": {
     "description": {
-      "translate": "advancements.husbandry.bovinesandbuttercups.lock_an_effect.description"
+      "translate": "advancements.husbandry.bovinesandbuttercups.husbandry.lock_effect.description"
     },
     "icon": {
       "components": {
@@ -17,7 +17,7 @@
       "id": "bovinesandbuttercups:nectar_bowl"
     },
     "title": {
-      "translate": "advancements.husbandry.bovinesandbuttercups.lock_an_effect.title"
+      "translate": "advancements.husbandry.bovinesandbuttercups.husbandry.lock_effect.title"
     }
   },
   "requirements": [
