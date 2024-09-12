@@ -1,6 +1,7 @@
 package house.greenhouse.bovinesandbuttercups.datagen;
 
 import com.mojang.serialization.Lifecycle;
+import house.greenhouse.bovinesandbuttercups.api.BovinesConventionalTags;
 import house.greenhouse.bovinesandbuttercups.content.data.nectar.Nectar;
 import house.greenhouse.bovinesandbuttercups.registry.BovinesDataComponents;
 import house.greenhouse.bovinesandbuttercups.registry.BovinesNectars;
@@ -23,6 +24,7 @@ import house.greenhouse.bovinesandbuttercups.registry.BovinesFlowerCrownMaterial
 import house.greenhouse.bovinesandbuttercups.registry.BovinesItems;
 import house.greenhouse.bovinesandbuttercups.registry.BovinesLootTables;
 import house.greenhouse.bovinesandbuttercups.registry.BovinesRegistryKeys;
+import net.fabricmc.fabric.api.tag.convention.v2.ConventionalItemTags;
 import net.minecraft.advancements.critereon.EntityFlagsPredicate;
 import net.minecraft.advancements.critereon.EntityPredicate;
 import net.minecraft.core.Holder;
@@ -147,12 +149,12 @@ public class BovinesDataGenerator implements DataGeneratorEntrypoint {
                     .group("sugar")
                     .unlockedBy("has_rich_honey_bottle", has(BovinesItems.RICH_HONEY_BOTTLE))
                     .save(output, getConversionRecipeName(Items.SUGAR, BovinesItems.RICH_HONEY_BOTTLE));
-            ShapedRecipeBuilder.shaped(RecipeCategory.REDSTONE, Blocks.HONEY_BLOCK, 1)
-                    .define('#', BovinesItems.RICH_HONEY_BOTTLE)
-                    .pattern("##")
-                    .pattern("##")
-                    .unlockedBy(getHasName(BovinesItems.RICH_HONEY_BOTTLE), has(BovinesItems.RICH_HONEY_BOTTLE))
-                    .save(output, BovinesAndButtercups.asResource("honey_block_from_rich_honey_bottle"));
+            ShapelessRecipeBuilder.shapeless(RecipeCategory.FOOD, BovinesItems.RICH_HONEY_BOTTLE, 4)
+                    .requires(BovinesItems.RICH_HONEY_BLOCK)
+                    .requires(Items.GLASS_BOTTLE, 4)
+                    .unlockedBy("has_rich_honey_block", has(BovinesBlocks.RICH_HONEY_BLOCK))
+                    .save(output);
+            twoByTwoPacker(output, RecipeCategory.REDSTONE, BovinesBlocks.RICH_HONEY_BLOCK, BovinesItems.RICH_HONEY_BOTTLE);
 
             SpecialRecipeBuilder.special(FlowerCrownRecipe::new).save(output, BovinesAndButtercups.asResource("flower_crown"));
         }
@@ -187,6 +189,8 @@ public class BovinesDataGenerator implements DataGeneratorEntrypoint {
             dropPottedContents(BovinesBlocks.POTTED_PINK_DAISY);
             dropPottedContents(BovinesBlocks.POTTED_SNOWDROP);
             dropPottedContents(BovinesBlocks.POTTED_TROPICAL_BLUE);
+
+            dropSelf(BovinesBlocks.RICH_HONEY_BLOCK);
 
             add(BovinesBlocks.CUSTOM_FLOWER,
                     LootTable.lootTable()
@@ -469,6 +473,11 @@ public class BovinesDataGenerator implements DataGeneratorEntrypoint {
                             reverseLookup(BovinesItems.SNOWDROP),
                             reverseLookup(BovinesItems.TROPICAL_BLUE)
                     );
+            tag(ConventionalItemTags.FOODS)
+                    .add(reverseLookup(BovinesItems.RICH_HONEY_BOTTLE));
+            tag(BovinesConventionalTags.ConventionalItemTags.HONEY_FOODS)
+                    .add(reverseLookup(Items.HONEY_BOTTLE))
+                    .add(reverseLookup(BovinesItems.RICH_HONEY_BOTTLE));
         }
     }
 

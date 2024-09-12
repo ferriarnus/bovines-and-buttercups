@@ -107,7 +107,9 @@ public class Moobloom extends Cow {
     public Moobloom(EntityType<? extends Moobloom> entityType, Level level) {
         super(entityType, level);
         bee = null;
-        setCowType((Holder)level().registryAccess().registry(BovinesRegistryKeys.COW_TYPE).orElseThrow().getHolder(BovinesCowTypes.MoobloomKeys.MISSING_MOOBLOOM).orElseThrow());
+        if (getCowType() == null) {
+            setCowType((Holder)level().registryAccess().registry(BovinesRegistryKeys.COW_TYPE).orElseThrow().getHolder(BovinesCowTypes.MoobloomKeys.MISSING_MOOBLOOM).orElseThrow());
+        }
     }
 
     @Override

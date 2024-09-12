@@ -40,6 +40,7 @@
   "item.bovinesandbuttercups.moobloom_spawn_egg": "Moobloom Spawn Egg",
   "item.bovinesandbuttercups.flower_crown": "Flower Crown",
   "item.bovinesandbuttercups.rich_honey_bottle": "Rich Honey Bottle",
+  "block.bovinesandbuttercups.rich_honey_block": "Rich Honey Block",
 
   "item.bovinesandbuttercups.flower_crown.petal_amount": "%s \u00D7%s",
   "flower_crown_material.bovinesandbuttercups.buttercup": "Buttercup Flower",

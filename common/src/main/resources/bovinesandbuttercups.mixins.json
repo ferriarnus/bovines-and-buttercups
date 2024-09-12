@@ -17,14 +17,19 @@
     "EntityDataAccessorMixin",
     "FarmBlockMixin",
     "FlowerPotBlockMixin",
+    "HoneyBlockAccessor",
     "JigsawStructureAccessor",
     "MobAccessor",
     "MobEffectInstanceMixin",
     "MobMixin",
     "MushroomCowMixin",
+    "PistonMovingBlockEntityMixin",
+    "PistonStructureResolverMixin",
     "PlacedFeatureMixin",
     "RegistryDataLoaderMixin",
-    "ServerLevelAccessor"
+    "ServerAdvancementManagerMixin",
+    "ServerLevelAccessor",
+    "SimpleJsonResourceReloadListenerMixin"
   ],
   "client": [
     "client.AtlasSetMixin",

@@ -165,6 +165,7 @@ public class BovinesAndButtercupsFabric implements ModInitializer {
             entries.addAfter(BovinesItems.SNOWDROP, CreativeTabHelper.getCustomFlowersForCreativeTab(entries.getContext().holders()));
             entries.addAfter(Items.RED_MUSHROOM, CreativeTabHelper.getCustomMushroomsForCreativeTab(entries.getContext().holders()));
             entries.addAfter(Items.RED_MUSHROOM_BLOCK, CreativeTabHelper.getCustomMushroomBlocksForCreativeTab(entries.getContext().holders()));
+            entries.addAfter(Items.HONEY_BLOCK, BovinesItems.RICH_HONEY_BLOCK);
         });
         ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.FOOD_AND_DRINKS).register(entries -> {
             entries.addAfter(Items.MILK_BUCKET, CreativeTabHelper.getNectarBowlsForCreativeTab(entries.getContext().holders()));
@@ -175,6 +176,8 @@ public class BovinesAndButtercupsFabric implements ModInitializer {
         });
         ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.TOOLS_AND_UTILITIES).register(entries ->
                 entries.addAfter(Items.SADDLE, CreativeTabHelper.getFlowerCrownsForCreativeTab(entries.getContext().holders())));
+        ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.REDSTONE_BLOCKS).register(entries ->
+                entries.addAfter(Items.HONEY_BLOCK, BovinesItems.RICH_HONEY_BLOCK));
     }
 
     public static void setBiomeRegistries(@Nullable RegistryAccess registries) {

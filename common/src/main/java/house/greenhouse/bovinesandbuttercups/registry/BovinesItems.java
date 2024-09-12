@@ -43,6 +43,7 @@ public class BovinesItems {
     public static final Item FLOWER_CROWN = new FlowerCrownItem(new Item.Properties().stacksTo(1).component(DataComponents.ATTRIBUTE_MODIFIERS, new ItemAttributeModifiers(List.of(), false)));
 
     public static final HoneyBottleItem RICH_HONEY_BOTTLE = new HoneyBottleItem(new Item.Properties().craftRemainder(Items.GLASS_BOTTLE).food(BovinesFoods.RICH_HONEY_BOTTLE).stacksTo(16));
+    public static final BlockItem RICH_HONEY_BLOCK = new BlockItem(BovinesBlocks.RICH_HONEY_BLOCK, new Item.Properties());
 
     public static void registerAll(RegistrationCallback<Item> callback) {
         callback.register(BuiltInRegistries.ITEM, BovinesAndButtercups.asResource("nectar_bowl"), NECTAR_BOWL);
@@ -66,5 +67,6 @@ public class BovinesItems {
         callback.register(BuiltInRegistries.ITEM, BovinesAndButtercups.asResource("flower_crown"), FLOWER_CROWN);
 
         callback.register(BuiltInRegistries.ITEM, BovinesAndButtercups.asResource("rich_honey_bottle"), RICH_HONEY_BOTTLE);
+        callback.register(BuiltInRegistries.ITEM, BovinesAndButtercups.asResource("rich_honey_block"), RICH_HONEY_BLOCK);
     }
 }

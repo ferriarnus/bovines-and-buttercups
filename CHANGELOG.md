@@ -10,6 +10,10 @@
   - This change was made to be more referential to Minecraft Earth as a source material.
 - Added a Chargelily Ranch to guide players that you may wish to strike a Moobloom with lightning.
   - Spawns within non snowy stony mountainous biomes.
+- Modified certain vanilla advancements if there are no datapack changes to each respective advancement.
+  - The modified advancements are:
+    - Two by Two. Added breeding Mooblooms to the requirement.
+    - 
 
 ## Bugfixes
 - Fixed offspring particles having an incorrect origin point.

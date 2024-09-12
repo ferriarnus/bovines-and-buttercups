@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "bovinesandbuttercups:honey_block_from_rich_honey_bottle"
+        "recipe": "bovinesandbuttercups:rich_honey_block"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -26,7 +26,7 @@
   ],
   "rewards": {
     "recipes": [
-      "bovinesandbuttercups:honey_block_from_rich_honey_bottle"
+      "bovinesandbuttercups:rich_honey_block"
     ]
   }
 }
