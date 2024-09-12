@@ -55,8 +55,6 @@ dependencies {
 
     modCompileOnly("dev.emi:trinkets:${Versions.TRINKETS}")
     // modLocalRuntime("dev.emi:trinkets:${Versions.TRINKETS}")
-
-
 }
 
 loom {
