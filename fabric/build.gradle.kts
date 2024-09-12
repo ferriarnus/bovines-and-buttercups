@@ -120,7 +120,6 @@ publishMods {
 
         requires("fabric-api")
         optional("jei")
-        optional("roughly-enough-items")
         optional("emi")
         optional("accessories")
         optional("trinkets")
@@ -135,7 +134,6 @@ publishMods {
 
         requires("fabric-api")
         optional("jei")
-        optional("rei")
         optional("emi")
         optional("accessories")
         optional("trinkets")
