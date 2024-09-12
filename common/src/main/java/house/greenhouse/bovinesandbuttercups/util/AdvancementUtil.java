@@ -13,6 +13,12 @@ public class AdvancementUtil {
         return original;
     }
 
+    public static JsonElement addRichHoneyBottleToBalancedDiet(JsonObject original) {
+        original.getAsJsonArray("requirements").add(createRequirement("bovinesandbuttercups:rich_honey_bottle"));
+        original.getAsJsonObject("criteria").add("bovinesandbuttercups:rich_honey_bottle", createConsumeItemTrigger(BovinesAndButtercups.asResource("rich_honey_block")));
+        return original;
+    }
+
     public static JsonElement addRichHoneyBlockToHoneyBlockSlide(JsonObject original) {
         original.getAsJsonArray("requirements").get(0).getAsJsonArray().add("bovinesandbuttercups:rich_honey_block_slide");
         original.getAsJsonObject("criteria").add("bovinesandbuttercups:rich_honey_block_slide", createSlideDownBlockTrigger(BovinesAndButtercups.asResource("rich_honey_block")));
@@ -31,6 +37,20 @@ public class AdvancementUtil {
 
         JsonObject conditions = new JsonObject();
         conditions.addProperty("block", blockId.toString());
+
+        trigger.add("conditions", conditions);
+
+        return trigger;
+    }
+
+    private static JsonElement createConsumeItemTrigger(ResourceLocation itemId) {
+        JsonObject trigger = new JsonObject();
+        trigger.addProperty("trigger", "minecraft:consume_item");
+
+        JsonObject conditions = new JsonObject();
+        JsonObject item = new JsonObject();
+        item.addProperty("items", itemId.toString());
+        conditions.add("item", item);
 
         trigger.add("conditions", conditions);
 

@@ -16,6 +16,8 @@ public class ServerAdvancementManagerMixin {
         if (element.isJsonObject() && element.getAsJsonObject().getAsJsonPrimitive("bovinesandbuttercups:pack_source").getAsString().equals("vanilla")) {
             if (id.equals(ResourceLocation.withDefaultNamespace("husbandry/bred_all_animals")))
                 return AdvancementUtil.addMoobloomToBredAllAnimals(element.getAsJsonObject());
+            if (id.equals(ResourceLocation.withDefaultNamespace("husbandry/balanced_diet")))
+                return AdvancementUtil.addRichHoneyBottleToBalancedDiet(element.getAsJsonObject());
             if (id.equals(ResourceLocation.withDefaultNamespace("adventure/honey_block_slide")))
                 return AdvancementUtil.addRichHoneyBlockToHoneyBlockSlide(element.getAsJsonObject());
         }
