@@ -15,7 +15,7 @@ public class AdvancementUtil {
 
     public static JsonElement addRichHoneyBottleToBalancedDiet(JsonObject original) {
         original.getAsJsonArray("requirements").add(createRequirement("bovinesandbuttercups:rich_honey_bottle"));
-        original.getAsJsonObject("criteria").add("bovinesandbuttercups:rich_honey_bottle", createConsumeItemTrigger(BovinesAndButtercups.asResource("rich_honey_block")));
+        original.getAsJsonObject("criteria").add("bovinesandbuttercups:rich_honey_bottle", createConsumeItemTrigger(BovinesAndButtercups.asResource("rich_honey_bottle")));
         return original;
     }
 
