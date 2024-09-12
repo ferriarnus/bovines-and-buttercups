@@ -15,8 +15,8 @@
   - Spawns within non snowy stony mountainous biomes.
 - Modified certain vanilla advancements if there are no datapack changes to these respective advancements.
   - Balanced Diet. Added consuming Rich Honey Bottles to the requirements.
-  - Two by Two. Added breeding Mooblooms to the requirements.
   - Sticky Situation. Allowed Rich Honey Blocks to trigger the advancement.
+  - Two by Two. Added breeding Mooblooms to the requirements.
 - Added new advancements.
   - Full Bloom - Breed every Moobloom that can be bred for.
   - Moo-tiful - Obtain a Flower Crown.
