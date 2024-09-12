@@ -74,7 +74,8 @@ public class BovinesRecipeViewerUtil {
                 bottomLeft = centerLeft;
             } else if (materials.getFirst().equals(RANDOM_TWO)) {
                 centerLeft = registry.getHolder(random.nextInt(registry.size())).orElseThrow();
-                topLeft = registry.getHolder(random.nextInt(registry.size())).orElseThrow();
+                Holder<FlowerCrownMaterial> finalCenterLeft = centerLeft;
+                topLeft = registry.holders().filter(reference -> !reference.is(finalCenterLeft)).toList().get(random.nextInt(registry.size()));
                 top = centerLeft;
                 topRight = topLeft;
                 centerRight = centerLeft;
@@ -83,9 +84,12 @@ public class BovinesRecipeViewerUtil {
                 bottomLeft = topLeft;
             } else if (materials.getFirst().equals(RANDOM_FOUR)) {
                 centerLeft = registry.getHolder(random.nextInt(registry.size())).orElseThrow();
-                topLeft = registry.getHolder(random.nextInt(registry.size())).orElseThrow();
-                top = registry.getHolder(random.nextInt(registry.size())).orElseThrow();
-                topRight = registry.getHolder(random.nextInt(registry.size())).orElseThrow();
+                Holder<FlowerCrownMaterial> finalCenterLeft = centerLeft;
+                topLeft = registry.holders().filter(reference -> !reference.is(finalCenterLeft)).toList().get(random.nextInt(registry.size()));
+                Holder<FlowerCrownMaterial> finalTopLeft = topLeft;
+                top = registry.holders().filter(reference -> !reference.is(finalCenterLeft) && !reference.is(finalTopLeft)).toList().get(random.nextInt(registry.size()));
+                Holder<FlowerCrownMaterial> finalTop = top;
+                topRight = registry.holders().filter(reference -> !reference.is(finalCenterLeft) && !reference.is(finalTopLeft) && !reference.is(finalTop)).toList().get(random.nextInt(registry.size()));
                 centerRight = centerLeft;
                 bottomRight = topLeft;
                 bottom = top;
