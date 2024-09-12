@@ -5,7 +5,6 @@ import house.greenhouse.bovinesandbuttercups.api.CowType;
 import house.greenhouse.bovinesandbuttercups.api.attachment.CowTypeAttachment;
 import house.greenhouse.bovinesandbuttercups.api.cowtype.OffspringConditions;
 import house.greenhouse.bovinesandbuttercups.content.advancements.criterion.BreedCowWithTypeTrigger;
-import house.greenhouse.bovinesandbuttercups.content.advancements.criterion.MutationTrigger;
 import house.greenhouse.bovinesandbuttercups.content.block.entity.CustomFlowerBlockEntity;
 import house.greenhouse.bovinesandbuttercups.content.component.ItemCustomFlower;
 import house.greenhouse.bovinesandbuttercups.content.component.ItemNectar;
@@ -453,19 +452,20 @@ public class Moobloom extends Cow {
             child.createParticles(randomType, position());
 
             if (getLoveCause() != null)
-                MutationTrigger.INSTANCE.trigger(getLoveCause(), this, otherParent, child, (Holder) randomType);
-            BreedCowWithTypeTrigger.INSTANCE.trigger(getLoveCause(), this, otherParent, child, (Holder) randomType);
+                BreedCowWithTypeTrigger.INSTANCE.trigger(getLoveCause(), this, otherParent, child, true, (Holder) randomType);
             return randomType;
         }
 
         child.particlePositions.clear();
 
         if (!otherParent.getCowType().equals(getCowType()) && getRandom().nextBoolean()) {
-            BreedCowWithTypeTrigger.INSTANCE.trigger(getLoveCause(), this, otherParent, child, (Holder<CowType<?>>)(Holder<?>)otherParent.getCowType());
+            if (getLoveCause() != null)
+                BreedCowWithTypeTrigger.INSTANCE.trigger(getLoveCause(), this, otherParent, child, false, (Holder<CowType<?>>)(Holder<?>)otherParent.getCowType());
             return otherParent.getCowType();
         }
 
-        BreedCowWithTypeTrigger.INSTANCE.trigger(getLoveCause(), this, otherParent, child, (Holder<CowType<?>>)(Holder<?>)getCowType());
+        if (getLoveCause() != null)
+            BreedCowWithTypeTrigger.INSTANCE.trigger(getLoveCause(), this, otherParent, child, false, (Holder<CowType<?>>)(Holder<?>)getCowType());
         return getCowType();
     }
 

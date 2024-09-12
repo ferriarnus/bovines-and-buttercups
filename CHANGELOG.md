@@ -70,6 +70,9 @@
 - Added `vanilla_type` field to Mooshroom Types, this will map a vanilla Mooshroom type to a Bovines and Buttercups Mooshroom type.
 - Removed `dye_craft_result` field from Custom Flowers. This has been replaced with using your loader's `components` custom ingredient type and a regular recipe.
 - Custom Mushroom Types now use template pools for `huge_structures` field.
+- Removed `bovinesandbuttercups:mutation` trigger and replaced it with `bovinesandbuttercups:breed_cow_with_type`
+  - Added `player` field, a predicate for the player breeding the animals.
+  - Added `different_from_parents`, which determines whether breeding conditions were in play to create a different cow type.
 
 #### Example Custom Flower Dye Recipes
 <details>
