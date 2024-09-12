@@ -1,0 +1,111 @@
+{
+  "parent": "bovinesandbuttercups:mutate_a_moobloom",
+  "criteria": {
+    "bovinesandbuttercups:bird_of_paradise": {
+      "conditions": {
+        "cow_type_type": "bovinesandbuttercups:moobloom",
+        "cow_types": "bovinesandbuttercups:bird_of_paradise"
+      },
+      "trigger": "bovinesandbuttercups:breed_cow_with_type"
+    },
+    "bovinesandbuttercups:buttercup": {
+      "conditions": {
+        "cow_type_type": "bovinesandbuttercups:moobloom",
+        "cow_types": "bovinesandbuttercups:buttercup"
+      },
+      "trigger": "bovinesandbuttercups:breed_cow_with_type"
+    },
+    "bovinesandbuttercups:freesia": {
+      "conditions": {
+        "cow_type_type": "bovinesandbuttercups:moobloom",
+        "cow_types": "bovinesandbuttercups:freesia"
+      },
+      "trigger": "bovinesandbuttercups:breed_cow_with_type"
+    },
+    "bovinesandbuttercups:hyacinth": {
+      "conditions": {
+        "cow_type_type": "bovinesandbuttercups:moobloom",
+        "cow_types": "bovinesandbuttercups:hyacinth"
+      },
+      "trigger": "bovinesandbuttercups:breed_cow_with_type"
+    },
+    "bovinesandbuttercups:limelight": {
+      "conditions": {
+        "cow_type_type": "bovinesandbuttercups:moobloom",
+        "cow_types": "bovinesandbuttercups:limelight"
+      },
+      "trigger": "bovinesandbuttercups:breed_cow_with_type"
+    },
+    "bovinesandbuttercups:lingholm": {
+      "conditions": {
+        "cow_type_type": "bovinesandbuttercups:moobloom",
+        "cow_types": "bovinesandbuttercups:lingholm"
+      },
+      "trigger": "bovinesandbuttercups:breed_cow_with_type"
+    },
+    "bovinesandbuttercups:pink_daisy": {
+      "conditions": {
+        "cow_type_type": "bovinesandbuttercups:moobloom",
+        "cow_types": "bovinesandbuttercups:pink_daisy"
+      },
+      "trigger": "bovinesandbuttercups:breed_cow_with_type"
+    },
+    "bovinesandbuttercups:snowdrop": {
+      "conditions": {
+        "cow_type_type": "bovinesandbuttercups:moobloom",
+        "cow_types": "bovinesandbuttercups:snowdrop"
+      },
+      "trigger": "bovinesandbuttercups:breed_cow_with_type"
+    },
+    "bovinesandbuttercups:tropical_blue": {
+      "conditions": {
+        "cow_type_type": "bovinesandbuttercups:moobloom",
+        "cow_types": "bovinesandbuttercups:tropical_blue"
+      },
+      "trigger": "bovinesandbuttercups:breed_cow_with_type"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.husbandry.bovinesandbuttercups.breed_all_mooblooms.description"
+    },
+    "frame": "challenge",
+    "icon": {
+      "count": 1,
+      "id": "bovinesandbuttercups:limelight"
+    },
+    "title": {
+      "translate": "advancements.husbandry.bovinesandbuttercups.breed_all_mooblooms.description"
+    }
+  },
+  "requirements": [
+    [
+      "bovinesandbuttercups:bird_of_paradise"
+    ],
+    [
+      "bovinesandbuttercups:buttercup"
+    ],
+    [
+      "bovinesandbuttercups:freesia"
+    ],
+    [
+      "bovinesandbuttercups:hyacinth"
+    ],
+    [
+      "bovinesandbuttercups:limelight"
+    ],
+    [
+      "bovinesandbuttercups:lingholm"
+    ],
+    [
+      "bovinesandbuttercups:pink_daisy"
+    ],
+    [
+      "bovinesandbuttercups:snowdrop"
+    ],
+    [
+      "bovinesandbuttercups:tropical_blue"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

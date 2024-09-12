@@ -1,0 +1,46 @@
+{
+  "parent": "minecraft:husbandry/root",
+  "criteria": {
+    "get_flower_crown": {
+      "conditions": {
+        "items": [
+          {
+            "items": "bovinesandbuttercups:flower_crown"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.husbandry.bovinesandbuttercups.craft_flower_crown.description"
+    },
+    "hidden": true,
+    "icon": {
+      "components": {
+        "bovinesandbuttercups:flower_crown": {
+          "bottom": "bovinesandbuttercups:hyacinth",
+          "bottom_left": "bovinesandbuttercups:pink_daisy",
+          "bottom_right": "bovinesandbuttercups:tropical_blue",
+          "center_left": "bovinesandbuttercups:freesia",
+          "center_right": "bovinesandbuttercups:chargelily",
+          "top": "bovinesandbuttercups:buttercup",
+          "top_left": "bovinesandbuttercups:bird_of_paradise",
+          "top_right": "bovinesandbuttercups:limelight"
+        }
+      },
+      "count": 1,
+      "id": "bovinesandbuttercups:flower_crown"
+    },
+    "title": {
+      "translate": "advancements.husbandry.bovinesandbuttercups.craft_flower_crown.description"
+    }
+  },
+  "requirements": [
+    [
+      "get_flower_crown"
+    ]
+  ],
+  "sends_telemetry_event": true
+}
