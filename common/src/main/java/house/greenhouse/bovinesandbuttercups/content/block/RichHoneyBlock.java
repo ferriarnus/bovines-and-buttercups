@@ -1,5 +1,6 @@
 package house.greenhouse.bovinesandbuttercups.content.block;
 
+import house.greenhouse.bovinesandbuttercups.BovinesAndButtercups;
 import house.greenhouse.bovinesandbuttercups.mixin.HoneyBlockAccessor;
 import house.greenhouse.bovinesandbuttercups.registry.BovinesBlocks;
 import net.minecraft.core.BlockPos;
@@ -60,6 +61,14 @@ public class RichHoneyBlock extends HoneyBlock {
                         .addParticle(new BlockParticleOption(ParticleTypes.BLOCK, blockstate), entity.getX(), entity.getY(), entity.getZ(), 0.0, 0.0, 0.0);
             }
         }
+    }
+
+    public boolean isStickyBlock(BlockState state) {
+        return true;
+    }
+
+    public boolean canStickTo(BlockState state, BlockState other) {
+        return BovinesAndButtercups.getHelper().canStickToRichHoney(state, other);
     }
 
     public PathType getBlockPathType(BlockState state, BlockGetter world, BlockPos pos, @Nullable Mob entity) {

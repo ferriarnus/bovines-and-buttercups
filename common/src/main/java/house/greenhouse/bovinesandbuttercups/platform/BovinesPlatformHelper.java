@@ -15,6 +15,7 @@ import net.minecraft.world.entity.animal.Bee;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BeehiveBlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
@@ -67,4 +68,6 @@ public interface BovinesPlatformHelper {
     void clearParticlePositions(LivingEntity entity);
 
     Moobloom createMoobloom(EntityType<Moobloom> entityType, Level level);
+
+    boolean canStickToRichHoney(BlockState richHoneyState, BlockState otherState);
 }

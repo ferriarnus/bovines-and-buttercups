@@ -1,6 +1,5 @@
 package house.greenhouse.bovinesandbuttercups.platform;
 
-import house.greenhouse.bovinesandbuttercups.BovinesAndButtercupsFabric;
 import house.greenhouse.bovinesandbuttercups.api.CowType;
 import house.greenhouse.bovinesandbuttercups.content.entity.Moobloom;
 import house.greenhouse.bovinesandbuttercups.entity.MoobloomFabric;
@@ -24,7 +23,9 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.FlowerPotBlock;
 import net.minecraft.world.level.block.entity.BeehiveBlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
+import org.apache.commons.lang3.NotImplementedException;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -148,6 +149,11 @@ public class BovinesPlatformHelperFabric implements BovinesPlatformHelper {
     @Override
     public Moobloom createMoobloom(EntityType<Moobloom> entityType, Level level) {
         return new MoobloomFabric(entityType, level);
+    }
+
+    @Override
+    public boolean canStickToRichHoney(BlockState richHoneyState, BlockState otherState) {
+        throw new NotImplementedException("BovinesPlatformHelper#canStickToRichHoney is only supposed to be implemented on NeoForge.");
     }
 
 }

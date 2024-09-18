@@ -24,7 +24,6 @@
     "MobMixin",
     "MushroomCowMixin",
     "PistonMovingBlockEntityMixin",
-    "PistonStructureResolverMixin",
     "PlacedFeatureMixin",
     "RegistryDataLoaderMixin",
     "ServerAdvancementManagerMixin",

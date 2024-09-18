@@ -1,11 +1,13 @@
 package house.greenhouse.bovinesandbuttercups.platform;
 
+import house.greenhouse.bovinesandbuttercups.api.BovinesTags;
 import house.greenhouse.bovinesandbuttercups.api.CowType;
 import house.greenhouse.bovinesandbuttercups.api.attachment.CowTypeAttachment;
 import house.greenhouse.bovinesandbuttercups.api.attachment.LockdownAttachment;
 import house.greenhouse.bovinesandbuttercups.content.entity.Moobloom;
 import house.greenhouse.bovinesandbuttercups.content.entity.MoobloomNeoForge;
 import house.greenhouse.bovinesandbuttercups.registry.BovinesAttachments;
+import house.greenhouse.bovinesandbuttercups.registry.BovinesBlocks;
 import house.greenhouse.bovinesandbuttercups.util.PottedBlockMapUtil;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
@@ -17,7 +19,9 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.animal.Bee;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BeehiveBlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.fml.ModList;
 import net.neoforged.fml.loading.FMLLoader;
@@ -143,5 +147,12 @@ public class BovinesPlatformHelperNeoForge implements BovinesPlatformHelper {
     @Override
     public Moobloom createMoobloom(EntityType<Moobloom> entityType, Level level) {
         return new MoobloomNeoForge(entityType, level);
+    }
+
+    @Override
+    public boolean canStickToRichHoney(BlockState richHoneyState, BlockState otherState) {
+        if (richHoneyState.is(BovinesBlocks.RICH_HONEY_BLOCK) && !otherState.is(BovinesTags.BlockTags.DOES_NOT_STICK_RICH_HONEY_BLOCK))
+            return false;
+        return Blocks.HONEY_BLOCK.defaultBlockState().canStickTo(otherState);
     }
 }

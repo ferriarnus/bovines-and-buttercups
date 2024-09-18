@@ -1,4 +1,4 @@
-package house.greenhouse.bovinesandbuttercups.mixin;
+package house.greenhouse.bovinesandbuttercups.mixin.fabric;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import house.greenhouse.bovinesandbuttercups.api.BovinesTags;

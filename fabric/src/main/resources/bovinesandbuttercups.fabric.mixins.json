@@ -9,7 +9,8 @@
     "LightningBoltMixin",
     "LivingEntityMixin",
     "MinecraftServerMixin",
-    "MushroomCowMixin"
+    "MushroomCowMixin",
+    "PistonStructureResolverMixin"
   ],
   "client": [
     "client.EffectRenderingInventoryScreenMixin",
