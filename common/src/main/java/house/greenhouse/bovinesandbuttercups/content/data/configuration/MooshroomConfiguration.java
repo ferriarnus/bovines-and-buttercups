@@ -20,17 +20,33 @@ import java.util.Optional;
 public record MooshroomConfiguration(Settings settings,
                                      BlockReference<Holder<CustomMushroomType>> mushroom,
                                      List<CowModelLayer> layers,
-                                     boolean canEatFlowers,
+                                     Optional<Boolean> canEatFlowers,
                                      Optional<MushroomCow.MushroomType> vanillaType,
                                      OffspringConditions offspringConditions) implements CowTypeConfiguration {
 
-    public static final MooshroomConfiguration DEFAULT = new MooshroomConfiguration(new Settings(Optional.of(BovinesAndButtercups.asResource("bovinesandbuttercups/moobloom/missing_mooshroom")), SimpleWeightedRandomList.empty(), SimpleWeightedRandomList.empty(), Optional.empty()), new BlockReference<>(Optional.empty(), Optional.empty(), Optional.of(Holder.direct(CustomMushroomType.MISSING))), List.of(new CowModelLayer(BovinesAndButtercups.asResource("bovinesandbuttercups/mooshroom/mooshroom_mycelium_layer"), List.of())), false, Optional.empty(), OffspringConditions.EMPTY);
+    public MooshroomConfiguration(Settings settings,
+                                  BlockReference<Holder<CustomMushroomType>> mushroom,
+                                  List<CowModelLayer> layers,
+                                  Optional<Boolean> canEatFlowers,
+                                  Optional<MushroomCow.MushroomType> vanillaType,
+                                  OffspringConditions offspringConditions) {
+        this.settings = settings;
+        this.mushroom = mushroom;
+        this.layers = layers;
+        if (canEatFlowers.isEmpty() && vanillaType.isEmpty())
+            throw new IllegalArgumentException("Cannot create Mooshroom Cow Type without specifying either the 'can_eat_flowers' or 'vanilla_type' fields");
+        this.canEatFlowers = canEatFlowers;
+        this.vanillaType = vanillaType;
+        this.offspringConditions = offspringConditions;
+    }
+
+    public static final MooshroomConfiguration DEFAULT = new MooshroomConfiguration(new Settings(Optional.of(BovinesAndButtercups.asResource("bovinesandbuttercups/moobloom/missing_mooshroom")), SimpleWeightedRandomList.empty(), SimpleWeightedRandomList.empty(), Optional.empty()), new BlockReference<>(Optional.empty(), Optional.empty(), Optional.of(Holder.direct(CustomMushroomType.MISSING))), List.of(new CowModelLayer(BovinesAndButtercups.asResource("bovinesandbuttercups/mooshroom/mooshroom_mycelium_layer"), List.of())), Optional.of(false), Optional.empty(), OffspringConditions.EMPTY);
 
     public static final MapCodec<MooshroomConfiguration> CODEC = RecordCodecBuilder.mapCodec(inst -> inst.group(
             Settings.CODEC.forGetter(MooshroomConfiguration::settings),
             BlockReference.createCodec(CustomMushroomType.CODEC, "custom_mushroom").fieldOf("mushroom").forGetter(MooshroomConfiguration::mushroom),
             CowModelLayer.CODEC.listOf().optionalFieldOf("layers", List.of()).forGetter(MooshroomConfiguration::layers),
-            Codec.BOOL.fieldOf("can_eat_flowers").forGetter(MooshroomConfiguration::canEatFlowers),
+            Codec.BOOL.optionalFieldOf("can_eat_flowers").forGetter(MooshroomConfiguration::canEatFlowers),
             MushroomCow.MushroomType.CODEC.optionalFieldOf("vanilla_type").forGetter(MooshroomConfiguration::vanillaType),
             OffspringConditions.CODEC.optionalFieldOf("offspring_conditions", OffspringConditions.EMPTY).forGetter(MooshroomConfiguration::offspringConditions)
     ).apply(inst, MooshroomConfiguration::new));

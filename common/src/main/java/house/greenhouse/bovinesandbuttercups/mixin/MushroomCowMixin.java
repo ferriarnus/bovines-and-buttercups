@@ -1,7 +1,13 @@
 package house.greenhouse.bovinesandbuttercups.mixin;
 
+import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
+import com.llamalad7.mixinextras.sugar.Local;
+import house.greenhouse.bovinesandbuttercups.BovinesAndButtercups;
 import house.greenhouse.bovinesandbuttercups.access.MooshroomInitializedTypeAccess;
+import house.greenhouse.bovinesandbuttercups.api.BovinesCowTypeTypes;
+import house.greenhouse.bovinesandbuttercups.api.CowType;
 import house.greenhouse.bovinesandbuttercups.api.attachment.CowTypeAttachment;
+import house.greenhouse.bovinesandbuttercups.content.data.configuration.MooshroomConfiguration;
 import house.greenhouse.bovinesandbuttercups.util.MooshroomChildTypeUtil;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
@@ -18,7 +24,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
-@Mixin(MushroomCow.class)
+@Mixin(value = MushroomCow.class)
 public abstract class MushroomCowMixin implements MooshroomInitializedTypeAccess {
     @Shadow public abstract MushroomCow.MushroomType getVariant();
 
@@ -32,9 +38,21 @@ public abstract class MushroomCowMixin implements MooshroomInitializedTypeAccess
              bovineandbuttercups$initializedType = getVariant();
     }
 
-    @Inject(method = "getBreedOffspring(Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/world/entity/AgeableMob;)Lnet/minecraft/world/entity/animal/MushroomCow;", at = @At(value = "RETURN"), locals = LocalCapture.CAPTURE_FAILHARD)
-    private void bovinesandbuttercups$setDataDrivenMooshroomOffspringType(ServerLevel serverLevel, AgeableMob ageableMob, CallbackInfoReturnable<MushroomCow> cir, MushroomCow baby) {
+    @Inject(method = "getBreedOffspring(Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/world/entity/AgeableMob;)Lnet/minecraft/world/entity/animal/MushroomCow;", at = @At(value = "RETURN"))
+    private void bovinesandbuttercups$setDataDrivenMooshroomOffspringType(ServerLevel serverLevel, AgeableMob ageableMob, CallbackInfoReturnable<MushroomCow> cir, @Local(ordinal = 1) MushroomCow baby) {
         CowTypeAttachment.setCowType(baby, MooshroomChildTypeUtil.chooseMooshroomBabyType((MushroomCow)(Object)this, (MushroomCow)ageableMob, baby, ((Animal)(Object)this).getLoveCause()));
+    }
+
+    @ModifyExpressionValue(method = "mobInteract", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/animal/MushroomCow;getVariant()Lnet/minecraft/world/entity/animal/MushroomCow$MushroomType;"))
+    private MushroomCow.MushroomType bovinesandbuttercups$allowMooshroomToEatFlowers(MushroomCow.MushroomType original) {
+        @Nullable CowType<MooshroomConfiguration> cowType = CowTypeAttachment.getCowTypeFromEntity((MushroomCow)(Object)this, BovinesCowTypeTypes.MOOSHROOM_TYPE);
+        if (cowType != null) {
+            if (cowType.configuration().canEatFlowers().isPresent() && cowType.configuration().canEatFlowers().get() && original == MushroomCow.MushroomType.RED)
+                return MushroomCow.MushroomType.BROWN;
+            else if (cowType.configuration().canEatFlowers().isPresent() && !cowType.configuration().canEatFlowers().get() && original == MushroomCow.MushroomType.BROWN)
+                return MushroomCow.MushroomType.RED;
+        }
+        return original;
     }
 
     @Override

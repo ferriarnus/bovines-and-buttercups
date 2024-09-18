@@ -249,7 +249,7 @@ public class BovinesCowTypes {
                         new CowModelLayer(BovinesAndButtercups.asResource("bovinesandbuttercups/snow_layer"), List.of(new ConditionedModifierFactory(BovinesAndButtercups.asResource("snow_layer_with_snow"),
                                 List.of(LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.THIS, EntityPredicate.Builder.entity().nbt(new NbtPredicate(snowTag)).build()).build()),1)))
                 ),
-                false,
+                Optional.empty(),
                 Optional.of(MushroomCow.MushroomType.RED),
                 OffspringConditions.EMPTY
         )));
@@ -260,7 +260,7 @@ public class BovinesCowTypes {
                         new CowModelLayer(BovinesAndButtercups.asResource("bovinesandbuttercups/snow_layer"), List.of(new ConditionedModifierFactory(BovinesAndButtercups.asResource("snow_layer_with_snow"),
                                 List.of(LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.THIS, EntityPredicate.Builder.entity().nbt(new NbtPredicate(snowTag)).build()).build()),1)))
                 ),
-                true,
+                Optional.empty(),
                 Optional.of(MushroomCow.MushroomType.BROWN),
                 OffspringConditions.EMPTY
         )));

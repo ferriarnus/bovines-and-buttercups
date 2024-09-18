@@ -1,6 +1,5 @@
 {
   "type": "bovinesandbuttercups:mooshroom",
-  "can_eat_flowers": false,
   "layers": [
     {
       "texture_location": "bovinesandbuttercups:bovinesandbuttercups/mooshroom/mooshroom_mycelium_layer",
