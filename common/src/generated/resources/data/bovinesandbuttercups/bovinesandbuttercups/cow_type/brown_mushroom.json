@@ -6,20 +6,7 @@
       "texture_location": "bovinesandbuttercups:bovinesandbuttercups/mooshroom/mooshroom_mycelium_layer",
       "texture_modifiers": [
         {
-          "type": "bovinesandbuttercups:conditioned",
-          "condition": [
-            {
-              "condition": "minecraft:inverted",
-              "term": {
-                "condition": "minecraft:entity_properties",
-                "entity": "this",
-                "predicate": {
-                  "nbt": "{has_snow:1b}"
-                }
-              }
-            }
-          ],
-          "id": "bovinesandbuttercups:mooshroom/mycelium_layer_without_snow"
+          "type": "bovinesandbuttercups:fallback"
         }
       ]
     },

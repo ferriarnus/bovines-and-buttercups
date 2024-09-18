@@ -55,6 +55,14 @@ public class ConditionedModifierFactory extends TextureModifierFactory<NoOpTextu
         this.tickRate = tickRate;
     }
 
+    public static boolean isConditionalDisplaying(Entity entity) {
+        return CONDITION_VALUES.containsKey(entity.getUUID()) && CONDITION_VALUES.get(entity.getUUID()).values().stream().anyMatch(bool -> bool);
+    }
+
+    public static boolean shouldDisplayConditional(Entity entity, ResourceLocation conditionId) {
+        return CONDITION_VALUES.containsKey(entity.getUUID()) && CONDITION_VALUES.get(entity.getUUID()).getOrDefault(conditionId, false);
+    }
+
     public ResourceLocation getConditionId() {
         return id;
     }
