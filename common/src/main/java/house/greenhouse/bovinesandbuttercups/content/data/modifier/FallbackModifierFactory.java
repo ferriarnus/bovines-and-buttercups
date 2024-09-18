@@ -51,8 +51,8 @@ public class FallbackModifierFactory extends TextureModifierFactory<NoOpTextureM
     @Override
     public boolean canDisplay(Entity entity) {
         if (conditions.isEmpty())
-            return ConditionedModifierFactory.isConditionalDisplaying(entity);
-        return conditions.stream().allMatch(condition -> ConditionedModifierFactory.shouldDisplayConditional(entity, condition));
+            return !ConditionedModifierFactory.isConditionalDisplaying(entity);
+        return conditions.stream().noneMatch(condition -> ConditionedModifierFactory.shouldDisplayConditional(entity, condition));
     }
 
     @Override
