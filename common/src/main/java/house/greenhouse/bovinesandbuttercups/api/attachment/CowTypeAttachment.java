@@ -74,7 +74,7 @@ public record CowTypeAttachment(Holder<CowType<?>> cowType, Optional<Holder<CowT
         setCowType(entity, cowType, Optional.of(previousCowType));
     }
 
-    private static <C extends CowTypeConfiguration> void setCowType(LivingEntity entity, Holder<CowType<C>> cowType, Optional<Holder<CowType<C>>> previousCowType) {
+    public static <C extends CowTypeConfiguration> void setCowType(LivingEntity entity, Holder<CowType<C>> cowType, Optional<Holder<CowType<C>>> previousCowType) {
         if (cowType.isBound() && cowType.value().type().isApplicable(entity)) {
             BovinesAndButtercups.getHelper().setCowTypeAttachment(entity, new CowTypeAttachment((Holder) cowType, previousCowType.map(cowTypeHolder -> (Holder) cowTypeHolder)));
             if (entity.getType() == EntityType.MOOSHROOM && cowType.value().configuration() instanceof MooshroomConfiguration mc && mc.vanillaType().isPresent())

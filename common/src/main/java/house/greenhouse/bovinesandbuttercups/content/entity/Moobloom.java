@@ -1,5 +1,6 @@
 package house.greenhouse.bovinesandbuttercups.content.entity;
 
+import com.mojang.datafixers.util.Pair;
 import house.greenhouse.bovinesandbuttercups.BovinesAndButtercups;
 import house.greenhouse.bovinesandbuttercups.api.CowType;
 import house.greenhouse.bovinesandbuttercups.api.attachment.CowTypeAttachment;
@@ -215,14 +216,14 @@ public class Moobloom extends Cow {
                     super.thunderHit(level, bolt);
                     return;
                 } else if (compatibleList.size() == 1) {
-                    setCurrentAndPreviousCowType(compatibleList.getFirst().data());
+                    setCurrentWithPreviousCowType(compatibleList.getFirst().data());
                     CowTypeAttachment.sync(this);
                 } else {
                     int totalWeight = level.getRandom().nextInt(compatibleList.stream().map(holderWrapper -> holderWrapper.weight().asInt()).reduce(Integer::sum).orElse(0));
                     for (WeightedEntry.Wrapper<Holder<CowType<MoobloomConfiguration>>> cct : compatibleList) {
                         totalWeight -= cct.weight().asInt();
                         if (totalWeight < 0) {
-                            setCurrentAndPreviousCowType(cct.data());
+                            setCurrentWithPreviousCowType(cct.data());
                             CowTypeAttachment.sync(this);
                             break;
                         }
@@ -420,7 +421,7 @@ public class Moobloom extends Cow {
         return super.mobInteract(player, hand);
     }
 
-    public Holder<CowType<MoobloomConfiguration>> chooseBabyType(ServerLevel level, Moobloom otherParent, Moobloom child) {
+    public Pair<Holder<CowType<MoobloomConfiguration>>, Optional<Holder<CowType<MoobloomConfiguration>>>> chooseBabyType(ServerLevel level, Moobloom otherParent, Moobloom child) {
         List<Holder<CowType<MoobloomConfiguration>>> eligibleCowTypes = new ArrayList<>();
 
         for (Holder.Reference<CowType<?>> cowType : level.registryAccess().registry(BovinesRegistryKeys.COW_TYPE).orElseThrow().holders().filter(type -> type.isBound() && type.value().type() == BovinesCowTypeTypes.MOOBLOOM_TYPE && ((MoobloomConfiguration)type.value().configuration()).offspringConditions() != OffspringConditions.EMPTY).toList()) {
@@ -453,7 +454,7 @@ public class Moobloom extends Cow {
 
             if (getLoveCause() != null)
                 BreedCowWithTypeTrigger.INSTANCE.trigger(getLoveCause(), this, otherParent, child, true, (Holder) randomType);
-            return randomType;
+            return Pair.of(randomType, Optional.empty());
         }
 
         child.particlePositions.clear();
@@ -461,12 +462,12 @@ public class Moobloom extends Cow {
         if (!otherParent.getCowType().equals(getCowType()) && getRandom().nextBoolean()) {
             if (getLoveCause() != null)
                 BreedCowWithTypeTrigger.INSTANCE.trigger(getLoveCause(), this, otherParent, child, false, (Holder<CowType<?>>)(Holder<?>)otherParent.getCowType());
-            return otherParent.getCowType();
+            return Pair.of(otherParent.getCowType(), Optional.ofNullable(otherParent.getPreviousCowType()));
         }
 
         if (getLoveCause() != null)
             BreedCowWithTypeTrigger.INSTANCE.trigger(getLoveCause(), this, otherParent, child, false, (Holder<CowType<?>>)(Holder<?>)getCowType());
-        return getCowType();
+        return Pair.of(getCowType(), Optional.ofNullable(getPreviousCowType()));
     }
 
     public void addParticlePosition(Holder<CowType<?>> type, Vec3 pos) {
@@ -496,7 +497,8 @@ public class Moobloom extends Cow {
     @Override
     public Moobloom getBreedOffspring(ServerLevel level, AgeableMob otherParent) {
         Moobloom moobloom = BovinesEntityTypes.MOOBLOOM.create(level);
-        moobloom.setCowType(chooseBabyType(level, (Moobloom)otherParent, moobloom));
+        var pair = chooseBabyType(level, (Moobloom)otherParent, moobloom);
+        CowTypeAttachment.setCowType(moobloom, pair.getFirst(), pair.getSecond());
         return moobloom;
     }
 
@@ -512,7 +514,11 @@ public class Moobloom extends Cow {
         CowTypeAttachment.setCowType(this, value);
     }
 
-    public void setCurrentAndPreviousCowType(Holder<CowType<MoobloomConfiguration>> value) {
+    public void setCowType(Holder<CowType<MoobloomConfiguration>> value, Holder<CowType<MoobloomConfiguration>> previous) {
+        CowTypeAttachment.setCowType(this, value, previous);
+    }
+
+    public void setCurrentWithPreviousCowType(Holder<CowType<MoobloomConfiguration>> value) {
         CowTypeAttachment.setCowType(this, value, getCowType());
     }
 

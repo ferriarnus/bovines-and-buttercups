@@ -130,7 +130,10 @@ public class BovinesAndButtercupsNeoForge {
             AgeableMob child = event.getChild();
 
             if (parentA instanceof MushroomCow parentACow && parentB instanceof MushroomCow parentBCow && child instanceof MushroomCow childCow) {
-                CowTypeAttachment.setCowType(child, MooshroomChildTypeUtil.chooseMooshroomBabyType(parentACow, parentBCow, childCow, event.getCausedByPlayer()));
+                var pair = MooshroomChildTypeUtil.chooseMooshroomBabyType(parentACow, parentBCow, childCow, event.getCausedByPlayer());
+                if (pair == null)
+                    return;
+                CowTypeAttachment.setCowType(child, pair.getFirst(), pair.getSecond());
             }
         }
 
