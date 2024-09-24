@@ -454,7 +454,7 @@ public class Moobloom extends Cow {
 
             if (getLoveCause() != null)
                 BreedCowWithTypeTrigger.INSTANCE.trigger(getLoveCause(), this, otherParent, child, true, (Holder) randomType);
-            return Pair.of(randomType, Optional.empty());
+            return randomType.value().configuration().offspringConditions().inheritance().handleInheritance(randomType, BovinesAndButtercups.getHelper().getCowTypeAttachment(this), BovinesAndButtercups.getHelper().getCowTypeAttachment(otherParent));
         }
 
         child.particlePositions.clear();

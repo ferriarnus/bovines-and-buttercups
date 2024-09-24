@@ -80,7 +80,9 @@ public class BovinesCowTypes {
                         new CowModelLayer(BovinesAndButtercups.asResource("bovinesandbuttercups/snow_layer"), List.of(new ConditionedModifierFactory(BovinesAndButtercups.asResource("snow_layer_with_snow"),
                                 List.of(LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.THIS, EntityPredicate.Builder.entity().nbt(new NbtPredicate(snowTag)).build()).build()),1)))),
                 Optional.of(nectarRegistry.getOrThrow(BovinesNectars.CHARGELILY)),
-                OffspringConditions.EMPTY)));
+                new OffspringConditions(List.of(new BlockInRadiusCondition.Builder(BlockPredicate.Builder.block().of(BovinesBlocks.CHARGELILY, BovinesBlocks.POTTED_CHARGELILY)).withRadius(12, 6).withOffset(0, 1, 0).build()),
+                        List.of(),
+                        OffspringConditions.Inheritance.PARENT))));
 
         Holder.Reference<CowType<?>> chargelilyMoobloom = context.lookup(BovinesRegistryKeys.COW_TYPE).getOrThrow(MoobloomKeys.CHARGELILY);
         SimpleWeightedRandomList<HolderSet<Biome>> buttercupFlowerForestSet = SimpleWeightedRandomList.<HolderSet<Biome>>builder().add(context.lookup(Registries.BIOME).getOrThrow(BovinesTags.BiomeTags.HAS_MOOBLOOM_FLOWER_FOREST), 7).build();
@@ -103,7 +105,8 @@ public class BovinesCowTypes {
                                 BlockPredicate.Builder.block().of(Blocks.ACACIA_LOG, Blocks.ACACIA_WOOD, Blocks.ACACIA_SAPLING, Blocks.POTTED_ACACIA_SAPLING)
                         ),
                         BlockPredicate.Builder.block().of(BovinesBlocks.BIRD_OF_PARADISE, BovinesBlocks.POTTED_BIRD_OF_PARADISE))),
-                        List.of()))));
+                        List.of(),
+                        OffspringConditions.Inheritance.PARENT))));
         context.register(MoobloomKeys.BUTTERCUP, new CowType<>(BovinesCowTypeTypes.MOOBLOOM_TYPE, new MoobloomConfiguration(
                 new CowTypeConfiguration.Settings(Optional.empty(), buttercupFlowerForestSet, chargelilyWeighted, Optional.of(ColorParticleOption.create(BovinesParticleTypes.BLOOM, ColorConstants.BUTTERCUP))),
                 new BlockReference<>(Optional.of(BovinesBlocks.BUTTERCUP.defaultBlockState()), Optional.empty(), Optional.empty()),
@@ -120,7 +123,8 @@ public class BovinesCowTypes {
                                 BlockPredicate.Builder.block().of(Blocks.BIRCH_LOG, Blocks.BIRCH_WOOD, Blocks.BIRCH_SAPLING, Blocks.POTTED_BIRCH_SAPLING)
                         ),
                         BlockPredicate.Builder.block().of(BovinesBlocks.BUTTERCUP, BovinesBlocks.POTTED_BUTTERCUP))),
-                        List.of()))));
+                        List.of(),
+                        OffspringConditions.Inheritance.PARENT))));
         context.register(MoobloomKeys.FREESIA, new CowType<>(BovinesCowTypeTypes.MOOBLOOM_TYPE, new MoobloomConfiguration(
                 new CowTypeConfiguration.Settings(Optional.empty(), SimpleWeightedRandomList.empty(), chargelilyWeighted, Optional.of(ColorParticleOption.create(BovinesParticleTypes.BLOOM, ColorConstants.FREESIA))),
                 new BlockReference<>(Optional.of(BovinesBlocks.FREESIA.defaultBlockState()), Optional.empty(), Optional.empty()),
@@ -137,7 +141,8 @@ public class BovinesCowTypes {
                                 BlockPredicate.Builder.block().of(Blocks.MANGROVE_LOG, Blocks.MANGROVE_WOOD, Blocks.MANGROVE_PROPAGULE, Blocks.POTTED_MANGROVE_PROPAGULE)
                         ),
                         BlockPredicate.Builder.block().of(BovinesBlocks.FREESIA, BovinesBlocks.POTTED_FREESIA))),
-                        List.of()))));
+                        List.of(),
+                        OffspringConditions.Inheritance.PARENT))));
         context.register(MoobloomKeys.HYACINTH, new CowType<>(BovinesCowTypeTypes.MOOBLOOM_TYPE, new MoobloomConfiguration(
                 new CowTypeConfiguration.Settings(Optional.empty(), SimpleWeightedRandomList.empty(), chargelilyWeighted, Optional.of(ColorParticleOption.create(BovinesParticleTypes.BLOOM, ColorConstants.HYACINTH))),
                 new BlockReference<>(Optional.of(BovinesBlocks.HYACINTH.defaultBlockState()), Optional.empty(), Optional.empty()),
@@ -154,7 +159,8 @@ public class BovinesCowTypes {
                                 BlockPredicate.Builder.block().of(Blocks.DARK_OAK_LOG, Blocks.DARK_OAK_WOOD, Blocks.DARK_OAK_SAPLING, Blocks.POTTED_DARK_OAK_SAPLING)
                         ),
                         BlockPredicate.Builder.block().of(BovinesBlocks.HYACINTH, BovinesBlocks.POTTED_HYACINTH))),
-                        List.of()))));
+                        List.of(),
+                        OffspringConditions.Inheritance.PARENT))));
         context.register(MoobloomKeys.LIMELIGHT, new CowType<>(BovinesCowTypeTypes.MOOBLOOM_TYPE, new MoobloomConfiguration(
                 new CowTypeConfiguration.Settings(Optional.empty(), SimpleWeightedRandomList.empty(), chargelilyWeighted, Optional.of(ColorParticleOption.create(BovinesParticleTypes.BLOOM, ColorConstants.LIMELIGHT))),
                 new BlockReference<>(Optional.of(BovinesBlocks.LIMELIGHT.defaultBlockState()), Optional.empty(), Optional.empty()),
@@ -170,7 +176,8 @@ public class BovinesCowTypes {
                                 BlockPredicate.Builder.block().of(Blocks.FLOWERING_AZALEA_LEAVES, Blocks.FLOWERING_AZALEA, Blocks.POTTED_FLOWERING_AZALEA)
                         ),
                         BlockPredicate.Builder.block().of(BovinesBlocks.LIMELIGHT, BovinesBlocks.POTTED_LIMELIGHT))),
-                        List.of()))));
+                        List.of(),
+                        OffspringConditions.Inheritance.PARENT))));
         context.register(MoobloomKeys.LINGHOLM, new CowType<>(BovinesCowTypeTypes.MOOBLOOM_TYPE, new MoobloomConfiguration(
                 new CowTypeConfiguration.Settings(Optional.empty(), SimpleWeightedRandomList.empty(), chargelilyWeighted, Optional.of(ColorParticleOption.create(BovinesParticleTypes.BLOOM, ColorConstants.LINGHOLM))),
                 new BlockReference<>(Optional.of(BovinesBlocks.LINGHOLM.defaultBlockState()), Optional.empty(), Optional.empty()),
@@ -187,7 +194,8 @@ public class BovinesCowTypes {
                                 BlockPredicate.Builder.block().of(Blocks.SPRUCE_LOG, Blocks.SPRUCE_WOOD, Blocks.SPRUCE_SAPLING, Blocks.POTTED_SPRUCE_SAPLING)
                         ),
                         BlockPredicate.Builder.block().of(BovinesBlocks.LINGHOLM, BovinesBlocks.POTTED_LINGHOLM))),
-                        List.of()))));
+                        List.of(),
+                        OffspringConditions.Inheritance.PARENT))));
         context.register(MoobloomKeys.PINK_DAISY, new CowType<>(BovinesCowTypeTypes.MOOBLOOM_TYPE, new MoobloomConfiguration(
                 new CowTypeConfiguration.Settings(Optional.empty(), pinkDaisyFlowerForestSet, chargelilyWeighted, Optional.of(ColorParticleOption.create(BovinesParticleTypes.BLOOM, ColorConstants.PINK_DAISY))),
                 new BlockReference<>(Optional.of(BovinesBlocks.PINK_DAISY.defaultBlockState()), Optional.empty(), Optional.empty()),
@@ -205,7 +213,8 @@ public class BovinesCowTypes {
                                         Blocks.CHERRY_LOG, Blocks.CHERRY_WOOD, Blocks.CHERRY_SAPLING, Blocks.POTTED_CHERRY_SAPLING)
                         ),
                         BlockPredicate.Builder.block().of(BovinesBlocks.PINK_DAISY, BovinesBlocks.POTTED_PINK_DAISY))),
-                        List.of()))));
+                        List.of(),
+                        OffspringConditions.Inheritance.PARENT))));
         context.register(MoobloomKeys.SNOWDROP, new CowType<>(BovinesCowTypeTypes.MOOBLOOM_TYPE, new MoobloomConfiguration(
                 new CowTypeConfiguration.Settings(Optional.empty(), SimpleWeightedRandomList.empty(), chargelilyWeighted, Optional.of(ColorParticleOption.create(BovinesParticleTypes.BLOOM, ColorConstants.SNOWDROP))),
                 new BlockReference<>(Optional.of(BovinesBlocks.SNOWDROP.defaultBlockState()), Optional.empty(), Optional.empty()),
@@ -222,7 +231,8 @@ public class BovinesCowTypes {
                                 BlockPredicate.Builder.block().of(Blocks.SPRUCE_LOG, Blocks.SPRUCE_WOOD, Blocks.SPRUCE_SAPLING, Blocks.POTTED_SPRUCE_SAPLING)
                         ),
                         BlockPredicate.Builder.block().of(BovinesBlocks.SNOWDROP, BovinesBlocks.POTTED_SNOWDROP))),
-                        List.of()))));
+                        List.of(),
+                        OffspringConditions.Inheritance.PARENT))));
         context.register(MoobloomKeys.TROPICAL_BLUE, new CowType<>(BovinesCowTypeTypes.MOOBLOOM_TYPE, new MoobloomConfiguration(
                 new CowTypeConfiguration.Settings(Optional.empty(), SimpleWeightedRandomList.empty(), chargelilyWeighted, Optional.of(ColorParticleOption.create(BovinesParticleTypes.BLOOM, ColorConstants.TROPICAL_BLUE))),
                 new BlockReference<>(Optional.of(BovinesBlocks.TROPICAL_BLUE.defaultBlockState()), Optional.empty(), Optional.empty()),
@@ -239,7 +249,8 @@ public class BovinesCowTypes {
                                 BlockPredicate.Builder.block().of(Blocks.JUNGLE_LOG, Blocks.JUNGLE_WOOD, Blocks.JUNGLE_SAPLING, Blocks.POTTED_JUNGLE_SAPLING)
                         ),
                         BlockPredicate.Builder.block().of(BovinesBlocks.TROPICAL_BLUE, BovinesBlocks.POTTED_TROPICAL_BLUE))),
-                        List.of()))));
+                        List.of(),
+                        OffspringConditions.Inheritance.PARENT))));
 
         // Mooshroom Types
         context.register(MooshroomKeys.RED_MUSHROOM, new CowType<>(BovinesCowTypeTypes.MOOSHROOM_TYPE, new MooshroomConfiguration(

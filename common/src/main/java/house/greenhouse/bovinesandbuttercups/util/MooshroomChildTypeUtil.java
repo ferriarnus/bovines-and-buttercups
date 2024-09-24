@@ -61,7 +61,7 @@ public class MooshroomChildTypeUtil {
 
             if (parent.getLoveCause() != null)
                 BreedCowWithTypeTrigger.INSTANCE.trigger(parent.getLoveCause(), parent, other, child, true, (Holder) randomType);
-            return Pair.of(randomType, Optional.empty());
+            return randomType.value().configuration().offspringConditions().inheritance().handleInheritance(randomType, BovinesAndButtercups.getHelper().getCowTypeAttachment(parent), BovinesAndButtercups.getHelper().getCowTypeAttachment(other));
         }
 
         BovinesAndButtercups.getHelper().clearParticlePositions(child);

@@ -40,6 +40,25 @@
     }
   ],
   "nectar": "bovinesandbuttercups:chargelily",
+  "offspring_conditions": [
+    {
+      "block": {
+        "blocks": [
+          "bovinesandbuttercups:chargelily",
+          "bovinesandbuttercups:potted_chargelily"
+        ]
+      },
+      "condition": "bovinesandbuttercups:block_in_radius",
+      "radius": {
+        "max_x": 6.0,
+        "max_y": 4.0,
+        "max_z": 6.0,
+        "min_x": -6.0,
+        "min_y": -2.0,
+        "min_z": -6.0
+      }
+    }
+  ],
   "particle": {
     "type": "bovinesandbuttercups:bloom",
     "color": 6671095
