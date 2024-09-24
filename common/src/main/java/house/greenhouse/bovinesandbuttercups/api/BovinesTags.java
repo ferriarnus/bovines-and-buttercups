@@ -32,6 +32,7 @@ public class BovinesTags {
     }
 
     public static class BlockTags {
+        public static final TagKey<Block> CANDLE_CUPCAKES = TagKey.create(Registries.BLOCK, BovinesAndButtercups.asResource("candle_cupcakes"));
         public static final TagKey<Block> DOES_NOT_STICK_RICH_HONEY_BLOCK = TagKey.create(Registries.BLOCK, BovinesAndButtercups.asResource("does_not_stick/rich_honey_block"));
         public static final TagKey<Block> MOOBLOOM_FLOWERS = TagKey.create(Registries.BLOCK, BovinesAndButtercups.asResource("moobloom_flowers"));
         public static final TagKey<Block> SNOWDROP_PLACEABLE = TagKey.create(Registries.BLOCK, BovinesAndButtercups.asResource("snowdrop_placeable"));

@@ -69,19 +69,23 @@
 - Removed `vanilla_spawning_hack` field. Red Mushroom Mooshrooms are now datapacked to be a natural spawn in the Mushroom Fields.
 - Added `vanilla_type` field to Mooshroom Types, this will map a vanilla Mooshroom type to a Bovines and Buttercups Mooshroom type.
 - Removed `dye_craft_result` field from Custom Flowers. This has been replaced with using your loader's `components` custom ingredient type and a regular recipe.
+  - This change has also been applied to Suspicious Stew recipes, in preparation for future Minecraft versions.
+    - For the above, you may also use the result field's `components` field.
 - Custom Mushroom Types now use template pools for `huge_structures` field.
 - Removed `bovinesandbuttercups:mutation` trigger and replaced it with `bovinesandbuttercups:breed_cow_with_type`
   - Added `player` field, a predicate for the player breeding the animals.
   - Added `different_from_parents`, which determines whether breeding conditions were in play to create a different cow type.
 
-#### Example Custom Flower Dye Recipes
+#### Example Custom Recipes
+For crossplatforming these, use both unique fields within the same ingredient.
 <details>
 <summary>Fabric</summary>
+
 ```json
 {
   "type": "minecraft:crafting_shapeless",
   "category": "misc",
-  "group": "red_dye",
+  "group": "white_dye",
   "ingredients": [
     {
       "fabric:type": "fabric:components",
@@ -89,24 +93,64 @@
         "item": "bovinesandbuttercups:custom_flower"
       },
       "components": {
-        "bovinesandbuttercups:custom_flower": "test:fire_flower"
+        "bovinesandbuttercups:custom_flower": "example:cool_flower"
       }
     }
   ],
   "result": {
-    "id": "minecraft:red_dye",
+    "id": "minecraft:white_dye",
     "count": 1
+  }
+}
+```
+```json
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "group": "white_dye",
+  "ingredients": [
+    {
+      "item": "minecraft:bowl"
+    },
+    {
+      "item": "minecraft:red_mushroom"
+    },
+    {
+      "item": "minecraft:brown_mushroom"
+    },
+    {
+      "fabric:type": "fabric:components",
+      "base": {
+        "item": "bovinesandbuttercups:custom_flower"
+      },
+      "components": {
+        "bovinesandbuttercups:custom_flower": "example:cool_flower"
+      }
+    }
+  ],
+  "result": {
+    "id": "minecraft:suspicious_stew",
+    "count": 1,
+    "components": {
+      "minecraft:suspicious_stew_effects": [
+        {
+          "id": "minecraft:regeneration",
+          "duration": 20
+        }
+      ]
+    }
   }
 }
 ```
 </details>
 <details>
 <summary>NeoForge</summary>
+
 ```json
 {
   "type": "minecraft:crafting_shapeless",
   "category": "misc",
-  "group": "red_dye",
+  "group": "white_dye",
   "ingredients": [
     {
       "type": "neoforge:components",
@@ -114,13 +158,51 @@
         "bovinesandbuttercups:custom_flower"
       ],
       "components": {
-        "bovinesandbuttercups:custom_flower": "test:fire_flower"
+        "bovinesandbuttercups:custom_flower": "example:cool_flower"
       }
     }
   ],
   "result": {
-    "id": "minecraft:red_dye",
+    "id": "minecraft:white_dye",
     "count": 1
+  }
+}
+```
+```json
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "minecraft:bowl"
+    },
+    {
+      "item": "minecraft:red_mushroom"
+    },
+    {
+      "item": "minecraft:brown_mushroom"
+    },
+    {
+      "type": "neoforge:components",
+      "items": [
+        "bovinesandbuttercups:custom_flower"
+      ],
+      "components": {
+        "bovinesandbuttercups:custom_flower": "example:cool_flower"
+      }
+    }
+  ],
+  "result": {
+    "id": "minecraft:suspicious_stew",
+    "count": 1,
+    "components": {
+      "minecraft:suspicious_stew_effects": [
+        {
+          "id": "minecraft:regeneration",
+          "duration": 20
+        }
+      ]
+    }
   }
 }
 ```

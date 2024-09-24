@@ -1,13 +1,16 @@
 package house.greenhouse.bovinesandbuttercups;
 
+import com.mojang.datafixers.util.Pair;
 import house.greenhouse.bovinesandbuttercups.access.BeeGoalAccess;
 import house.greenhouse.bovinesandbuttercups.access.MooshroomInitializedTypeAccess;
+import house.greenhouse.bovinesandbuttercups.api.CowType;
 import house.greenhouse.bovinesandbuttercups.api.attachment.CowTypeAttachment;
 import house.greenhouse.bovinesandbuttercups.api.attachment.LockdownAttachment;
 import house.greenhouse.bovinesandbuttercups.api.cowtype.CowModelLayer;
 import house.greenhouse.bovinesandbuttercups.api.cowtype.modifier.TextureModifierFactory;
 import house.greenhouse.bovinesandbuttercups.content.advancements.criterion.LockEffectTrigger;
 import house.greenhouse.bovinesandbuttercups.content.advancements.criterion.PreventEffectTrigger;
+import house.greenhouse.bovinesandbuttercups.content.block.CandleCupcakeBlock;
 import house.greenhouse.bovinesandbuttercups.content.effect.LockdownEffect;
 import house.greenhouse.bovinesandbuttercups.content.entity.Moobloom;
 import house.greenhouse.bovinesandbuttercups.content.entity.goal.MoveToMoobloomGoal;
@@ -48,12 +51,15 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biomes;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
+import net.neoforged.neoforge.common.ItemAbilities;
+import net.neoforged.neoforge.common.ItemAbility;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
 import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
@@ -62,12 +68,16 @@ import net.neoforged.neoforge.event.entity.RegisterSpawnPlacementsEvent;
 import net.neoforged.neoforge.event.entity.living.BabyEntitySpawnEvent;
 import net.neoforged.neoforge.event.entity.living.MobEffectEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
+import net.neoforged.neoforge.event.level.BlockEvent;
 import net.neoforged.neoforge.event.tick.EntityTickEvent;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.function.Consumer;
+import java.util.stream.Stream;
 
 @Mod(BovinesAndButtercups.MOD_ID)
 public class BovinesAndButtercupsNeoForge {
@@ -245,6 +255,12 @@ public class BovinesAndButtercupsNeoForge {
                 }
             }
         }
+
+        @SubscribeEvent(priority = EventPriority.HIGH) // High to make sure that this allows ppl to modify before and after it.
+        public static void onToolModification(BlockEvent.BlockToolModificationEvent event) {
+            if (event.getItemAbility() == ItemAbilities.FIRESTARTER_LIGHT && CandleCupcakeBlock.canLight(event.getFinalState()))
+                event.setFinalState(event.getFinalState().setValue(BlockStateProperties.LIT, true));
+        }
     }
 
     @EventBusSubscriber(modid = BovinesAndButtercups.MOD_ID, bus = EventBusSubscriber.Bus.MOD)
@@ -277,40 +293,28 @@ public class BovinesAndButtercupsNeoForge {
         @SubscribeEvent
         public static void buildCreativeModeTabs(BuildCreativeModeTabContentsEvent event) {
             if (event.getTabKey() == CreativeModeTabs.NATURAL_BLOCKS) {
-                ItemStack startItem = null;
-                for (ItemStack entry : event.getParentEntries()) {
-                    if (entry.is(Items.SPORE_BLOSSOM)) {
-                        startItem = entry;
-                        break;
-                    }
-                }
-                if (startItem != null) {
-                    List<Item> items = List.of(
-                            BovinesItems.FREESIA,
-                            BovinesItems.BIRD_OF_PARADISE,
-                            BovinesItems.BUTTERCUP,
-                            BovinesItems.LIMELIGHT,
-                            BovinesItems.LINGHOLM,
-                            BovinesItems.CHARGELILY,
-                            BovinesItems.TROPICAL_BLUE,
-                            BovinesItems.HYACINTH,
-                            BovinesItems.PINK_DAISY,
-                            BovinesItems.SNOWDROP
-                    );
-
-                    for (Item item : items) {
-                        ItemStack stack = new ItemStack(item);
-                        event.insertAfter(startItem, stack, CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
-                        startItem = stack;
-                    }
-                }
                 CreativeTabHelper.getCustomFlowersForCreativeTab(event.getParameters().holders()).reversed().forEach(stack -> event.insertAfter(new ItemStack(BovinesItems.SNOWDROP), stack, CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS));
                 CreativeTabHelper.getCustomMushroomsForCreativeTab(event.getParameters().holders()).reversed().forEach(stack -> event.insertAfter(new ItemStack(Items.RED_MUSHROOM), stack, CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS));
                 CreativeTabHelper.getCustomMushroomBlocksForCreativeTab(event.getParameters().holders()).reversed().forEach(stack -> event.insertAfter(new ItemStack(Items.RED_MUSHROOM_BLOCK), stack, CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS));
-                event.insertAfter(new ItemStack(Items.HONEY_BLOCK), new ItemStack(BovinesItems.RICH_HONEY_BLOCK), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+                insertAfter(event.getParentEntries(), Items.SPORE_BLOSSOM, List.of(
+                        BovinesItems.FREESIA,
+                        BovinesItems.BIRD_OF_PARADISE,
+                        BovinesItems.BUTTERCUP,
+                        BovinesItems.LIMELIGHT,
+                        BovinesItems.LINGHOLM,
+                        BovinesItems.CHARGELILY,
+                        BovinesItems.TROPICAL_BLUE,
+                        BovinesItems.HYACINTH,
+                        BovinesItems.PINK_DAISY,
+                        BovinesItems.SNOWDROP
+                ), event::insertAfter);
             } else if (event.getTabKey() == CreativeModeTabs.FOOD_AND_DRINKS) {
                 CreativeTabHelper.getNectarBowlsForCreativeTab(event.getParameters().holders()).reversed().forEach(stack -> event.insertAfter(new ItemStack(Items.MILK_BUCKET), stack, CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS));
                 event.insertAfter(new ItemStack(Items.HONEY_BOTTLE), new ItemStack(BovinesItems.RICH_HONEY_BOTTLE), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+                insertAfter(event.getParentEntries(), Items.CAKE, List.of(
+                        BovinesItems.BUTTERCUP_CUPCAKE,
+                        BovinesItems.PINK_DAISY_CUPCAKE
+                ), event::insertAfter);
             } else if (event.getTabKey() == CreativeModeTabs.SPAWN_EGGS) {
                 event.accept(BovinesItems.MOOBLOOM_SPAWN_EGG);
             } else if (event.getTabKey() == CreativeModeTabs.TOOLS_AND_UTILITIES) {
@@ -319,6 +323,28 @@ public class BovinesAndButtercupsNeoForge {
                 event.insertAfter(new ItemStack(Items.HONEY_BLOCK), new ItemStack(BovinesItems.RICH_HONEY_BLOCK), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
             }
         }
+    }
+
+    private static void insertAfter(Set<ItemStack> stacks, Item start, List<Item> itemsToAdd, AddAfterOperation operation) {
+        ItemStack startItem = null;
+        for (ItemStack entry : stacks) {
+            if (entry.is(start)) {
+                startItem = entry;
+                break;
+            }
+        }
+        if (startItem != null) {
+            for (Item item : itemsToAdd) {
+                ItemStack stack = new ItemStack(item);
+                operation.insertAfter(startItem, stack, CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+                startItem = stack;
+            }
+        }
+    }
+
+    @FunctionalInterface
+    private interface AddAfterOperation {
+        void insertAfter(ItemStack startItem, ItemStack afterItem, CreativeModeTab.TabVisibility visibility);
     }
 
 }

@@ -86,7 +86,7 @@ loom {
             vmArgs("-Dmixin.debug.verbose=true", "-Dmixin.debug.export=true")
         }
         register("datagen") {
-            server()
+            client()
             configName = "Fabric Datagen"
             setSource(sourceSets["test"])
             ideConfigGenerated(true)

@@ -164,7 +164,8 @@ public class BovinesAndButtercupsFabric implements ModInitializer {
                     BovinesItems.TROPICAL_BLUE,
                     BovinesItems.HYACINTH,
                     BovinesItems.PINK_DAISY,
-                    BovinesItems.SNOWDROP).map(ItemStack::new).toList());
+                    BovinesItems.SNOWDROP
+            ).map(ItemStack::new).toList());
             entries.addAfter(BovinesItems.SNOWDROP, CreativeTabHelper.getCustomFlowersForCreativeTab(entries.getContext().holders()));
             entries.addAfter(Items.RED_MUSHROOM, CreativeTabHelper.getCustomMushroomsForCreativeTab(entries.getContext().holders()));
             entries.addAfter(Items.RED_MUSHROOM_BLOCK, CreativeTabHelper.getCustomMushroomBlocksForCreativeTab(entries.getContext().holders()));
@@ -173,6 +174,10 @@ public class BovinesAndButtercupsFabric implements ModInitializer {
         ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.FOOD_AND_DRINKS).register(entries -> {
             entries.addAfter(Items.MILK_BUCKET, CreativeTabHelper.getNectarBowlsForCreativeTab(entries.getContext().holders()));
             entries.addAfter(Items.HONEY_BOTTLE, BovinesItems.RICH_HONEY_BOTTLE);
+            entries.addAfter(Items.CAKE, Stream.of(
+                    BovinesItems.BUTTERCUP_CUPCAKE,
+                    BovinesItems.PINK_DAISY_CUPCAKE
+            ).map(ItemStack::new).toList());
         });
         ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.SPAWN_EGGS).register(entries -> {
             entries.accept(BovinesItems.MOOBLOOM_SPAWN_EGG);

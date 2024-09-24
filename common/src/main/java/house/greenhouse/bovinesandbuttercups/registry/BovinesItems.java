@@ -36,6 +36,9 @@ public class BovinesItems {
     public static final BlockItem FREESIA = new BlockItem(BovinesBlocks.FREESIA, new Item.Properties());
     public static final BlockItem LINGHOLM = new BlockItem(BovinesBlocks.LINGHOLM, new Item.Properties());
 
+    public static final BlockItem BUTTERCUP_CUPCAKE = new BlockItem(BovinesBlocks.BUTTERCUP_CUPCAKE, new Item.Properties().stacksTo(16));
+    public static final BlockItem PINK_DAISY_CUPCAKE = new BlockItem(BovinesBlocks.PINK_DAISY_CUPCAKE, new Item.Properties().stacksTo(16));
+
     public static final CustomFlowerItem CUSTOM_FLOWER = new CustomFlowerItem(BovinesBlocks.CUSTOM_FLOWER, new Item.Properties());
     public static final CustomMushroomItem CUSTOM_MUSHROOM = new CustomMushroomItem(BovinesBlocks.CUSTOM_MUSHROOM, new Item.Properties());
     public static final CustomHugeMushroomItem CUSTOM_MUSHROOM_BLOCK = new CustomHugeMushroomItem(BovinesBlocks.CUSTOM_MUSHROOM_BLOCK, new Item.Properties());
@@ -44,6 +47,7 @@ public class BovinesItems {
 
     public static final HoneyBottleItem RICH_HONEY_BOTTLE = new HoneyBottleItem(new Item.Properties().craftRemainder(Items.GLASS_BOTTLE).food(BovinesFoods.RICH_HONEY_BOTTLE).stacksTo(16));
     public static final BlockItem RICH_HONEY_BLOCK = new BlockItem(BovinesBlocks.RICH_HONEY_BLOCK, new Item.Properties());
+
 
     public static void registerAll(RegistrationCallback<Item> callback) {
         callback.register(BuiltInRegistries.ITEM, BovinesAndButtercups.asResource("nectar_bowl"), NECTAR_BOWL);
@@ -59,6 +63,9 @@ public class BovinesItems {
         callback.register(BuiltInRegistries.ITEM, BovinesAndButtercups.asResource("tropical_blue"), TROPICAL_BLUE);
         callback.register(BuiltInRegistries.ITEM, BovinesAndButtercups.asResource("freesia"), FREESIA);
         callback.register(BuiltInRegistries.ITEM, BovinesAndButtercups.asResource("lingholm"), LINGHOLM);
+
+        callback.register(BuiltInRegistries.ITEM, BovinesAndButtercups.asResource("buttercup_cupcake"), BUTTERCUP_CUPCAKE);
+        callback.register(BuiltInRegistries.ITEM, BovinesAndButtercups.asResource("pink_daisy_cupcake"), PINK_DAISY_CUPCAKE);
 
         callback.register(BuiltInRegistries.ITEM, BovinesAndButtercups.asResource("custom_flower"), CUSTOM_FLOWER);
         callback.register(BuiltInRegistries.ITEM, BovinesAndButtercups.asResource("custom_mushroom"), CUSTOM_MUSHROOM);

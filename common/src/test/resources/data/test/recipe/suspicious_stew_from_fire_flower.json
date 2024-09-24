@@ -1,0 +1,40 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "minecraft:bowl"
+    },
+    {
+      "item": "minecraft:red_mushroom"
+    },
+    {
+      "item": "minecraft:brown_mushroom"
+    },
+    {
+      "fabric:type": "fabric:components",
+      "base": {
+        "item": "bovinesandbuttercups:custom_flower"
+      },
+      "type": "neoforge:components",
+      "items": [
+        "bovinesandbuttercups:custom_flower"
+      ],
+      "components": {
+        "bovinesandbuttercups:custom_flower": "test:fire_flower"
+      }
+    }
+  ],
+  "result": {
+    "id": "minecraft:suspicious_stew",
+    "count": 1,
+    "components": {
+      "minecraft:suspicious_stew_effects": [
+        {
+          "id": "minecraft:fire_resistance",
+          "duration": 80
+        }
+      ]
+    }
+  }
+}

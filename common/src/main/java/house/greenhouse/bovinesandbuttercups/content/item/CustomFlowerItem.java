@@ -29,7 +29,7 @@ public class CustomFlowerItem extends BlockItem {
         return Component.translatable("block." + location.getNamespace() + "." + location.getPath());
     }
 
-    public static SuspiciousStewEffects getSuspiciousStewEffect(ItemStack stack, RegistryAccess registryAccess) {
+    public static SuspiciousStewEffects getSuspiciousStewEffects(ItemStack stack, RegistryAccess registryAccess) {
         if (stack.has(BovinesDataComponents.CUSTOM_FLOWER)) {
             ItemCustomFlower flower = stack.get(BovinesDataComponents.CUSTOM_FLOWER);
             if (flower.holder().isBound())
