@@ -1,0 +1,6 @@
+{
+  "parent": "bovinesandbuttercups:block/template_three_cupcakes",
+  "textures": {
+    "all": "bovinesandbuttercups:block/bird_of_paradise_cupcake"
+  }
+}

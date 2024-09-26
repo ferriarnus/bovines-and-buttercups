@@ -1,9 +1,7 @@
 package house.greenhouse.bovinesandbuttercups;
 
-import com.mojang.datafixers.util.Pair;
 import house.greenhouse.bovinesandbuttercups.access.BeeGoalAccess;
 import house.greenhouse.bovinesandbuttercups.access.MooshroomInitializedTypeAccess;
-import house.greenhouse.bovinesandbuttercups.api.CowType;
 import house.greenhouse.bovinesandbuttercups.api.attachment.CowTypeAttachment;
 import house.greenhouse.bovinesandbuttercups.api.attachment.LockdownAttachment;
 import house.greenhouse.bovinesandbuttercups.api.cowtype.CowModelLayer;
@@ -59,7 +57,6 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.common.ItemAbilities;
-import net.neoforged.neoforge.common.ItemAbility;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
 import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
@@ -76,8 +73,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import java.util.function.Consumer;
-import java.util.stream.Stream;
 
 @Mod(BovinesAndButtercups.MOD_ID)
 public class BovinesAndButtercupsNeoForge {
@@ -312,8 +307,16 @@ public class BovinesAndButtercupsNeoForge {
                 CreativeTabHelper.getNectarBowlsForCreativeTab(event.getParameters().holders()).reversed().forEach(stack -> event.insertAfter(new ItemStack(Items.MILK_BUCKET), stack, CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS));
                 event.insertAfter(new ItemStack(Items.HONEY_BOTTLE), new ItemStack(BovinesItems.RICH_HONEY_BOTTLE), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
                 insertAfter(event.getParentEntries(), Items.CAKE, List.of(
+                        BovinesItems.FREESIA_CUPCAKE,
+                        BovinesItems.BIRD_OF_PARADISE_CUPCAKE,
                         BovinesItems.BUTTERCUP_CUPCAKE,
-                        BovinesItems.PINK_DAISY_CUPCAKE
+                        BovinesItems.LIMELIGHT_CUPCAKE,
+                        BovinesItems.LINGHOLM_CUPCAKE,
+                        BovinesItems.CHARGELILY_CUPCAKE,
+                        BovinesItems.TROPICAL_BLUE_CUPCAKE,
+                        BovinesItems.HYACINTH_CUPCAKE,
+                        BovinesItems.PINK_DAISY_CUPCAKE,
+                        BovinesItems.SNOWDROP_CUPCAKE
                 ), event::insertAfter);
             } else if (event.getTabKey() == CreativeModeTabs.SPAWN_EGGS) {
                 event.accept(BovinesItems.MOOBLOOM_SPAWN_EGG);

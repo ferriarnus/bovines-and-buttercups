@@ -185,7 +185,9 @@ public class CandleCupcakeBlock extends AbstractCandleBlock {
             return ItemInteractionResult.sidedSuccess(level.isClientSide);
         }
 
-        if (stack.is(candle.asItem()) && state.getValue(CANDLES) < state.getValue(COUNT)) {
+        if (stack.is(candle.asItem())) {
+            if (state.getValue(CANDLES) >= state.getValue(COUNT))
+                return ItemInteractionResult.CONSUME;
             stack.consume(1, player);
             level.playSound(null, pos, SoundEvents.CAKE_ADD_CANDLE, SoundSource.BLOCKS, 1.0F, 1.0F);
             level.setBlock(pos, state.setValue(CANDLES, state.getValue(CANDLES) + 1), 3);

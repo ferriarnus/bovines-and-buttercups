@@ -55,7 +55,6 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.models.BlockModelGenerators;
 import net.minecraft.data.models.ItemModelGenerators;
-import net.minecraft.data.models.blockstates.BlockStateGenerator;
 import net.minecraft.data.models.blockstates.MultiVariantGenerator;
 import net.minecraft.data.models.blockstates.PropertyDispatch;
 import net.minecraft.data.models.blockstates.Variant;
@@ -142,9 +141,25 @@ public class BovinesDataGenerator implements DataGeneratorEntrypoint {
         public void generateBlockStateModels(BlockModelGenerators generators) {
             createCupcake(BovinesBlocks.BUTTERCUP_CUPCAKE, generators);
             createCupcake(BovinesBlocks.PINK_DAISY_CUPCAKE, generators);
+            createCupcake(BovinesBlocks.LIMELIGHT_CUPCAKE, generators);
+            createCupcake(BovinesBlocks.BIRD_OF_PARADISE_CUPCAKE, generators);
+            createCupcake(BovinesBlocks.CHARGELILY_CUPCAKE, generators);
+            createCupcake(BovinesBlocks.HYACINTH_CUPCAKE, generators);
+            createCupcake(BovinesBlocks.SNOWDROP_CUPCAKE, generators);
+            createCupcake(BovinesBlocks.TROPICAL_BLUE_CUPCAKE, generators);
+            createCupcake(BovinesBlocks.FREESIA_CUPCAKE, generators);
+            createCupcake(BovinesBlocks.LINGHOLM_CUPCAKE, generators);
 
             CandleCupcakeBlock.forEachCandleVariant(BovinesBlocks.BUTTERCUP_CUPCAKE, block -> createCandleCupcake(block, generators));
             CandleCupcakeBlock.forEachCandleVariant(BovinesBlocks.PINK_DAISY_CUPCAKE, block -> createCandleCupcake(block, generators));
+            CandleCupcakeBlock.forEachCandleVariant(BovinesBlocks.LIMELIGHT_CUPCAKE, block -> createCandleCupcake(block, generators));
+            CandleCupcakeBlock.forEachCandleVariant(BovinesBlocks.BIRD_OF_PARADISE_CUPCAKE, block -> createCandleCupcake(block, generators));
+            CandleCupcakeBlock.forEachCandleVariant(BovinesBlocks.CHARGELILY_CUPCAKE, block -> createCandleCupcake(block, generators));
+            CandleCupcakeBlock.forEachCandleVariant(BovinesBlocks.HYACINTH_CUPCAKE, block -> createCandleCupcake(block, generators));
+            CandleCupcakeBlock.forEachCandleVariant(BovinesBlocks.SNOWDROP_CUPCAKE, block -> createCandleCupcake(block, generators));
+            CandleCupcakeBlock.forEachCandleVariant(BovinesBlocks.TROPICAL_BLUE_CUPCAKE, block -> createCandleCupcake(block, generators));
+            CandleCupcakeBlock.forEachCandleVariant(BovinesBlocks.FREESIA_CUPCAKE, block -> createCandleCupcake(block, generators));
+            CandleCupcakeBlock.forEachCandleVariant(BovinesBlocks.LINGHOLM_CUPCAKE, block -> createCandleCupcake(block, generators));
         }
 
         private void createCupcake(CupcakeBlock block, BlockModelGenerators generators) {
@@ -672,6 +687,14 @@ public class BovinesDataGenerator implements DataGeneratorEntrypoint {
             List<ResourceKey<Block>> candleVariants = new ArrayList<>();
             CandleCupcakeBlock.forEachCandleVariant(BovinesBlocks.BUTTERCUP_CUPCAKE, block -> candleVariants.add(reverseLookup(block)));
             CandleCupcakeBlock.forEachCandleVariant(BovinesBlocks.PINK_DAISY_CUPCAKE, block -> candleVariants.add(reverseLookup(block)));
+            CandleCupcakeBlock.forEachCandleVariant(BovinesBlocks.LIMELIGHT_CUPCAKE, block -> candleVariants.add(reverseLookup(block)));
+            CandleCupcakeBlock.forEachCandleVariant(BovinesBlocks.BIRD_OF_PARADISE_CUPCAKE, block -> candleVariants.add(reverseLookup(block)));
+            CandleCupcakeBlock.forEachCandleVariant(BovinesBlocks.CHARGELILY_CUPCAKE, block -> candleVariants.add(reverseLookup(block)));
+            CandleCupcakeBlock.forEachCandleVariant(BovinesBlocks.HYACINTH_CUPCAKE, block -> candleVariants.add(reverseLookup(block)));
+            CandleCupcakeBlock.forEachCandleVariant(BovinesBlocks.SNOWDROP_CUPCAKE, block -> candleVariants.add(reverseLookup(block)));
+            CandleCupcakeBlock.forEachCandleVariant(BovinesBlocks.TROPICAL_BLUE_CUPCAKE, block -> candleVariants.add(reverseLookup(block)));
+            CandleCupcakeBlock.forEachCandleVariant(BovinesBlocks.FREESIA_CUPCAKE, block -> candleVariants.add(reverseLookup(block)));
+            CandleCupcakeBlock.forEachCandleVariant(BovinesBlocks.LINGHOLM_CUPCAKE, block -> candleVariants.add(reverseLookup(block)));
             tag(BovinesTags.BlockTags.CANDLE_CUPCAKES)
                     .add(candleVariants.toArray(ResourceKey[]::new));
 
