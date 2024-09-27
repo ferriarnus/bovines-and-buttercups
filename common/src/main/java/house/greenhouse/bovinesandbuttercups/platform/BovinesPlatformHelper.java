@@ -8,6 +8,7 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -46,6 +47,8 @@ public interface BovinesPlatformHelper {
     CowTypeAttachment getCowTypeAttachment(LivingEntity entity);
 
     void setCowTypeAttachment(LivingEntity entity, CowTypeAttachment attachment);
+
+    void sendClientboundPacket(ServerPlayer player, CustomPacketPayload... payloads);
 
     void sendTrackingClientboundPacket(Entity entity, CustomPacketPayload... payloads);
 

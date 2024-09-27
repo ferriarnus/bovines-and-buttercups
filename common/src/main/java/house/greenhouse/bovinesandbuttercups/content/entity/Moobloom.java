@@ -586,10 +586,12 @@ public class Moobloom extends Cow {
 
     @Override
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType spawnType, @Nullable SpawnGroupData data) {
-        if (data == null) {
-            data = new MoobloomGroupData();
+        if (spawnType != MobSpawnType.STRUCTURE) {
+            if (data == null) {
+                data = new MoobloomGroupData();
+            }
+            setCowType(((MoobloomGroupData)data).getSpawnType(blockPosition(), level, level.getRandom()));
         }
-        setCowType(((MoobloomGroupData)data).getSpawnType(blockPosition(), level, level.getRandom()));
         return super.finalizeSpawn(level, difficulty, spawnType, data);
     }
 

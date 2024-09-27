@@ -12,6 +12,7 @@ import house.greenhouse.bovinesandbuttercups.content.data.configuration.Mooshroo
 import house.greenhouse.bovinesandbuttercups.network.clientbound.SyncCowTypeClientboundPacket;
 import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.animal.MushroomCow;
@@ -86,5 +87,11 @@ public record CowTypeAttachment(Holder<CowType<?>> cowType, Optional<Holder<CowT
         if (entity.level().isClientSide())
             return;
         BovinesAndButtercups.getHelper().sendTrackingClientboundPacket(entity, new SyncCowTypeClientboundPacket(entity.getId(), BovinesAndButtercups.getHelper().getCowTypeAttachment(entity)));
+    }
+
+    public static void syncToPlayer(LivingEntity entity, ServerPlayer player) {
+        if (entity.level().isClientSide())
+            return;
+        BovinesAndButtercups.getHelper().sendClientboundPacket(player, new SyncCowTypeClientboundPacket(entity.getId(), BovinesAndButtercups.getHelper().getCowTypeAttachment(entity)));
     }
 }

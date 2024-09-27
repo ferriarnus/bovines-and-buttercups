@@ -91,7 +91,7 @@ public class BovinesAndButtercupsNeoForge {
                 if (living.hasData(BovinesAttachments.LOCKDOWN))
                     LockdownAttachment.sync(living);
                 if (living.hasData(BovinesAttachments.COW_TYPE)) {
-                    CowTypeAttachment.sync(living);
+                    CowTypeAttachment.syncToPlayer(living, (ServerPlayer) event.getEntity());
                     CowTypeAttachment attachment = living.getData(BovinesAttachments.COW_TYPE);
                     for (CowModelLayer layer : attachment.cowType().value().configuration().layers()) {
                         for (TextureModifierFactory<?> modifier : layer.textureModifiers())
@@ -112,8 +112,11 @@ public class BovinesAndButtercupsNeoForge {
                 ((BeeGoalAccess) bee).bovinesandbuttercups$setPollinateFlowerCowGoal(pollinateGoal);
             }
 
-            if (event.getEntity().getType() == EntityType.MOOSHROOM && !level.isClientSide()) {
-                Optional<CowTypeAttachment> attachment = event.getEntity().getExistingData(BovinesAttachments.COW_TYPE);
+            if (!(entity instanceof LivingEntity living) || level.isClientSide)
+                return;
+
+            Optional<CowTypeAttachment> attachment = entity.getExistingData(BovinesAttachments.COW_TYPE);
+            if (entity.getType() == EntityType.MOOSHROOM) {
                 if (attachment.isEmpty()) {
                     if (((MooshroomInitializedTypeAccess)entity).bovinesandbuttercups$initialType() != null) {
                         CowTypeAttachment.setCowType((MushroomCow) entity, MooshroomSpawnUtil.getMooshroomTypeFromMushroomType(level, ((MooshroomInitializedTypeAccess)entity).bovinesandbuttercups$initialType()));
@@ -122,9 +125,11 @@ public class BovinesAndButtercupsNeoForge {
                     } else {
                         CowTypeAttachment.setCowType((MushroomCow) entity, MooshroomSpawnUtil.getMostCommonMooshroomSpawnType(level, ((MushroomCow)entity).getVariant()));
                     }
-                    CowTypeAttachment.sync((MushroomCow)entity);
                 }
                 ((MooshroomInitializedTypeAccess)entity).bovinesandbuttercups$clearInitialType();
+            }
+            if (attachment.isPresent()) {
+                CowTypeAttachment.sync(living);
             }
         }
 

@@ -72,12 +72,12 @@ public class BovinesAndButtercupsFabric implements ModInitializer {
         registerCompostables();
         registerBiomeModifications();
 
-        EntityTrackingEvents.START_TRACKING.register((entity, world) -> {
+        EntityTrackingEvents.START_TRACKING.register((entity, player) -> {
             if (entity instanceof LivingEntity living) {
                 if (entity.hasAttached(BovinesAttachments.LOCKDOWN))
                     LockdownAttachment.sync(living);
                 if (entity.hasAttached(BovinesAttachments.COW_TYPE)) {
-                    CowTypeAttachment.sync(living);
+                    CowTypeAttachment.syncToPlayer(living, player);
                     CowTypeAttachment attachment = living.getAttached(BovinesAttachments.COW_TYPE);
                     for (CowModelLayer layer : attachment.cowType().value().configuration().layers()) {
                         for (TextureModifierFactory<?> modifier : layer.textureModifiers())
@@ -87,20 +87,24 @@ public class BovinesAndButtercupsFabric implements ModInitializer {
             }
         });
         ServerEntityEvents.ENTITY_LOAD.register((entity, level) -> {
-            if (entity.getType() != EntityType.MOOSHROOM)
+            if (!(entity instanceof LivingEntity living))
                 return;
             CowTypeAttachment attachment = entity.getAttached(BovinesAttachments.COW_TYPE);
-            if (attachment == null) {
-                if (((MooshroomInitializedTypeAccess)entity).bovinesandbuttercups$initialType() != null) {
-                    CowTypeAttachment.setCowType((MushroomCow) entity, MooshroomSpawnUtil.getMooshroomTypeFromMushroomType(level, ((MooshroomInitializedTypeAccess)entity).bovinesandbuttercups$initialType()));
-                } else if (MooshroomSpawnUtil.getTotalSpawnWeight(level, entity.blockPosition()) > 0) {
-                    CowTypeAttachment.setCowType((MushroomCow) entity, MooshroomSpawnUtil.getMooshroomSpawnTypeDependingOnBiome(level, entity.blockPosition(), level.getRandom()));
-                } else {
-                    CowTypeAttachment.setCowType((MushroomCow) entity, MooshroomSpawnUtil.getMostCommonMooshroomSpawnType(level, ((MushroomCow)entity).getVariant()));
+            if (entity.getType() == EntityType.MOOSHROOM) {
+                if (attachment == null) {
+                    if (((MooshroomInitializedTypeAccess)entity).bovinesandbuttercups$initialType() != null) {
+                        CowTypeAttachment.setCowType((MushroomCow) entity, MooshroomSpawnUtil.getMooshroomTypeFromMushroomType(level, ((MooshroomInitializedTypeAccess)entity).bovinesandbuttercups$initialType()));
+                    } else if (MooshroomSpawnUtil.getTotalSpawnWeight(level, entity.blockPosition()) > 0) {
+                        CowTypeAttachment.setCowType((MushroomCow) entity, MooshroomSpawnUtil.getMooshroomSpawnTypeDependingOnBiome(level, entity.blockPosition(), level.getRandom()));
+                    } else {
+                        CowTypeAttachment.setCowType((MushroomCow) entity, MooshroomSpawnUtil.getMostCommonMooshroomSpawnType(level, ((MushroomCow)entity).getVariant()));
+                    }
                 }
-                CowTypeAttachment.sync((MushroomCow)entity);
+                ((MooshroomInitializedTypeAccess)entity).bovinesandbuttercups$clearInitialType();
             }
-            ((MooshroomInitializedTypeAccess)entity).bovinesandbuttercups$clearInitialType();
+            if (attachment != null) {
+                CowTypeAttachment.sync(living);
+            }
         });
 
         BovinesFabricDynamicRegistries.init();

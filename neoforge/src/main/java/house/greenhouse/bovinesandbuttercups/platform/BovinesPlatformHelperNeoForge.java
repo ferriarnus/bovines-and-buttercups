@@ -13,6 +13,7 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -78,6 +79,13 @@ public class BovinesPlatformHelperNeoForge implements BovinesPlatformHelper {
     @Override
     public void setCowTypeAttachment(LivingEntity entity, CowTypeAttachment attachment) {
         entity.setData(BovinesAttachments.COW_TYPE, attachment);
+    }
+
+    @Override
+    public void sendClientboundPacket(ServerPlayer player, CustomPacketPayload... payloads) {
+        List<CustomPacketPayload> extraPayloads = new ArrayList<>(Arrays.asList(payloads));
+        extraPayloads.removeFirst();
+        PacketDistributor.sendToPlayer(player, payloads[0], extraPayloads.toArray(CustomPacketPayload[]::new));
     }
 
     @Override
