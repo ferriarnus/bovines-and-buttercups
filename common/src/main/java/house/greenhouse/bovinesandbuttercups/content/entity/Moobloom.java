@@ -592,6 +592,7 @@ public class Moobloom extends Cow {
             }
             setCowType(((MoobloomGroupData)data).getSpawnType(blockPosition(), level, level.getRandom()));
         }
+        CowTypeAttachment.sync(this);
         return super.finalizeSpawn(level, difficulty, spawnType, data);
     }
 
