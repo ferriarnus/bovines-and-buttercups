@@ -115,6 +115,9 @@ public class BovinesAndButtercupsNeoForge {
             if (!(entity instanceof LivingEntity living) || level.isClientSide)
                 return;
 
+            if (entity.hasData(BovinesAttachments.LOCKDOWN))
+                LockdownAttachment.sync(living);
+
             Optional<CowTypeAttachment> attachment = entity.getExistingData(BovinesAttachments.COW_TYPE);
             if (entity.getType() == EntityType.MOOSHROOM) {
                 if (attachment.isEmpty()) {
@@ -293,9 +296,6 @@ public class BovinesAndButtercupsNeoForge {
         @SubscribeEvent
         public static void buildCreativeModeTabs(BuildCreativeModeTabContentsEvent event) {
             if (event.getTabKey() == CreativeModeTabs.NATURAL_BLOCKS) {
-                CreativeTabHelper.getCustomFlowersForCreativeTab(event.getParameters().holders()).reversed().forEach(stack -> event.insertAfter(new ItemStack(BovinesItems.SNOWDROP), stack, CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS));
-                CreativeTabHelper.getCustomMushroomsForCreativeTab(event.getParameters().holders()).reversed().forEach(stack -> event.insertAfter(new ItemStack(Items.RED_MUSHROOM), stack, CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS));
-                CreativeTabHelper.getCustomMushroomBlocksForCreativeTab(event.getParameters().holders()).reversed().forEach(stack -> event.insertAfter(new ItemStack(Items.RED_MUSHROOM_BLOCK), stack, CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS));
                 insertAfter(event.getParentEntries(), Items.SPORE_BLOSSOM, List.of(
                         BovinesItems.FREESIA,
                         BovinesItems.BIRD_OF_PARADISE,
@@ -308,6 +308,10 @@ public class BovinesAndButtercupsNeoForge {
                         BovinesItems.PINK_DAISY,
                         BovinesItems.SNOWDROP
                 ), event::insertAfter);
+                CreativeTabHelper.getCustomFlowersForCreativeTab(event.getParameters().holders()).reversed().forEach(stack -> event.insertAfter(new ItemStack(BovinesItems.SNOWDROP), stack, CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS));
+                CreativeTabHelper.getCustomMushroomsForCreativeTab(event.getParameters().holders()).reversed().forEach(stack -> event.insertAfter(new ItemStack(Items.RED_MUSHROOM), stack, CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS));
+                CreativeTabHelper.getCustomMushroomBlocksForCreativeTab(event.getParameters().holders()).reversed().forEach(stack -> event.insertAfter(new ItemStack(Items.RED_MUSHROOM_BLOCK), stack, CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS));
+                event.insertAfter(new ItemStack(Items.HONEY_BLOCK), new ItemStack(BovinesItems.RICH_HONEY_BLOCK), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
             } else if (event.getTabKey() == CreativeModeTabs.FOOD_AND_DRINKS) {
                 CreativeTabHelper.getNectarBowlsForCreativeTab(event.getParameters().holders()).reversed().forEach(stack -> event.insertAfter(new ItemStack(Items.MILK_BUCKET), stack, CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS));
                 event.insertAfter(new ItemStack(Items.HONEY_BOTTLE), new ItemStack(BovinesItems.RICH_HONEY_BOTTLE), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
