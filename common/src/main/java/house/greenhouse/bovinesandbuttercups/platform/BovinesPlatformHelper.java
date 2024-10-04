@@ -3,6 +3,7 @@ package house.greenhouse.bovinesandbuttercups.platform;
 import house.greenhouse.bovinesandbuttercups.api.CowType;
 import house.greenhouse.bovinesandbuttercups.api.attachment.CowTypeAttachment;
 import house.greenhouse.bovinesandbuttercups.api.attachment.LockdownAttachment;
+import house.greenhouse.bovinesandbuttercups.api.attachment.MooshroomExtrasAttachment;
 import house.greenhouse.bovinesandbuttercups.content.entity.Moobloom;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
@@ -45,6 +46,8 @@ public interface BovinesPlatformHelper {
     LockdownAttachment getLockdownAttachment(LivingEntity entity);
 
     CowTypeAttachment getCowTypeAttachment(LivingEntity entity);
+
+    MooshroomExtrasAttachment getMooshroomExtrasAttachment(LivingEntity entity);
 
     void setCowTypeAttachment(LivingEntity entity, CowTypeAttachment attachment);
 

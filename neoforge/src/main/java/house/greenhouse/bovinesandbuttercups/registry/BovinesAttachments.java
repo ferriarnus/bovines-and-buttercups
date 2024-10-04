@@ -5,6 +5,7 @@ import house.greenhouse.bovinesandbuttercups.BovinesAndButtercups;
 import house.greenhouse.bovinesandbuttercups.api.CowType;
 import house.greenhouse.bovinesandbuttercups.api.attachment.CowTypeAttachment;
 import house.greenhouse.bovinesandbuttercups.api.attachment.LockdownAttachment;
+import house.greenhouse.bovinesandbuttercups.api.attachment.MooshroomExtrasAttachment;
 import house.greenhouse.bovinesandbuttercups.registry.internal.RegistrationCallback;
 import net.minecraft.core.Holder;
 import net.minecraft.core.UUIDUtil;
@@ -29,6 +30,11 @@ public class BovinesAttachments {
             .serialize(CowTypeAttachment.CODEC)
             .build();
 
+    public static final AttachmentType<MooshroomExtrasAttachment> MOOSHROOM_EXTRAS = AttachmentType
+            .builder(() -> new MooshroomExtrasAttachment(true))
+            .serialize(MooshroomExtrasAttachment.CODEC)
+            .build();
+
     public static final AttachmentType<Boolean> PRODUCES_RICH_HONEY = AttachmentType
             .builder(() -> false)
             .serialize(Codec.BOOL)
@@ -44,6 +50,7 @@ public class BovinesAttachments {
     public static void registerAll(RegistrationCallback<AttachmentType<?>> callback) {
         callback.register(NeoForgeRegistries.ATTACHMENT_TYPES, CowTypeAttachment.ID, COW_TYPE);
         callback.register(NeoForgeRegistries.ATTACHMENT_TYPES, LockdownAttachment.ID, LOCKDOWN);
+        callback.register(NeoForgeRegistries.ATTACHMENT_TYPES,MooshroomExtrasAttachment.ID,MOOSHROOM_EXTRAS);
         callback.register(NeoForgeRegistries.ATTACHMENT_TYPES, BovinesAndButtercups.asResource("produces_rich_honey"), PRODUCES_RICH_HONEY);
         callback.register(NeoForgeRegistries.ATTACHMENT_TYPES, BovinesAndButtercups.asResource("pollinating_moobloom"), POLLINATING_MOOBLOOM);
     }
