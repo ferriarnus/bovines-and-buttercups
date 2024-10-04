@@ -63,6 +63,7 @@ import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
 import net.neoforged.neoforge.event.entity.EntityStruckByLightningEvent;
 import net.neoforged.neoforge.event.entity.RegisterSpawnPlacementsEvent;
 import net.neoforged.neoforge.event.entity.living.BabyEntitySpawnEvent;
+import net.neoforged.neoforge.event.entity.living.LivingConversionEvent;
 import net.neoforged.neoforge.event.entity.living.MobEffectEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.level.BlockEvent;
@@ -150,6 +151,14 @@ public class BovinesAndButtercupsNeoForge {
             }
         }
 
+        @SubscribeEvent
+        public static void onLivingConversion(LivingConversionEvent.Pre event) {
+            if(event.getEntity().getType()==EntityType.MOOSHROOM && event.getEntity() instanceof MushroomCow cow) {
+                if (cow.hasData(BovinesAttachments.MOOSHROOM_EXTRAS) && !cow.getData(BovinesAttachments.MOOSHROOM_EXTRAS).shearable()) {
+                    event.setCanceled(true);
+                }
+            }
+        }
         @SubscribeEvent
         public static void onLivingTick(EntityTickEvent.Post event) {
             if (!event.getEntity().level().isClientSide() && event.getEntity() instanceof LivingEntity living && living.hasEffect(BovinesEffects.LOCKDOWN)) {

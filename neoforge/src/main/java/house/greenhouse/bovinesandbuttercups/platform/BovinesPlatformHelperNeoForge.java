@@ -4,6 +4,7 @@ import house.greenhouse.bovinesandbuttercups.api.BovinesTags;
 import house.greenhouse.bovinesandbuttercups.api.CowType;
 import house.greenhouse.bovinesandbuttercups.api.attachment.CowTypeAttachment;
 import house.greenhouse.bovinesandbuttercups.api.attachment.LockdownAttachment;
+import house.greenhouse.bovinesandbuttercups.api.attachment.MooshroomExtrasAttachment;
 import house.greenhouse.bovinesandbuttercups.content.entity.Moobloom;
 import house.greenhouse.bovinesandbuttercups.content.entity.MoobloomNeoForge;
 import house.greenhouse.bovinesandbuttercups.registry.BovinesAttachments;
@@ -74,6 +75,11 @@ public class BovinesPlatformHelperNeoForge implements BovinesPlatformHelper {
     @Override
     public CowTypeAttachment getCowTypeAttachment(LivingEntity entity) {
         return entity.getExistingData(BovinesAttachments.COW_TYPE).orElse(null);
+    }
+
+    @Override
+    public MooshroomExtrasAttachment getMooshroomExtrasAttachment(LivingEntity entity) {
+        return entity.getExistingData(BovinesAttachments.MOOSHROOM_EXTRAS).orElse(null);
     }
 
     @Override

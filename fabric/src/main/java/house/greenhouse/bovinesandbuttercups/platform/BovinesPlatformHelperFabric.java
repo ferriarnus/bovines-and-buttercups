@@ -1,6 +1,7 @@
 package house.greenhouse.bovinesandbuttercups.platform;
 
 import house.greenhouse.bovinesandbuttercups.api.CowType;
+import house.greenhouse.bovinesandbuttercups.api.attachment.MooshroomExtrasAttachment;
 import house.greenhouse.bovinesandbuttercups.content.entity.Moobloom;
 import house.greenhouse.bovinesandbuttercups.entity.MoobloomFabric;
 import net.fabricmc.fabric.api.event.registry.FabricRegistryBuilder;
@@ -66,6 +67,11 @@ public class BovinesPlatformHelperFabric implements BovinesPlatformHelper {
     @Override
     public LockdownAttachment getLockdownAttachment(LivingEntity entity) {
         return entity.getAttachedOrCreate(BovinesAttachments.LOCKDOWN);
+    }
+
+    @Override
+    public MooshroomExtrasAttachment getMooshroomExtrasAttachment(LivingEntity entity) {
+        return entity.getAttachedOrCreate(BovinesAttachments.MOOSHROOM_EXTRAS);
     }
 
     @Override

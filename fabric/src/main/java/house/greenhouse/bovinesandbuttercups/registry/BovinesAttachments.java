@@ -5,6 +5,7 @@ import house.greenhouse.bovinesandbuttercups.BovinesAndButtercups;
 import house.greenhouse.bovinesandbuttercups.BovinesAndButtercupsFabric;
 import house.greenhouse.bovinesandbuttercups.api.BovinesCowTypes;
 import house.greenhouse.bovinesandbuttercups.api.CowType;
+import house.greenhouse.bovinesandbuttercups.api.attachment.MooshroomExtrasAttachment;
 import net.fabricmc.fabric.api.attachment.v1.AttachmentRegistry;
 import net.fabricmc.fabric.api.attachment.v1.AttachmentType;
 import house.greenhouse.bovinesandbuttercups.api.attachment.CowTypeAttachment;
@@ -27,6 +28,10 @@ public class BovinesAttachments {
     public static final AttachmentType<CowTypeAttachment> COW_TYPE = AttachmentRegistry.<CowTypeAttachment>builder()
             .persistent(CowTypeAttachment.CODEC)
             .buildAndRegister(CowTypeAttachment.ID);
+
+    public static final AttachmentType<MooshroomExtrasAttachment> MOOSHROOM_EXTRAS = AttachmentRegistry.<MooshroomExtrasAttachment>builder()
+            .persistent(MooshroomExtrasAttachment.CODEC)
+            .buildAndRegister(MooshroomExtrasAttachment.ID);
 
     public static final AttachmentType<Boolean> PRODUCES_RICH_HONEY = AttachmentRegistry.<Boolean>builder()
             .persistent(Codec.BOOL)

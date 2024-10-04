@@ -44,6 +44,13 @@ public abstract class MushroomCowMixin {
         }
         return true;
     }
+    @Inject(method="shear", at=@At(value = "HEAD"),cancellable = true)
+    private void bovinesandbuttercups$cancelshear(SoundSource source,CallbackInfo ci) {
+        MushroomCow cow = (MushroomCow)(Object)this;
+        if(cow.hasAttached(BovinesAttachments.MOOSHROOM_EXTRAS) && !cow.getAttached(BovinesAttachments.MOOSHROOM_EXTRAS).shearable()) {
+            ci.cancel();
+        }
+    }
 
     @Inject(method = "shear", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/Level;addFreshEntity(Lnet/minecraft/world/entity/Entity;)Z", ordinal = 0, shift = At.Shift.AFTER), cancellable = true)
     private void bovinesandbuttercups$cancelItemDroppingIfUnnecessary(SoundSource soundSource, CallbackInfo ci) {
