@@ -97,19 +97,20 @@ public class BovinesAndButtercupsNeoForge {
     public static class GameEvents {
         @SubscribeEvent
         public static void onStartTracking(PlayerEvent.StartTracking event) {
+            ServerPlayer player = (ServerPlayer)event.getEntity();
             if (event.getTarget() instanceof LivingEntity living) {
                 if (living.hasData(BovinesAttachments.LOCKDOWN))
-                    LockdownAttachment.sync(living);
+                    LockdownAttachment.syncToPlayer(living, player);
                 if (living.hasData(BovinesAttachments.COW_TYPE)) {
                     CowTypeAttachment attachment = living.getData(BovinesAttachments.COW_TYPE);
                     for (CowModelLayer layer : attachment.cowType().value().configuration().layers()) {
                         for (TextureModifierFactory<?> modifier : layer.textureModifiers())
                             modifier.init(living);
                     }
-                    CowTypeAttachment.syncToPlayer(living, (ServerPlayer) event.getEntity());
+                    CowTypeAttachment.syncToPlayer(living, player);
                 }
                 if (living.hasData(BovinesAttachments.MOOSHROOM_EXTRAS))
-                    MooshroomExtrasAttachment.syncToPlayer(living, (ServerPlayer) event.getEntity());
+                    MooshroomExtrasAttachment.syncToPlayer(living, player);
             }
         }
 

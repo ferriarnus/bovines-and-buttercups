@@ -84,7 +84,7 @@ public class BovinesAndButtercupsFabric implements ModInitializer {
         EntityTrackingEvents.START_TRACKING.register((entity, player) -> {
             if (entity instanceof LivingEntity living) {
                 if (entity.hasAttached(BovinesAttachments.LOCKDOWN))
-                    LockdownAttachment.sync(living);
+                    LockdownAttachment.syncToPlayer(living, player);
                 if (entity.hasAttached(BovinesAttachments.COW_TYPE)) {
                     CowTypeAttachment attachment = living.getAttached(BovinesAttachments.COW_TYPE);
                     for (CowModelLayer layer : attachment.cowType().value().configuration().layers()) {

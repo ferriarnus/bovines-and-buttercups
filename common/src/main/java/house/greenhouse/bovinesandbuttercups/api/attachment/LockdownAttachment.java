@@ -7,6 +7,7 @@ import house.greenhouse.bovinesandbuttercups.network.clientbound.SyncLockdownEff
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.LivingEntity;
 
@@ -44,5 +45,11 @@ public record LockdownAttachment(Map<Holder<MobEffect>, Integer> effects) {
         if (entity.level().isClientSide())
             return;
         BovinesAndButtercups.getHelper().sendTrackingClientboundPacket(entity, new SyncLockdownEffectsClientboundPacket(entity.getId(), BovinesAndButtercups.getHelper().getLockdownAttachment(entity)));
+    }
+
+    public static void syncToPlayer(LivingEntity entity, ServerPlayer player) {
+        if (entity.level().isClientSide())
+            return;
+        BovinesAndButtercups.getHelper().sendClientboundPacket(player, new SyncLockdownEffectsClientboundPacket(entity.getId(), BovinesAndButtercups.getHelper().getLockdownAttachment(entity)));
     }
 }
