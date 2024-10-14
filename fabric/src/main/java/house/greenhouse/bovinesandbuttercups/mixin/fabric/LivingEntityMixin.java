@@ -1,20 +1,25 @@
 package house.greenhouse.bovinesandbuttercups.mixin.fabric;
 
+import house.greenhouse.bovinesandbuttercups.BovinesAndButtercups;
 import house.greenhouse.bovinesandbuttercups.api.attachment.LockdownAttachment;
+import house.greenhouse.bovinesandbuttercups.api.attachment.MooshroomExtrasAttachment;
 import house.greenhouse.bovinesandbuttercups.content.advancements.criterion.LockEffectTrigger;
 import house.greenhouse.bovinesandbuttercups.content.advancements.criterion.PreventEffectTrigger;
 import house.greenhouse.bovinesandbuttercups.content.effect.LockdownEffect;
 import house.greenhouse.bovinesandbuttercups.registry.BovinesAttachments;
 import house.greenhouse.bovinesandbuttercups.registry.BovinesEffects;
+import house.greenhouse.bovinesandbuttercups.util.WeatherUtil;
 import net.minecraft.Util;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.tags.BiomeTags;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.animal.MushroomCow;
 import net.minecraft.world.level.Level;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -54,6 +59,21 @@ public abstract class LivingEntityMixin extends Entity {
 
         if (entity.hasAttached(BovinesAttachments.COW_TYPE) && entity.getAttached(BovinesAttachments.COW_TYPE).cowType().isBound())
             entity.getAttached(BovinesAttachments.COW_TYPE).cowType().value().configuration().tick(this);
+    }
+
+    @Inject(method = "tick", at = @At("TAIL"))
+    private void bovinesandbuttercups$tickSnowLayer(CallbackInfo ci) {
+        if (getType() == EntityType.MOOSHROOM && (LivingEntity)(Object)this instanceof MushroomCow mooshroom) {
+            MooshroomExtrasAttachment attachment = BovinesAndButtercups.getHelper().getMooshroomExtrasAttachment(mooshroom);
+            if (!attachment.hasSnow() && WeatherUtil.isInSnowyWeather(mooshroom) && !attachment.snowLayerPersistent() && !mooshroom.level().isClientSide() && mooshroom.getRandom().nextFloat() < 0.4F) {
+                BovinesAndButtercups.getHelper().setMooshroomExtrasAttachment(mooshroom, new MooshroomExtrasAttachment(true, false, attachment.allowShearing(), attachment.allowConversion()));
+                MooshroomExtrasAttachment.sync(mooshroom);
+            }
+            if (attachment.hasSnow() && !attachment.snowLayerPersistent() && mooshroom.level().getBiome(mooshroom.blockPosition()).is(BiomeTags.SNOW_GOLEM_MELTS) && !mooshroom.level().isClientSide() && mooshroom.getRandom().nextFloat() < 0.4F) {
+                BovinesAndButtercups.getHelper().setMooshroomExtrasAttachment(mooshroom, new MooshroomExtrasAttachment(false, false, attachment.allowShearing(), attachment.allowConversion()));
+                MooshroomExtrasAttachment.sync(mooshroom);
+            }
+        }
     }
 
     @Inject(method = "onEffectAdded", at = @At("TAIL"))

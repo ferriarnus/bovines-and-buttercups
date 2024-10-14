@@ -30,7 +30,10 @@
               "condition": "minecraft:entity_properties",
               "entity": "this",
               "predicate": {
-                "nbt": "{has_snow:1b}"
+                "type_specific": {
+                  "type": "bovinesandbuttercups:cow",
+                  "has_snow": true
+                }
               }
             }
           ],

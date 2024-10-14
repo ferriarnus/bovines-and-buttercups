@@ -11,6 +11,7 @@ import house.greenhouse.bovinesandbuttercups.content.component.ItemCustomFlower;
 import house.greenhouse.bovinesandbuttercups.content.component.ItemNectar;
 import house.greenhouse.bovinesandbuttercups.content.data.configuration.MoobloomConfiguration;
 import house.greenhouse.bovinesandbuttercups.mixin.EntityAccessor;
+import house.greenhouse.bovinesandbuttercups.network.clientbound.SyncMoobloomSnowLayerClientboundPacket;
 import house.greenhouse.bovinesandbuttercups.registry.BovinesBlocks;
 import house.greenhouse.bovinesandbuttercups.api.BovinesCowTypeTypes;
 import house.greenhouse.bovinesandbuttercups.api.BovinesCowTypes;
@@ -21,6 +22,7 @@ import house.greenhouse.bovinesandbuttercups.registry.BovinesLootContextParamSet
 import house.greenhouse.bovinesandbuttercups.registry.BovinesLootContextParams;
 import house.greenhouse.bovinesandbuttercups.registry.BovinesRegistryKeys;
 import house.greenhouse.bovinesandbuttercups.registry.BovinesSoundEvents;
+import house.greenhouse.bovinesandbuttercups.util.SnowLayerUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderSet;
@@ -280,10 +282,14 @@ public class Moobloom extends Cow {
             if (getStandingStillForBeeTicks() > 0 && !level().isClientSide())
                 setStandingStillForBeeTicks(getStandingStillForBeeTicks() - 1);
 
-            if (!hasSnow() && isInSnowyWeather() && !isSnowLayerPersistent() && !level().isClientSide() && random.nextFloat() < 0.4F)
+            if (!hasSnow() && isInSnowyWeather() && !isSnowLayerPersistent() && !level().isClientSide() && random.nextFloat() < 0.4F) {
                 setSnow(true);
-            if (hasSnow() && level().getBiome(blockPosition()).is(BiomeTags.SNOW_GOLEM_MELTS) && random.nextFloat() < 0.4F)
+                BovinesAndButtercups.getHelper().sendTrackingClientboundPacket(this, new SyncMoobloomSnowLayerClientboundPacket(getId(), true));
+            }
+            if (hasSnow() && !isSnowLayerPersistent() && level().getBiome(blockPosition()).is(BiomeTags.SNOW_GOLEM_MELTS) && random.nextFloat() < 0.4F) {
                 setSnow(false);
+                BovinesAndButtercups.getHelper().sendTrackingClientboundPacket(this, new SyncMoobloomSnowLayerClientboundPacket(getId(), false));
+            }
         }
 
         if (getPollinatedResetTicks() > 0)
@@ -411,13 +417,9 @@ public class Moobloom extends Cow {
                 return InteractionResult.sidedSuccess(level().isClientSide());
             }
         }
-        if (stack.is(ItemTags.SHOVELS) && !isInSnowyWeather() && hasSnow() && !isSnowLayerPersistent()) {
-            removeSnowLayer(SoundSource.PLAYERS);
-            gameEvent(GameEvent.ENTITY_INTERACT);
-            if (!level().isClientSide)
-                stack.hurtAndBreak(1, player, getSlotForHand(hand));
-            return InteractionResult.sidedSuccess(level().isClientSide());
-        }
+        InteractionResult result = SnowLayerUtil.removeSnowIfShovel(this, player, hand, stack);
+        if (result != InteractionResult.PASS)
+            return result;
         return super.mobInteract(player, hand);
     }
 
@@ -594,27 +596,6 @@ public class Moobloom extends Cow {
         }
         CowTypeAttachment.sync(this);
         return super.finalizeSpawn(level, difficulty, spawnType, data);
-    }
-
-    public void removeSnowLayer(SoundSource source) {
-        level().playSound(null, this, SoundEvents.SNOW_BREAK, source, 1.0F, 1.0F);
-        setSnow(false);
-        int snowAmount = isBaby() ? 1 : 2;
-
-        for (int j = 0; j < snowAmount; j++) {
-            ItemEntity item = spawnAtLocation(Items.SNOWBALL, 1);
-            if (item != null) {
-                item.setDeltaMovement(
-                        item.getDeltaMovement()
-                                .add(
-                                        (random.nextFloat() - random.nextFloat()) * 0.1F,
-                                        random.nextFloat() * 0.05F,
-                                        (random.nextFloat() - random.nextFloat()) * 0.1F
-                                )
-                );
-                item.setNoPickUpDelay();
-            }
-        }
     }
 
     public class LookAtBeeGoal extends Goal {

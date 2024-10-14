@@ -28,8 +28,8 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.WeakHashMap;
 
-public class ConditionedModifierFactory extends TextureModifierFactory<NoOpTextureModifier> {
-    public static final MapCodec<ConditionedModifierFactory> CODEC = RecordCodecBuilder.mapCodec(inst -> inst.group(
+public class ConditionedTextureModifierFactory extends TextureModifierFactory<NoOpTextureModifier> {
+    public static final MapCodec<ConditionedTextureModifierFactory> CODEC = RecordCodecBuilder.mapCodec(inst -> inst.group(
             ResourceLocation.CODEC.fieldOf("id").forGetter(f -> f.id),
             LootItemCondition.DIRECT_CODEC.validate(
                     lootCondition -> {
@@ -42,14 +42,14 @@ public class ConditionedModifierFactory extends TextureModifierFactory<NoOpTextu
                     }
             ).listOf().fieldOf("condition").forGetter(f -> f.condition),
             Codec.intRange(1, Integer.MAX_VALUE).optionalFieldOf("tick_rate", 1).forGetter(f -> f.tickRate)
-    ).apply(inst, ConditionedModifierFactory::new));
+    ).apply(inst, ConditionedTextureModifierFactory::new));
     private static final WeakHashMap<UUID, Map<ResourceLocation, Boolean>> CONDITION_VALUES = new WeakHashMap<>();
 
     private final ResourceLocation id;
     private final List<LootItemCondition> condition;
     private final int tickRate;
 
-    public ConditionedModifierFactory(ResourceLocation id, List<LootItemCondition> condition, int tickRate) {
+    public ConditionedTextureModifierFactory(ResourceLocation id, List<LootItemCondition> condition, int tickRate) {
         this.id = id;
         this.condition = condition;
         this.tickRate = tickRate;
@@ -81,6 +81,7 @@ public class ConditionedModifierFactory extends TextureModifierFactory<NoOpTextu
         return CONDITION_VALUES.getOrDefault(entity.getUUID(), new HashMap<>()).getOrDefault(id, false);
     }
 
+    @Override
     public void init(Entity entity) {
         LootParams.Builder params = new LootParams.Builder((ServerLevel) entity.level());
         params.withParameter(LootContextParams.THIS_ENTITY, entity);
@@ -95,8 +96,9 @@ public class ConditionedModifierFactory extends TextureModifierFactory<NoOpTextu
             BovinesAndButtercups.getHelper().sendTrackingClientboundPacket(entity, new SyncConditionedTextureModifier(entity.getId(), getConditionId(), conditionValue));
     }
 
+    @Override
     public void tick(Entity entity) {
-        if (entity.level().isClientSide() || entity.tickCount % tickRate == 0)
+        if (entity.level().isClientSide() || entity.tickCount % tickRate != 0)
             return;
         LootParams.Builder params = new LootParams.Builder((ServerLevel) entity.level());
         params.withParameter(LootContextParams.THIS_ENTITY, entity);

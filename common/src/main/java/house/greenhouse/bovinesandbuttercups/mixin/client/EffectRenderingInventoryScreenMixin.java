@@ -1,5 +1,6 @@
 package house.greenhouse.bovinesandbuttercups.mixin.client;
 
+import com.llamalad7.mixinextras.sugar.Local;
 import house.greenhouse.bovinesandbuttercups.BovinesAndButtercups;
 import house.greenhouse.bovinesandbuttercups.content.effect.LockdownEffect;
 import net.minecraft.client.Minecraft;
@@ -30,8 +31,8 @@ public abstract class EffectRenderingInventoryScreenMixin<T extends AbstractCont
         super(handler, inventory, title);
     }
 
-    @Inject(method = "renderBackgrounds", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;blitSprite(Lnet/minecraft/resources/ResourceLocation;IIII)V", ordinal = 1, shift = At.Shift.AFTER), locals = LocalCapture.CAPTURE_FAILHARD)
-    private void bovinesandbuttercups$overlayLockdownBorder(GuiGraphics guiGraphics, int x, int height, Iterable<MobEffectInstance> iterable, boolean wide, CallbackInfo ci, int i, Iterator var7, MobEffectInstance mobEffectInstance) {
+    @Inject(method = "renderBackgrounds", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;blitSprite(Lnet/minecraft/resources/ResourceLocation;IIII)V", ordinal = 1, shift = At.Shift.AFTER))
+    private void bovinesandbuttercups$overlayLockdownBorder(GuiGraphics guiGraphics, int x, int height, Iterable<MobEffectInstance> iterable, boolean wide, CallbackInfo ci, @Local(ordinal = 2) int i, @Local MobEffectInstance mobEffectInstance) {
         if (this.minecraft == null || this.minecraft.player == null) return;
 
         List<MobEffectInstance> lockdownEffectInstance = this.minecraft.player.getActiveEffects().stream().filter(instance -> instance.getEffect() instanceof LockdownEffect).toList();

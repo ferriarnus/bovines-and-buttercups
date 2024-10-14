@@ -15,6 +15,7 @@
     "ChunkGeneratorMixin",
     "EntityAccessor",
     "EntityDataAccessorMixin",
+    "EntitySuperMixin",
     "FarmBlockMixin",
     "FlowerPotBlockMixin",
     "HoneyBlockAccessor",

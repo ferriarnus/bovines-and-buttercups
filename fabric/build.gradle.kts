@@ -98,7 +98,6 @@ loom {
     }
 }
 
-
 publishMods {
     file.set(tasks.named<Jar>("remapJar").get().archiveFile)
     modLoaders.add("fabric")

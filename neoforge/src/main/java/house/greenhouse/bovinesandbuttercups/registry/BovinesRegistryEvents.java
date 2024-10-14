@@ -31,6 +31,7 @@ public class BovinesRegistryEvents {
         register(event, BovinesCowTypeTypes::registerAll);
         register(event, BovinesCriteriaTriggers::registerAll);
         register(event, BovinesDataComponents::registerAll);
+        register(event, BovinesEntitySubPredicateTypes::registerAll);
         register(event, BovinesEntityTypes::registerAll);
         register(event, BovinesLootItemConditionTypes::registerAll);
         register(event, BovinesParticleTypes::registerAll);

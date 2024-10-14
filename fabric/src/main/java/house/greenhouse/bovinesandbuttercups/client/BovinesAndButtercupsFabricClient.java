@@ -1,7 +1,8 @@
 package house.greenhouse.bovinesandbuttercups.client;
 
-import house.greenhouse.bovinesandbuttercups.client.renderer.entity.model.MoobloomModel;
 import house.greenhouse.bovinesandbuttercups.integration.accessories.client.BovinesAccessoriesIntegrationClient;
+import house.greenhouse.bovinesandbuttercups.network.clientbound.SyncMoobloomSnowLayerClientboundPacket;
+import house.greenhouse.bovinesandbuttercups.network.clientbound.SyncMooshroomExtrasClientboundPacket;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.model.loading.v1.ModelLoadingPlugin;
@@ -89,6 +90,8 @@ public class BovinesAndButtercupsFabricClient implements ClientModInitializer {
         ClientPlayNetworking.registerGlobalReceiver(SyncConditionedTextureModifier.TYPE, (packet, context) -> packet.handle());
         ClientPlayNetworking.registerGlobalReceiver(SyncCowTypeClientboundPacket.TYPE, (packet, context) -> packet.handle());
         ClientPlayNetworking.registerGlobalReceiver(SyncLockdownEffectsClientboundPacket.TYPE, (packet, context) -> packet.handle());
+        ClientPlayNetworking.registerGlobalReceiver(SyncMoobloomSnowLayerClientboundPacket.TYPE, (packet, context) -> packet.handle());
+        ClientPlayNetworking.registerGlobalReceiver(SyncMooshroomExtrasClientboundPacket.TYPE, (packet, context) -> packet.handle());
 
         registerBlockLayers();
         registerBlockRenderers();

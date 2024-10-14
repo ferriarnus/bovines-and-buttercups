@@ -1,11 +1,9 @@
 package house.greenhouse.bovinesandbuttercups.network.clientbound;
 
 import house.greenhouse.bovinesandbuttercups.BovinesAndButtercups;
-import house.greenhouse.bovinesandbuttercups.api.CowType;
 import house.greenhouse.bovinesandbuttercups.api.attachment.CowTypeAttachment;
-import house.greenhouse.bovinesandbuttercups.content.data.modifier.ConditionedModifierFactory;
+import house.greenhouse.bovinesandbuttercups.content.data.modifier.ConditionedTextureModifierFactory;
 import net.minecraft.client.Minecraft;
-import net.minecraft.core.Holder;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
@@ -37,10 +35,10 @@ public record SyncConditionedTextureModifier(int entityId, ResourceLocation cond
             if (cowType == null || !cowType.cowType().isBound())
                 return;
             cowType.cowType().value().configuration().layers().stream().flatMap(cowModelLayer -> cowModelLayer.textureModifiers().stream()).filter(textureModifierFactory -> {
-                if (textureModifierFactory instanceof ConditionedModifierFactory conditioned)
+                if (textureModifierFactory instanceof ConditionedTextureModifierFactory conditioned)
                     return conditioned.getConditionId().equals(conditionId);
                 return false;
-            }).findFirst().ifPresent(condition -> ((ConditionedModifierFactory)condition).setConditionValue(entity, value));
+            }).findFirst().ifPresent(condition -> ((ConditionedTextureModifierFactory)condition).setConditionValue(entity, value));
         });
     }
 

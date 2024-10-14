@@ -70,11 +70,6 @@ public class BovinesPlatformHelperFabric implements BovinesPlatformHelper {
     }
 
     @Override
-    public MooshroomExtrasAttachment getMooshroomExtrasAttachment(LivingEntity entity) {
-        return entity.getAttachedOrCreate(BovinesAttachments.MOOSHROOM_EXTRAS);
-    }
-
-    @Override
     public CowTypeAttachment getCowTypeAttachment(LivingEntity entity) {
         return entity.getAttached(BovinesAttachments.COW_TYPE);
     }
@@ -82,6 +77,21 @@ public class BovinesPlatformHelperFabric implements BovinesPlatformHelper {
     @Override
     public void setCowTypeAttachment(LivingEntity entity, CowTypeAttachment attachment) {
         entity.setAttached(BovinesAttachments.COW_TYPE, attachment);
+    }
+
+    @Override
+    public boolean hasMooshroomExtrasAttachment(LivingEntity entity) {
+        return entity.hasAttached(BovinesAttachments.MOOSHROOM_EXTRAS);
+    }
+
+    @Override
+    public MooshroomExtrasAttachment getMooshroomExtrasAttachment(LivingEntity entity) {
+        return entity.getAttachedOrElse(BovinesAttachments.MOOSHROOM_EXTRAS, MooshroomExtrasAttachment.DEFAULT);
+    }
+
+    @Override
+    public void setMooshroomExtrasAttachment(LivingEntity entity, MooshroomExtrasAttachment attachment) {
+        entity.setAttached(BovinesAttachments.MOOSHROOM_EXTRAS, attachment);
     }
 
     @Override

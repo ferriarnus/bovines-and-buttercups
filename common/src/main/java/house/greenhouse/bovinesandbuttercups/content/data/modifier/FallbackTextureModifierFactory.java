@@ -9,14 +9,14 @@ import net.minecraft.world.entity.Entity;
 
 import java.util.List;
 
-public class FallbackModifierFactory extends TextureModifierFactory<NoOpTextureModifier> {
-    public static final MapCodec<FallbackModifierFactory> CODEC = RecordCodecBuilder.mapCodec(inst -> inst.group(
-            ResourceLocation.CODEC.listOf().optionalFieldOf("conditions", List.of()).forGetter(FallbackModifierFactory::conditions)
-    ).apply(inst, FallbackModifierFactory::new));
+public class FallbackTextureModifierFactory extends TextureModifierFactory<NoOpTextureModifier> {
+    public static final MapCodec<FallbackTextureModifierFactory> CODEC = RecordCodecBuilder.mapCodec(inst -> inst.group(
+            ResourceLocation.CODEC.listOf().optionalFieldOf("conditions", List.of()).forGetter(FallbackTextureModifierFactory::conditions)
+    ).apply(inst, FallbackTextureModifierFactory::new));
 
     private final List<ResourceLocation> conditions;
 
-    public FallbackModifierFactory(List<ResourceLocation> conditions) {
+    public FallbackTextureModifierFactory(List<ResourceLocation> conditions) {
         this.conditions = conditions;
     }
 
@@ -32,8 +32,8 @@ public class FallbackModifierFactory extends TextureModifierFactory<NoOpTextureM
     @Override
     public boolean canDisplay(Entity entity) {
         if (conditions.isEmpty())
-            return !ConditionedModifierFactory.isConditionalDisplaying(entity);
-        return conditions.stream().noneMatch(condition -> ConditionedModifierFactory.shouldDisplayConditional(entity, condition));
+            return !ConditionedTextureModifierFactory.isConditionalDisplaying(entity);
+        return conditions.stream().noneMatch(condition -> ConditionedTextureModifierFactory.shouldDisplayConditional(entity, condition));
     }
 
     @Override

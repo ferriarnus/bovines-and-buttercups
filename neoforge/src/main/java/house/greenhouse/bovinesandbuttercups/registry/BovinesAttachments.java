@@ -31,7 +31,7 @@ public class BovinesAttachments {
             .build();
 
     public static final AttachmentType<MooshroomExtrasAttachment> MOOSHROOM_EXTRAS = AttachmentType
-            .builder(() -> new MooshroomExtrasAttachment(true))
+            .builder(MooshroomExtrasAttachment::new)
             .serialize(MooshroomExtrasAttachment.CODEC)
             .build();
 

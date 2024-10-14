@@ -78,13 +78,23 @@ public class BovinesPlatformHelperNeoForge implements BovinesPlatformHelper {
     }
 
     @Override
-    public MooshroomExtrasAttachment getMooshroomExtrasAttachment(LivingEntity entity) {
-        return entity.getExistingData(BovinesAttachments.MOOSHROOM_EXTRAS).orElse(null);
+    public void setCowTypeAttachment(LivingEntity entity, CowTypeAttachment attachment) {
+        entity.setData(BovinesAttachments.COW_TYPE, attachment);
     }
 
     @Override
-    public void setCowTypeAttachment(LivingEntity entity, CowTypeAttachment attachment) {
-        entity.setData(BovinesAttachments.COW_TYPE, attachment);
+    public boolean hasMooshroomExtrasAttachment(LivingEntity entity) {
+        return entity.hasData(BovinesAttachments.MOOSHROOM_EXTRAS);
+    }
+
+    @Override
+    public MooshroomExtrasAttachment getMooshroomExtrasAttachment(LivingEntity entity) {
+        return entity.getExistingData(BovinesAttachments.MOOSHROOM_EXTRAS).orElse(MooshroomExtrasAttachment.DEFAULT);
+    }
+
+    @Override
+    public void setMooshroomExtrasAttachment(LivingEntity entity, MooshroomExtrasAttachment attachment) {
+        entity.setData(BovinesAttachments.MOOSHROOM_EXTRAS, attachment);
     }
 
     @Override

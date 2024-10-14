@@ -47,9 +47,13 @@ public interface BovinesPlatformHelper {
 
     CowTypeAttachment getCowTypeAttachment(LivingEntity entity);
 
+    void setCowTypeAttachment(LivingEntity entity, CowTypeAttachment attachment);
+
+    boolean hasMooshroomExtrasAttachment(LivingEntity entity);
+
     MooshroomExtrasAttachment getMooshroomExtrasAttachment(LivingEntity entity);
 
-    void setCowTypeAttachment(LivingEntity entity, CowTypeAttachment attachment);
+    void setMooshroomExtrasAttachment(LivingEntity entity, MooshroomExtrasAttachment attachment);
 
     void sendClientboundPacket(ServerPlayer player, CustomPacketPayload... payloads);
 
