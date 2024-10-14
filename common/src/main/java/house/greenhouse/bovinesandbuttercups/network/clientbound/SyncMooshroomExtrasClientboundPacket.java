@@ -29,6 +29,8 @@ public record SyncMooshroomExtrasClientboundPacket(int entityId, MooshroomExtras
     public void handle() {
         Minecraft.getInstance().execute(() -> {
             Entity entity = Minecraft.getInstance().level.getEntity(entityId);
+            if (entity == null)
+                return;
             if (entity.getType() == EntityType.MOOSHROOM && entity instanceof MushroomCow mooshroom)
                 BovinesAndButtercups.getHelper().setMooshroomExtrasAttachment(mooshroom, value);
         });
