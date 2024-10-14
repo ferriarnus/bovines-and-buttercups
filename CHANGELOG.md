@@ -12,7 +12,7 @@
 - Reworked interaction when feeding a Moobloom Bone Meal. They will now create a varied flower trail of their flower as they walk instead of an instant area of flowers.
   - This change was made to be more referential to Minecraft Earth as a source material.
 - Added a Chargelily Ranch to guide players that you may wish to strike a Moobloom with lightning.
-  - Spawns within non snowy stony mountainous biomes.
+  - Spawns within non-snowy stony mountainous biomes.
 - Modified certain vanilla advancements if there are no datapack changes to these respective advancements.
   - Balanced Diet. Added consuming Rich Honey Bottles to the requirements.
   - Sticky Situation. Allowed Rich Honey Blocks to trigger the advancement.
