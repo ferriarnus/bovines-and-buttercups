@@ -124,7 +124,7 @@ public class BovinesAndButtercupsNeoForge {
                 PollinateMoobloomGoal pollinateGoal = new PollinateMoobloomGoal(bee);
                 bee.getGoalSelector().addGoal(3, pollinateGoal);
                 bee.getGoalSelector().addGoal(3, new MoveToMoobloomGoal(bee));
-                ((BeeGoalAccess) bee).bovinesandbuttercups$setPollinateFlowerCowGoal(pollinateGoal);
+                ((BeeGoalAccess) bee).bovinesandbuttercups$setPollinateMoobloomGoal(pollinateGoal);
             }
 
             if (!(entity instanceof LivingEntity living) || level.isClientSide)
@@ -218,8 +218,8 @@ public class BovinesAndButtercupsNeoForge {
             if (event.getEntity().hasData(BovinesAttachments.COW_TYPE) && event.getEntity().getData(BovinesAttachments.COW_TYPE).cowType().isBound())
                 event.getEntity().getData(BovinesAttachments.COW_TYPE).cowType().value().configuration().tick(event.getEntity());
 
-            if (event.getEntity() instanceof Bee bee && !event.getEntity().level().isClientSide() && ((BeeGoalAccess)event.getEntity()).bovinesandbuttercups$getPollinateFlowerCowGoal() != null)
-                ((BeeGoalAccess)bee).bovinesandbuttercups$getPollinateFlowerCowGoal().tickCooldown();
+            if (event.getEntity() instanceof Bee bee && !event.getEntity().level().isClientSide() && ((BeeGoalAccess)event.getEntity()).bovinesandbuttercups$getPollinateMoobloomGoal() != null)
+                ((BeeGoalAccess)bee).bovinesandbuttercups$getPollinateMoobloomGoal().tickCooldown();
         }
 
         @SubscribeEvent

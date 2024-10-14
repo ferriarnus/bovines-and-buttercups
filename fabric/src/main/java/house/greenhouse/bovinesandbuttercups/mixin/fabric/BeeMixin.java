@@ -18,7 +18,7 @@ public abstract class BeeMixin extends Animal {
 
     @Inject(method = "aiStep", at = @At("TAIL"))
     private void bovinesandbuttercupsmethod$handleAiStep(CallbackInfo ci) {
-        if (this.level().isClientSide() || ((BeeGoalAccess) this).bovinesandbuttercups$getPollinateFlowerCowGoal() == null) return;
-        ((BeeGoalAccess) this).bovinesandbuttercups$getPollinateFlowerCowGoal().tickCooldown();
+        if (this.level().isClientSide() || ((BeeGoalAccess) this).bovinesandbuttercups$getPollinateMoobloomGoal() == null) return;
+        ((BeeGoalAccess) this).bovinesandbuttercups$getPollinateMoobloomGoal().tickCooldown();
     }
 }

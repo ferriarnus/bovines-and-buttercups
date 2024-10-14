@@ -18,7 +18,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(Bee.class)
 public abstract class BeeMixin extends Animal implements BeeGoalAccess {
-    @Nullable @Unique private PollinateMoobloomGoal bovinesandbuttercups$pollinateFlowerCowGoal;
+    @Nullable @Unique private PollinateMoobloomGoal bovinesandbuttercups$pollinateMoobloomGoal;
 
     @Shadow
     public abstract GoalSelector getGoalSelector();
@@ -33,15 +33,15 @@ public abstract class BeeMixin extends Animal implements BeeGoalAccess {
         PollinateMoobloomGoal pollinateGoal = new PollinateMoobloomGoal((Bee)(Object)this);
         this.getGoalSelector().addGoal(4, pollinateGoal);
         this.getGoalSelector().addGoal(4, new MoveToMoobloomGoal((Bee)(Object)this));
-        ((BeeGoalAccess) this).bovinesandbuttercups$setPollinateFlowerCowGoal(pollinateGoal);
+        ((BeeGoalAccess) this).bovinesandbuttercups$setPollinateMoobloomGoal(pollinateGoal);
     }
 
-    public PollinateMoobloomGoal bovinesandbuttercups$getPollinateFlowerCowGoal() {
-        return this.bovinesandbuttercups$pollinateFlowerCowGoal;
+    public PollinateMoobloomGoal bovinesandbuttercups$getPollinateMoobloomGoal() {
+        return this.bovinesandbuttercups$pollinateMoobloomGoal;
     }
 
     @Override
-    public void bovinesandbuttercups$setPollinateFlowerCowGoal(PollinateMoobloomGoal goal) {
-        this.bovinesandbuttercups$pollinateFlowerCowGoal = goal;
+    public void bovinesandbuttercups$setPollinateMoobloomGoal(PollinateMoobloomGoal goal) {
+        this.bovinesandbuttercups$pollinateMoobloomGoal = goal;
     }
 }
