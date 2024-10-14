@@ -99,6 +99,7 @@ publishMods {
     modLoaders.add("neoforge")
     changelog = rootProject.file("CHANGELOG.md").readText()
     version = "${Versions.MOD}+${Versions.MINECRAFT}-neoforge"
+    displayName = "v${Versions.MOD} (NeoForge ${Versions.MINECRAFT})"
     type = STABLE
 
     curseforge {
