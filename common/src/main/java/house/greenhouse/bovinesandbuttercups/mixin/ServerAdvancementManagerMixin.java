@@ -13,7 +13,7 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 public class ServerAdvancementManagerMixin {
     @ModifyVariable(method = { "lambda$apply$0", "method_20723" }, at = @At(value = "HEAD"), argsOnly = true)
     private JsonElement bovinesandbuttercups$applyAdvancement(JsonElement element, @Local(argsOnly = true) ResourceLocation id) {
-        if (element.isJsonObject() && element.getAsJsonObject().getAsJsonPrimitive("bovinesandbuttercups:pack_source").getAsString().equals("vanilla")) {
+        if (element.isJsonObject() && element.getAsJsonObject().has("bovinesandbuttercups:pack_source") && element.getAsJsonObject().get("bovinesandbuttercups:pack_source").isJsonPrimitive() && element.getAsJsonObject().getAsJsonPrimitive("bovinesandbuttercups:pack_source").getAsString().equals("vanilla")) {
             if (id.equals(ResourceLocation.withDefaultNamespace("husbandry/bred_all_animals")))
                 return AdvancementUtil.addMoobloomToBredAllAnimals(element.getAsJsonObject());
             if (id.equals(ResourceLocation.withDefaultNamespace("husbandry/balanced_diet")))
