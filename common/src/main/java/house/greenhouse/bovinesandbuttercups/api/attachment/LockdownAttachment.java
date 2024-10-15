@@ -17,15 +17,12 @@ import java.util.stream.Stream;
 
 public record LockdownAttachment(Map<Holder<MobEffect>, Integer> effects) {
     public static final ResourceLocation ID = BovinesAndButtercups.asResource("lockdown");
-    public static final Codec<LockdownAttachment> CODEC = Codec.simpleMap(BuiltInRegistries.MOB_EFFECT.holderByNameCodec(), Codec.INT, Keyable.forStrings(() -> Stream.of("effect", "duration")))
-            .codec().xmap(LockdownAttachment::new, LockdownAttachment::getLockdownMobEffects);
+    public static final Codec<LockdownAttachment> CODEC = Codec.simpleMap(
+            BuiltInRegistries.MOB_EFFECT.holderByNameCodec(), Codec.INT, Keyable.forStrings(() -> Stream.of("effect", "duration"))
+    ).codec().xmap(LockdownAttachment::new, LockdownAttachment::effects);
 
     public LockdownAttachment(Map<Holder<MobEffect>, Integer> effects) {
         this.effects = new HashMap<>(effects);
-    }
-
-    Map<Holder<MobEffect>, Integer> getLockdownMobEffects() {
-        return Map.copyOf(effects);
     }
 
     public void addLockdownMobEffect(Holder<MobEffect> effect, int duration) {
