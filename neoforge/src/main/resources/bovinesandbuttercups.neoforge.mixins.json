@@ -4,11 +4,10 @@
   "package": "house.greenhouse.bovinesandbuttercups.mixin.neoforge",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
-    "CowMixin",
-    "MushroomCowMixin",
-    "client.EntityRenderersEventAddLayersAccessor"
+    "MushroomCowMixin"
   ],
   "client": [
+    "client.EntityRenderersEventAddLayersAccessor",
     "client.EffectRenderingInventoryScreenMixin",
     "client.GuiMixin"
   ],
