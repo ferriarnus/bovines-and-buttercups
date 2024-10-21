@@ -1,13 +1,13 @@
 {
-  "advancements.husbandry.bovinesandbuttercups.husbandry.prevent_effect.title": "Locked Out",
-  "advancements.husbandry.bovinesandbuttercups.husbandry.prevent_effect.description": "Prevent a status effect from being applied using nectar",
-  "advancements.husbandry.bovinesandbuttercups.husbandry.lock_effect.title": "Locked In",
-  "advancements.husbandry.bovinesandbuttercups.husbandry.lock_effect.description": "Lock a status effect's duration using nectar",
-  "advancements.husbandry.bovinesandbuttercups.husbandry.breed_new_moobloom.title": "Dear Dairy",
-  "advancements.husbandry.bovinesandbuttercups.husbandry.breed_new_moobloom.description": "Breed a new kind of Moobloom offspring",
+  "advancements.husbandry.bovinesandbuttercups.husbandry.prevent_effect.title": "Uitgesloten",
+  "advancements.husbandry.bovinesandbuttercups.husbandry.prevent_effect.description": "Zorgt ervoor dat een effect niet kan worden toegepast met nectar",
+  "advancements.husbandry.bovinesandbuttercups.husbandry.lock_effect.title": "Geselecteerd",
+  "advancements.husbandry.bovinesandbuttercups.husbandry.lock_effect.description": "Zet de tijd van een efect vast met nectar",
+  "advancements.husbandry.bovinesandbuttercups.husbandry.breed_new_moobloom.title": "Liefste Dagboek",
+  "advancements.husbandry.bovinesandbuttercups.husbandry.breed_new_moobloom.description": "Fok een nieuw Moebloem variant",
   "advancements.husbandry.bovinesandbuttercups.husbandry.breed_all_mooblooms.title": "Full Bloom",
-  "advancements.husbandry.bovinesandbuttercups.husbandry.breed_all_mooblooms.description": "Breed every Moobloom that can be bred for",
-  "advancements.husbandry.bovinesandbuttercups.husbandry.obtain_flower_crown.title": "Moo-tiful",
+  "advancements.husbandry.bovinesandbuttercups.husbandry.breed_all_mooblooms.description": "Fok elke Moebloem die gefokked kan worden",
+  "advancements.husbandry.bovinesandbuttercups.husbandry.obtain_flower_crown.title": "Mooo(e)i",
   "advancements.husbandry.bovinesandbuttercups.husbandry.obtain_flower_crown.description": "Krijg een Bloemenkrans",
 
   "block.bovinesandbuttercups.buttercup": "Boterbloem",
@@ -96,9 +96,9 @@
   "resourcePack.bovinesandbuttercups.noBuds.name": "Geen Knoppen",
   "resourcePack.bovinesandbuttercups.noBuds.description": "Veranderd all de moebloem knoppen naar bloemen.",
 
-  "text.bovinesandbuttercups.tip.beef": "You can't possibly be in a beef with a Moobloom, but you can eat beef!",
-  "text.bovinesandbuttercups.tip.breed_moobloom": "The moo-st efficient way of getting new Mooblooms is by experimenting with building blocks near them! Using specific natural blocks might trick them into thinking they are in entirely different environment!",
-  "text.bovinesandbuttercups.tip.chargelily_moobloom": "When a Moobloom is struck by lightning, it will charge up and transform.",
-  "text.bovinesandbuttercups.tip.moobloom_variants": "There is many Moobloom variants you can get... Like at least 3!",
-  "text.bovinesandbuttercups.tip.nectar_bowl": "Try Nectar from Mooblooms! It's sweet, healthy AND helps your organism fight off invasive magic!"
+  "text.bovinesandbuttercups.tip.beef": "Je kunt onmogelijk ruzie krijgen met een Moebloem, maar je kunt wel rundvlees eten!",
+  "text.bovinesandbuttercups.tip.breed_moobloom": "The beste mannier om nieuwe Moebloems te krijegen is om te experimenteren met bouwblokken in hun buurt! Misschien zorgen bepaalde natuurlijke blokken ervoor dat ze denken dat ze in een andere omgeving zijn!",
+  "text.bovinesandbuttercups.tip.chargelily_moobloom": "Wanner een Moobloom door bliksem wordt geraakt, zal deze zich opladen en transformeren.",
+  "text.bovinesandbuttercups.tip.moobloom_variants": "Er zijn veel Moebloem varianten om te vinden ... op z'n minst 3!",
+  "text.bovinesandbuttercups.tip.nectar_bowl": "Probeer Nectar van Moebloems! Het is zoet, gezond EN help je immuum systeem tegen invasive magie!"
 }
